@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
 import 'package:bienen_app/features/recherche/widgets/section_header.dart';
 
@@ -9,6 +10,13 @@ class JahresablaufPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Jahresablauf')),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.go('/recherche/jahresablauf/detail'),
+        icon: const Icon(Icons.article),
+        label: const Text('Vollständige Recherche'),
+        backgroundColor: AppColors.honey,
+        foregroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
