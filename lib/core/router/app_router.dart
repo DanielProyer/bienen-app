@@ -118,6 +118,13 @@ final appRouter = GoRouter(
                 assetPath: 'assets/recherche/03_Erstausstattung_Einkaufsliste.md',
               ),
             ),
+            GoRoute(
+              path: 'stockwaagen',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Stockwaagen & Monitoring',
+                assetPath: 'assets/recherche/07_Stockwaagen_Monitoring.md',
+              ),
+            ),
           ],
         ),
         GoRoute(

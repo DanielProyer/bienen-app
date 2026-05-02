@@ -95,6 +95,14 @@ class RechercheOverviewPage extends StatelessWidget {
             ),
             _buildTopicCard(
               context,
+              title: 'Stockwaagen & Monitoring',
+              subtitle: 'Digitale Stockwaagen, Liveübertragung, Systemvergleich',
+              icon: Icons.monitor_weight,
+              route: '/recherche/stockwaagen',
+              color: AppColors.honeyDark,
+            ),
+            _buildTopicCard(
+              context,
               title: 'Erstausstattung Einkaufsliste',
               subtitle: 'Komplette Einkaufsliste mit Preisen und Lieferanten',
               icon: Icons.receipt_long,
