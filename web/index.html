@@ -1,46 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
-
+  <base href="/bienen-app/">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="description" content="Bienen Arosa - Imkerei Projekt WebApp">
-
-  <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Bienen Arosa">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
-
   <title>Bienen Arosa</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
+  <script>
+    // Service Workers killen (Flutter SW ist deprecated)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        regs.forEach(function(r) { r.unregister(); });
+      });
+    }
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
-  <script src="flutter_bootstrap.js" async></script>
+    function clearAllCaches() {
+      if ('caches' in window) {
+        return caches.keys().then(function(names) {
+          return Promise.all(names.map(function(n) { return caches.delete(n); }));
+        });
+      }
+      return Promise.resolve();
+    }
+
+    function redirectToVersion(ver) {
+      clearAllCaches().then(function() {
+        window.location.replace(window.location.pathname + '?v=' + ver);
+      });
+    }
+
+    var urlVersion = new URLSearchParams(window.location.search).get('v');
+
+    fetch('version.json?_=' + Date.now(), { cache: 'no-store' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var serverVer = data.version || '0';
+        if (urlVersion !== serverVer) {
+          redirectToVersion(serverVer);
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = 'flutter_bootstrap.js?v=' + serverVer;
+        s.async = true;
+        document.body.appendChild(s);
+
+        // Alle 60s auf neue Version prüfen
+        setInterval(function() {
+          fetch('version.json?_=' + Date.now(), { cache: 'no-store' })
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+              if (d.version && d.version !== serverVer) {
+                redirectToVersion(d.version);
+              }
+            }).catch(function() {});
+        }, 60000);
+      })
+      .catch(function() {
+        var s = document.createElement('script');
+        s.src = 'flutter_bootstrap.js';
+        s.async = true;
+        document.body.appendChild(s);
+      });
+  </script>
 </body>
 </html>
