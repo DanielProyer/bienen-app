@@ -6,7 +6,7 @@
 
 - **Qualität vor Preis** -- Geld ist vorhanden, lieber mehr für Qualität ausgeben
 - **Langlebigkeit und Innovation** im Fokus
-- **Gesamtausstattung auf max. 8 Völker** ausgelegt (auch Schleuder, Verarbeitungsraum etc.)
+- **Gesamtausstattung auf max. 4-5 Völker** ausgelegt (ab 2036 Erweiterung auf 8 möglich)
 - **Bio-Honig** angestrebt (natürliche Materialien, kein Kunststoff bei Beuten)
 
 ---
@@ -45,7 +45,8 @@
 |-------|-----------|--------|
 | Start | Herbst 2026 | 1 Volk |
 | Erweiterung | Frühling 2027 | 2 Völker |
-| Langfristig | Über die Jahre | Max. 8 Völker |
+| Aufbau | 2028-2035 | Max. 4-5 Völker |
+| Vollausbau | Ab 2036 (Pensionierung Lorena) | Max. 8 Völker |
 
 ---
 
@@ -68,7 +69,7 @@
 
 | Bereich | Standort | Nutzung |
 |---------|----------|---------|
-| **Bienenstand** | Bestehender Unterstand | 8 Dadant-Blatt-Beuten |
+| **Bienenstand** | Bestehender Unterstand | 4-5 Dadant-Blatt-Beuten (Platz für 8) |
 | **Schleuderraum** | Stall Obergeschoss (leer) | Honigverarbeitung, 12--15 m² |
 | **Imkerei-Lager** | Stall Erdgeschoss | Zargen, Waben, Werkzeug, Varroa-Mittel |
 | **Honiglager** | Stall Erdgeschoss | Kühl, dunkel, 2--3 m² |
@@ -77,7 +78,8 @@
 - Phase 1 (Herbst 2026): 1 Volk, Ständer im Unterstand → CHF 2'150
 - Phase 2 (Frühling 2027): 2 Völker, Schleuder Logar 20/8 → CHF 4'650
 - Phase 3 (2027/2028): Schleuderraum OG ausbauen, 3--5 Völker → CHF 17'000--26'000
-- Phase 4 (2029/2030): 8 Völker, Vollausbau → CHF 3'400
+- Phase 4 (2029-2035): 4-5 Völker, stabiler Betrieb
+- Phase 5 (ab 2036, Pensionierung Lorena): Erweiterung auf max. 8 Völker → CHF 3'400
 - **Gesamtinvestition: ca. CHF 27'000--36'000**
 - **Ersparnis durch vorhandene Infrastruktur: ca. CHF 20'000--28'000!**
 

@@ -53,7 +53,8 @@ class EntscheidungenPage extends StatelessWidget {
               details: [
                 'Herbst 2026: 1 Volk',
                 'Frühling 2027: 2 Völker',
-                'Langfristig: Max. 8 Völker',
+                'Bis 2036: Max. 4-5 Völker',
+                'Ab 2036 (Pensionierung Lorena): Max. 8 Völker',
               ],
               reason: 'Lernen und wachsen',
               date: '2. Mai 2026',

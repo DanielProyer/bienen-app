@@ -1,6 +1,6 @@
 # Raumkonzept Imkerei -- Maiensäss Tannen 85a, Arosa (1570 m)
 
-> Stand: 2. Mai 2026 | Auslegung: max. 8 Dadant-Blatt-Völker in Holz
+> Stand: 2. Mai 2026 | Auslegung: 4-5 Völker bis 2036, danach max. 8 Dadant-Blatt-Völker in Holz
 > Grundsatz: Qualität vor Preis, Langlebigkeit, Bio-kompatibel
 
 ---
@@ -322,17 +322,25 @@ Das Erdgeschoss wird um einen **Imkerei-Bereich** erweitert. Nötige Einrichtung
 | Ev. Unterstand-Anpassungen (Windschutz, PV) | 2'000--4'000 |
 | **Phase 3 Total** | **ca. CHF 17'000--26'000** |
 
-### Phase 4: Vollausbau (2029/2030 -- 6--8 Völker)
+### Phase 4: Stabiler Betrieb (2029--2035 -- 4--5 Völker)
+
+| Was | Kosten CHF |
+|-----|-----------|
+| 1-2 weitere Beuten (total 4-5) | 500--1'000 |
+| Klärbehälter (2× 50 kg Edelstahl) | 400 |
+| Abfüll-Equipment (Gläser-Vorrat, Etiketten) | 400 |
+| Reserve-Rähmchen + Mittelwände (Jahresvorrat) | 300 |
+| apisuisse Goldsiegel beantragen | -- |
+| **Phase 4 Total** | **ca. CHF 1'600--2'100** |
+
+### Phase 5: Vollausbau (ab 2036 -- Pensionierung Lorena -- 6--8 Völker)
 
 | Was | Kosten CHF |
 |-----|-----------|
 | 3 weitere Beuten (total 8) | 1'500 |
 | Beutenständer final (für 8 Beuten) | 800 |
-| Klärbehälter (2× 50 kg Edelstahl) | 400 |
-| Abfüll-Equipment (Gläser-Vorrat, Etiketten) | 400 |
-| Reserve-Rähmchen + Mittelwände (Jahresvorrat) | 300 |
-| apisuisse Goldsiegel beantragen | -- |
-| **Phase 4 Total** | **ca. CHF 3'400** |
+| Ev. Unterstand-Erweiterung | 500--1'000 |
+| **Phase 5 Total** | **ca. CHF 2'800--3'300** |
 
 ### Gesamtinvestition (alle Phasen)
 
@@ -341,8 +349,9 @@ Das Erdgeschoss wird um einen **Imkerei-Bereich** erweitert. Nötige Einrichtung
 | Phase 1 | Herbst 2026 | 2'150 |
 | Phase 2 | Frühling 2027 | 4'650 |
 | Phase 3 | 2027/2028 | 17'000--26'000 |
-| Phase 4 | 2029/2030 | 3'400 |
-| **GESAMTTOTAL** | | **ca. CHF 27'000--36'000** |
+| Phase 4 | 2029--2035 | 1'600--2'100 |
+| Phase 5 | Ab 2036 | 2'800--3'300 |
+| **GESAMTTOTAL** | | **ca. CHF 28'000--38'000** |
 
 > **Ersparnis durch vorhandene Infrastruktur: ca. CHF 20'000--28'000** gegenüber Neubau!
 > (Kein Unterstand-Neubau nötig, Stallgebäude vorhanden)

@@ -25,7 +25,7 @@ class BienenrassenPage extends StatelessWidget {
           children: [
             const SectionHeader(
               title: 'Bienenrassen für Arosa',
-              subtitle: '1570 m · Bio-Honig · Dadant Blatt · Kein Schutzgebiet im Schanfigg',
+              subtitle: '1570 m · Bio-Honig · Dadant Blatt · 4-5 Völker (ab 2036: max. 8)',
             ),
             const SizedBox(height: 24),
             _buildKeyFinding(context),

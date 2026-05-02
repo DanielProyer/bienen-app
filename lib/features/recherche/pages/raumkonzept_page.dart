@@ -25,7 +25,7 @@ class RaumkonzeptPage extends StatelessWidget {
           children: [
             const SectionHeader(
               title: 'Raumkonzept Maiensäss',
-              subtitle: 'Tannen 85a, Arosa · Max. 8 Dadant-Blatt-Völker',
+              subtitle: 'Tannen 85a, Arosa · 4-5 Völker (ab 2036: max. 8)',
             ),
             const SizedBox(height: 24),
             _buildSavingsBanner(context),
@@ -34,7 +34,7 @@ class RaumkonzeptPage extends StatelessWidget {
             const SizedBox(height: 16),
             const InfoCard(
               title: 'Bienenstand (Bestehender Unterstand)',
-              content: '8 Dadant-Blatt-Beuten in versetzter Reihe\nOptimale Ausrichtung vorhanden\nFluglöcher Richtung Süd/Südost\nBienentränke 5-20 m seitlich',
+              content: '4-5 Dadant-Blatt-Beuten (Platz für 8 ab 2036)\nOptimale Ausrichtung vorhanden\nFluglöcher Richtung Süd/Südost\nBienentränke 5-20 m seitlich',
               icon: Icons.hive,
               highlight: true,
             ),
@@ -70,10 +70,15 @@ class RaumkonzeptPage extends StatelessWidget {
               'Rührwerk CFM 100 kg',
               'Wasseranschluss + Abfluss',
             ]),
-            _buildPhaseCard(context, 4, '2029/2030', 'CHF 3\'400', [
-              'Vollausbau 8 Völker',
+            _buildPhaseCard(context, 4, '2029-2035', 'Betrieb', [
+              'Stabilisierung 4-5 Völker',
               'Optimierung Bienenstand',
-              'Vollautomatisierung möglich',
+              'Routine-Betrieb',
+            ]),
+            _buildPhaseCard(context, 5, 'Ab 2036', 'CHF 3\'400', [
+              'Pensionierung Lorena',
+              'Erweiterung auf max. 8 Völker',
+              'Vollausbau Bienenstand',
             ]),
             const SizedBox(height: 24),
             _buildTotalCard(context),

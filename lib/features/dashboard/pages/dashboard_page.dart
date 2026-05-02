@@ -70,7 +70,7 @@ class DashboardPage extends StatelessWidget {
       _Phase('Unterstand vorbereiten', 'Bienenstand einrichten', false),
       _Phase('1. Volk einsetzen', 'Herbst 2026', false),
       _Phase('Schleuderraum ausbauen', 'Stall OG, 2027/2028', false),
-      _Phase('Erweiterung auf 8 Völker', 'Langfristziel', false),
+      _Phase('Erweiterung auf 4-5 Völker', 'Bis 2036', false),
     ];
 
     return Column(
@@ -232,7 +232,7 @@ class DashboardPage extends StatelessWidget {
           children: [
             _buildFactChip('Dadant Blatt 10', Icons.grid_view),
             _buildFactChip('Holzbeuten', Icons.park),
-            _buildFactChip('Max. 8 Völker', Icons.hive),
+            _buildFactChip('4-5 Völker (bis 2036)', Icons.hive),
             _buildFactChip('Bio-Honig Ziel', Icons.eco),
             _buildFactChip('CHF 27-36k Invest', Icons.payments),
             _buildFactChip('CHF 20-28k Ersparnis', Icons.savings),
