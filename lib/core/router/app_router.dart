@@ -7,6 +7,7 @@ import 'package:bienen_app/features/recherche/pages/jahresablauf_page.dart';
 import 'package:bienen_app/features/recherche/pages/beutensystem_page.dart';
 import 'package:bienen_app/features/recherche/pages/raumkonzept_page.dart';
 import 'package:bienen_app/features/recherche/pages/bienenrassen_page.dart';
+import 'package:bienen_app/features/recherche/pages/stockwaagen_page.dart';
 import 'package:bienen_app/features/recherche/pages/markdown_viewer_page.dart';
 import 'package:bienen_app/features/entscheidungen/pages/entscheidungen_page.dart';
 import 'package:bienen_app/features/material/presentation/pages/material_page.dart'
@@ -120,10 +121,16 @@ final appRouter = GoRouter(
             ),
             GoRoute(
               path: 'stockwaagen',
-              builder: (context, state) => const MarkdownViewerPage(
-                title: 'Stockwaagen & Monitoring',
-                assetPath: 'assets/recherche/07_Stockwaagen_Monitoring.md',
-              ),
+              builder: (context, state) => const StockwaagenPage(),
+              routes: [
+                GoRoute(
+                  path: 'detail',
+                  builder: (context, state) => const MarkdownViewerPage(
+                    title: 'Stockwaagen (Detail)',
+                    assetPath: 'assets/recherche/07_Stockwaagen_Monitoring.md',
+                  ),
+                ),
+              ],
             ),
           ],
         ),
