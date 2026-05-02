@@ -42,8 +42,8 @@ class MaterialListTile extends ConsumerWidget {
           children: [
             // Status button
             PopupMenuButton<String>(
-              onSelected: (newStatus) {
-                ref
+              onSelected: (newStatus) async {
+                await ref
                     .read(materialListProvider.notifier)
                     .updateStatus(item.id, newStatus);
               },

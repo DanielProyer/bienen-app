@@ -10,7 +10,7 @@ class MaterialSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final grandTotal = ref.watch(grandTotalProvider);
-    final items = ref.watch(materialListProvider);
+    final items = ref.watch(materialListProvider).valueOrNull ?? [];
     final offenCount = items.where((i) => i.status == 'offen').length;
     final bestelltCount = items.where((i) => i.status == 'bestellt').length;
     final geliefertCount = items.where((i) => i.status == 'geliefert').length;

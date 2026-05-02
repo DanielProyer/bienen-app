@@ -1,9 +1,8 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseConfig {
-  // TODO: Replace with actual Supabase credentials
-  static const String supabaseUrl = 'https://YOUR_PROJECT.supabase.co';
-  static const String supabaseAnonKey = 'YOUR_ANON_KEY';
+  static const String supabaseUrl = 'https://dcdcohktxbhdxnxjvcyp.supabase.co';
+  static const String supabaseAnonKey = 'sb_publishable_oom_C1ge27zL43WKG9UB0Q_60SjI02N';
 
   static Future<void> initialize() async {
     await Supabase.initialize(
