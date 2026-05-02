@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
 
 class MarkdownViewerPage extends StatefulWidget {
@@ -48,6 +49,11 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
                   data: _content!,
                   selectable: true,
                   padding: const EdgeInsets.all(24),
+                  onTapLink: (text, href, title) {
+                    if (href != null) {
+                      launchUrl(Uri.parse(href), mode: LaunchMode.externalApplication);
+                    }
+                  },
                   styleSheet: MarkdownStyleSheet(
                     h1: TextStyle(
                       fontSize: 24,
@@ -93,6 +99,10 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
                     codeblockDecoration: BoxDecoration(
                       color: AppColors.brown50,
                       borderRadius: BorderRadius.circular(8),
+                    ),
+                    a: TextStyle(
+                      color: Colors.blue.shade700,
+                      decoration: TextDecoration.underline,
                     ),
                     listBullet: const TextStyle(fontSize: 14),
                     horizontalRuleDecoration: BoxDecoration(
