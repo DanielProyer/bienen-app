@@ -54,6 +54,14 @@ class RechercheOverviewPage extends StatelessWidget {
             ),
             _buildTopicCard(
               context,
+              title: 'Bienenrassen',
+              subtitle: 'Buckfast vs. Dunkle Biene vs. Carnica -- Entscheidung',
+              icon: Icons.pets,
+              route: '/recherche/bienenrassen',
+              color: AppColors.green600,
+            ),
+            _buildTopicCard(
+              context,
               title: 'Raumkonzept Maiensäss',
               subtitle: 'Bienenstand, Schleuderraum, Lager, Phasenplan',
               icon: Icons.house,

@@ -6,6 +6,7 @@ import 'package:bienen_app/features/recherche/pages/imkerei_schweiz_page.dart';
 import 'package:bienen_app/features/recherche/pages/jahresablauf_page.dart';
 import 'package:bienen_app/features/recherche/pages/beutensystem_page.dart';
 import 'package:bienen_app/features/recherche/pages/raumkonzept_page.dart';
+import 'package:bienen_app/features/recherche/pages/bienenrassen_page.dart';
 import 'package:bienen_app/features/recherche/pages/markdown_viewer_page.dart';
 import 'package:bienen_app/features/entscheidungen/pages/entscheidungen_page.dart';
 import 'package:bienen_app/features/material/presentation/pages/material_page.dart'
@@ -79,6 +80,19 @@ final appRouter = GoRouter(
                   builder: (context, state) => const MarkdownViewerPage(
                     title: 'Raumkonzept (Detail)',
                     assetPath: 'assets/recherche/05_Raumkonzept_Maiensaess.md',
+                  ),
+                ),
+              ],
+            ),
+            GoRoute(
+              path: 'bienenrassen',
+              builder: (context, state) => const BienenrassenPage(),
+              routes: [
+                GoRoute(
+                  path: 'detail',
+                  builder: (context, state) => const MarkdownViewerPage(
+                    title: 'Bienenrassen (Detail)',
+                    assetPath: 'assets/recherche/06_Bienenrassen_Entscheidung.md',
                   ),
                 ),
               ],
