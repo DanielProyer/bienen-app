@@ -103,6 +103,22 @@ class RechercheOverviewPage extends StatelessWidget {
             ),
             _buildTopicCard(
               context,
+              title: 'Honigschleudern',
+              subtitle: 'Motorisierte Radialschleudern für Dadant Blatt',
+              icon: Icons.rotate_right,
+              route: '/recherche/honigschleudern',
+              color: AppColors.amber800,
+            ),
+            _buildTopicCard(
+              context,
+              title: 'Imkerei-Apps & Tools',
+              subtitle: 'BeeSmart, BeeTraffic, Varroa-App, Waagvölker',
+              icon: Icons.phone_android,
+              route: '/recherche/imkerei-apps',
+              color: AppColors.green600,
+            ),
+            _buildTopicCard(
+              context,
               title: 'Erstausstattung Einkaufsliste',
               subtitle: 'Komplette Einkaufsliste mit Preisen und Lieferanten',
               icon: Icons.receipt_long,

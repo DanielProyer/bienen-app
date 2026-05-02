@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bienen_app/features/dashboard/pages/dashboard_page.dart';
+import 'package:bienen_app/features/dashboard/pages/todo_page.dart';
 import 'package:bienen_app/features/recherche/pages/recherche_overview_page.dart';
 import 'package:bienen_app/features/recherche/pages/imkerei_schweiz_page.dart';
 import 'package:bienen_app/features/recherche/pages/jahresablauf_page.dart';
@@ -8,6 +9,8 @@ import 'package:bienen_app/features/recherche/pages/beutensystem_page.dart';
 import 'package:bienen_app/features/recherche/pages/raumkonzept_page.dart';
 import 'package:bienen_app/features/recherche/pages/bienenrassen_page.dart';
 import 'package:bienen_app/features/recherche/pages/stockwaagen_page.dart';
+import 'package:bienen_app/features/recherche/pages/honigschleudern_page.dart';
+import 'package:bienen_app/features/recherche/pages/imkerei_apps_page.dart';
 import 'package:bienen_app/features/recherche/pages/markdown_viewer_page.dart';
 import 'package:bienen_app/features/entscheidungen/pages/entscheidungen_page.dart';
 import 'package:bienen_app/features/material/presentation/pages/material_page.dart'
@@ -28,6 +31,12 @@ final appRouter = GoRouter(
         GoRoute(
           path: '/dashboard',
           builder: (context, state) => const DashboardPage(),
+          routes: [
+            GoRoute(
+              path: 'todo',
+              builder: (context, state) => const TodoPage(),
+            ),
+          ],
         ),
         GoRoute(
           path: '/recherche',
@@ -99,6 +108,45 @@ final appRouter = GoRouter(
               ],
             ),
             GoRoute(
+              path: 'stockwaagen',
+              builder: (context, state) => const StockwaagenPage(),
+              routes: [
+                GoRoute(
+                  path: 'detail',
+                  builder: (context, state) => const MarkdownViewerPage(
+                    title: 'Stockwaagen (Detail)',
+                    assetPath: 'assets/recherche/07_Stockwaagen_Monitoring.md',
+                  ),
+                ),
+              ],
+            ),
+            GoRoute(
+              path: 'honigschleudern',
+              builder: (context, state) => const HonigschleuderunPage(),
+              routes: [
+                GoRoute(
+                  path: 'detail',
+                  builder: (context, state) => const MarkdownViewerPage(
+                    title: 'Honigschleudern (Detail)',
+                    assetPath: 'assets/recherche/08_Honigschleudern_Dadant_Blatt.md',
+                  ),
+                ),
+              ],
+            ),
+            GoRoute(
+              path: 'imkerei-apps',
+              builder: (context, state) => const ImkereiAppsPage(),
+              routes: [
+                GoRoute(
+                  path: 'detail',
+                  builder: (context, state) => const MarkdownViewerPage(
+                    title: 'Imkerei-Apps (Detail)',
+                    assetPath: 'assets/recherche/09_Imkerei_Apps.md',
+                  ),
+                ),
+              ],
+            ),
+            GoRoute(
               path: 'bienenstand',
               builder: (context, state) => const MarkdownViewerPage(
                 title: 'Bienenstand & Unterstand',
@@ -118,19 +166,6 @@ final appRouter = GoRouter(
                 title: 'Erstausstattung Einkaufsliste',
                 assetPath: 'assets/recherche/03_Erstausstattung_Einkaufsliste.md',
               ),
-            ),
-            GoRoute(
-              path: 'stockwaagen',
-              builder: (context, state) => const StockwaagenPage(),
-              routes: [
-                GoRoute(
-                  path: 'detail',
-                  builder: (context, state) => const MarkdownViewerPage(
-                    title: 'Stockwaagen (Detail)',
-                    assetPath: 'assets/recherche/07_Stockwaagen_Monitoring.md',
-                  ),
-                ),
-              ],
             ),
           ],
         ),

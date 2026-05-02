@@ -33,9 +33,10 @@ const materialProductInfo = <String, String>{
       'Innenlüfter für lange Brenndauer. Ideal für Dadant-Beuten. '
       'Brennmaterial: Jutesäcke, Holzpellets oder Eierkarton.',
   'Honigschleuder Logar 20/8 Radial':
-      'Radialschleuder für 20 Halbrahmen oder 8 Dadant-Brutwaben. '
-      'Edelstahl V2A, Motorantrieb mit Drehzahlregler. Deckel transparent (Plexiglas). '
-      'Höhe ca. 85cm, Durchmesser 63cm. Auslaufhahn 6/4 Zoll.',
+      'Radialschleuder für 20 Dadant-Halbrahmen (435x159mm) oder 4 Brutwaben. '
+      '110W Groschopp-Motor mit Drehzahlregler, Edelstahl AISI 304 (0.8mm Wandstärke). '
+      'Kessel Ø 63cm, Gewicht 39 kg (transportabel nach Arosa). '
+      'Radial-Prinzip: kein Wenden nötig, minimaler Wabenbruch bei Halbrahmen.',
   'Stockwaage digital':
       'Digitale Stockwaage mit Fernübertragung für permanente Gewichtsüberwachung. '
       'Zeigt Trachtbeginn/-ende, Schwarmabgang, Futterverbrauch in Echtzeit. '
@@ -190,37 +191,37 @@ const materialAlternatives = <String, List<ProductAlternative>>{
 
   'Honigschleuder Logar 20/8 Radial': [
     ProductAlternative(
-      name: 'Logar 20/8 Radial Motorschleuder',
-      supplier: 'Logar Trade',
-      price: 'CHF 1\'900.00',
-      url: 'https://www.logar-trade.com',
-      pros: ['20 Halbrahmen gleichzeitig', 'Motor mit Drehzahlregler', 'Edelstahl V2A Qualität', 'Transparenter Deckel', 'Perfekt für 4-5 Völker'],
-      cons: ['Hohe Investition', 'Schwer (Transport!)'],
+      name: 'Logar 20/8-Waben Radialschleuder Motor',
+      supplier: 'honigschleudern.eu (Logar Direktshop)',
+      price: 'EUR 1\'570 (~CHF 1\'550)',
+      url: 'https://www.honigschleudern.eu',
+      pros: ['20 HR = komplette Ernte in 1-2 Durchgängen', '39 kg = transportabel nach Arosa', 'Auch für 4 Brutwaben (Gitter inkl.)', 'AISI 304, 0.8mm Wandstärke', '110W Groschopp-Qualitätsmotor'],
+      cons: ['Einfacher Motor ohne Programmautomatik', 'Import aus Slowenien (Zoll beachten)'],
       isRecommended: true,
     ),
     ProductAlternative(
-      name: 'Swienty Radialschleuder 12 Rahmen',
-      supplier: 'Swienty (DK)',
-      price: 'EUR 1\'450.00',
-      url: 'https://www.swienty.com',
-      pros: ['Dänische Qualität', 'Etwas günstiger', 'Leichterer Korb'],
-      cons: ['Nur 12 Halbrahmen (länger schleudern)', 'Import aus Dänemark'],
+      name: 'Lega TUCANO 20 (GAMMA Motorisierung)',
+      supplier: 'apimat.ch (Schweiz)',
+      price: 'CHF 1\'800',
+      url: 'https://www.apimat.ch',
+      pros: ['Kein Zoll (CH-Händler)', 'Unterantrieb = freie Beladung oben', 'WIG-geschweisst', '0-460 U/min regelbar'],
+      cons: ['CHF 250 teurer als Logar-Import', 'Etwas weniger Kapazität bei Brutwaben'],
     ),
     ProductAlternative(
-      name: 'Handschleuder 4-Waben Tangential',
-      supplier: 'Wespi',
-      price: 'CHF 650.00',
-      url: 'https://www.wespi-imkerei.ch',
-      pros: ['Viel günstiger', 'Kein Stromanschluss nötig', 'Kompakter, leichter'],
-      cons: ['Nur 4 Waben, mühsam bei 4-5 Völkern', 'Handkurbel = Muskelarbeit', 'Waben wenden nötig (Bruchgefahr)'],
+      name: 'CFM 18 Flüsterhexe (Carl Fritz)',
+      supplier: 'carl-fritz.de',
+      price: 'EUR 1\'834',
+      url: 'https://www.carl-fritz.de',
+      pros: ['Extrem leise (Direktantrieb 40W)', 'Made in Germany', 'Spaltfrei verschweisst', 'Stufenlos 80-350 U/min'],
+      cons: ['2 HR weniger als Logar/Lega', 'Kein Programmautomatik', 'Import aus Deutschland'],
     ),
     ProductAlternative(
-      name: 'Schleuder mieten / Gemeinschaft',
-      supplier: 'Imkerverein Arosa',
-      price: 'CHF 0-50.00/Nutzung',
-      url: null,
-      pros: ['Keine Investition', 'Kein Lagerplatz nötig', 'Erfahrungsaustausch'],
-      cons: ['Verfügbarkeit unsicher', 'Terminabsprache nötig', 'Hygiene-Verantwortung unklar', 'Längerfristig teurer'],
+      name: 'Lega FLAMINGO 28',
+      supplier: 'apimat.ch (Schweiz)',
+      price: 'CHF 1\'900',
+      url: 'https://www.apimat.ch',
+      pros: ['28 HR = 8 Völker in EINEM Durchgang', 'Zukunftssicher für Erweiterung', 'CH-Bezug ohne Zoll'],
+      cons: ['Grösser/schwerer (~45 kg)', 'Anfangs überdimensioniert für 2 Völker'],
     ),
   ],
 

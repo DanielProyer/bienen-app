@@ -152,6 +152,8 @@ class DashboardPage extends StatelessWidget {
           'Getroffene & offene Entscheide'),
       _QuickLink('Materialliste', Icons.shopping_cart, '/material',
           'Interaktive Einkaufsliste'),
+      _QuickLink('Aufgaben', Icons.task_alt, '/dashboard/todo',
+          'Projekt-Aufgaben & Phasenplan'),
     ];
 
     return Column(
