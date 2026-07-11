@@ -13,6 +13,7 @@ class AppShell extends StatelessWidget {
     if (location.startsWith('/entscheidungen')) return 2;
     if (location.startsWith('/material')) return 3;
     if (location.startsWith('/monitoring')) return 4;
+    if (location.startsWith('/construction')) return 5;
     return 0;
   }
 
@@ -28,6 +29,8 @@ class AppShell extends StatelessWidget {
         context.go('/material');
       case 4:
         context.go('/monitoring');
+      case 5:
+        context.go('/construction');
     }
   }
 
@@ -93,6 +96,11 @@ class AppShell extends StatelessWidget {
                   selectedIcon: Icon(Icons.monitor_weight),
                   label: Text('Waage'),
                 ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.construction_outlined),
+                  selectedIcon: Icon(Icons.construction),
+                  label: Text('Bau'),
+                ),
               ],
             ),
             Expanded(child: child),
@@ -131,6 +139,11 @@ class AppShell extends StatelessWidget {
             icon: Icon(Icons.monitor_weight_outlined),
             selectedIcon: Icon(Icons.monitor_weight),
             label: 'Waage',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.construction_outlined),
+            selectedIcon: Icon(Icons.construction),
+            label: 'Bau',
           ),
         ],
       ),

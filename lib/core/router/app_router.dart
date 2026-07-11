@@ -17,6 +17,7 @@ import 'package:bienen_app/features/material/presentation/pages/material_page.da
     as material;
 import 'package:bienen_app/features/monitoring/presentation/pages/monitoring_page.dart';
 import 'package:bienen_app/features/monitoring/presentation/pages/scale_settings_page.dart';
+import 'package:bienen_app/features/construction/presentation/pages/construction_page.dart';
 import 'package:bienen_app/shared/widgets/app_shell.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -188,6 +189,10 @@ final appRouter = GoRouter(
               builder: (context, state) => const ScaleSettingsPage(),
             ),
           ],
+        ),
+        GoRoute(
+          path: '/construction',
+          builder: (context, state) => const ConstructionPage(),
         ),
       ],
     ),
