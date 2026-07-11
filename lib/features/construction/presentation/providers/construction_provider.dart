@@ -18,14 +18,23 @@ final constructionStepsProvider =
 
 typedef ConstructionProgress = ({int done, int total});
 
-ConstructionProgress constructionProgress(List<ConstructionStep> steps) {
-  final done = steps.where((s) => s.isDone).length;
-  return (done: done, total: kBuildSteps.length);
+/// Fortschritt nur über die Schritte eines Bereichs (Bienenstand ODER
+/// Honigverarbeitung) – beide liegen in derselben Tabelle, per step_key getrennt.
+ConstructionProgress _progressFor(
+    List<ConstructionStep> steps, List<BuildStepContent> defs) {
+  final keys = {for (final d in defs) d.key};
+  final done = steps.where((s) => s.isDone && keys.contains(s.stepKey)).length;
+  return (done: done, total: defs.length);
 }
 
 final constructionProgressProvider = Provider<ConstructionProgress>((ref) {
   final steps = ref.watch(constructionStepsProvider).valueOrNull ?? const [];
-  return constructionProgress(steps);
+  return _progressFor(steps, kBuildSteps);
+});
+
+final honigverarbeitungProgressProvider = Provider<ConstructionProgress>((ref) {
+  final steps = ref.watch(constructionStepsProvider).valueOrNull ?? const [];
+  return _progressFor(steps, kHonigverarbeitungSteps);
 });
 
 /// Fortschritt je stepKey für schnellen Zugriff in der UI.
@@ -125,8 +134,11 @@ class ConstructionStepsNotifier extends AsyncNotifier<List<ConstructionStep>> {
   }
 }
 
-// Fallback-Fortschritt (falls Supabase nicht erreichbar): alle 12 Schritte offen.
+// Fallback-Fortschritt (falls Supabase nicht erreichbar): alle Schritte offen.
 final _seedData = <ConstructionStep>[
   for (var i = 0; i < kBuildSteps.length; i++)
     ConstructionStep(stepKey: kBuildSteps[i].key, sortOrder: i),
+  for (var i = 0; i < kHonigverarbeitungSteps.length; i++)
+    ConstructionStep(
+        stepKey: kHonigverarbeitungSteps[i].key, sortOrder: 100 + i),
 ];

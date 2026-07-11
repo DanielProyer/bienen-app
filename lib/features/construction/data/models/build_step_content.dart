@@ -169,3 +169,119 @@ const kBuildSteps = <BuildStepContent>[
     drawings: ['assets/bau/05_nivellierbolzen.png'],
   ),
 ];
+
+/// Geführte Bauschritte für den Honigverarbeitungs-/Schleuderraum.
+/// Aus der Recherche abgeleitet (alpiner Maiensäss-Kontext). Reihenfolge ist
+/// stabil; konkrete Masse/Produkte/Preise folgen (siehe Info-Tab + Todo 2027).
+const kHonigverarbeitungSteps = <BuildStepContent>[
+  BuildStepContent(
+    key: 'hv_planung',
+    title: 'Raum planen & ausmessen',
+    instructions: [
+      'Verarbeitungsraum ~10–12 m² festlegen (Entdeckeln → Schleudern → Sieben → Klären → Abfüllen in einer Linie).',
+      'Separaten, kühlen Lagerraum (~6–8 m², 10–15 °C, dunkel) einplanen.',
+      'Arbeitsfluss als Einbahnstrasse: „schmutzig" (Waben/Wachs/Handwaschbecken) am Eingang, „sauber" (Abfüllen) am Ausgang.',
+    ],
+    soll: 'Raumhöhe ≥ 2,30 m; klare rein→sauber-Führung.',
+    tip: 'Lieber 10–12 m² sehr gut ausbauen als 18 m² halb. Reale Masse später mit Daniel eintragen.',
+  ),
+  BuildStepContent(
+    key: 'hv_daemmung',
+    title: 'Kernraum dämmen',
+    instructions: [
+      'Ständerlattung an Wänden + Decke setzen.',
+      'Dämmung einbringen (XPS-Hartschaum feuchteunempfindlich oder Mineralwolle).',
+      'Raumseitige Dampfbremse lückenlos verkleben.',
+      'Feuchteresistente Trägerplatte (z. B. Aquapanel) als Untergrund montieren.',
+    ],
+    soll: 'Dampfbremse absolut dicht (Taupunkt-Schutz).',
+    tip: 'Bauphysikalisch heikel: vor Ausführung kurz mit Fachmann/Bauphysiker abklären – verhindert teure Schimmelschäden.',
+  ),
+  BuildStepContent(
+    key: 'hv_boden',
+    title: 'Boden: Epoxidharz mit Hohlkehle',
+    instructions: [
+      'Lebensmitteltauglichen Epoxid-/Kunstharzboden 2–3 mm auftragen.',
+      'Hohlkehle 10–15 cm an den Wänden hochziehen (fugenlos).',
+      'Rutschfestigkeit R10/R11 wählen.',
+    ],
+    soll: 'Fugenlos, abwaschbar, säurebeständig.',
+    tip: 'Alpin: Epoxid härtet unter ~10–15 °C schlecht → im Sommer/Frühherbst bei aufgeheiztem Untergrund applizieren.',
+  ),
+  BuildStepContent(
+    key: 'hv_waende',
+    title: 'Wände hygienisch ausbauen',
+    instructions: [
+      'Spritzbereiche (Spüle, hinter Schleuder, Entdeckelung) bis ~1,60–1,80 m fliesen oder Hygienepaneele.',
+      'Übrige Flächen + Decke: abwaschbare, glänzende Latex-/Dispersionsfarbe mit Schimmelschutz.',
+    ],
+    soll: 'Alle Oberflächen abwaschbar.',
+    tip: 'Goldstandard komplett gefliest – teurer und schwerer für den Bergtransport.',
+  ),
+  BuildStepContent(
+    key: 'hv_wasser',
+    title: 'Wasser & Warmwasser',
+    instructions: [
+      '50-L-Elektroboiler 230 V an normale Steckdose (kein Starkstrom-Durchlauferhitzer nötig).',
+      'Edelstahlspüle ≥ 60 cm mit Schlauchbrause.',
+      'Handwaschgelegenheit mit Seife/Einmaltüchern.',
+    ],
+    soll: 'Warmwasser vorhanden; frostfrei platziert oder im Winter entleerbar.',
+    tip: 'Warmes Wasser löst Honig- und Wachsreste bestens – Spülmittel meist unnötig.',
+  ),
+  BuildStepContent(
+    key: 'hv_abfluss',
+    title: 'Abfluss & Wachsrückhalt',
+    instructions: [
+      'Edelstahl-Bodenablauf mit Siphon + 1–2 % Bodengefälle.',
+      'Absetz-/Schlammfangeimer vor dem Siphon, Siebeinsatz im Ablauf.',
+      'Wachs NIE in den Abfluss (separat sammeln und einschmelzen).',
+    ],
+    soll: 'Kein Wachs im Rohr; Ableitung geklärt.',
+    tip: 'Ableitung in Kanalisation/Sickergrube vorab mit der Gemeinde (Gewässerschutz) abklären.',
+  ),
+  BuildStepContent(
+    key: 'hv_lueftung',
+    title: 'Lüftung & Entfeuchtung',
+    instructions: [
+      'Alle Öffnungen/Fenster mit engmaschigem Insektengitter (hält Bienen/Wespen fern).',
+      'Mechanische Abluft für rasches Abtrocknen nach der Nassreinigung.',
+      'Raumentfeuchter aufstellen, Ziel-Feuchte < 55 %.',
+    ],
+    soll: 'Trockene Raumluft beim Verarbeiten (Honig ist hygroskopisch).',
+    tip: 'Für die Bautrocknung des frisch gedämmten Raums einen Bautrockner mieten.',
+  ),
+  BuildStepContent(
+    key: 'hv_strom_licht',
+    title: 'Strom & Beleuchtung',
+    instructions: [
+      'Genügend abgesicherte Steckdosen (Schleuder, Boiler, Entfeuchter, Heizung).',
+      'LED-Feuchtraumleuchten IP65, neutralweiss 4000 K.',
+      '≥ 500 Lux auf den Arbeitsflächen (Refraktometer-Ablesung!).',
+    ],
+    soll: 'Helle, sichere Elektroinstallation.',
+    tip: 'Für 10–12 m² ca. 3–4 Wannenleuchten à ~150 cm.',
+  ),
+  BuildStepContent(
+    key: 'hv_heizung',
+    title: 'Heizung (Arbeitstemperatur)',
+    instructions: [
+      'Elektrische Infrarot-Paneele montieren (Strahlungswärme, schnell, wartungsfrei).',
+      'Modelle mit Frostwächter-Funktion wählen.',
+      'Auf ~60–80 W/m² auslegen (gut gedämmt).',
+    ],
+    soll: 'Raum schnell auf 20–25 °C Verarbeitungstemperatur.',
+    tip: 'Honig lässt sich nur bei 20–25 °C sauber schleudern/sieben – im Bergsommer morgens oft erst 12–15 °C.',
+  ),
+  BuildStepContent(
+    key: 'hv_ausstattung',
+    title: 'Ausstattung einräumen & Ablauf einrichten',
+    instructions: [
+      'Geräte in Arbeitsreihenfolge aufstellen: Entdeckeln → Schleuder → Sieb/Klärtank → Abfülltank.',
+      'Ausrüstung beschaffen (Schleuder, Entdeckelung, Siebe, Klär-/Abfülltank, Refraktometer, Hobbocks) – siehe Material-Tab, Bereich Honigverarbeitung.',
+      'Hygiene-Reihenfolge rein→sauber final prüfen.',
+    ],
+    soll: 'Betriebsbereit für die 1. Ernte (Sommer 2027).',
+    tip: 'Konkrete Geräte/Preise stehen im Material-Tab; hier nur einräumen und Ablauf testen.',
+  ),
+];

@@ -1,24 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/features/construction/data/models/build_step_content.dart';
+import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
+import 'package:bienen_app/features/construction/presentation/widgets/build_step_card.dart';
 
-/// Info- und Ausstattungsseite für den Honigverarbeitungs-/Schleuderraum.
-/// Inhalt liegt als Markdown-Asset (aus tiefer Recherche abgeleitet).
-/// Geführte Bauschritte (Abhaken/Foto, Supabase-synchron) folgen später.
-class HonigverarbeitungView extends StatefulWidget {
+/// Honigverarbeitung/Schleuderraum: zwei Ansichten – „Info" (Bau & Ausstattung
+/// als Markdown) und „Bauschritte" (geführte, abhakbare Schritte, Supabase-
+/// synchron wie beim Bienenstand). Inhalt aus tiefer Recherche.
+class HonigverarbeitungView extends StatelessWidget {
   const HonigverarbeitungView({super.key});
 
   @override
-  State<HonigverarbeitungView> createState() => _HonigverarbeitungViewState();
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          Material(
+            color: AppColors.brown600,
+            child: const TabBar(
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white70,
+              indicatorColor: AppColors.amber400,
+              indicatorWeight: 3,
+              tabs: [
+                Tab(text: 'Info', icon: Icon(Icons.info_outline)),
+                Tab(text: 'Bauschritte', icon: Icon(Icons.checklist)),
+              ],
+            ),
+          ),
+          const Expanded(
+            child: TabBarView(
+              children: [
+                _HvInfoView(),
+                _HvBauschritteView(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-class _HonigverarbeitungViewState extends State<HonigverarbeitungView> {
+// ---------------------------------------------------------------------------
+// Info: Bau & Ausstattung als Markdown-Asset
+// ---------------------------------------------------------------------------
+class _HvInfoView extends StatefulWidget {
+  const _HvInfoView();
+
+  @override
+  State<_HvInfoView> createState() => _HvInfoViewState();
+}
+
+class _HvInfoViewState extends State<_HvInfoView>
+    with AutomaticKeepAliveClientMixin {
   String? _content;
   String? _error;
 
   static const _assetMd = 'assets/honigverarbeitung/schleuderraum.md';
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -37,6 +84,7 @@ class _HonigverarbeitungViewState extends State<HonigverarbeitungView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (_error != null) {
       return Center(
         child: Text(_error!, style: const TextStyle(color: Colors.red)),
@@ -61,8 +109,8 @@ class _HonigverarbeitungViewState extends State<HonigverarbeitungView> {
               SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Bau & Ausstattung des Schleuderraums. Geführte Bauschritte '
-                  '(Abhaken/Foto) folgen, sobald es konkret wird.',
+                  'Bau & Ausstattung des Schleuderraums (aus Recherche). '
+                  'Preise/Masse sind Richtwerte – konkrete Angaben folgen.',
                   style: TextStyle(fontSize: 13, color: AppColors.brown800),
                 ),
               ),
@@ -103,6 +151,64 @@ class _HonigverarbeitungViewState extends State<HonigverarbeitungView> {
             tableBorder: TableBorder.all(color: AppColors.brown100, width: 1),
             tableCellsPadding: const EdgeInsets.all(6),
             listBullet: const TextStyle(fontSize: 14),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Bauschritte: geführte Schritte für den Schleuderraum-Ausbau
+// ---------------------------------------------------------------------------
+class _HvBauschritteView extends ConsumerWidget {
+  const _HvBauschritteView();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final progress = ref.watch(honigverarbeitungProgressProvider);
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          color: AppColors.amber50,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Fortschritt: ${progress.done}/${progress.total} Schritte erledigt',
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 6),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(
+                  value: progress.total == 0
+                      ? 0
+                      : progress.done / progress.total,
+                  minHeight: 8,
+                  backgroundColor: AppColors.brown100,
+                  color: AppColors.green600,
+                ),
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                'Ablauf aus der Recherche – konkrete Masse/Produkte folgen, '
+                'wenn der Schleuderraum feststeht.',
+                style: TextStyle(fontSize: 11, color: AppColors.brown600),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.only(bottom: 24),
+            itemCount: kHonigverarbeitungSteps.length,
+            itemBuilder: (_, i) => BuildStepCard(
+              content: kHonigverarbeitungSteps[i],
+              stepNumber: i + 1,
+            ),
           ),
         ),
       ],
