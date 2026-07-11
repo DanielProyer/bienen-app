@@ -5,6 +5,13 @@ import 'package:bienen_app/core/supabase/supabase_config.dart';
 import 'package:bienen_app/features/construction/data/models/build_step_content.dart';
 import 'package:bienen_app/features/construction/data/models/construction_step.dart';
 
+/// Kategorien im Bau-Tab. Erweiterbar – später evtl. Werkstatt / Lager /
+/// Bienenunterstand (noch nicht geklärt).
+enum BauKategorie { bienenstand, honigverarbeitung }
+
+final selectedBauKategorieProvider =
+    StateProvider<BauKategorie>((ref) => BauKategorie.bienenstand);
+
 final constructionStepsProvider =
     AsyncNotifierProvider<ConstructionStepsNotifier, List<ConstructionStep>>(
         ConstructionStepsNotifier.new);

@@ -1,7 +1,7 @@
 name: bienen_app
 description: "Bienen Arosa - Imkerei Projekt WebApp"
 publish_to: 'none'
-version: 1.6.8+20
+version: 1.6.9+21
 
 environment:
   sdk: ^3.11.0
@@ -35,3 +35,4 @@ flutter:
     - assets/recherche/
     - assets/bauplan/
     - assets/bau/
+    - assets/honigverarbeitung/
