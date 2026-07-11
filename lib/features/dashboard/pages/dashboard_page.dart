@@ -48,7 +48,7 @@ class DashboardPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Maiensäss Tannen 85a · 1570 m ü.M. · Start Frühling 2027',
+                    'Maiensäss Tannen 85a · 1570 m ü.M. · Start Herbst 2026',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: AppColors.brown600,
                         ),
@@ -68,11 +68,12 @@ class DashboardPage extends StatelessWidget {
       _Phase('Entscheidungen treffen', 'Beute, Rasse, Lieferant', true),
       _Phase('Material bestellen', 'Imkerhof Maienfeld + Bauhaus Mels', false),
       _Phase('Bienenstand bauen', 'Variante 2, Doppelbalken', false),
-      _Phase('Start mit 2 Völkern', 'Frühling 2027 (Daniel + Lorena)', false),
+      _Phase('1. Volk übernehmen', 'Herbst 2026 (Übernahme von Tino Hassler)', false),
+      _Phase('Waage + Temperatur Volk 1 in Betrieb', 'Herbst/Winter 2026', false),
+      _Phase('Honigverarbeitung einrichten', '2026 → Frühling 2027 (bereit für 1. Ernte)', false),
+      _Phase('2. Volk dazu (für Lorena)', 'Frühling 2027', false),
       _Phase('Nachzucht 1-2 Völker', 'Sommer/Herbst 2027', false),
-      _Phase('Zielgrösse 4 Völker', 'bis 2028', false),
-      _Phase('Max. 8 Völker', 'bis 2030', false),
-      _Phase('Honigverarbeitung einrichten', 'Stall OG, 2027/2028', false),
+      _Phase('4 Völker bis 2028 · max. 8 bis 2030', 'Zielgrösse', false),
     ];
 
     return Column(

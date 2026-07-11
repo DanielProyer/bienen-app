@@ -51,10 +51,10 @@ class EntscheidungenPage extends StatelessWidget {
               title: 'Völkerplanung',
               decision: 'Schrittweiser Aufbau',
               details: [
-                'Frühling 2027: Start mit 2 Völkern',
+                'Herbst 2026: 1. Volk (Übernahme von Tino Hassler)',
+                'Frühling 2027: 2. Volk dazu (für Lorena)',
                 'Sommer/Herbst 2027: Nachzucht 1-2 Völker',
-                'Bis 2028: Zielgrösse 4 Völker',
-                'Bis 2030: Max. 8 Völker',
+                'Bis 2028: Zielgrösse 4 Völker · bis 2030: max. 8 Völker',
               ],
               reason: 'Lernen und wachsen',
               date: '11. Juli 2026',

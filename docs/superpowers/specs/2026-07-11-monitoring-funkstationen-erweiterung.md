@@ -24,7 +24,10 @@ Eine Funkstation empfängt mehrere Waagen und funkt in die Cloud (HiveWatch: 4G/
 - `funkstation_id` (FK → funkstationen, nullable), `active` (bool default true), `sort_order` (int).
 - Jede Waage = 1 Volk, hängt an einer Funkstation. 4–8 Stationen für bis zu 8 Waagen.
 
-### 3.3 Optional (empfohlen für 32/64-Skalierung): Tabelle `voelker`
+### 3.3 In-Beute-Temperatur (Brutraum)
+Zusätzlich zur Waage soll die **Temperatur in der Beute** (Brutraum) je Volk gemessen werden (für Volk 1 ab Herbst/Winter 2026, für Volk 2 ab Frühling 2027). Modellierung: entweder als weiterer Messwert-Typ in `weight_readings` (Spalte `temp_brut` / generisch `readings` mit `metric`-Typ) oder als eigene `sensor_readings`-Tabelle (sensor_id, volk_id, metric, value, recorded_at). Genaues HiveWatch-Zubehör/Produkt für den Brutraum-Sensor beim Kauf bestätigen.
+
+### 3.4 Optional (empfohlen für 32/64-Skalierung): Tabelle `voelker`
 Für **alle** Völker (auch ohne Waage) – die eigentliche Grundlage für 32/64:
 - `id` (uuid), `name`, `rasse` (default 'Buckfast'), `standort`, `koenigin_jahr` (int),
   `herkunft`, `einweiselung_am` (date), `status` ('aktiv'|'aufgelöst'|'abgegeben'),
