@@ -31,7 +31,7 @@ class ConstructionStepsNotifier extends AsyncNotifier<List<ConstructionStep>> {
       final response = await SupabaseConfig.client
           .from('construction_steps')
           .select()
-          .order('sort_order');
+          .order('sort_order', ascending: true);
       return (response as List)
           .map((j) => ConstructionStep.fromJson(j as Map<String, dynamic>))
           .toList();
