@@ -93,10 +93,16 @@ class ConstructionStepsNotifier extends AsyncNotifier<List<ConstructionStep>> {
         else
           s,
     ]);
-    await SupabaseConfig.client.from('construction_steps').update({
-      'photo_url': url,
-      'photo_taken_at': takenAt.toIso8601String(),
-    }).eq('id', id);
+    try {
+      await SupabaseConfig.client.from('construction_steps').update({
+        'photo_url': url,
+        'photo_taken_at': takenAt.toIso8601String(),
+      }).eq('id', id);
+    } catch (_) {
+      // Revert optimistic state so UI and DB stay consistent
+      state = AsyncData(current);
+      rethrow;
+    }
   }
 
   Future<void> refresh() async {

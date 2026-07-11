@@ -34,32 +34,44 @@ class ConstructionStepTile extends ConsumerWidget {
 
   Future<void> _editNote(BuildContext context, WidgetRef ref) async {
     final controller = TextEditingController(text: step.note ?? '');
-    final result = await showDialog<String>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Notiz · ${step.fotoCode}'),
-        content: TextField(
-          controller: controller,
-          maxLines: 4,
-          autofocus: true,
-          decoration: const InputDecoration(hintText: 'Notiz eingeben…'),
+    try {
+      final result = await showDialog<String>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Notiz · ${step.fotoCode}'),
+          content: TextField(
+            controller: controller,
+            maxLines: 4,
+            autofocus: true,
+            decoration: const InputDecoration(hintText: 'Notiz eingeben…'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Abbrechen'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, controller.text),
+              child: const Text('Speichern'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Abbrechen'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, controller.text),
-            child: const Text('Speichern'),
-          ),
-        ],
-      ),
-    );
-    if (result != null) {
-      await ref
-          .read(constructionStepsProvider.notifier)
-          .updateNote(step.id, result);
+      );
+      if (result != null) {
+        try {
+          await ref
+              .read(constructionStepsProvider.notifier)
+              .updateNote(step.id, result);
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Notiz speichern fehlgeschlagen: $e')),
+            );
+          }
+        }
+      }
+    } finally {
+      controller.dispose();
     }
   }
 
@@ -69,15 +81,34 @@ class ConstructionStepTile extends ConsumerWidget {
       context: context,
       builder: (ctx) => Dialog(
         child: InteractiveViewer(
-          child: Image.network(step.photoUrl!),
+          child: Image.network(
+            step.photoUrl!,
+            errorBuilder: (_, _, _) => const Padding(
+              padding: EdgeInsets.all(24),
+              child: Icon(Icons.broken_image, size: 48),
+            ),
+          ),
         ),
       ),
     );
   }
 
+  Future<void> _toggle(BuildContext context, WidgetRef ref, bool done) async {
+    try {
+      await ref
+          .read(constructionStepsProvider.notifier)
+          .toggleDone(step.id, done);
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Speichern fehlgeschlagen: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(constructionStepsProvider.notifier);
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Padding(
@@ -87,7 +118,7 @@ class ConstructionStepTile extends ConsumerWidget {
           children: [
             Checkbox(
               value: step.isDone,
-              onChanged: (v) => notifier.toggleDone(step.id, v ?? false),
+              onChanged: (v) => _toggle(context, ref, v ?? false),
             ),
             Expanded(
               child: Column(
