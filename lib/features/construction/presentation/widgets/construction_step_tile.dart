@@ -11,15 +11,15 @@ class ConstructionStepTile extends ConsumerWidget {
   const ConstructionStepTile({super.key, required this.step});
 
   Future<void> _pickPhoto(BuildContext context, WidgetRef ref) async {
-    final picker = ImagePicker();
-    final file = await picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 70,
-      maxWidth: 2000,
-    );
-    if (file == null) return;
-    final Uint8List bytes = await file.readAsBytes();
     try {
+      final picker = ImagePicker();
+      final file = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 70,
+        maxWidth: 2000,
+      );
+      if (file == null) return;
+      final Uint8List bytes = await file.readAsBytes();
       await ref
           .read(constructionStepsProvider.notifier)
           .attachPhoto(step.id, bytes);
