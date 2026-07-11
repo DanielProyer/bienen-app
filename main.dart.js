@@ -7825,8 +7825,8 @@ s=B.d.eh((a-2)/1,0,13)
 r=B.e.eh(B.d.ey(s),0,12)
 q=s-r
 p=1-q
-o=B.tp[r]
-n=B.tp[r+1]
+o=B.to[r]
+n=B.to[r+1]
 return new A.ak(p*o.a+q*n.a,p*o.b+q*n.b)},
 bhZ(a){var s,r,q,p,o,n,m
 if(a>5){s=a-5
@@ -13427,7 +13427,7 @@ case 4:s=l.a
 s===$&&A.a()
 s=A.bY(s,200)
 r=A.bY(A.af4(l,B.tk,B.Qh),24)
-q=A.bY(A.af4(l,B.tk,B.RE),32)
+q=A.bY(A.af4(l,B.tk,B.RD),32)
 p=A.bY(l.a,10)
 o=A.bY(l.a,12)
 l.d===$&&A.a()
@@ -35564,7 +35564,7 @@ A.rM.prototype={
 H(){return"CanvasKitVariant."+this.b}}
 A.ah1.prototype={
 goJ(){var s=this.b,r=s==null?null:s.canvasKitVariant
-return A.bbC(B.Rs,r==null?"auto":r)},
+return A.bbC(B.Rr,r==null?"auto":r)},
 gNQ(){var s,r=this.b
 if(r==null)s=null
 else{r=r.canvasKitMaximumSurfaces
@@ -44959,11 +44959,11 @@ ga6R(){var s=this.a
 if(s instanceof A.hl)return s
 return this.a=new A.hl(s)},
 gaJB(){var s,r,q,p,o,n=this
-if(n.c===1)return B.tt
+if(n.c===1)return B.ts
 s=n.d
 r=J.al(s)
 q=r.gC(s)-J.bC(n.e)-n.f
-if(q===0)return B.tt
+if(q===0)return B.ts
 p=[]
 for(o=0;o<q;++o)p.push(r.h(s,o))
 p.$flags=3
@@ -47923,7 +47923,7 @@ if(s==null||s.length<a)s=this.c=new Uint8Array(a)
 return J.kA(B.L.gco(s),s.byteOffset,a)}}
 A.aE0.prototype={
 E(a,b){this.BP(b,0,J.bC(b),!1)},
-ap(){this.BP(B.tr,0,0,!0)},
+ap(){this.BP(B.tq,0,0,!0)},
 dW(a,b,c,d){A.de(b,c,a.length,null,null)
 this.BP(a,b,c,d)}}
 A.aDz.prototype={
@@ -50666,18 +50666,18 @@ A.a_l.prototype={
 fG(a,b){var s=null,r=b.dq($.b8t(),t.i0),q=r.a,p=r.b,o=A.V("Fortschritt: "+q+"/"+p+" Schritte erledigt",s,s,s,s,B.fw,s,s),n=A.bS(4),m=t.p
 return A.aF(A.b([A.bZ(s,A.aF(A.b([o,B.d0,A.Rq(n,new A.FW(8,p===0?0:q/p,B.bQ,B.al,s,s,s,s))],m),B.n,B.f,B.j),B.q,B.aV,s,s,s,s,B.hd,1/0),A.bT(A.aUa(new A.aE8(),12,B.L2),1)],m),B.p,B.f,B.j)}}
 A.aE8.prototype={
-$2(a,b){return new A.x0(B.to[b],b+1,null)},
+$2(a,b){return new A.x0(B.tx[b],b+1,null)},
 $S:355}
 A.aQF.prototype={
 $1(a){return a.b},
 $S:356}
 A.aQE.prototype={
 $1(a){var s=A.ek(a.dq($.PK(),t.So))
-return A.blI(s==null?B.ts:s)},
+return A.blI(s==null?B.tr:s)},
 $S:361}
 A.aQD.prototype={
 $1(a){var s,r,q,p=A.ek(a.dq($.PK(),t.So))
-if(p==null)p=B.ts
+if(p==null)p=B.tr
 s=A.n(t.N,t.iw)
 for(r=J.aJ(p);r.t();){q=r.gK()
 s.n(0,q.a,q)}return s},
@@ -52036,7 +52036,7 @@ s=A.O(a).ok.z
 s=A.V("Noch keine Messdaten vorhanden",q,q,q,q,s==null?q:s.bc(B.a4),q,q)
 r=A.O(a).ok.Q
 k.push(A.cb(A.dO(A.aF(A.b([l,B.aq,s,B.bB,A.V("Daten werden angezeigt sobald die Waage verbunden ist",q,q,q,q,r==null?q:r.bc(B.a4),q,q)],j),B.p,B.f,B.an),q,q),200,q))}else{l=this.ayU(o)
-k.push(A.cb(new A.FR(A.aU6(q,q,q,B.RU,A.aZw(q,!1),B.GZ,B.Lz,new A.xU(!0,!0,l,new A.aCM(),A.aQt(),!1,q,A.aW6(),A.aQt()),A.b([A.aU5(q,2.5,A.aSW(!1,A.aw(30,B.a6.B()>>>16&255,B.a6.B()>>>8&255,B.a6.B()&255),0,q,!0,B.p3),B.a6,0.2,q,B.LI,B.LJ,q,!0,!1,!1,!1,B.OS,!1,10,B.a0m,!0,B.tr,p)],t.HS),new A.yy(new A.FV(new A.aCN()),A.b4t(),10,A.b4q(),!0,A.b4s(),A.b4r(),!0,q,q,q),q,o.a,q,o.b,B.Z5,0,B.RV,new A.xW(!0,new A.mQ(16,q,new A.o1(!0,new A.aCO(),50,q,!0,!0),!0),B.p0,B.p0,new A.mQ(16,q,new A.o1(!0,new A.aCP(this,m,n),28,q,!0,!0),!0))),B.T,B.c1,q,q),250,q))}return A.dj(new A.a7(B.aP,A.aF(k,B.n,B.f,B.j),q),q,q,q,q)},
+k.push(A.cb(new A.FR(A.aU6(q,q,q,B.RU,A.aZw(q,!1),B.GZ,B.Lz,new A.xU(!0,!0,l,new A.aCM(),A.aQt(),!1,q,A.aW6(),A.aQt()),A.b([A.aU5(q,2.5,A.aSW(!1,A.aw(30,B.a6.B()>>>16&255,B.a6.B()>>>8&255,B.a6.B()&255),0,q,!0,B.p3),B.a6,0.2,q,B.LI,B.LJ,q,!0,!1,!1,!1,B.OS,!1,10,B.a0m,!0,B.tq,p)],t.HS),new A.yy(new A.FV(new A.aCN()),A.b4t(),10,A.b4q(),!0,A.b4s(),A.b4r(),!0,q,q,q),q,o.a,q,o.b,B.Z5,0,B.RV,new A.xW(!0,new A.mQ(16,q,new A.o1(!0,new A.aCO(),50,q,!0,!0),!0),B.p0,B.p0,new A.mQ(16,q,new A.o1(!0,new A.aCP(this,m,n),28,q,!0,!0),!0))),B.T,B.c1,q,q),250,q))}return A.dj(new A.a7(B.aP,A.aF(k,B.n,B.f,B.j),q),q,q,q,q)},
 ayU(a){var s=a.a-a.b
 if(s>20)return 5
 if(s>10)return 2
@@ -52416,7 +52416,7 @@ case 5:A.fs(a).fj("/construction",s)
 break}},
 G(a){var s,r=this,q=null,p=r.avX(a)
 if(A.bX(a,B.fG,t.w).w.a.a>=800){s=t.p
-return A.fd(q,A.aG(A.b([new A.Gy(B.bf,new A.a7(B.L5,A.aF(A.b([B.a7D,B.bB,A.V("Bienen\nArosa",q,q,q,q,A.bB(q,q,A.aw(220,B.l.B()>>>16&255,B.l.B()>>>8&255,B.l.B()&255),q,q,q,q,q,q,q,q,11,q,q,B.am,q,q,!0,q,q,q,q,q,q,q,q),B.bM,q)],s),B.p,B.f,B.j),q),B.PS,p,new A.aaV(r,a),B.Wn,q),A.bT(r.c,1)],s),B.p,B.f,B.j,0,q),q,q)}return A.fd(q,r.c,new A.V4(p,B.Rw,new A.aaW(r,a),q),q)}}
+return A.fd(q,A.aG(A.b([new A.Gy(B.bf,new A.a7(B.L5,A.aF(A.b([B.a7D,B.bB,A.V("Bienen\nArosa",q,q,q,q,A.bB(q,q,A.aw(220,B.l.B()>>>16&255,B.l.B()>>>8&255,B.l.B()&255),q,q,q,q,q,q,q,q,11,q,q,B.am,q,q,!0,q,q,q,q,q,q,q,q),B.bM,q)],s),B.p,B.f,B.j),q),B.PS,p,new A.aaV(r,a),B.Wn,q),A.bT(r.c,1)],s),B.p,B.f,B.j,0,q),q,q)}return A.fd(q,r.c,new A.V4(p,B.Rv,new A.aaW(r,a),q),q)}}
 A.aaV.prototype={
 $1(a){return this.a.Zl(this.b,a)},
 $S:26}
@@ -59797,7 +59797,7 @@ A.B_.prototype={
 H(){return"_CornerId."+this.b}}
 A.oq.prototype={}
 A.yQ.prototype={
-mW(){var s,r,q,p=this,o=A.bkA(B.Ry,new A.apb(p,p.b.gbi().P(0,p.a.gbi()))),n=p.a
+mW(){var s,r,q,p=this,o=A.bkA(B.Rx,new A.apb(p,p.b.gbi().P(0,p.a.gbi()))),n=p.a
 n.toString
 s=o.a
 r=p.ts(n,s)
@@ -64780,7 +64780,7 @@ A.aL2.prototype={
 $0(){return A.b([],t.q1)},
 $S:349}
 A.a0C.prototype={
-gIv(){return B.QM},
+gIv(){return B.QL},
 NU(a){var s,r=this
 switch(a.a){case 0:s=r.d.ax
 break
@@ -65403,7 +65403,7 @@ return s.b}}
 A.lh.prototype={
 H(){return"_ListTileSlot."+this.b}}
 A.a2W.prototype={
-gIv(){return B.Rp},
+gIv(){return B.Ro},
 NU(a){var s,r=this
 switch(a.a){case 0:s=r.d
 break
@@ -66816,7 +66816,7 @@ gkB(){return A.bnH()},
 NI(a,b,c,d,e,f){return A.bao(a,b,c,d,e,f)}}
 A.Vw.prototype={
 agM(a){var s=t.Tr
-s=A.U(new A.Q(B.Rx,new A.ar7(a),s),s.i("a6.E"))
+s=A.U(new A.Q(B.Rw,new A.ar7(a),s),s.i("a6.E"))
 return s},
 k(a,b){if(b==null)return!1
 if(this===b)return!0
@@ -74780,8 +74780,8 @@ s=r.a2
 r.bw=s==null?null:s.gAS()
 a.a=!1},
 qo(a,b,c){var s,r,q,p,o=this
-o.eO=A.b0m(o.eO,B.tv)
-o.ff=A.b0m(o.ff,B.tv)
+o.eO=A.b0m(o.eO,B.tu)
+o.ff=A.b0m(o.ff,B.tu)
 s=o.eO
 r=s!=null&&!s.ga9(s)
 s=o.ff
@@ -104373,7 +104373,7 @@ av(){var s,r,q=this
 q.aN()
 s=q.am3()
 q.a.toString
-r=A.beE(null,B.tu,s)
+r=A.beE(null,B.tt,s)
 q.d!==$&&A.aN()
 q.d=r},
 am3(){this.a.toString
@@ -104390,7 +104390,7 @@ if(r.f){r.f=!1
 s=r.d
 s===$&&A.a()
 r.a.toString
-s.aLI(B.tu)}s=r.d
+s.aLI(B.tt)}s=r.d
 s===$&&A.a()
 r.a.toString
 return new A.AD(s,B.FP,null)},
@@ -117635,10 +117635,10 @@ B.OS=new A.FT(0.5)
 B.OT=new A.FV(A.bna())
 B.abY=new A.yy(B.OT,A.b4t(),10,A.b4q(),!0,A.b4s(),A.b4r(),!0,null,null,null)
 B.dz=new A.Jr(0,"clamp")
-B.QK=s([B.eK,B.aV],t.t_)
-B.OU=new A.tO(B.ew,B.fL,B.dz,B.QK,null,null)
-B.QR=s([B.aV,B.eK],t.t_)
-B.jj=new A.tO(B.ew,B.fL,B.dz,B.QR,null,null)
+B.QJ=s([B.eK,B.aV],t.t_)
+B.OU=new A.tO(B.ew,B.fL,B.dz,B.QJ,null,null)
+B.QQ=s([B.aV,B.eK],t.t_)
+B.jj=new A.tO(B.ew,B.fL,B.dz,B.QQ,null,null)
 B.t6=new A.tR(B.fR,A.an("tR<hg>"))
 B.t7=new A.am9(1,"trailing")
 B.OV=new A.yB(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -117648,10 +117648,10 @@ B.OX=new A.tU(2,"top")
 B.t9=new A.tU(3,"center")
 B.OY=new A.tU(4,"bottom")
 B.ta=s([13,10],t.t)
-B.RD=s([1373.2198709594231,-1100.4251190754821,-7.278681089101213],t.n)
+B.RC=s([1373.2198709594231,-1100.4251190754821,-7.278681089101213],t.n)
 B.R3=s([-271.815969077903,559.6580465940733,-32.46047482791194],t.n)
 B.Tb=s([1.9622899599665666,-57.173814538844006,308.7233197812385],t.n)
-B.P2=s([B.RD,B.R3,B.Tb],t.zg)
+B.P2=s([B.RC,B.R3,B.Tb],t.zg)
 B.tb=s(["text","multiline","number","phone","datetime","emailAddress","url","visiblePassword","name","address","none","webSearch","twitter"],t.s)
 B.P4=s(["Vendor-agnostisch (HiveWatch / BroodMinder)","Supabase Edge Function pollt Vendor-API","Realtime-Updates in der App","Schwarm-Alerts bei >1 kg/h Verlust"],t.s)
 B.P5=s([239,191,189],t.t)
@@ -117663,8 +117663,8 @@ B.NP=new A.lL(B.NG,!1,0,"png")
 B.NE=new A.nu(B.SK,B.NP,0,"png")
 B.SM=s([71,73,70,56,55,97],t.Z)
 B.ND=new A.nu(B.SM,B.je,1,"gif87a")
-B.Ru=s([71,73,70,56,57,97],t.Z)
-B.NC=new A.nu(B.Ru,B.je,2,"gif89a")
+B.Rt=s([71,73,70,56,57,97],t.Z)
+B.NC=new A.nu(B.Rt,B.je,2,"gif89a")
 B.P6=s([255,216,255],t.Z)
 B.NH=new A.pi(2,"jpeg")
 B.NT=new A.lL(B.NH,!1,3,"jpeg")
@@ -117745,18 +117745,18 @@ B.ae=new A.d2(null,12,null,null)
 B.F1=new A.Zo(null)
 B.a8=new A.d2(null,24,null,null)
 B.Q6=s([B.oT,B.aq,B.qf,B.ae,B.DE,B.ae,B.F1,B.a8],t.p)
-B.QI=s([2,1.13276676],t.n)
+B.QH=s([2,1.13276676],t.n)
 B.Pa=s([2.18349805,1.20311921],t.n)
 B.Sp=s([2.33888662,1.28698796],t.n)
 B.Su=s([2.48660575,1.36351941],t.n)
 B.Qd=s([2.62226596,1.44717976],t.n)
 B.Qs=s([2.7514899,1.53385819],t.n)
-B.Rq=s([3.36298265,1.98288283],t.n)
-B.QP=s([4.08649929,2.23811846],t.n)
+B.Rp=s([3.36298265,1.98288283],t.n)
+B.QO=s([4.08649929,2.23811846],t.n)
 B.Rd=s([4.85481134,2.47563463],t.n)
 B.Qi=s([5.62945551,2.72948597],t.n)
-B.QJ=s([6.43023796,2.98020421],t.n)
-B.tf=s([B.QI,B.Pa,B.Sp,B.Su,B.Qd,B.Qs,B.Rq,B.QP,B.Rd,B.Qi,B.QJ],t.zg)
+B.QI=s([6.43023796,2.98020421],t.n)
+B.tf=s([B.QH,B.Pa,B.Sp,B.Su,B.Qd,B.Qs,B.Rp,B.QO,B.Rd,B.Qi,B.QI],t.zg)
 B.Q9=s(["AM","PM"],t.s)
 B.tg=s(["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],t.s)
 B.Qc=s([B.l0,B.l1],A.an("r<CX>"))
@@ -117781,7 +117781,7 @@ B.bl=new A.fV(7,"suffixIcon")
 B.ct=new A.fV(8,"helperError")
 B.cu=new A.fV(9,"counter")
 B.dB=new A.fV(10,"container")
-B.QM=s([B.bc,B.bv,B.aE,B.bE,B.bF,B.bG,B.aM,B.bl,B.ct,B.cu,B.dB],A.an("r<fV>"))
+B.QL=s([B.bc,B.bv,B.aE,B.bE,B.bF,B.bG,B.aM,B.bl,B.ct,B.cu,B.dB],A.an("r<fV>"))
 B.Td=new A.nA("en",null,"US")
 B.tj=s([B.Td],t.ss)
 B.tk=s([0,41,61,101,131,181,251,301,360],t.n)
@@ -117818,55 +117818,20 @@ B.dC=new A.lh(0,"leading")
 B.cf=new A.lh(1,"title")
 B.dD=new A.lh(2,"subtitle")
 B.fF=new A.lh(3,"trailing")
-B.Rp=s([B.dC,B.cf,B.dD,B.fF],A.an("r<lh>"))
+B.Ro=s([B.dC,B.cf,B.dD,B.fF],A.an("r<lh>"))
 B.Ii=new A.rM(0,"auto")
 B.Ij=new A.rM(1,"full")
 B.Ik=new A.rM(2,"chromium")
-B.Rs=s([B.Ii,B.Ij,B.Ik,B.de],A.an("r<rM>"))
-B.Ro=s(["Douglasie-Rahmenholz zuschneiden: 4\xd7 1,4 m (untere Lagen) und je Balken f\xfcr die obere Lage 0,7 + 1,4 + 0,7 m.","Untere Lage je Balkenseite: 1,4 m + 1,4 m (Stoss mittig) auslegen.","Obere Lage versetzt darauf: 0,7 + 1,4 + 0,7 m (St\xf6sse bei 0,7 & 2,1 m) \u2013 so liegen die St\xf6sse nie \xfcbereinander.","Beide Lagen mit D4-Leim bestreichen und alle ~20 cm mit 8\xd7100-Schrauben (versetzt) verschrauben.","Ergebnis: 2 durchgehende Doppelbalken \xe0 2,8 m."],t.s)
-B.QG=s(["assets/bau/01_doppelbalken_stoss.png"],t.s)
-B.Gx=new A.hR("doppelbalken","Doppelbalken bauen",B.Ro,"St\xf6sse nie \xfcbereinander; Balken gerade, kein Verzug.","D4-Leim ist wasserfest \u2013 Kontaktfl\xe4chen vollfl\xe4chig bestreichen.",B.QG)
-B.PT=s(["Fester, sonniger, windgesch\xfctzter Platz; Flugl\xf6cher sp\xe4ter nach S\xfcdost, Flugbahn 2\u20133 m frei, hinten 80\u2013100 cm Arbeitsraum.","Rechteck 2000 \xd7 400 mm anzeichnen: Beinabstand l\xe4ngs 2000 mm, Balkenachse (vorn/hinten) 400 mm.","Beine ~400 mm von den Enden einr\xfccken.","Rechtwinkligkeit mit einer Latten-Lehre und gleichen Diagonalen pr\xfcfen."],t.s)
-B.SI=s(["assets/bau/02_draufsicht_rechteck.png"],t.s)
-B.GC=new A.hR("rechteck","Standort & Rechteck anzeichnen",B.PT,"Beinabstand 2000 mm, Achse 400 mm, Diagonalen gleich.",null,B.SI)
-B.RO=s(["4\xd7 Krinner U-FIX 91 an den angezeichneten Punkten ansetzen.","Mit einem Stahlstab durch die Aufnahme lotrecht eindrehen.","Mit der Wasserwaage an der H\xfclse laufend die Senkrechte kontrollieren.","Die 4 Aufnahmen grob auf gleiche H\xf6he bringen (Feinausgleich folgt \xfcber die Bolzen)."],t.s)
-B.QO=s(["assets/bau/03_erdschraube_lot.png"],t.s)
-B.Gw=new A.hR("erdschrauben","Erdschrauben eindrehen",B.RO,"Jede Erdschraube lotrecht; Positionen = angezeichnetes Rechteck.","Auf Steine/Wurzeln achten \u2013 notfalls Schraube leicht versetzen, das Rechteck aber halten.",B.QO)
-B.RP=s(["4 Pfosten aus Douglasie 90\xd790 auf ~120 mm zuschneiden.","Je Pfosten in eine U-FIX-Aufnahme stellen.","Seitlich mit 8\xd7100-Schraube durchbolzen."],t.s)
-B.Qb=s(["assets/bau/04_pfosten_ufix.png"],t.s)
-B.Gs=new A.hR("pfosten","Pfosten setzen",B.RP,"Pfosten fest, grob gleiche Oberkante.",null,B.Qb)
-B.QH=s(["In jeden Pfostenkopf mittig 16 mm bohren (Forstner-/Holzbohrer).","Einschlagmutter M16 b\xfcndig einsetzen.","Sechskantschraube M16\xd7100 eindrehen, grosse Auflagescheibe auflegen.","Kontermutter aufsetzen, aber noch NICHT kontern (Feinjustage folgt beim Nivellieren)."],t.s)
-B.tn=s(["assets/bau/05_nivellierbolzen.png"],t.s)
-B.Gt=new A.hR("nivellierbolzen","Nivellier-Bolzen einbauen",B.QH,"Schraube leichtg\xe4ngig, Scheibe plan, Verstellweg \xb125 mm frei.",null,B.tn)
-B.Ta=s(["Die 2 Doppelbalken auf die 4 Auflagescheiben legen (Achse 400 mm).","Mit Kreuzlinienlaser oder Schlauchwaage die 4 Bolzen in EINE Ebene drehen \u2013 in L\xe4ngs- UND Querrichtung waagerecht.","Kontermuttern fest anziehen.","Jeden Balken mit 2 Schwerlast-Winkeln (90\xd790\xd765) auf den Pfosten sichern (8 Winkel gesamt)."],t.s)
-B.Pc=s(["assets/bau/06_querschnitt_aufbau.png","assets/bau/05_nivellierbolzen.png"],t.s)
-B.Gv=new A.hR("nivellieren","Balken auflegen & nivellieren",B.Ta,"Balken-Oberkante waagerecht l\xe4ngs UND quer; Kontermuttern fest.","Schl\xfcsselschritt \u2013 hier entsteht die ebene, r\xfcckenschonende H\xf6he. Ruhig mehrfach nachmessen.",B.Pc)
-B.Q8=s(["4 Platten 560 \xd7 500 mm aus der Schaltafel zuschneiden (falls nicht im Markt geschnitten).","Alle Schnittkanten SOFORT versiegeln (Hirnholz zuerst) \u2013 gr\xf6sster Langlebigkeits-Faktor.","Je Platte 2\u20134 Entw\xe4sserungsl\xf6cher \xd8 8 mm bohren."],t.s)
-B.Qp=s(["assets/bau/07_platte_entwaesserung.png"],t.s)
-B.GB=new A.hR("platten_zuschnitt","Platten zuschneiden & versiegeln",B.Q8,"Kanten rundum versiegelt; L\xf6cher gebohrt.",null,B.Qp)
-B.Qv=s(["Je Platte mittig \xfcber beide Balken legen (fasst die Waage 500\xd7430 mit Rand).","Von oben mit Terrassenschraube A2 5\xd750 verschrauben (steift den Stand aus).","Jede Platte mit der Wasserwaage pr\xfcfen."],t.s)
-B.T4=s(["assets/bau/08_platte_auf_balken.png"],t.s)
-B.Gy=new A.hR("platten_montage","Platten aufschrauben",B.Qv,"Jede Platte waagerecht (wichtig f\xfcr Waagengenauigkeit); V\xf6lkerabstand \u2248 265 mm, Plattenl\xfccke ~160 mm.",null,B.T4)
-B.RJ=s(["Ganzen Stand mit Holz\xf6l/UV-Lasur behandeln, v. a. Hirnholz und Schnittkanten.","Trocknungszeit laut Hersteller einhalten."],t.s)
-B.tq=s(["assets/bau/10_seitenansicht_gesamt.png"],t.s)
-B.Gz=new A.hR("oel","\xd6len & lasieren",B.RJ,"Kein blankes Hirnholz mehr; alle Fl\xe4chen behandelt.","Unbehandeltes Douglasie ist bienenfreundlich \u2013 nur aussen/Kanten sch\xfctzen, keine Biozide an der Beute.",B.tq)
-B.Rb=s(["HiveWatch-Waage je Platte LOSE auflegen \u2013 nichts seitlich \xfcberbr\xfccken (keine Steine/Leisten).","3-m-Kabel in einer Kantennut am Pfosten herabf\xfchren, Logger gesch\xfctzt platzieren.","Waagen tarieren.","Beuten aufsetzen (Reihenfolge Platte \u2192 Waage \u2192 Beute), Flugrichtung S\xfcdost pr\xfcfen, kalibrieren."],t.s)
-B.PZ=s(["assets/bau/09_waagenstapel.png"],t.s)
-B.GD=new A.hR("waagen_beuten","Waagen & Beuten aufsetzen",B.Rb,"Beutenboden \u2248 44 cm; Waage frei (nichts \xfcberbr\xfcckt).",null,B.PZ)
-B.Sj=s(["Alle Balken waagerecht, Kontermuttern fest.","Alle 8 Schwerlast-Winkel montiert.","Alle 4 Platten waagerecht & verschraubt, Entw\xe4sserungsl\xf6cher offen.","Alle Schnittkanten/Hirnholz versiegelt und behandelt.","Flugl\xf6cher S\xfcdost, Flugbahn frei, hinten 80\u2013100 cm Arbeitsraum."],t.s)
-B.Gu=new A.hR("endabnahme","Endabnahme",B.Sj,"Keine Durchbiegung sichtbar (< 0,5 mm bei Vollvolk).",null,B.tq)
-B.Qo=s(["Nach 2\u20134 Wochen die Setzung pr\xfcfen.","Mit den 4 Bolzen nachnivellieren (Laser/Wasserwaage).","Alle Schrauben nachziehen (Winkel, Platten, Doppelbalken)."],t.s)
-B.GA=new A.hR("nachkontrolle","Nachkontrolle (nach 2\u20134 Wochen)",B.Qo,"Wieder exakt waagerecht; keine losen Verbindungen.",null,B.tn)
-B.to=s([B.Gx,B.GC,B.Gw,B.Gs,B.Gt,B.Gv,B.GB,B.Gy,B.Gz,B.GD,B.Gu,B.GA],A.an("r<hR>"))
+B.Rr=s([B.Ii,B.Ij,B.Ik,B.de],A.an("r<rM>"))
 B.Wb=new A.nE(B.rK,B.rO,"Dashboard",null)
 B.Wa=new A.nE(B.rM,B.rH,"Recherche",null)
 B.We=new A.nE(B.rL,B.mK,"Entscheide",null)
 B.W9=new A.nE(B.rF,B.mL,"Material",null)
 B.Wc=new A.nE(B.rE,B.rG,"Waage",null)
 B.Wd=new A.nE(B.rP,B.rI,"Bau",null)
-B.Rw=s([B.Wb,B.Wa,B.We,B.W9,B.Wc,B.Wd],t.p)
+B.Rv=s([B.Wb,B.Wa,B.We,B.W9,B.Wc,B.Wd],t.p)
 B.ca=new A.hF(1,"fuchsia")
-B.Rx=s([B.ax,B.ca,B.a_,B.bU,B.bb,B.bV],A.an("r<hF>"))
+B.Rw=s([B.ax,B.ca,B.a_,B.bU,B.bb,B.bV],A.an("r<hF>"))
 B.F5=new A.B_(0,"topLeft")
 B.F8=new A.B_(3,"bottomRight")
 B.aai=new A.oq(B.F5,B.F8)
@@ -117875,7 +117840,7 @@ B.F6=new A.B_(1,"topRight")
 B.F7=new A.B_(2,"bottomLeft")
 B.aaj=new A.oq(B.F6,B.F7)
 B.aak=new A.oq(B.F7,B.F6)
-B.Ry=s([B.aai,B.aal,B.aaj,B.aak],A.an("r<oq>"))
+B.Rx=s([B.aai,B.aal,B.aaj,B.aak],A.an("r<oq>"))
 B.Zx=new A.ak(0.01339448,0.05994973)
 B.Zw=new A.ak(0.13664115,0.13592082)
 B.Zj=new A.ak(0.24545546,0.14099516)
@@ -117890,8 +117855,8 @@ B.ZA=new A.ak(0.63903989,0.07759639)
 B.Zg=new A.ak(0.66416338,0.0734653)
 B.Zd=new A.ak(0.68675338,0.06974996)
 B.Zt=new A.ak(0.70678034,0.06529512)
-B.tp=s([B.Zx,B.Zw,B.Zj,B.Zm,B.Zv,B.Zc,B.Zh,B.Zk,B.Zf,B.Zs,B.ZA,B.Zg,B.Zd,B.Zt],A.an("r<+(q,q)>"))
-B.RE=s([35,30,20,25,30,35,30,25,25],t.n)
+B.to=s([B.Zx,B.Zw,B.Zj,B.Zm,B.Zv,B.Zc,B.Zh,B.Zk,B.Zf,B.Zs,B.ZA,B.Zg,B.Zd,B.Zt],A.an("r<+(q,q)>"))
+B.RD=s([35,30,20,25,30,35,30,25,25],t.n)
 B.RL=s(["click","scroll"],t.s)
 B.GI=new A.wD()
 B.hM=new A.Xg(1,"page")
@@ -117905,9 +117870,9 @@ B.hq=s([B.a2f,B.a2e],t.p)
 B.S9=s([],t.QP)
 B.abZ=s([],A.an("r<kD>"))
 B.RU=s([],A.an("r<jK>"))
-B.ts=s([],t.SC)
+B.tr=s([],t.SC)
 B.S2=s([],t.Ug)
-B.tv=s([],A.an("r<boJ>"))
+B.tu=s([],A.an("r<boJ>"))
 B.S_=s([],t.IF)
 B.S1=s([],t.D)
 B.RY=s([],t.lX)
@@ -117920,7 +117885,7 @@ B.S4=s([],t.tc)
 B.S0=s([],t.c)
 B.jl=s([],t.jl)
 B.S5=s([],t.wi)
-B.tu=s([],A.an("r<pN>"))
+B.tt=s([],A.an("r<pN>"))
 B.S3=s([],A.an("r<hd<@>>"))
 B.mS=s([],t.AO)
 B.bh=s([],t.yo)
@@ -117936,16 +117901,51 @@ B.mQ=s([],t.p)
 B.S6=s([],A.an("r<ie>"))
 B.RX=s([],t.lD)
 B.mU=s([],t.n)
-B.tr=s([],t.t)
-B.tt=s([],t.ee)
+B.tq=s([],t.t)
+B.ts=s([],t.ee)
 B.RW=s([],t.iG)
 B.Sc=s([],t._m)
-B.tw=s(["S","M","T","W","T","F","S"],t.s)
+B.tv=s(["S","M","T","W","T","F","S"],t.s)
 B.So=s(["ul","ol","li","p","br"],t.s)
-B.tx=s(["J","F","M","A","M","J","J","A","S","O","N","D"],t.s)
+B.tw=s(["J","F","M","A","M","J","J","A","S","O","N","D"],t.s)
 B.WM=new A.f(0,2)
 B.Gp=new A.fp(0.75,B.fQ,B.pP,B.WM,1.5)
 B.Sv=s([B.Gp],t.sq)
+B.R_=s(["4 Douglasie-Rahmenh\xf6lzer 90\xd790 (3 m) je auf 2,8 m abl\xe4ngen \u2013 4 durchgehende Bretter f\xfcr 2 Balken (Restst\xfcck 20 cm).","Je Balkenseite 2 Bretter deckungsgleich aufeinanderlegen (untere + obere Lage).","Kontaktfl\xe4chen vollfl\xe4chig mit D4-Leim bestreichen.","Beide Lagen alle ~20 cm mit 8\xd7100-Schrauben (versetzt) verschrauben.","Ergebnis: 2 durchgehende Doppelbalken \xe0 2,8 m \u2013 ohne Stoss."],t.s)
+B.RI=s(["assets/bau/01_doppelbalken.png"],t.s)
+B.Gx=new A.hR("doppelbalken","Doppelbalken bauen",B.R_,"Bretter gerade und b\xfcndig verleimt; keine St\xf6sse.","Durchgehende Bretter = maximale Steifigkeit. Die zwei verleimten Lagen wirken zugleich gegen Verzug \u2013 D4-Leim (wasserfest) vollfl\xe4chig auftragen.",B.RI)
+B.PT=s(["Fester, sonniger, windgesch\xfctzter Platz; Flugl\xf6cher sp\xe4ter nach S\xfcdost, Flugbahn 2\u20133 m frei, hinten 80\u2013100 cm Arbeitsraum.","Rechteck 2000 \xd7 400 mm anzeichnen: Beinabstand l\xe4ngs 2000 mm, Balkenachse (vorn/hinten) 400 mm.","Beine ~400 mm von den Enden einr\xfccken.","Rechtwinkligkeit mit einer Latten-Lehre und gleichen Diagonalen pr\xfcfen."],t.s)
+B.SI=s(["assets/bau/02_draufsicht_rechteck.png"],t.s)
+B.GC=new A.hR("rechteck","Standort & Rechteck anzeichnen",B.PT,"Beinabstand 2000 mm, Achse 400 mm, Diagonalen gleich.",null,B.SI)
+B.RO=s(["4\xd7 Krinner U-FIX 91 an den angezeichneten Punkten ansetzen.","Mit einem Stahlstab durch die Aufnahme lotrecht eindrehen.","Mit der Wasserwaage an der H\xfclse laufend die Senkrechte kontrollieren.","Die 4 Aufnahmen grob auf gleiche H\xf6he bringen (Feinausgleich folgt \xfcber die Bolzen)."],t.s)
+B.QN=s(["assets/bau/03_erdschraube_lot.png"],t.s)
+B.Gw=new A.hR("erdschrauben","Erdschrauben eindrehen",B.RO,"Jede Erdschraube lotrecht; Positionen = angezeichnetes Rechteck.","Auf Steine/Wurzeln achten \u2013 notfalls Schraube leicht versetzen, das Rechteck aber halten.",B.QN)
+B.RP=s(["4 Pfosten aus Douglasie 90\xd790 auf ~120 mm zuschneiden.","Je Pfosten in eine U-FIX-Aufnahme stellen.","Seitlich mit 8\xd7100-Schraube durchbolzen."],t.s)
+B.Qb=s(["assets/bau/04_pfosten_ufix.png"],t.s)
+B.Gs=new A.hR("pfosten","Pfosten setzen",B.RP,"Pfosten fest, grob gleiche Oberkante.",null,B.Qb)
+B.QG=s(["In jeden Pfostenkopf mittig 16 mm bohren (Forstner-/Holzbohrer).","Einschlagmutter M16 b\xfcndig einsetzen.","Sechskantschraube M16\xd7100 eindrehen, grosse Auflagescheibe auflegen.","Kontermutter aufsetzen, aber noch NICHT kontern (Feinjustage folgt beim Nivellieren)."],t.s)
+B.tn=s(["assets/bau/05_nivellierbolzen.png"],t.s)
+B.Gt=new A.hR("nivellierbolzen","Nivellier-Bolzen einbauen",B.QG,"Schraube leichtg\xe4ngig, Scheibe plan, Verstellweg \xb125 mm frei.",null,B.tn)
+B.Ta=s(["Die 2 Doppelbalken auf die 4 Auflagescheiben legen (Achse 400 mm).","Mit Kreuzlinienlaser oder Schlauchwaage die 4 Bolzen in EINE Ebene drehen \u2013 in L\xe4ngs- UND Querrichtung waagerecht.","Kontermuttern fest anziehen.","Jeden Balken mit 2 Schwerlast-Winkeln (90\xd790\xd765) auf den Pfosten sichern (8 Winkel gesamt)."],t.s)
+B.Pc=s(["assets/bau/06_querschnitt_aufbau.png","assets/bau/05_nivellierbolzen.png"],t.s)
+B.Gv=new A.hR("nivellieren","Balken auflegen & nivellieren",B.Ta,"Balken-Oberkante waagerecht l\xe4ngs UND quer; Kontermuttern fest.","Schl\xfcsselschritt \u2013 hier entsteht die ebene, r\xfcckenschonende H\xf6he. Ruhig mehrfach nachmessen.",B.Pc)
+B.Q8=s(["4 Platten 560 \xd7 500 mm aus der Schaltafel zuschneiden (falls nicht im Markt geschnitten).","Alle Schnittkanten SOFORT versiegeln (Hirnholz zuerst) \u2013 gr\xf6sster Langlebigkeits-Faktor.","Je Platte 2\u20134 Entw\xe4sserungsl\xf6cher \xd8 8 mm bohren."],t.s)
+B.Qp=s(["assets/bau/07_platte_entwaesserung.png"],t.s)
+B.GB=new A.hR("platten_zuschnitt","Platten zuschneiden & versiegeln",B.Q8,"Kanten rundum versiegelt; L\xf6cher gebohrt.",null,B.Qp)
+B.Qv=s(["Je Platte mittig \xfcber beide Balken legen (fasst die Waage 500\xd7430 mit Rand).","Von oben mit Terrassenschraube A2 5\xd750 verschrauben (steift den Stand aus).","Jede Platte mit der Wasserwaage pr\xfcfen."],t.s)
+B.T4=s(["assets/bau/08_platte_auf_balken.png"],t.s)
+B.Gy=new A.hR("platten_montage","Platten aufschrauben",B.Qv,"Jede Platte waagerecht (wichtig f\xfcr Waagengenauigkeit); V\xf6lkerabstand \u2248 265 mm, Plattenl\xfccke ~160 mm.",null,B.T4)
+B.RJ=s(["Ganzen Stand mit Holz\xf6l/UV-Lasur behandeln, v. a. Hirnholz und Schnittkanten.","Trocknungszeit laut Hersteller einhalten."],t.s)
+B.tp=s(["assets/bau/10_seitenansicht_gesamt.png"],t.s)
+B.Gz=new A.hR("oel","\xd6len & lasieren",B.RJ,"Kein blankes Hirnholz mehr; alle Fl\xe4chen behandelt.","Unbehandeltes Douglasie ist bienenfreundlich \u2013 nur aussen/Kanten sch\xfctzen, keine Biozide an der Beute.",B.tp)
+B.Rb=s(["HiveWatch-Waage je Platte LOSE auflegen \u2013 nichts seitlich \xfcberbr\xfccken (keine Steine/Leisten).","3-m-Kabel in einer Kantennut am Pfosten herabf\xfchren, Logger gesch\xfctzt platzieren.","Waagen tarieren.","Beuten aufsetzen (Reihenfolge Platte \u2192 Waage \u2192 Beute), Flugrichtung S\xfcdost pr\xfcfen, kalibrieren."],t.s)
+B.PZ=s(["assets/bau/09_waagenstapel.png"],t.s)
+B.GD=new A.hR("waagen_beuten","Waagen & Beuten aufsetzen",B.Rb,"Beutenboden \u2248 44 cm; Waage frei (nichts \xfcberbr\xfcckt).",null,B.PZ)
+B.Sj=s(["Alle Balken waagerecht, Kontermuttern fest.","Alle 8 Schwerlast-Winkel montiert.","Alle 4 Platten waagerecht & verschraubt, Entw\xe4sserungsl\xf6cher offen.","Alle Schnittkanten/Hirnholz versiegelt und behandelt.","Flugl\xf6cher S\xfcdost, Flugbahn frei, hinten 80\u2013100 cm Arbeitsraum."],t.s)
+B.Gu=new A.hR("endabnahme","Endabnahme",B.Sj,"Keine Durchbiegung sichtbar (< 0,5 mm bei Vollvolk).",null,B.tp)
+B.Qo=s(["Nach 2\u20134 Wochen die Setzung pr\xfcfen.","Mit den 4 Bolzen nachnivellieren (Laser/Wasserwaage).","Alle Schrauben nachziehen (Winkel, Platten, Doppelbalken)."],t.s)
+B.GA=new A.hR("nachkontrolle","Nachkontrolle (nach 2\u20134 Wochen)",B.Qo,"Wieder exakt waagerecht; keine losen Verbindungen.",null,B.tn)
+B.tx=s([B.Gx,B.GC,B.Gw,B.Gs,B.Gt,B.Gv,B.GB,B.Gy,B.Gz,B.GD,B.Gu,B.GA],A.an("r<hR>"))
 B.Sy=s([43,95,45,46,48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122],t.t)
 B.SC=s([47,47,47,47,72,97,122,147],t.t)
 B.hr=s([B.dF,B.ch,B.ii,B.ij,B.l_],t.QP)
@@ -118502,11 +118502,11 @@ B.Ww={Abort:0,Again:1,AltLeft:2,AltRight:3,ArrowDown:4,ArrowLeft:5,ArrowRight:6,
 B.UJ=new A.bx(B.Ww,[458907,458873,458978,458982,458833,458832,458831,458834,458881,458879,458880,458805,458801,458794,458799,458800,786544,786543,786980,786986,786981,786979,786983,786977,786982,458809,458806,458853,458976,458980,458890,458876,458875,458828,458791,458782,458783,458784,458785,458786,458787,458788,458789,458790,65717,786616,458829,458792,458798,458793,458793,458810,458819,458820,458821,458856,458857,458858,458859,458860,458861,458862,458811,458863,458864,458865,458866,458867,458812,458813,458814,458815,458816,458817,458818,458878,18,19,392961,392970,392971,392972,392973,392974,392975,392976,392962,392963,392964,392965,392966,392967,392968,392969,392977,392978,392979,392980,392981,392982,392983,392984,392985,392986,392987,392988,392989,392990,392991,458869,458826,16,458825,458852,458887,458889,458888,458756,458757,458758,458759,458760,458761,458762,458763,458764,458765,458766,458767,458768,458769,458770,458771,458772,458773,458774,458775,458776,458777,458778,458779,458780,458781,787101,458896,458897,458898,458899,458900,786836,786834,786891,786847,786826,786865,787083,787081,787084,786611,786609,786608,786637,786610,786612,786819,786615,786613,786614,458979,458983,24,458797,458891,458835,458850,458841,458842,458843,458844,458845,458846,458847,458848,458849,458839,458939,458968,458969,458885,458851,458836,458840,458855,458963,458962,458961,458960,458964,458837,458934,458935,458838,458868,458830,458827,458877,458824,458807,458854,458822,23,458915,458804,21,458823,458871,786850,458803,458977,458981,787103,458808,65666,458796,17,20,458795,22,458874,65667,786994],t.eL)
 B.Wx={"Komplettbeute DB Halbzargen Hochboden":0,"Imkerjacke mit Schleier":1,"Smoker Dadant gross":2,"Stockwaage digital":3,"Honigschleuder Logar 20/8 Radial":4,"Nassenheider Professional Verdunster":5,"Futtersirup Apiinvert 16 kg":6,"Einl\xf6ttrafo BPS Basic":7,Refraktometer:8,"Beutenst\xe4nder Metall":9,"Imkerhandschuhe Leder":10}
 B.Sr=s(["Schweizer Hersteller, bew\xe4hrt","Fichtenholz, fertig montiert & gestrichen","Passt zu allem Wespi-Zubeh\xf6r"],t.s)
-B.RG=s(["Nur Fichtenholz (kein Weymouthskiefer)","Relativ schwer"],t.s)
-B.YI=new A.cs("Komplettbeute Wespi DB12 Halbzargen","Wespi Bienenzubeh\xf6r","CHF 469.00","https://www.wespi-imkerei.ch",B.Sr,B.RG,!0)
-B.Rr=s(["G\xfcnstiger als Fertigbeute","Weymouthskiefer verf\xfcgbar (leichter)","Individuell anpassbar"],t.s)
+B.RF=s(["Nur Fichtenholz (kein Weymouthskiefer)","Relativ schwer"],t.s)
+B.YI=new A.cs("Komplettbeute Wespi DB12 Halbzargen","Wespi Bienenzubeh\xf6r","CHF 469.00","https://www.wespi-imkerei.ch",B.Sr,B.RF,!0)
+B.Rq=s(["G\xfcnstiger als Fertigbeute","Weymouthskiefer verf\xfcgbar (leichter)","Individuell anpassbar"],t.s)
 B.Ql=s(["Selbstmontage n\xf6tig (Zeitaufwand)","Anstrich separat","Erfahrung im Holzbau von Vorteil"],t.s)
-B.YC=new A.cs("Dadant Blatt Beute (Bausatz)","bienenbeuten.ch","CHF 320.00","https://www.bienenbeuten.ch",B.Rr,B.Ql,!1)
+B.YC=new A.cs("Dadant Blatt Beute (Bausatz)","bienenbeuten.ch","CHF 320.00","https://www.bienenbeuten.ch",B.Rq,B.Ql,!1)
 B.SL=s(["Sehr leicht (Kunststoff)","Wetterfest ohne Anstrich","G\xfcnstigster Preis","Einfache Reinigung"],t.s)
 B.SE=s(["Kunststoff (weniger nat\xfcrlich)","Keine Feuchtigkeitsregulation","In Imkerkreisen umstritten","Weniger langlebig als Holz"],t.s)
 B.Ys=new A.cs("Nicot Dadant Kunststoffbeute","bienen-meier.ch","CHF 189.00","https://www.bienen-meier.ch",B.SL,B.SE,!1)
@@ -118524,22 +118524,22 @@ B.QA=s(["Sehr g\xfcnstig","F\xfcr Gelegenheitsnutzung OK"],t.s)
 B.P9=s(["D\xfcnner Stoff","Schleier-Qualit\xe4t m\xe4ssig","N\xe4hte reissen schneller","Bienen finden Zugang"],t.s)
 B.YS=new A.cs("Imkerjacke Budget (Abeille Royale)","Amazon","CHF 45.00","https://www.amazon.de",B.QA,B.P9,!1)
 B.Qt=s([B.YZ,B.Yt,B.YS],t.ia)
-B.QN=s(["Grosse Brennkammer, lange Brenndauer","Edelstahl, rostfrei","Lederblag haltbar","Innenl\xfcfter"],t.s)
+B.QM=s(["Grosse Brennkammer, lange Brenndauer","Edelstahl, rostfrei","Lederblag haltbar","Innenl\xfcfter"],t.s)
 B.T_=s(["Etwas schwerer"],t.s)
-B.YN=new A.cs("Smoker Edelstahl gross (\xd810cm)","Wespi","CHF 85.00","https://www.wespi-imkerei.ch",B.QN,B.T_,!0)
+B.YN=new A.cs("Smoker Edelstahl gross (\xd810cm)","Wespi","CHF 85.00","https://www.wespi-imkerei.ch",B.QM,B.T_,!0)
 B.SN=s(["Leicht & kompakt","G\xfcnstig","Gut f\xfcr schnelle Kontrollen"],t.s)
 B.Sh=s(["Brennt schneller aus","Zu klein f\xfcr l\xe4ngere Arbeiten","Nicht ideal f\xfcr mehrere V\xf6lker"],t.s)
 B.YH=new A.cs("Smoker Mini (\xd88cm)","beetec","CHF 35.00","https://www.beetec.ch",B.SN,B.Sh,!1)
-B.RF=s(["Gutes Preis-Leistungs-Verh\xe4ltnis","Kupfer-Variante verf\xfcgbar (sch\xf6n)","Bew\xe4hrt"],t.s)
+B.RE=s(["Gutes Preis-Leistungs-Verh\xe4ltnis","Kupfer-Variante verf\xfcgbar (sch\xf6n)","Bew\xe4hrt"],t.s)
 B.Q5=s(["Import (manchmal Lieferverz\xf6gerung)","Blag-Qualit\xe4t variiert"],t.s)
-B.YD=new A.cs("Smoker Apicoltura Lega (Italien)","imkereiausruester.ch","CHF 65.00","https://www.imkereiausruester.ch",B.RF,B.Q5,!1)
-B.RA=s([B.YN,B.YH,B.YD],t.ia)
+B.YD=new A.cs("Smoker Apicoltura Lega (Italien)","imkereiausruester.ch","CHF 65.00","https://www.imkereiausruester.ch",B.RE,B.Q5,!1)
+B.Rz=s([B.YN,B.YH,B.YD],t.ia)
 B.RQ=s(["Schweizer Produkt & Support","4G funktioniert garantiert in Arosa","Plug & Play, keine Konfiguration","Temperaturbereich -35 bis +65 Grad C","App mit Push-Benachrichtigungen"],t.s)
 B.SY=s(["H\xf6herer Preis","Abo CHF 8.-/Monat n\xf6tig","Nur Gewicht + Temperatur"],t.s)
 B.YJ=new A.cs("HiveWatch StarterSet (4G/LTE-M)","Bienen Meier AG","CHF 694.00",u.a,B.RQ,B.SY,!0)
 B.T6=s(["5 Jahre Batterie (!)","Modulares System","Bis 5 V\xf6lker mit einem Hub","KI-Schwarmvorhersage","Kostenloser Basis-Tarif"],t.s)
-B.QL=s(["Hub separat n\xf6tig","Genauigkeit +/-100g (weniger pr\xe4zise)","Versand aus Frankreich"],t.s)
-B.YV=new A.cs("BroodMinder W5 + Cell Hub 4G","BroodMinder (EU)","EUR 478.00 (Waage + Hub)","https://eu.broodminder.com",B.T6,B.QL,!1)
+B.QK=s(["Hub separat n\xf6tig","Genauigkeit +/-100g (weniger pr\xe4zise)","Versand aus Frankreich"],t.s)
+B.YV=new A.cs("BroodMinder W5 + Cell Hub 4G","BroodMinder (EU)","EUR 478.00 (Waage + Hub)","https://eu.broodminder.com",B.T6,B.QK,!1)
 B.SV=s(["H\xf6chste Pr\xe4zision (+/-10g!)","Erweiterbar bis 30 Waagen","G\xfcnstigstes Abo (EUR 60.70/Jahr)","Beste Datenvisualisierung"],t.s)
 B.R7=s(["Teuerste Anschaffung","Import aus Deutschland (Zoll)","Kein Schweizer Support"],t.s)
 B.YG=new A.cs("Wolf Waagen ApiGraph 4.0","Wolf Waagen (DE)","EUR 899.00","https://www.shop.wolf-waagen.de",B.SV,B.R7,!1)
@@ -118560,9 +118560,9 @@ B.Qn=s(["28 HR = 8 V\xf6lker in EINEM Durchgang","Zukunftssicher f\xfcr Erweiter
 B.P3=s(["Gr\xf6sser/schwerer (~45 kg)","Anfangs \xfcberdimensioniert f\xfcr 2 V\xf6lker"],t.s)
 B.YO=new A.cs("Lega FLAMINGO 28","apimat.ch (Schweiz)","CHF 1'900","https://www.apimat.ch",B.Qn,B.P3,!1)
 B.Qq=s([B.Yu,B.Yy,B.YR,B.YO],t.ia)
-B.QZ=s(["Bew\xe4hrt seit Jahrzehnten","Konstante Verdunstung","Einfache Handhabung","G\xfcnstig"],t.s)
-B.Rz=s(["Nur bei >15 Grad C einsetzbar","Temperaturabh\xe4ngige Wirkung"],t.s)
-B.YU=new A.cs("Nassenheider Professional (Doppelpack)","Wespi","CHF 29.00","https://www.wespi-imkerei.ch",B.QZ,B.Rz,!0)
+B.QY=s(["Bew\xe4hrt seit Jahrzehnten","Konstante Verdunstung","Einfache Handhabung","G\xfcnstig"],t.s)
+B.Ry=s(["Nur bei >15 Grad C einsetzbar","Temperaturabh\xe4ngige Wirkung"],t.s)
+B.YU=new A.cs("Nassenheider Professional (Doppelpack)","Wespi","CHF 29.00","https://www.wespi-imkerei.ch",B.QY,B.Ry,!0)
 B.Pz=s(["Einfachste Anwendung (Streifen einlegen)","Nur 7 Tage Behandlung","Wirkt auch in verdeckelte Brut"],t.s)
 B.Rm=s(["Teurer pro Behandlung","Kann bei Hitze K\xf6niginnenverlust verursachen","Nicht bei >29 Grad C anwenden"],t.s)
 B.YP=new A.cs("MAQS (Mite Away Quick Strips)","bienen-meier.ch","CHF 38.00 (2 Streifen)","https://www.bienen-meier.ch",B.Pz,B.Rm,!1)
@@ -118577,8 +118577,8 @@ B.Qu=s(["Am g\xfcnstigsten","\xdcberall erh\xe4ltlich","Keine Lieferung n\xf6tig
 B.SQ=s(["Mischaufwand","Nicht invertiert (Bienen m\xfcssen mehr arbeiten)","Kann g\xe4ren","Hygiene beachten"],t.s)
 B.YT=new A.cs("Zucker selbst mischen (3:2)","Migros/Coop","CHF ~15.00/16kg",null,B.Qu,B.SQ,!1)
 B.RK=s(["Bio-zertifiziert","F\xfcr Bio-Imkerei zugelassen","Enth\xe4lt Spurenelemente"],t.s)
-B.QY=s(["Deutlich teurer","Nur n\xf6tig bei Bio-Zertifizierung"],t.s)
-B.YB=new A.cs("BioSyrup (Bio-Futterl\xf6sung)","Andermatt BioVet","CHF 42.00/14kg","https://www.biovet.ch",B.RK,B.QY,!1)
+B.QX=s(["Deutlich teurer","Nur n\xf6tig bei Bio-Zertifizierung"],t.s)
+B.YB=new A.cs("BioSyrup (Bio-Futterl\xf6sung)","Andermatt BioVet","CHF 42.00/14kg","https://www.biovet.ch",B.RK,B.QX,!1)
 B.Qy=s([B.YX,B.YT,B.YB],t.ia)
 B.Q7=s(["Timer-Funktion","Spannung einstellbar 12-19V","Klemmen im Set","Bew\xe4hrt"],t.s)
 B.Qw=s(["Braucht Steckdose"],t.s)
@@ -118590,31 +118590,31 @@ B.P0=s([B.YF,B.YW],t.ia)
 B.SF=s(["Temperaturkompensiert","Skala 12-27%","Kalibrierfl\xfcssigkeit dabei","Einfache Ablesung"],t.s)
 B.T2=s(["Manuelle Messung"],t.s)
 B.YQ=new A.cs("Refraktometer Honig (Imker-Standard)","Wespi","CHF 69.00","https://www.wespi-imkerei.ch",B.SF,B.T2,!0)
-B.RC=s(["Digitale Anzeige (keine Ablesefehler)","H\xf6here Genauigkeit","Schneller"],t.s)
+B.RB=s(["Digitale Anzeige (keine Ablesefehler)","H\xf6here Genauigkeit","Schneller"],t.s)
 B.QE=s(["4x teurer","Batterie n\xf6tig","F\xfcr Hobby-Imker \xfcberdimensioniert"],t.s)
-B.YY=new A.cs("Digitales Refraktometer","bienen-meier.ch","CHF 280.00","https://www.bienen-meier.ch",B.RC,B.QE,!1)
+B.YY=new A.cs("Digitales Refraktometer","bienen-meier.ch","CHF 280.00","https://www.bienen-meier.ch",B.RB,B.QE,!1)
 B.QC=s([B.YQ,B.YY],t.ia)
 B.Qr=s(["Robust, wetterfest","H\xf6henverstellbar","Kippsicher"],t.s)
 B.Sw=s(["Schwer","Teurer als Holz"],t.s)
 B.Yz=new A.cs("Beutenst\xe4nder Metall verzinkt","FAIE.ch","CHF 125.00","https://www.faie.ch",B.Qr,B.Sw,!0)
 B.P8=s(["G\xfcnstig","Individuell anpassbar","Nat\xfcrlich"],t.s)
-B.Rt=s(["Verwittert (Arosa!)","Muss behandelt werden","Weniger stabil"],t.s)
-B.YA=new A.cs("Beutenst\xe4nder Holz (Eigenbau)","Baumarkt","CHF 30-50.00",null,B.P8,B.Rt,!1)
-B.R_=s(["Sehr g\xfcnstig","Schnell aufgebaut","Stabil"],t.s)
-B.RB=s(["Optisch weniger sch\xf6n","Schwer transportierbar","Nicht h\xf6henverstellbar"],t.s)
-B.YK=new A.cs("Betonbl\xf6cke / Europalette","Baumarkt","CHF 10-20.00",null,B.R_,B.RB,!1)
+B.Rs=s(["Verwittert (Arosa!)","Muss behandelt werden","Weniger stabil"],t.s)
+B.YA=new A.cs("Beutenst\xe4nder Holz (Eigenbau)","Baumarkt","CHF 30-50.00",null,B.P8,B.Rs,!1)
+B.QZ=s(["Sehr g\xfcnstig","Schnell aufgebaut","Stabil"],t.s)
+B.RA=s(["Optisch weniger sch\xf6n","Schwer transportierbar","Nicht h\xf6henverstellbar"],t.s)
+B.YK=new A.cs("Betonbl\xf6cke / Europalette","Baumarkt","CHF 10-20.00",null,B.QZ,B.RA,!1)
 B.Tc=s([B.Yz,B.YA,B.YK],t.ia)
-B.Rv=s(["Guter Stichschutz","Geschmeidig","Lange Stulpe sch\xfctzt Unterarme"],t.s)
+B.Ru=s(["Guter Stichschutz","Geschmeidig","Lange Stulpe sch\xfctzt Unterarme"],t.s)
 B.R8=s(["Eingeschr\xe4nktes Tastgef\xfchl","Werden steif wenn nass"],t.s)
-B.Yw=new A.cs("Imkerhandschuhe Schafleder mit Stulpe","imkereiausruester.ch","CHF 17.60","https://www.imkereiausruester.ch",B.Rv,B.R8,!0)
+B.Yw=new A.cs("Imkerhandschuhe Schafleder mit Stulpe","imkereiausruester.ch","CHF 17.60","https://www.imkereiausruester.ch",B.Ru,B.R8,!0)
 B.R4=s(["Bestes Tastgef\xfchl","Hygienisch (Einweg)","Sehr g\xfcnstig","Profis arbeiten so"],t.s)
 B.Q0=s(["Kein Stichschutz (!)","Nur f\xfcr erfahrene Imker","Nicht f\xfcr Anf\xe4nger empfohlen"],t.s)
 B.YM=new A.cs("Nitril-Einmalhandschuhe","Apotheke/Migros","CHF 12.00 (100 Stk)",null,B.R4,B.Q0,!1)
 B.Sl=s(["Besseres Tastgef\xfchl als Schaf","Guter Kompromiss Schutz/Gef\xfchl","Waschbar"],t.s)
-B.QQ=s(["Teurer","Etwas weniger stichsicher"],t.s)
-B.Yx=new A.cs("Ziegenleder-Handschuhe (d\xfcnn)","bienen-meier.ch","CHF 28.00","https://www.bienen-meier.ch",B.Sl,B.QQ,!1)
+B.QP=s(["Teurer","Etwas weniger stichsicher"],t.s)
+B.Yx=new A.cs("Ziegenleder-Handschuhe (d\xfcnn)","bienen-meier.ch","CHF 28.00","https://www.bienen-meier.ch",B.Sl,B.QP,!1)
 B.Qj=s([B.Yw,B.YM,B.Yx],t.ia)
-B.yv=new A.bx(B.Wx,[B.Rc,B.Qt,B.RA,B.Rh,B.Qq,B.Sx,B.Qy,B.P0,B.QC,B.Tc,B.Qj],A.an("bx<i,v<cs>>"))
+B.yv=new A.bx(B.Wx,[B.Rc,B.Qt,B.Rz,B.Rh,B.Qq,B.Sx,B.Qy,B.P0,B.QC,B.Tc,B.Qj],A.an("bx<i,v<cs>>"))
 B.UK=new A.dP([0,"FontWeight.w100",1,"FontWeight.w200",2,"FontWeight.w300",3,"FontWeight.w400",4,"FontWeight.w500",5,"FontWeight.w600",6,"FontWeight.w700",7,"FontWeight.w800",8,"FontWeight.w900"],A.an("dP<m,i>"))
 B.yQ={AVRInput:0,AVRPower:1,Accel:2,Accept:3,Again:4,AllCandidates:5,Alphanumeric:6,AltGraph:7,AppSwitch:8,ArrowDown:9,ArrowLeft:10,ArrowRight:11,ArrowUp:12,Attn:13,AudioBalanceLeft:14,AudioBalanceRight:15,AudioBassBoostDown:16,AudioBassBoostToggle:17,AudioBassBoostUp:18,AudioFaderFront:19,AudioFaderRear:20,AudioSurroundModeNext:21,AudioTrebleDown:22,AudioTrebleUp:23,AudioVolumeDown:24,AudioVolumeMute:25,AudioVolumeUp:26,Backspace:27,BrightnessDown:28,BrightnessUp:29,BrowserBack:30,BrowserFavorites:31,BrowserForward:32,BrowserHome:33,BrowserRefresh:34,BrowserSearch:35,BrowserStop:36,Call:37,Camera:38,CameraFocus:39,Cancel:40,CapsLock:41,ChannelDown:42,ChannelUp:43,Clear:44,Close:45,ClosedCaptionToggle:46,CodeInput:47,ColorF0Red:48,ColorF1Green:49,ColorF2Yellow:50,ColorF3Blue:51,ColorF4Grey:52,ColorF5Brown:53,Compose:54,ContextMenu:55,Convert:56,Copy:57,CrSel:58,Cut:59,DVR:60,Delete:61,Dimmer:62,DisplaySwap:63,Eisu:64,Eject:65,End:66,EndCall:67,Enter:68,EraseEof:69,Esc:70,Escape:71,ExSel:72,Execute:73,Exit:74,F1:75,F10:76,F11:77,F12:78,F13:79,F14:80,F15:81,F16:82,F17:83,F18:84,F19:85,F2:86,F20:87,F21:88,F22:89,F23:90,F24:91,F3:92,F4:93,F5:94,F6:95,F7:96,F8:97,F9:98,FavoriteClear0:99,FavoriteClear1:100,FavoriteClear2:101,FavoriteClear3:102,FavoriteRecall0:103,FavoriteRecall1:104,FavoriteRecall2:105,FavoriteRecall3:106,FavoriteStore0:107,FavoriteStore1:108,FavoriteStore2:109,FavoriteStore3:110,FinalMode:111,Find:112,Fn:113,FnLock:114,GoBack:115,GoHome:116,GroupFirst:117,GroupLast:118,GroupNext:119,GroupPrevious:120,Guide:121,GuideNextDay:122,GuidePreviousDay:123,HangulMode:124,HanjaMode:125,Hankaku:126,HeadsetHook:127,Help:128,Hibernate:129,Hiragana:130,HiraganaKatakana:131,Home:132,Hyper:133,Info:134,Insert:135,InstantReplay:136,JunjaMode:137,KanaMode:138,KanjiMode:139,Katakana:140,Key11:141,Key12:142,LastNumberRedial:143,LaunchApplication1:144,LaunchApplication2:145,LaunchAssistant:146,LaunchCalendar:147,LaunchContacts:148,LaunchControlPanel:149,LaunchMail:150,LaunchMediaPlayer:151,LaunchMusicPlayer:152,LaunchPhone:153,LaunchScreenSaver:154,LaunchSpreadsheet:155,LaunchWebBrowser:156,LaunchWebCam:157,LaunchWordProcessor:158,Link:159,ListProgram:160,LiveContent:161,Lock:162,LogOff:163,MailForward:164,MailReply:165,MailSend:166,MannerMode:167,MediaApps:168,MediaAudioTrack:169,MediaClose:170,MediaFastForward:171,MediaLast:172,MediaPause:173,MediaPlay:174,MediaPlayPause:175,MediaRecord:176,MediaRewind:177,MediaSkip:178,MediaSkipBackward:179,MediaSkipForward:180,MediaStepBackward:181,MediaStepForward:182,MediaStop:183,MediaTopMenu:184,MediaTrackNext:185,MediaTrackPrevious:186,MicrophoneToggle:187,MicrophoneVolumeDown:188,MicrophoneVolumeMute:189,MicrophoneVolumeUp:190,ModeChange:191,NavigateIn:192,NavigateNext:193,NavigateOut:194,NavigatePrevious:195,New:196,NextCandidate:197,NextFavoriteChannel:198,NextUserProfile:199,NonConvert:200,Notification:201,NumLock:202,OnDemand:203,Open:204,PageDown:205,PageUp:206,Pairing:207,Paste:208,Pause:209,PinPDown:210,PinPMove:211,PinPToggle:212,PinPUp:213,Play:214,PlaySpeedDown:215,PlaySpeedReset:216,PlaySpeedUp:217,Power:218,PowerOff:219,PreviousCandidate:220,Print:221,PrintScreen:222,Process:223,Props:224,RandomToggle:225,RcLowBattery:226,RecordSpeedNext:227,Redo:228,RfBypass:229,Romaji:230,STBInput:231,STBPower:232,Save:233,ScanChannelsToggle:234,ScreenModeNext:235,ScrollLock:236,Select:237,Settings:238,ShiftLevel5:239,SingleCandidate:240,Soft1:241,Soft2:242,Soft3:243,Soft4:244,Soft5:245,Soft6:246,Soft7:247,Soft8:248,SpeechCorrectionList:249,SpeechInputToggle:250,SpellCheck:251,SplitScreenToggle:252,Standby:253,Subtitle:254,Super:255,Symbol:256,SymbolLock:257,TV:258,TV3DMode:259,TVAntennaCable:260,TVAudioDescription:261,TVAudioDescriptionMixDown:262,TVAudioDescriptionMixUp:263,TVContentsMenu:264,TVDataService:265,TVInput:266,TVInputComponent1:267,TVInputComponent2:268,TVInputComposite1:269,TVInputComposite2:270,TVInputHDMI1:271,TVInputHDMI2:272,TVInputHDMI3:273,TVInputHDMI4:274,TVInputVGA1:275,TVMediaContext:276,TVNetwork:277,TVNumberEntry:278,TVPower:279,TVRadioService:280,TVSatellite:281,TVSatelliteBS:282,TVSatelliteCS:283,TVSatelliteToggle:284,TVTerrestrialAnalog:285,TVTerrestrialDigital:286,TVTimer:287,Tab:288,Teletext:289,Undo:290,Unidentified:291,VideoModeNext:292,VoiceDial:293,WakeUp:294,Wink:295,Zenkaku:296,ZenkakuHankaku:297,ZoomIn:298,ZoomOut:299,ZoomToggle:300}
 B.UL=new A.bx(B.yQ,[B.w1,B.w2,B.tI,B.tX,B.tY,B.ul,B.um,B.jo,B.xv,B.cC,B.cn,B.co,B.cD,B.tZ,B.vV,B.vW,B.vX,B.xm,B.vY,B.vZ,B.w_,B.w0,B.xn,B.xo,B.vw,B.vy,B.vx,B.bp,B.ua,B.ub,B.vO,B.vP,B.vQ,B.vR,B.vS,B.vT,B.vU,B.xw,B.uc,B.xx,B.u_,B.hu,B.w3,B.w4,B.mZ,B.vj,B.wb,B.un,B.w5,B.w6,B.w7,B.w8,B.w9,B.wa,B.uo,B.u0,B.up,B.tP,B.tQ,B.tR,B.x9,B.bq,B.wc,B.wd,B.uE,B.ud,B.e0,B.xy,B.jn,B.tS,B.ht,B.ht,B.tT,B.u1,B.we,B.uO,B.uX,B.uY,B.uZ,B.v_,B.v0,B.v1,B.v2,B.v3,B.v4,B.v5,B.uP,B.v6,B.v7,B.v8,B.v9,B.va,B.uQ,B.uR,B.uS,B.uT,B.uU,B.uV,B.uW,B.wf,B.wg,B.wh,B.wi,B.wj,B.wk,B.wl,B.wm,B.wn,B.wo,B.wp,B.wq,B.uq,B.u2,B.mY,B.tJ,B.xz,B.xA,B.ur,B.us,B.ut,B.uu,B.wr,B.ws,B.wt,B.uB,B.uC,B.uF,B.xB,B.u3,B.ui,B.uG,B.uH,B.e1,B.tK,B.wu,B.hx,B.wv,B.uD,B.uI,B.uJ,B.uK,B.y6,B.y7,B.xC,B.vE,B.vz,B.vM,B.vA,B.vK,B.vN,B.vB,B.vC,B.vD,B.vL,B.vF,B.vG,B.vH,B.vI,B.vJ,B.ww,B.wx,B.wy,B.wz,B.ue,B.vk,B.vl,B.vm,B.xE,B.wA,B.xa,B.xl,B.wB,B.wC,B.wD,B.wE,B.vn,B.wF,B.wG,B.wH,B.xb,B.xc,B.xd,B.xe,B.vo,B.xf,B.vp,B.vq,B.xp,B.xq,B.xs,B.xr,B.uv,B.xg,B.xh,B.xi,B.xj,B.vr,B.uw,B.wI,B.wJ,B.ux,B.xD,B.jp,B.wK,B.vs,B.hv,B.hw,B.xk,B.tU,B.u4,B.wL,B.wM,B.wN,B.wO,B.u5,B.wP,B.wQ,B.wR,B.uf,B.ug,B.uy,B.vt,B.uh,B.uz,B.u6,B.wS,B.wT,B.wU,B.tV,B.wV,B.uL,B.x_,B.x0,B.vu,B.wW,B.wX,B.jq,B.u7,B.wY,B.tO,B.uA,B.vb,B.vc,B.vd,B.ve,B.vf,B.vg,B.vh,B.vi,B.xt,B.xu,B.vv,B.wZ,B.uj,B.x1,B.tL,B.tM,B.tN,B.x3,B.xG,B.xH,B.xI,B.xJ,B.xK,B.xL,B.xM,B.x4,B.xN,B.xO,B.xP,B.xQ,B.xR,B.xS,B.xT,B.xU,B.xV,B.xW,B.xX,B.xY,B.x5,B.xZ,B.y_,B.y0,B.y1,B.y2,B.y3,B.y4,B.y5,B.jm,B.x2,B.tW,B.tH,B.x6,B.xF,B.uk,B.x7,B.uM,B.uN,B.u8,B.u9,B.x8],A.an("bx<i,j>"))
@@ -118706,22 +118706,22 @@ B.Sn=s([B.yk,null,null,B.e7],t.L)
 B.Sq=s([B.yl,null,null,B.hE],t.L)
 B.PV=s([B.hz,B.hz,B.js,null],t.L)
 B.SP=s([B.jo,null,B.jo,null],t.L)
-B.QS=s([B.cC,null,null,B.e4],t.L)
-B.QT=s([B.cn,null,null,B.e5],t.L)
-B.QU=s([B.co,null,null,B.e6],t.L)
+B.QR=s([B.cC,null,null,B.e4],t.L)
+B.QS=s([B.cn,null,null,B.e5],t.L)
+B.QT=s([B.co,null,null,B.e6],t.L)
 B.SW=s([B.cD,null,null,B.e7],t.L)
 B.Sz=s([B.mZ,null,null,B.n5],t.L)
 B.PW=s([B.hy,B.hy,B.jr,null],t.L)
-B.RH=s([B.bq,null,null,B.e3],t.L)
-B.QV=s([B.e0,null,null,B.hB],t.L)
+B.RG=s([B.bq,null,null,B.e3],t.L)
+B.QU=s([B.e0,null,null,B.hB],t.L)
 B.PN=s([B.jn,null,null,B.n3],t.L)
-B.QW=s([B.e1,null,null,B.hD],t.L)
+B.QV=s([B.e1,null,null,B.hD],t.L)
 B.SA=s([B.hx,null,null,B.n4],t.L)
 B.PX=s([B.hA,B.hA,B.jt,null],t.L)
-B.QX=s([B.hv,null,null,B.hC],t.L)
+B.QW=s([B.hv,null,null,B.hC],t.L)
 B.RS=s([B.hw,null,null,B.hE],t.L)
 B.PY=s([B.dl,B.dl,B.e2,null],t.L)
-B.V_=new A.dP(["*",B.PJ,"+",B.Sk,"-",B.QB,".",B.Rn,"/",B.OZ,"0",B.SO,"1",B.SD,"2",B.PR,"3",B.T0,"4",B.SB,"5",B.PO,"6",B.P7,"7",B.Qa,"8",B.Sn,"9",B.Sq,"Alt",B.PV,"AltGraph",B.SP,"ArrowDown",B.QS,"ArrowLeft",B.QT,"ArrowRight",B.QU,"ArrowUp",B.SW,"Clear",B.Sz,"Control",B.PW,"Delete",B.RH,"End",B.QV,"Enter",B.PN,"Home",B.QW,"Insert",B.SA,"Meta",B.PX,"PageDown",B.QX,"PageUp",B.RS,"Shift",B.PY],A.an("dP<i,v<j?>>"))
+B.V_=new A.dP(["*",B.PJ,"+",B.Sk,"-",B.QB,".",B.Rn,"/",B.OZ,"0",B.SO,"1",B.SD,"2",B.PR,"3",B.T0,"4",B.SB,"5",B.PO,"6",B.P7,"7",B.Qa,"8",B.Sn,"9",B.Sq,"Alt",B.PV,"AltGraph",B.SP,"ArrowDown",B.QR,"ArrowLeft",B.QS,"ArrowRight",B.QT,"ArrowUp",B.SW,"Clear",B.Sz,"Control",B.PW,"Delete",B.RG,"End",B.QU,"Enter",B.PN,"Home",B.QV,"Insert",B.SA,"Meta",B.PX,"PageDown",B.QW,"PageUp",B.RS,"Shift",B.PY],A.an("dP<i,v<j?>>"))
 B.Wt={A:0,B:1,C:2,D:3,E:4,F:5,G:6,H:7,I:8,J:9,K:10,L:11,M:12,N:13,O:14,P:15,Q:16,R:17,S:18,T:19,U:20,V:21,W:22,X:23,Y:24,Z:25,"\xc0":26,"\xc1":27,"\xc2":28,"\xc3":29,"\xc4":30,"\xc5":31,"\xc6":32,"\xc7":33,"\xc8":34,"\xc9":35,"\xca":36,"\xcb":37,"\xcc":38,"\xcd":39,"\xce":40,"\xcf":41,"\xd0":42,"\xd1":43,"\xd2":44,"\xd3":45,"\xd4":46,"\xd5":47,"\xd6":48,"\xd8":49,"\xd9":50,"\xda":51,"\xdb":52,"\xdc":53,"\xdd":54,"\xde":55,"\u0100":56,"\u0102":57,"\u0104":58,"\u0106":59,"\u0108":60,"\u010a":61,"\u010c":62,"\u010e":63,"\u0110":64,"\u0112":65,"\u0114":66,"\u0116":67,"\u0118":68,"\u011a":69,"\u011c":70,"\u011e":71,"\u0120":72,"\u0122":73,"\u0124":74,"\u0126":75,"\u0128":76,"\u012a":77,"\u012c":78,"\u012e":79,"\u0130":80,"\u0134":81,"\u0136":82,"\u0139":83,"\u013b":84,"\u013d":85,"\u013f":86,"\u0141":87,"\u0143":88,"\u0145":89,"\u0147":90,"\u014a":91,"\u014c":92,"\u014e":93,"\u0150":94,"\u0154":95,"\u0156":96,"\u0158":97,"\u015a":98,"\u015c":99,"\u015e":100,"\u0160":101,"\u0162":102,"\u0164":103,"\u0166":104,"\u0168":105,"\u016a":106,"\u016c":107,"\u016e":108,"\u0170":109,"\u0172":110,"\u0174":111,"\u0176":112,"\u0178":113,"\u0179":114,"\u017b":115,"\u017d":116,"\u0181":117,"\u0182":118,"\u0184":119,"\u0186":120,"\u0187":121,"\u0189":122,"\u018a":123,"\u018b":124,"\u018e":125,"\u018f":126,"\u0190":127,"\u0191":128,"\u0193":129,"\u0194":130,"\u0196":131,"\u0197":132,"\u0198":133,"\u019c":134,"\u019d":135,"\u019f":136,"\u01a0":137,"\u01a2":138,"\u01a4":139,"\u01a7":140,"\u01a9":141,"\u01ac":142,"\u01ae":143,"\u01af":144,"\u01b1":145,"\u01b2":146,"\u01b3":147,"\u01b5":148,"\u01b7":149,"\u01b8":150,"\u01bc":151,"\u01c4":152,"\u01c5":153,"\u01c7":154,"\u01c8":155,"\u01ca":156,"\u01cb":157,"\u01cd":158,"\u01cf":159,"\u01d1":160,"\u01d3":161,"\u01d5":162,"\u01d7":163,"\u01d9":164,"\u01db":165,"\u01de":166,"\u01e0":167,"\u01e2":168,"\u01e4":169,"\u01e6":170,"\u01e8":171,"\u01ea":172,"\u01ec":173,"\u01ee":174,"\u01f1":175,"\u01f2":176,"\u01f4":177,"\u01f6":178,"\u01f7":179,"\u01f8":180,"\u01fa":181,"\u01fc":182,"\u01fe":183,"\u0200":184,"\u0202":185,"\u0204":186,"\u0206":187,"\u0208":188,"\u020a":189,"\u020c":190,"\u020e":191,"\u0210":192,"\u0212":193,"\u0214":194,"\u0216":195,"\u0218":196,"\u021a":197,"\u021c":198,"\u021e":199,"\u0220":200,"\u0222":201,"\u0224":202,"\u0226":203,"\u0228":204,"\u022a":205,"\u022c":206,"\u022e":207,"\u0230":208,"\u0232":209,"\u023a":210,"\u023b":211,"\u023d":212,"\u023e":213,"\u0241":214,"\u0243":215,"\u0244":216,"\u0245":217,"\u0246":218,"\u0248":219,"\u024a":220,"\u024c":221,"\u024e":222,"\u0370":223,"\u0372":224,"\u0376":225,"\u037f":226,"\u0386":227,"\u0388":228,"\u0389":229,"\u038a":230,"\u038c":231,"\u038e":232,"\u038f":233,"\u0391":234,"\u0392":235,"\u0393":236,"\u0394":237,"\u0395":238,"\u0396":239,"\u0397":240,"\u0398":241,"\u0399":242,"\u039a":243,"\u039b":244,"\u039c":245,"\u039d":246,"\u039e":247,"\u039f":248,"\u03a0":249,"\u03a1":250,"\u03a3":251,"\u03a4":252,"\u03a5":253,"\u03a6":254,"\u03a7":255,"\u03a8":256,"\u03a9":257,"\u03aa":258,"\u03ab":259,"\u03e2":260,"\u03e4":261,"\u03e6":262,"\u03e8":263,"\u03ea":264,"\u03ec":265,"\u03ee":266,"\u03f7":267,"\u03fa":268,"\u0400":269,"\u0401":270,"\u0402":271,"\u0403":272,"\u0404":273,"\u0405":274,"\u0406":275,"\u0407":276,"\u0408":277,"\u0409":278,"\u040a":279,"\u040b":280,"\u040c":281,"\u040d":282,"\u040e":283,"\u040f":284,"\u0410":285,"\u0411":286,"\u0412":287,"\u0413":288,"\u0414":289,"\u0415":290,"\u0416":291,"\u0417":292,"\u0418":293,"\u0419":294,"\u041a":295,"\u041b":296,"\u041c":297,"\u041d":298,"\u041e":299,"\u041f":300,"\u0420":301,"\u0421":302,"\u0422":303,"\u0423":304,"\u0424":305,"\u0425":306,"\u0426":307,"\u0427":308,"\u0428":309,"\u0429":310,"\u042a":311,"\u042b":312,"\u042c":313,"\u042d":314,"\u042e":315,"\u042f":316,"\u0460":317,"\u0462":318,"\u0464":319,"\u0466":320,"\u0468":321,"\u046a":322,"\u046c":323,"\u046e":324,"\u0470":325,"\u0472":326,"\u0474":327,"\u0476":328,"\u0478":329,"\u047a":330,"\u047c":331,"\u047e":332,"\u0480":333,"\u048a":334,"\u048c":335,"\u048e":336,"\u0490":337,"\u0492":338,"\u0494":339,"\u0496":340,"\u0498":341,"\u049a":342,"\u049c":343,"\u049e":344,"\u04a0":345,"\u04a2":346,"\u04a6":347,"\u04a8":348,"\u04aa":349,"\u04ac":350,"\u04ae":351,"\u04b0":352,"\u04b2":353,"\u04b6":354,"\u04b8":355,"\u04ba":356,"\u04bc":357,"\u04be":358,"\u04c1":359,"\u04c3":360,"\u04c5":361,"\u04c7":362,"\u04c9":363,"\u04cb":364,"\u04cd":365,"\u04d0":366,"\u04d2":367,"\u04d6":368,"\u04d8":369,"\u04da":370,"\u04dc":371,"\u04de":372,"\u04e0":373,"\u04e2":374,"\u04e4":375,"\u04e6":376,"\u04e8":377,"\u04ea":378,"\u04ec":379,"\u04ee":380,"\u04f0":381,"\u04f2":382,"\u04f4":383,"\u04f6":384,"\u04f8":385,"\u04fa":386,"\u04fc":387,"\u04fe":388,"\u0500":389,"\u0502":390,"\u0504":391,"\u0506":392,"\u0508":393,"\u050a":394,"\u050c":395,"\u050e":396,"\u0510":397,"\u0512":398,"\u0514":399,"\u0516":400,"\u0518":401,"\u051a":402,"\u051c":403,"\u051e":404,"\u0520":405,"\u0522":406,"\u0524":407,"\u0526":408,"\u0528":409,"\u052a":410,"\u052c":411,"\u052e":412,"\u0531":413,"\u0532":414,"\u0533":415,"\u0534":416,"\u0535":417,"\u0536":418,"\u0537":419,"\u0538":420,"\u0539":421,"\u053a":422,"\u053b":423,"\u053c":424,"\u053d":425,"\u053e":426,"\u053f":427,"\u0540":428,"\u0541":429,"\u0542":430,"\u0543":431,"\u0544":432,"\u0545":433,"\u0546":434,"\u0547":435,"\u0548":436,"\u0549":437,"\u054a":438,"\u054b":439,"\u054c":440,"\u054d":441,"\u054e":442,"\u054f":443,"\u0550":444,"\u0551":445,"\u0552":446,"\u0553":447,"\u0554":448,"\u0555":449,"\u0556":450,"\u10a0":451,"\u10a1":452,"\u10a2":453,"\u10a3":454,"\u10a4":455,"\u10a5":456,"\u10a6":457,"\u10a7":458,"\u10a8":459,"\u10a9":460,"\u10aa":461,"\u10ab":462,"\u10ac":463,"\u10ad":464,"\u10ae":465,"\u10af":466,"\u10b0":467,"\u10b1":468,"\u10b2":469,"\u10b3":470,"\u10b4":471,"\u10b5":472,"\u10b6":473,"\u10b7":474,"\u10b8":475,"\u10b9":476,"\u10ba":477,"\u10bb":478,"\u10bc":479,"\u10bd":480,"\u10be":481,"\u10bf":482,"\u10c0":483,"\u10c1":484,"\u10c2":485,"\u10c3":486,"\u10c4":487,"\u10c5":488,"\u10c7":489,"\u10cd":490,"\u1c90":491,"\u1c91":492,"\u1c92":493,"\u1c93":494,"\u1c94":495,"\u1c95":496,"\u1c96":497,"\u1c97":498,"\u1c98":499,"\u1c99":500,"\u1c9a":501,"\u1c9b":502,"\u1c9c":503,"\u1c9d":504,"\u1c9e":505,"\u1c9f":506,"\u1ca0":507,"\u1ca1":508,"\u1ca2":509,"\u1ca3":510,"\u1ca4":511,"\u1ca5":512,"\u1ca6":513,"\u1ca7":514,"\u1ca8":515,"\u1ca9":516,"\u1caa":517,"\u1cab":518,"\u1cac":519,"\u1cad":520,"\u1cae":521,"\u1caf":522,"\u1cb0":523,"\u1cb1":524,"\u1cb2":525,"\u1cb3":526,"\u1cb4":527,"\u1cb5":528,"\u1cb6":529,"\u1cb7":530,"\u1cb8":531,"\u1cb9":532,"\u1cba":533,"\u1cbd":534,"\u1cbe":535,"\u1cbf":536,"\u1e00":537,"\u1e02":538,"\u1e04":539,"\u1e06":540,"\u1e08":541,"\u1e0a":542,"\u1e0c":543,"\u1e0e":544,"\u1e10":545,"\u1e12":546,"\u1e14":547,"\u1e16":548,"\u1e18":549,"\u1e1a":550,"\u1e1c":551,"\u1e1e":552,"\u1e20":553,"\u1e22":554,"\u1e24":555,"\u1e26":556,"\u1e28":557,"\u1e2a":558,"\u1e2c":559,"\u1e2e":560,"\u1e30":561,"\u1e32":562,"\u1e34":563,"\u1e36":564,"\u1e38":565,"\u1e3a":566,"\u1e3c":567,"\u1e3e":568,"\u1e40":569,"\u1e42":570,"\u1e44":571,"\u1e46":572,"\u1e48":573,"\u1e4a":574,"\u1e4c":575,"\u1e4e":576,"\u1e50":577,"\u1e52":578,"\u1e54":579,"\u1e56":580,"\u1e58":581,"\u1e5a":582,"\u1e5c":583,"\u1e5e":584,"\u1e60":585,"\u1e62":586,"\u1e64":587,"\u1e66":588,"\u1e68":589,"\u1e6a":590,"\u1e6c":591,"\u1e6e":592,"\u1e70":593,"\u1e72":594,"\u1e74":595,"\u1e76":596,"\u1e78":597,"\u1e7a":598,"\u1e7c":599,"\u1e7e":600,"\u1e80":601,"\u1e82":602,"\u1e84":603,"\u1e86":604,"\u1e88":605,"\u1e8a":606,"\u1e8c":607,"\u1e8e":608,"\u1e90":609,"\u1e92":610,"\u1e94":611,"\u1e9e":612,"\u1ea0":613,"\u1ea2":614,"\u1ea4":615,"\u1ea6":616,"\u1ea8":617,"\u1eaa":618,"\u1eac":619,"\u1eae":620,"\u1eb0":621,"\u1eb2":622,"\u1eb4":623,"\u1eb6":624,"\u1eb8":625,"\u1eba":626,"\u1ebc":627,"\u1ebe":628,"\u1ec0":629,"\u1ec2":630,"\u1ec4":631,"\u1ec6":632,"\u1ec8":633,"\u1eca":634,"\u1ecc":635,"\u1ece":636,"\u1ed0":637,"\u1ed2":638,"\u1ed4":639,"\u1ed6":640,"\u1ed8":641,"\u1eda":642,"\u1edc":643,"\u1ede":644,"\u1ee0":645,"\u1ee2":646,"\u1ee4":647,"\u1ee6":648,"\u1ee8":649,"\u1eea":650,"\u1eec":651,"\u1eee":652,"\u1ef0":653,"\u1ef2":654,"\u1ef4":655,"\u1ef6":656,"\u1ef8":657,"\u1efa":658,"\u1efc":659,"\u1efe":660,"\u1f08":661,"\u1f09":662,"\u1f0a":663,"\u1f0b":664,"\u1f0c":665,"\u1f0d":666,"\u1f0e":667,"\u1f0f":668,"\u1f18":669,"\u1f19":670,"\u1f1a":671,"\u1f1b":672,"\u1f1c":673,"\u1f1d":674,"\u1f28":675,"\u1f29":676,"\u1f2a":677,"\u1f2b":678,"\u1f2c":679,"\u1f2d":680,"\u1f2e":681,"\u1f2f":682,"\u1f38":683,"\u1f39":684,"\u1f3a":685,"\u1f3b":686,"\u1f3c":687,"\u1f3d":688,"\u1f3e":689,"\u1f3f":690,"\u1f48":691,"\u1f49":692,"\u1f4a":693,"\u1f4b":694,"\u1f4c":695,"\u1f4d":696,"\u1f59":697,"\u1f5b":698,"\u1f5d":699,"\u1f5f":700,"\u1f68":701,"\u1f69":702,"\u1f6a":703,"\u1f6b":704,"\u1f6c":705,"\u1f6d":706,"\u1f6e":707,"\u1f6f":708,"\u1f88":709,"\u1f89":710,"\u1f8a":711,"\u1f8b":712,"\u1f8c":713,"\u1f8d":714,"\u1f8e":715,"\u1f8f":716,"\u1f98":717,"\u1f99":718,"\u1f9a":719,"\u1f9b":720,"\u1f9c":721,"\u1f9d":722,"\u1f9e":723,"\u1f9f":724,"\u1fa8":725,"\u1fa9":726,"\u1faa":727,"\u1fab":728,"\u1fac":729,"\u1fad":730,"\u1fae":731,"\u1faf":732,"\u1fb8":733,"\u1fb9":734,"\u1fba":735,"\u1fbb":736,"\u1fbc":737,"\u1fc8":738,"\u1fc9":739,"\u1fca":740,"\u1fcb":741,"\u1fcc":742,"\u1fd8":743,"\u1fd9":744,"\u1fda":745,"\u1fdb":746,"\u1fe8":747,"\u1fe9":748,"\u1fea":749,"\u1feb":750,"\u1fec":751,"\u1ff8":752,"\u1ff9":753,"\u1ffa":754,"\u1ffb":755,"\u1ffc":756,"\u24b6":757,"\u24b7":758,"\u24b8":759,"\u24b9":760,"\u24ba":761,"\u24bb":762,"\u24bc":763,"\u24bd":764,"\u24be":765,"\u24bf":766,"\u24c0":767,"\u24c1":768,"\u24c2":769,"\u24c3":770,"\u24c4":771,"\u24c5":772,"\u24c6":773,"\u24c7":774,"\u24c8":775,"\u24c9":776,"\u24ca":777,"\u24cb":778,"\u24cc":779,"\u24cd":780,"\u24ce":781,"\u24cf":782,"\u2c00":783,"\u2c01":784,"\u2c02":785,"\u2c03":786,"\u2c04":787,"\u2c05":788,"\u2c06":789,"\u2c07":790,"\u2c08":791,"\u2c09":792,"\u2c0a":793,"\u2c0b":794,"\u2c0c":795,"\u2c0d":796,"\u2c0e":797,"\u2c0f":798,"\u2c10":799,"\u2c11":800,"\u2c12":801,"\u2c13":802,"\u2c14":803,"\u2c15":804,"\u2c16":805,"\u2c17":806,"\u2c18":807,"\u2c19":808,"\u2c1a":809,"\u2c1b":810,"\u2c1c":811,"\u2c1d":812,"\u2c1e":813,"\u2c1f":814,"\u2c20":815,"\u2c21":816,"\u2c22":817,"\u2c23":818,"\u2c24":819,"\u2c25":820,"\u2c26":821,"\u2c27":822,"\u2c28":823,"\u2c29":824,"\u2c2a":825,"\u2c2b":826,"\u2c2c":827,"\u2c2d":828,"\u2c2e":829,"\u2c2f":830,"\u2c60":831,"\u2c62":832,"\u2c63":833,"\u2c64":834,"\u2c67":835,"\u2c69":836,"\u2c6b":837,"\u2c6d":838,"\u2c6e":839,"\u2c6f":840,"\u2c70":841,"\u2c72":842,"\u2c75":843,"\u2c7e":844,"\u2c7f":845,"\u2c80":846,"\u2c82":847,"\u2c84":848,"\u2c86":849,"\u2c88":850,"\u2c8a":851,"\u2c8c":852,"\u2c8e":853,"\u2c90":854,"\u2c92":855,"\u2c94":856,"\u2c96":857,"\u2c98":858,"\u2c9a":859,"\u2c9c":860,"\u2c9e":861,"\u2ca0":862,"\u2ca2":863,"\u2ca4":864,"\u2ca6":865,"\u2ca8":866,"\u2caa":867,"\u2cac":868,"\u2cae":869,"\u2cb0":870,"\u2cb2":871,"\u2cb4":872,"\u2cb6":873,"\u2cb8":874,"\u2cba":875,"\u2cbc":876,"\u2cbe":877,"\u2cc0":878,"\u2cc2":879,"\u2cc4":880,"\u2cc6":881,"\u2cc8":882,"\u2cca":883,"\u2ccc":884,"\u2cce":885,"\u2cd0":886,"\u2cd2":887,"\u2cd4":888,"\u2cd6":889,"\u2cd8":890,"\u2cda":891,"\u2cdc":892,"\u2cde":893,"\u2ce0":894,"\u2ce2":895,"\u2ceb":896,"\u2ced":897,"\u2cf2":898,"\ua640":899,"\ua642":900,"\ua644":901,"\ua646":902,"\ua648":903,"\ua64a":904,"\ua64c":905,"\ua64e":906,"\ua650":907,"\ua652":908,"\ua654":909,"\ua656":910,"\ua658":911,"\ua65a":912,"\ua65c":913,"\ua65e":914,"\ua660":915,"\ua662":916,"\ua664":917,"\ua666":918,"\ua668":919,"\ua66a":920,"\ua66c":921,"\ua680":922,"\ua682":923,"\ua684":924,"\ua686":925,"\ua688":926,"\ua68a":927,"\ua68c":928,"\ua68e":929,"\ua690":930,"\ua692":931,"\ua694":932,"\ua696":933,"\ua698":934,"\ua69a":935,"\ua722":936,"\ua724":937,"\ua726":938,"\ua728":939,"\ua72a":940,"\ua72c":941,"\ua72e":942,"\ua732":943,"\ua734":944,"\ua736":945,"\ua738":946,"\ua73a":947,"\ua73c":948,"\ua73e":949,"\ua740":950,"\ua742":951,"\ua744":952,"\ua746":953,"\ua748":954,"\ua74a":955,"\ua74c":956,"\ua74e":957,"\ua750":958,"\ua752":959,"\ua754":960,"\ua756":961,"\ua758":962,"\ua75a":963,"\ua75c":964,"\ua75e":965,"\ua760":966,"\ua762":967,"\ua764":968,"\ua766":969,"\ua768":970,"\ua76a":971,"\ua76c":972,"\ua76e":973,"\ua779":974,"\ua77b":975,"\ua77d":976,"\ua77e":977,"\ua780":978,"\ua782":979,"\ua784":980,"\ua786":981,"\ua78b":982,"\ua78d":983,"\ua790":984,"\ua792":985,"\ua796":986,"\ua798":987,"\ua79a":988,"\ua79c":989,"\ua79e":990,"\ua7a0":991,"\ua7a2":992,"\ua7a4":993,"\ua7a6":994,"\ua7a8":995,"\ua7aa":996,"\ua7ab":997,"\ua7ac":998,"\ua7ad":999,"\ua7ae":1000,"\ua7b0":1001,"\ua7b1":1002,"\ua7b2":1003,"\ua7b3":1004,"\ua7b4":1005,"\ua7b6":1006,"\ua7b8":1007,"\ua7ba":1008,"\ua7bc":1009,"\ua7be":1010,"\ua7c0":1011,"\ua7c2":1012,"\ua7c4":1013,"\ua7c5":1014,"\ua7c6":1015,"\ua7c7":1016,"\ua7c9":1017,"\ua7d0":1018,"\ua7d6":1019,"\ua7d8":1020,"\ua7f5":1021,"\uff21":1022,"\uff22":1023,"\uff23":1024,"\uff24":1025,"\uff25":1026,"\uff26":1027,"\uff27":1028,"\uff28":1029,"\uff29":1030,"\uff2a":1031,"\uff2b":1032,"\uff2c":1033,"\uff2d":1034,"\uff2e":1035,"\uff2f":1036,"\uff30":1037,"\uff31":1038,"\uff32":1039,"\uff33":1040,"\uff34":1041,"\uff35":1042,"\uff36":1043,"\uff37":1044,"\uff38":1045,"\uff39":1046,"\uff3a":1047,"\ud801\udc00":1048,"\ud801\udc01":1049,"\ud801\udc02":1050,"\ud801\udc03":1051,"\ud801\udc04":1052,"\ud801\udc05":1053,"\ud801\udc06":1054,"\ud801\udc07":1055,"\ud801\udc08":1056,"\ud801\udc09":1057,"\ud801\udc0a":1058,"\ud801\udc0b":1059,"\ud801\udc0c":1060,"\ud801\udc0d":1061,"\ud801\udc0e":1062,"\ud801\udc0f":1063,"\ud801\udc10":1064,"\ud801\udc11":1065,"\ud801\udc12":1066,"\ud801\udc13":1067,"\ud801\udc14":1068,"\ud801\udc15":1069,"\ud801\udc16":1070,"\ud801\udc17":1071,"\ud801\udc18":1072,"\ud801\udc19":1073,"\ud801\udc1a":1074,"\ud801\udc1b":1075,"\ud801\udc1c":1076,"\ud801\udc1d":1077,"\ud801\udc1e":1078,"\ud801\udc1f":1079,"\ud801\udc20":1080,"\ud801\udc21":1081,"\ud801\udc22":1082,"\ud801\udc23":1083,"\ud801\udc24":1084,"\ud801\udc25":1085,"\ud801\udc26":1086,"\ud801\udc27":1087,"\ud801\udcb0":1088,"\ud801\udcb1":1089,"\ud801\udcb2":1090,"\ud801\udcb3":1091,"\ud801\udcb4":1092,"\ud801\udcb5":1093,"\ud801\udcb6":1094,"\ud801\udcb7":1095,"\ud801\udcb8":1096,"\ud801\udcb9":1097,"\ud801\udcba":1098,"\ud801\udcbb":1099,"\ud801\udcbc":1100,"\ud801\udcbd":1101,"\ud801\udcbe":1102,"\ud801\udcbf":1103,"\ud801\udcc0":1104,"\ud801\udcc1":1105,"\ud801\udcc2":1106,"\ud801\udcc3":1107,"\ud801\udcc4":1108,"\ud801\udcc5":1109,"\ud801\udcc6":1110,"\ud801\udcc7":1111,"\ud801\udcc8":1112,"\ud801\udcc9":1113,"\ud801\udcca":1114,"\ud801\udccb":1115,"\ud801\udccc":1116,"\ud801\udccd":1117,"\ud801\udcce":1118,"\ud801\udccf":1119,"\ud801\udcd0":1120,"\ud801\udcd1":1121,"\ud801\udcd2":1122,"\ud801\udcd3":1123,"\ud801\udd70":1124,"\ud801\udd71":1125,"\ud801\udd72":1126,"\ud801\udd73":1127,"\ud801\udd74":1128,"\ud801\udd75":1129,"\ud801\udd76":1130,"\ud801\udd77":1131,"\ud801\udd78":1132,"\ud801\udd79":1133,"\ud801\udd7a":1134,"\ud801\udd7c":1135,"\ud801\udd7d":1136,"\ud801\udd7e":1137,"\ud801\udd7f":1138,"\ud801\udd80":1139,"\ud801\udd81":1140,"\ud801\udd82":1141,"\ud801\udd83":1142,"\ud801\udd84":1143,"\ud801\udd85":1144,"\ud801\udd86":1145,"\ud801\udd87":1146,"\ud801\udd88":1147,"\ud801\udd89":1148,"\ud801\udd8a":1149,"\ud801\udd8c":1150,"\ud801\udd8d":1151,"\ud801\udd8e":1152,"\ud801\udd8f":1153,"\ud801\udd90":1154,"\ud801\udd91":1155,"\ud801\udd92":1156,"\ud801\udd94":1157,"\ud801\udd95":1158,"\ud803\udc80":1159,"\ud803\udc81":1160,"\ud803\udc82":1161,"\ud803\udc83":1162,"\ud803\udc84":1163,"\ud803\udc85":1164,"\ud803\udc86":1165,"\ud803\udc87":1166,"\ud803\udc88":1167,"\ud803\udc89":1168,"\ud803\udc8a":1169,"\ud803\udc8b":1170,"\ud803\udc8c":1171,"\ud803\udc8d":1172,"\ud803\udc8e":1173,"\ud803\udc8f":1174,"\ud803\udc90":1175,"\ud803\udc91":1176,"\ud803\udc92":1177,"\ud803\udc93":1178,"\ud803\udc94":1179,"\ud803\udc95":1180,"\ud803\udc96":1181,"\ud803\udc97":1182,"\ud803\udc98":1183,"\ud803\udc99":1184,"\ud803\udc9a":1185,"\ud803\udc9b":1186,"\ud803\udc9c":1187,"\ud803\udc9d":1188,"\ud803\udc9e":1189,"\ud803\udc9f":1190,"\ud803\udca0":1191,"\ud803\udca1":1192,"\ud803\udca2":1193,"\ud803\udca3":1194,"\ud803\udca4":1195,"\ud803\udca5":1196,"\ud803\udca6":1197,"\ud803\udca7":1198,"\ud803\udca8":1199,"\ud803\udca9":1200,"\ud803\udcaa":1201,"\ud803\udcab":1202,"\ud803\udcac":1203,"\ud803\udcad":1204,"\ud803\udcae":1205,"\ud803\udcaf":1206,"\ud803\udcb0":1207,"\ud803\udcb1":1208,"\ud803\udcb2":1209,"\ud806\udca0":1210,"\ud806\udca1":1211,"\ud806\udca2":1212,"\ud806\udca3":1213,"\ud806\udca4":1214,"\ud806\udca5":1215,"\ud806\udca6":1216,"\ud806\udca7":1217,"\ud806\udca8":1218,"\ud806\udca9":1219,"\ud806\udcaa":1220,"\ud806\udcab":1221,"\ud806\udcac":1222,"\ud806\udcad":1223,"\ud806\udcae":1224,"\ud806\udcaf":1225,"\ud806\udcb0":1226,"\ud806\udcb1":1227,"\ud806\udcb2":1228,"\ud806\udcb3":1229,"\ud806\udcb4":1230,"\ud806\udcb5":1231,"\ud806\udcb6":1232,"\ud806\udcb7":1233,"\ud806\udcb8":1234,"\ud806\udcb9":1235,"\ud806\udcba":1236,"\ud806\udcbb":1237,"\ud806\udcbc":1238,"\ud806\udcbd":1239,"\ud806\udcbe":1240,"\ud806\udcbf":1241,"\ud81b\ude40":1242,"\ud81b\ude41":1243,"\ud81b\ude42":1244,"\ud81b\ude43":1245,"\ud81b\ude44":1246,"\ud81b\ude45":1247,"\ud81b\ude46":1248,"\ud81b\ude47":1249,"\ud81b\ude48":1250,"\ud81b\ude49":1251,"\ud81b\ude4a":1252,"\ud81b\ude4b":1253,"\ud81b\ude4c":1254,"\ud81b\ude4d":1255,"\ud81b\ude4e":1256,"\ud81b\ude4f":1257,"\ud81b\ude50":1258,"\ud81b\ude51":1259,"\ud81b\ude52":1260,"\ud81b\ude53":1261,"\ud81b\ude54":1262,"\ud81b\ude55":1263,"\ud81b\ude56":1264,"\ud81b\ude57":1265,"\ud81b\ude58":1266,"\ud81b\ude59":1267,"\ud81b\ude5a":1268,"\ud81b\ude5b":1269,"\ud81b\ude5c":1270,"\ud81b\ude5d":1271,"\ud81b\ude5e":1272,"\ud81b\ude5f":1273,"\ud83a\udd00":1274,"\ud83a\udd01":1275,"\ud83a\udd02":1276,"\ud83a\udd03":1277,"\ud83a\udd04":1278,"\ud83a\udd05":1279,"\ud83a\udd06":1280,"\ud83a\udd07":1281,"\ud83a\udd08":1282,"\ud83a\udd09":1283,"\ud83a\udd0a":1284,"\ud83a\udd0b":1285,"\ud83a\udd0c":1286,"\ud83a\udd0d":1287,"\ud83a\udd0e":1288,"\ud83a\udd0f":1289,"\ud83a\udd10":1290,"\ud83a\udd11":1291,"\ud83a\udd12":1292,"\ud83a\udd13":1293,"\ud83a\udd14":1294,"\ud83a\udd15":1295,"\ud83a\udd16":1296,"\ud83a\udd17":1297,"\ud83a\udd18":1298,"\ud83a\udd19":1299,"\ud83a\udd1a":1300,"\ud83a\udd1b":1301,"\ud83a\udd1c":1302,"\ud83a\udd1d":1303,"\ud83a\udd1e":1304,"\ud83a\udd1f":1305,"\ud83a\udd20":1306,"\ud83a\udd21":1307}
 B.V0=new A.bx(B.Wt,["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","\xe0","\xe1","\xe2","\xe3","\xe4","\xe5","\xe6","\xe7","\xe8","\xe9","\xea","\xeb","\xec","\xed","\xee","\xef","\xf0","\xf1","\xf2","\xf3","\xf4","\xf5","\xf6","\xf8","\xf9","\xfa","\xfb","\xfc","\xfd","\xfe","\u0101","\u0103","\u0105","\u0107","\u0109","\u010b","\u010d","\u010f","\u0111","\u0113","\u0115","\u0117","\u0119","\u011b","\u011d","\u011f","\u0121","\u0123","\u0125","\u0127","\u0129","\u012b","\u012d","\u012f","i\u0307","\u0135","\u0137","\u013a","\u013c","\u013e","\u0140","\u0142","\u0144","\u0146","\u0148","\u014b","\u014d","\u014f","\u0151","\u0155","\u0157","\u0159","\u015b","\u015d","\u015f","\u0161","\u0163","\u0165","\u0167","\u0169","\u016b","\u016d","\u016f","\u0171","\u0173","\u0175","\u0177","\xff","\u017a","\u017c","\u017e","\u0253","\u0183","\u0185","\u0254","\u0188","\u0256","\u0257","\u018c","\u01dd","\u0259","\u025b","\u0192","\u0260","\u0263","\u0269","\u0268","\u0199","\u026f","\u0272","\u0275","\u01a1","\u01a3","\u01a5","\u01a8","\u0283","\u01ad","\u0288","\u01b0","\u028a","\u028b","\u01b4","\u01b6","\u0292","\u01b9","\u01bd","\u01c6","\u01c6","\u01c9","\u01c9","\u01cc","\u01cc","\u01ce","\u01d0","\u01d2","\u01d4","\u01d6","\u01d8","\u01da","\u01dc","\u01df","\u01e1","\u01e3","\u01e5","\u01e7","\u01e9","\u01eb","\u01ed","\u01ef","\u01f3","\u01f3","\u01f5","\u0195","\u01bf","\u01f9","\u01fb","\u01fd","\u01ff","\u0201","\u0203","\u0205","\u0207","\u0209","\u020b","\u020d","\u020f","\u0211","\u0213","\u0215","\u0217","\u0219","\u021b","\u021d","\u021f","\u019e","\u0223","\u0225","\u0227","\u0229","\u022b","\u022d","\u022f","\u0231","\u0233","\u2c65","\u023c","\u019a","\u2c66","\u0242","\u0180","\u0289","\u028c","\u0247","\u0249","\u024b","\u024d","\u024f","\u0371","\u0373","\u0377","\u03f3","\u03ac","\u03ad","\u03ae","\u03af","\u03cc","\u03cd","\u03ce","\u03b1","\u03b2","\u03b3","\u03b4","\u03b5","\u03b6","\u03b7","\u03b8","\u03b9","\u03ba","\u03bb","\u03bc","\u03bd","\u03be","\u03bf","\u03c0","\u03c1","\u03c3","\u03c4","\u03c5","\u03c6","\u03c7","\u03c8","\u03c9","\u03ca","\u03cb","\u03e3","\u03e5","\u03e7","\u03e9","\u03eb","\u03ed","\u03ef","\u03f8","\u03fb","\u0450","\u0451","\u0452","\u0453","\u0454","\u0455","\u0456","\u0457","\u0458","\u0459","\u045a","\u045b","\u045c","\u045d","\u045e","\u045f","\u0430","\u0431","\u0432","\u0433","\u0434","\u0435","\u0436","\u0437","\u0438","\u0439","\u043a","\u043b","\u043c","\u043d","\u043e","\u043f","\u0440","\u0441","\u0442","\u0443","\u0444","\u0445","\u0446","\u0447","\u0448","\u0449","\u044a","\u044b","\u044c","\u044d","\u044e","\u044f","\u0461","\u0463","\u0465","\u0467","\u0469","\u046b","\u046d","\u046f","\u0471","\u0473","\u0475","\u0477","\u0479","\u047b","\u047d","\u047f","\u0481","\u048b","\u048d","\u048f","\u0491","\u0493","\u0495","\u0497","\u0499","\u049b","\u049d","\u049f","\u04a1","\u04a3","\u04a7","\u04a9","\u04ab","\u04ad","\u04af","\u04b1","\u04b3","\u04b7","\u04b9","\u04bb","\u04bd","\u04bf","\u04c2","\u04c4","\u04c6","\u04c8","\u04ca","\u04cc","\u04ce","\u04d1","\u04d3","\u04d7","\u04d9","\u04db","\u04dd","\u04df","\u04e1","\u04e3","\u04e5","\u04e7","\u04e9","\u04eb","\u04ed","\u04ef","\u04f1","\u04f3","\u04f5","\u04f7","\u04f9","\u04fb","\u04fd","\u04ff","\u0501","\u0503","\u0505","\u0507","\u0509","\u050b","\u050d","\u050f","\u0511","\u0513","\u0515","\u0517","\u0519","\u051b","\u051d","\u051f","\u0521","\u0523","\u0525","\u0527","\u0529","\u052b","\u052d","\u052f","\u0561","\u0562","\u0563","\u0564","\u0565","\u0566","\u0567","\u0568","\u0569","\u056a","\u056b","\u056c","\u056d","\u056e","\u056f","\u0570","\u0571","\u0572","\u0573","\u0574","\u0575","\u0576","\u0577","\u0578","\u0579","\u057a","\u057b","\u057c","\u057d","\u057e","\u057f","\u0580","\u0581","\u0582","\u0583","\u0584","\u0585","\u0586","\u2d00","\u2d01","\u2d02","\u2d03","\u2d04","\u2d05","\u2d06","\u2d07","\u2d08","\u2d09","\u2d0a","\u2d0b","\u2d0c","\u2d0d","\u2d0e","\u2d0f","\u2d10","\u2d11","\u2d12","\u2d13","\u2d14","\u2d15","\u2d16","\u2d17","\u2d18","\u2d19","\u2d1a","\u2d1b","\u2d1c","\u2d1d","\u2d1e","\u2d1f","\u2d20","\u2d21","\u2d22","\u2d23","\u2d24","\u2d25","\u2d27","\u2d2d","\u10d0","\u10d1","\u10d2","\u10d3","\u10d4","\u10d5","\u10d6","\u10d7","\u10d8","\u10d9","\u10da","\u10db","\u10dc","\u10dd","\u10de","\u10df","\u10e0","\u10e1","\u10e2","\u10e3","\u10e4","\u10e5","\u10e6","\u10e7","\u10e8","\u10e9","\u10ea","\u10eb","\u10ec","\u10ed","\u10ee","\u10ef","\u10f0","\u10f1","\u10f2","\u10f3","\u10f4","\u10f5","\u10f6","\u10f7","\u10f8","\u10f9","\u10fa","\u10fd","\u10fe","\u10ff","\u1e01","\u1e03","\u1e05","\u1e07","\u1e09","\u1e0b","\u1e0d","\u1e0f","\u1e11","\u1e13","\u1e15","\u1e17","\u1e19","\u1e1b","\u1e1d","\u1e1f","\u1e21","\u1e23","\u1e25","\u1e27","\u1e29","\u1e2b","\u1e2d","\u1e2f","\u1e31","\u1e33","\u1e35","\u1e37","\u1e39","\u1e3b","\u1e3d","\u1e3f","\u1e41","\u1e43","\u1e45","\u1e47","\u1e49","\u1e4b","\u1e4d","\u1e4f","\u1e51","\u1e53","\u1e55","\u1e57","\u1e59","\u1e5b","\u1e5d","\u1e5f","\u1e61","\u1e63","\u1e65","\u1e67","\u1e69","\u1e6b","\u1e6d","\u1e6f","\u1e71","\u1e73","\u1e75","\u1e77","\u1e79","\u1e7b","\u1e7d","\u1e7f","\u1e81","\u1e83","\u1e85","\u1e87","\u1e89","\u1e8b","\u1e8d","\u1e8f","\u1e91","\u1e93","\u1e95","ss","\u1ea1","\u1ea3","\u1ea5","\u1ea7","\u1ea9","\u1eab","\u1ead","\u1eaf","\u1eb1","\u1eb3","\u1eb5","\u1eb7","\u1eb9","\u1ebb","\u1ebd","\u1ebf","\u1ec1","\u1ec3","\u1ec5","\u1ec7","\u1ec9","\u1ecb","\u1ecd","\u1ecf","\u1ed1","\u1ed3","\u1ed5","\u1ed7","\u1ed9","\u1edb","\u1edd","\u1edf","\u1ee1","\u1ee3","\u1ee5","\u1ee7","\u1ee9","\u1eeb","\u1eed","\u1eef","\u1ef1","\u1ef3","\u1ef5","\u1ef7","\u1ef9","\u1efb","\u1efd","\u1eff","\u1f00","\u1f01","\u1f02","\u1f03","\u1f04","\u1f05","\u1f06","\u1f07","\u1f10","\u1f11","\u1f12","\u1f13","\u1f14","\u1f15","\u1f20","\u1f21","\u1f22","\u1f23","\u1f24","\u1f25","\u1f26","\u1f27","\u1f30","\u1f31","\u1f32","\u1f33","\u1f34","\u1f35","\u1f36","\u1f37","\u1f40","\u1f41","\u1f42","\u1f43","\u1f44","\u1f45","\u1f51","\u1f53","\u1f55","\u1f57","\u1f60","\u1f61","\u1f62","\u1f63","\u1f64","\u1f65","\u1f66","\u1f67","\u1f00\u03b9","\u1f01\u03b9","\u1f02\u03b9","\u1f03\u03b9","\u1f04\u03b9","\u1f05\u03b9","\u1f06\u03b9","\u1f07\u03b9","\u1f20\u03b9","\u1f21\u03b9","\u1f22\u03b9","\u1f23\u03b9","\u1f24\u03b9","\u1f25\u03b9","\u1f26\u03b9","\u1f27\u03b9","\u1f60\u03b9","\u1f61\u03b9","\u1f62\u03b9","\u1f63\u03b9","\u1f64\u03b9","\u1f65\u03b9","\u1f66\u03b9","\u1f67\u03b9","\u1fb0","\u1fb1","\u1f70","\u1f71","\u03b1\u03b9","\u1f72","\u1f73","\u1f74","\u1f75","\u03b7\u03b9","\u1fd0","\u1fd1","\u1f76","\u1f77","\u1fe0","\u1fe1","\u1f7a","\u1f7b","\u1fe5","\u1f78","\u1f79","\u1f7c","\u1f7d","\u03c9\u03b9","\u24d0","\u24d1","\u24d2","\u24d3","\u24d4","\u24d5","\u24d6","\u24d7","\u24d8","\u24d9","\u24da","\u24db","\u24dc","\u24dd","\u24de","\u24df","\u24e0","\u24e1","\u24e2","\u24e3","\u24e4","\u24e5","\u24e6","\u24e7","\u24e8","\u24e9","\u2c30","\u2c31","\u2c32","\u2c33","\u2c34","\u2c35","\u2c36","\u2c37","\u2c38","\u2c39","\u2c3a","\u2c3b","\u2c3c","\u2c3d","\u2c3e","\u2c3f","\u2c40","\u2c41","\u2c42","\u2c43","\u2c44","\u2c45","\u2c46","\u2c47","\u2c48","\u2c49","\u2c4a","\u2c4b","\u2c4c","\u2c4d","\u2c4e","\u2c4f","\u2c50","\u2c51","\u2c52","\u2c53","\u2c54","\u2c55","\u2c56","\u2c57","\u2c58","\u2c59","\u2c5a","\u2c5b","\u2c5c","\u2c5d","\u2c5e","\u2c5f","\u2c61","\u026b","\u1d7d","\u027d","\u2c68","\u2c6a","\u2c6c","\u0251","\u0271","\u0250","\u0252","\u2c73","\u2c76","\u023f","\u0240","\u2c81","\u2c83","\u2c85","\u2c87","\u2c89","\u2c8b","\u2c8d","\u2c8f","\u2c91","\u2c93","\u2c95","\u2c97","\u2c99","\u2c9b","\u2c9d","\u2c9f","\u2ca1","\u2ca3","\u2ca5","\u2ca7","\u2ca9","\u2cab","\u2cad","\u2caf","\u2cb1","\u2cb3","\u2cb5","\u2cb7","\u2cb9","\u2cbb","\u2cbd","\u2cbf","\u2cc1","\u2cc3","\u2cc5","\u2cc7","\u2cc9","\u2ccb","\u2ccd","\u2ccf","\u2cd1","\u2cd3","\u2cd5","\u2cd7","\u2cd9","\u2cdb","\u2cdd","\u2cdf","\u2ce1","\u2ce3","\u2cec","\u2cee","\u2cf3","\ua641","\ua643","\ua645","\ua647","\ua649","\ua64b","\ua64d","\ua64f","\ua651","\ua653","\ua655","\ua657","\ua659","\ua65b","\ua65d","\ua65f","\ua661","\ua663","\ua665","\ua667","\ua669","\ua66b","\ua66d","\ua681","\ua683","\ua685","\ua687","\ua689","\ua68b","\ua68d","\ua68f","\ua691","\ua693","\ua695","\ua697","\ua699","\ua69b","\ua723","\ua725","\ua727","\ua729","\ua72b","\ua72d","\ua72f","\ua733","\ua735","\ua737","\ua739","\ua73b","\ua73d","\ua73f","\ua741","\ua743","\ua745","\ua747","\ua749","\ua74b","\ua74d","\ua74f","\ua751","\ua753","\ua755","\ua757","\ua759","\ua75b","\ua75d","\ua75f","\ua761","\ua763","\ua765","\ua767","\ua769","\ua76b","\ua76d","\ua76f","\ua77a","\ua77c","\u1d79","\ua77f","\ua781","\ua783","\ua785","\ua787","\ua78c","\u0265","\ua791","\ua793","\ua797","\ua799","\ua79b","\ua79d","\ua79f","\ua7a1","\ua7a3","\ua7a5","\ua7a7","\ua7a9","\u0266","\u025c","\u0261","\u026c","\u026a","\u029e","\u0287","\u029d","\uab53","\ua7b5","\ua7b7","\ua7b9","\ua7bb","\ua7bd","\ua7bf","\ua7c1","\ua7c3","\ua794","\u0282","\u1d8e","\ua7c8","\ua7ca","\ua7d1","\ua7d7","\ua7d9","\ua7f6","\uff41","\uff42","\uff43","\uff44","\uff45","\uff46","\uff47","\uff48","\uff49","\uff4a","\uff4b","\uff4c","\uff4d","\uff4e","\uff4f","\uff50","\uff51","\uff52","\uff53","\uff54","\uff55","\uff56","\uff57","\uff58","\uff59","\uff5a","\ud801\udc28","\ud801\udc29","\ud801\udc2a","\ud801\udc2b","\ud801\udc2c","\ud801\udc2d","\ud801\udc2e","\ud801\udc2f","\ud801\udc30","\ud801\udc31","\ud801\udc32","\ud801\udc33","\ud801\udc34","\ud801\udc35","\ud801\udc36","\ud801\udc37","\ud801\udc38","\ud801\udc39","\ud801\udc3a","\ud801\udc3b","\ud801\udc3c","\ud801\udc3d","\ud801\udc3e","\ud801\udc3f","\ud801\udc40","\ud801\udc41","\ud801\udc42","\ud801\udc43","\ud801\udc44","\ud801\udc45","\ud801\udc46","\ud801\udc47","\ud801\udc48","\ud801\udc49","\ud801\udc4a","\ud801\udc4b","\ud801\udc4c","\ud801\udc4d","\ud801\udc4e","\ud801\udc4f","\ud801\udcd8","\ud801\udcd9","\ud801\udcda","\ud801\udcdb","\ud801\udcdc","\ud801\udcdd","\ud801\udcde","\ud801\udcdf","\ud801\udce0","\ud801\udce1","\ud801\udce2","\ud801\udce3","\ud801\udce4","\ud801\udce5","\ud801\udce6","\ud801\udce7","\ud801\udce8","\ud801\udce9","\ud801\udcea","\ud801\udceb","\ud801\udcec","\ud801\udced","\ud801\udcee","\ud801\udcef","\ud801\udcf0","\ud801\udcf1","\ud801\udcf2","\ud801\udcf3","\ud801\udcf4","\ud801\udcf5","\ud801\udcf6","\ud801\udcf7","\ud801\udcf8","\ud801\udcf9","\ud801\udcfa","\ud801\udcfb","\ud801\udd97","\ud801\udd98","\ud801\udd99","\ud801\udd9a","\ud801\udd9b","\ud801\udd9c","\ud801\udd9d","\ud801\udd9e","\ud801\udd9f","\ud801\udda0","\ud801\udda1","\ud801\udda3","\ud801\udda4","\ud801\udda5","\ud801\udda6","\ud801\udda7","\ud801\udda8","\ud801\udda9","\ud801\uddaa","\ud801\uddab","\ud801\uddac","\ud801\uddad","\ud801\uddae","\ud801\uddaf","\ud801\uddb0","\ud801\uddb1","\ud801\uddb3","\ud801\uddb4","\ud801\uddb5","\ud801\uddb6","\ud801\uddb7","\ud801\uddb8","\ud801\uddb9","\ud801\uddbb","\ud801\uddbc","\ud803\udcc0","\ud803\udcc1","\ud803\udcc2","\ud803\udcc3","\ud803\udcc4","\ud803\udcc5","\ud803\udcc6","\ud803\udcc7","\ud803\udcc8","\ud803\udcc9","\ud803\udcca","\ud803\udccb","\ud803\udccc","\ud803\udccd","\ud803\udcce","\ud803\udccf","\ud803\udcd0","\ud803\udcd1","\ud803\udcd2","\ud803\udcd3","\ud803\udcd4","\ud803\udcd5","\ud803\udcd6","\ud803\udcd7","\ud803\udcd8","\ud803\udcd9","\ud803\udcda","\ud803\udcdb","\ud803\udcdc","\ud803\udcdd","\ud803\udcde","\ud803\udcdf","\ud803\udce0","\ud803\udce1","\ud803\udce2","\ud803\udce3","\ud803\udce4","\ud803\udce5","\ud803\udce6","\ud803\udce7","\ud803\udce8","\ud803\udce9","\ud803\udcea","\ud803\udceb","\ud803\udcec","\ud803\udced","\ud803\udcee","\ud803\udcef","\ud803\udcf0","\ud803\udcf1","\ud803\udcf2","\ud806\udcc0","\ud806\udcc1","\ud806\udcc2","\ud806\udcc3","\ud806\udcc4","\ud806\udcc5","\ud806\udcc6","\ud806\udcc7","\ud806\udcc8","\ud806\udcc9","\ud806\udcca","\ud806\udccb","\ud806\udccc","\ud806\udccd","\ud806\udcce","\ud806\udccf","\ud806\udcd0","\ud806\udcd1","\ud806\udcd2","\ud806\udcd3","\ud806\udcd4","\ud806\udcd5","\ud806\udcd6","\ud806\udcd7","\ud806\udcd8","\ud806\udcd9","\ud806\udcda","\ud806\udcdb","\ud806\udcdc","\ud806\udcdd","\ud806\udcde","\ud806\udcdf","\ud81b\ude60","\ud81b\ude61","\ud81b\ude62","\ud81b\ude63","\ud81b\ude64","\ud81b\ude65","\ud81b\ude66","\ud81b\ude67","\ud81b\ude68","\ud81b\ude69","\ud81b\ude6a","\ud81b\ude6b","\ud81b\ude6c","\ud81b\ude6d","\ud81b\ude6e","\ud81b\ude6f","\ud81b\ude70","\ud81b\ude71","\ud81b\ude72","\ud81b\ude73","\ud81b\ude74","\ud81b\ude75","\ud81b\ude76","\ud81b\ude77","\ud81b\ude78","\ud81b\ude79","\ud81b\ude7a","\ud81b\ude7b","\ud81b\ude7c","\ud81b\ude7d","\ud81b\ude7e","\ud81b\ude7f","\ud83a\udd22","\ud83a\udd23","\ud83a\udd24","\ud83a\udd25","\ud83a\udd26","\ud83a\udd27","\ud83a\udd28","\ud83a\udd29","\ud83a\udd2a","\ud83a\udd2b","\ud83a\udd2c","\ud83a\udd2d","\ud83a\udd2e","\ud83a\udd2f","\ud83a\udd30","\ud83a\udd31","\ud83a\udd32","\ud83a\udd33","\ud83a\udd34","\ud83a\udd35","\ud83a\udd36","\ud83a\udd37","\ud83a\udd38","\ud83a\udd39","\ud83a\udd3a","\ud83a\udd3b","\ud83a\udd3c","\ud83a\udd3d","\ud83a\udd3e","\ud83a\udd3f","\ud83a\udd40","\ud83a\udd41","\ud83a\udd42","\ud83a\udd43"],t.l)
 B.WF={"Komplettbeute DB Halbzargen Hochboden":0,"Imkerjacke mit Schleier":1,"Smoker Dadant gross":2,"Honigschleuder Logar 20/8 Radial":3,"Stockwaage digital":4,"Nassenheider Professional Verdunster":5,"Futtersirup Apiinvert 16 kg":6,"Einl\xf6ttrafo BPS Basic":7,Refraktometer:8}
@@ -119491,9 +119491,9 @@ B.a0m=new A.l2(B.v,B.i,0)
 B.Jw=new A.L(0.23529411764705882,0,0,0,B.h)
 B.WP=new A.f(0,4)
 B.Gr=new A.fp(0.5,B.fQ,B.Jw,B.WP,10)
-B.RI=s([B.Gr],t.sq)
+B.RH=s([B.Gr],t.sq)
 B.ZK=new A.m6(B.l3,B.r)
-B.a0n=new A.i5(null,null,null,B.RI,B.ZK)
+B.a0n=new A.i5(null,null,null,B.RH,B.ZK)
 B.ac8=new A.It(0,"global")
 B.DH=new A.It(1,"local")
 B.a0r=new A.It(2,"others")
@@ -120760,7 +120760,7 @@ s($,"bub","PK",()=>A.Qh(A.blJ(),t.Au,t.Ur))
 s($,"bua","b8t",()=>A.nS(new A.aQE(),t.i0))
 s($,"bu9","b8s",()=>A.nS(new A.aQD(),t.W4))
 s($,"bto","b7V",()=>{var q,p=A.b([],t.SC)
-for(q=0;q<12;++q)p.push(A.bah(!1,null,null,null,q,B.to[q].a))
+for(q=0;q<12;++q)p.push(A.bah(!1,null,null,null,q,B.tx[q].a))
 return p})
 s($,"buL","PO",()=>A.Qh(A.bnn(),t.vN,t.BS))
 s($,"bv_","aag",()=>A.aUV(new A.aRY(),t.C))
@@ -121073,7 +121073,7 @@ s($,"bpn","aX_",()=>new A.G())
 r($,"bcI","b5o",()=>{var q=new A.apy()
 q.wm($.aX_())
 return q})
-s($,"bun","b8w",()=>new A.RU("en_US",B.Qe,B.T7,B.tx,B.tx,B.td,B.td,B.tc,B.tc,B.tg,B.tg,B.th,B.th,B.tw,B.tw,B.R0,B.SZ,B.Q9))
+s($,"bun","b8w",()=>new A.RU("en_US",B.Qe,B.T7,B.tw,B.tw,B.td,B.td,B.tc,B.tc,B.tg,B.tg,B.th,B.th,B.tv,B.tv,B.R0,B.SZ,B.Q9))
 r($,"buR","aXN",()=>{var q=",",p="\xa0",o="%",n="0",m="+",l="-",k="E",j="\u2030",i="\u221e",h="NaN",g="#,##0.###",f="#E0",e="#,##0%",d="\xa4#,##0.00",c=".",b="\u200e+",a="\u200e-",a0="\u0644\u064a\u0633\xa0\u0631\u0642\u0645\u064b\u0627",a1="\u200f#,##0.00\xa0\xa4;\u200f-#,##0.00\xa0\xa4",a2="#,##,##0.###",a3="#,##,##0%",a4="\xa4\xa0#,##,##0.00",a5="INR",a6="#,##0.00\xa0\xa4",a7="#,##0\xa0%",a8="EUR",a9="USD",b0="\xa4\xa0#,##0.00",b1="\xa4\xa0#,##0.00;\xa4-#,##0.00",b2="CHF",b3="\xa4#,##,##0.00",b4="\u2212",b5="\xd710^",b6="[#E0]",b7="\u200f#,##0.00\xa0\u200f\xa4;\u200f-#,##0.00\xa0\u200f\xa4",b8="#,##0.00\xa0\xa4;-#,##0.00\xa0\xa4"
 return A.a9(["af",A.ao(d,g,q,"ZAR",k,p,i,l,"af",h,o,e,j,m,f,n),"am",A.ao(d,g,c,"ETB",k,q,i,l,"am",h,o,e,j,m,f,n),"ar",A.ao(a1,g,c,"EGP",k,q,i,a,"ar",a0,"\u200e%\u200e",e,j,b,f,n),"ar_DZ",A.ao(a1,g,q,"DZD",k,c,i,a,"ar_DZ",a0,"\u200e%\u200e",e,j,b,f,n),"ar_EG",A.ao("\u200f#,##0.00\xa0\xa4",g,"\u066b","EGP","\u0623\u0633","\u066c",i,"\u061c-","ar_EG","\u0644\u064a\u0633\xa0\u0631\u0642\u0645","\u066a\u061c",e,"\u0609","\u061c+",f,"\u0660"),"as",A.ao(a4,a2,c,a5,k,q,i,l,"as",h,o,a3,j,m,f,"\u09e6"),"az",A.ao(a6,g,q,"AZN",k,c,i,l,"az",h,o,e,j,m,f,n),"be",A.ao(a6,g,q,"BYN",k,p,i,l,"be",h,o,a7,j,m,f,n),"bg",A.ao(a6,g,q,"BGN",k,p,i,l,"bg",h,o,e,j,m,f,n),"bm",A.ao(d,g,c,"XOF",k,q,i,l,"bm",h,o,e,j,m,f,n),"bn",A.ao("#,##,##0.00\xa4",a2,c,"BDT",k,q,i,l,"bn",h,o,e,j,m,f,"\u09e6"),"br",A.ao(a6,g,q,a8,k,p,i,l,"br",h,o,a7,j,m,f,n),"bs",A.ao(a6,g,q,"BAM",k,c,i,l,"bs",h,o,e,j,m,f,n),"ca",A.ao(a6,g,q,a8,k,c,i,l,"ca",h,o,a7,j,m,f,n),"chr",A.ao(d,g,c,a9,k,q,i,l,"chr",h,o,e,j,m,f,n),"cs",A.ao(a6,g,q,"CZK",k,p,i,l,"cs",h,o,a7,j,m,f,n),"cy",A.ao(d,g,c,"GBP",k,q,i,l,"cy",h,o,e,j,m,f,n),"da",A.ao(a6,g,q,"DKK",k,c,i,l,"da",h,o,a7,j,m,f,n),"de",A.ao(a6,g,q,a8,k,c,i,l,"de",h,o,a7,j,m,f,n),"de_AT",A.ao(b0,g,q,a8,k,p,i,l,"de_AT",h,o,a7,j,m,f,n),"de_CH",A.ao(b1,g,c,b2,k,"\u2019",i,l,"de_CH",h,o,e,j,m,f,n),"el",A.ao(a6,g,q,a8,"e",c,i,l,"el",h,o,e,j,m,f,n),"en",A.ao(d,g,c,a9,k,q,i,l,"en",h,o,e,j,m,f,n),"en_AU",A.ao(d,g,c,"AUD","e",q,i,l,"en_AU",h,o,e,j,m,f,n),"en_CA",A.ao(d,g,c,"CAD",k,q,i,l,"en_CA",h,o,e,j,m,f,n),"en_GB",A.ao(d,g,c,"GBP",k,q,i,l,"en_GB",h,o,e,j,m,f,n),"en_IE",A.ao(d,g,c,a8,k,q,i,l,"en_IE",h,o,e,j,m,f,n),"en_IN",A.ao(b3,a2,c,a5,k,q,i,l,"en_IN",h,o,a3,j,m,f,n),"en_MY",A.ao(d,g,c,"MYR",k,q,i,l,"en_MY",h,o,e,j,m,f,n),"en_NZ",A.ao(d,g,c,"NZD",k,q,i,l,"en_NZ",h,o,e,j,m,f,n),"en_SG",A.ao(d,g,c,"SGD",k,q,i,l,"en_SG",h,o,e,j,m,f,n),"en_US",A.ao(d,g,c,a9,k,q,i,l,"en_US",h,o,e,j,m,f,n),"en_ZA",A.ao(d,g,c,"ZAR",k,q,i,l,"en_ZA",h,o,e,j,m,f,n),"es",A.ao(a6,g,q,a8,k,c,i,l,"es",h,o,a7,j,m,f,n),"es_419",A.ao(d,g,c,"MXN",k,q,i,l,"es_419",h,o,e,j,m,f,n),"es_ES",A.ao(a6,g,q,a8,k,c,i,l,"es_ES",h,o,a7,j,m,f,n),"es_MX",A.ao(d,g,c,"MXN",k,q,i,l,"es_MX",h,o,e,j,m,f,n),"es_US",A.ao(d,g,c,a9,k,q,i,l,"es_US",h,o,e,j,m,f,n),"et",A.ao(a6,g,q,a8,b5,p,i,b4,"et",h,o,e,j,m,f,n),"eu",A.ao(a6,g,q,a8,k,c,i,b4,"eu",h,o,"%\xa0#,##0",j,m,f,n),"fa",A.ao("\u200e\xa4#,##0.00",g,"\u066b","IRR","\xd7\u06f1\u06f0^","\u066c",i,"\u200e\u2212","fa","\u0646\u0627\u0639\u062f\u062f","\u066a",e,"\u0609",b,f,"\u06f0"),"fi",A.ao(a6,g,q,a8,k,p,i,b4,"fi","ep\xe4luku",o,a7,j,m,f,n),"fil",A.ao(d,g,c,"PHP",k,q,i,l,"fil",h,o,e,j,m,f,n),"fr",A.ao(a6,g,q,a8,k,"\u202f",i,l,"fr",h,o,a7,j,m,f,n),"fr_CA",A.ao(a6,g,q,"CAD",k,p,i,l,"fr_CA",h,o,a7,j,m,f,n),"fr_CH",A.ao(a6,g,q,b2,k,"\u202f",i,l,"fr_CH",h,o,e,j,m,f,n),"fur",A.ao(b0,g,q,a8,k,c,i,l,"fur",h,o,e,j,m,f,n),"ga",A.ao(d,g,c,a8,k,q,i,l,"ga","Nuimh",o,e,j,m,f,n),"gl",A.ao(a6,g,q,a8,k,c,i,l,"gl",h,o,a7,j,m,f,n),"gsw",A.ao(a6,g,c,b2,k,"\u2019",i,b4,"gsw",h,o,a7,j,m,f,n),"gu",A.ao(b3,a2,c,a5,k,q,i,l,"gu",h,o,a3,j,m,b6,n),"haw",A.ao(d,g,c,a9,k,q,i,l,"haw",h,o,e,j,m,f,n),"he",A.ao(b7,g,c,"ILS",k,q,i,a,"he",h,o,e,j,b,f,n),"hi",A.ao(b3,a2,c,a5,k,q,i,l,"hi",h,o,a3,j,m,b6,n),"hr",A.ao(a6,g,q,a8,k,c,i,b4,"hr",h,o,a7,j,m,f,n),"hu",A.ao(a6,g,q,"HUF",k,p,i,l,"hu",h,o,e,j,m,f,n),"hy",A.ao(a6,g,q,"AMD",k,p,i,l,"hy","\u0548\u0579\u0539",o,e,j,m,f,n),"id",A.ao(d,g,q,"IDR",k,c,i,l,"id",h,o,e,j,m,f,n),"in",A.ao(d,g,q,"IDR",k,c,i,l,"in",h,o,e,j,m,f,n),"is",A.ao(a6,g,q,"ISK",k,c,i,l,"is",h,o,e,j,m,f,n),"it",A.ao(a6,g,q,a8,k,c,i,l,"it",h,o,e,j,m,f,n),"it_CH",A.ao(b1,g,c,b2,k,"\u2019",i,l,"it_CH",h,o,e,j,m,f,n),"iw",A.ao(b7,g,c,"ILS",k,q,i,a,"iw",h,o,e,j,b,f,n),"ja",A.ao(d,g,c,"JPY",k,q,i,l,"ja",h,o,e,j,m,f,n),"ka",A.ao(a6,g,q,"GEL",k,p,i,l,"ka","\u10d0\u10e0\xa0\u10d0\u10e0\u10d8\u10e1\xa0\u10e0\u10d8\u10ea\u10ee\u10d5\u10d8",o,e,j,m,f,n),"kk",A.ao(a6,g,q,"KZT",k,p,i,l,"kk","\u0441\u0430\u043d\xa0\u0435\u043c\u0435\u0441",o,e,j,m,f,n),"km",A.ao("#,##0.00\xa4",g,c,"KHR",k,q,i,l,"km",h,o,e,j,m,f,n),"kn",A.ao(d,g,c,a5,k,q,i,l,"kn",h,o,e,j,m,f,n),"ko",A.ao(d,g,c,"KRW",k,q,i,l,"ko",h,o,e,j,m,f,n),"ky",A.ao(a6,g,q,"KGS",k,p,i,l,"ky","\u0441\u0430\u043d\xa0\u044d\u043c\u0435\u0441",o,e,j,m,f,n),"ln",A.ao(a6,g,q,"CDF",k,c,i,l,"ln",h,o,e,j,m,f,n),"lo",A.ao("\xa4#,##0.00;\xa4-#,##0.00",g,q,"LAK",k,c,i,l,"lo","\u0e9a\u0ecd\u0ec8\u200b\u0ec1\u0ea1\u0ec8\u0e99\u200b\u0ec2\u0e95\u200b\u0ec0\u0ea5\u0e81",o,e,j,m,"#",n),"lt",A.ao(a6,g,q,a8,b5,p,i,b4,"lt",h,o,a7,j,m,f,n),"lv",A.ao(a6,g,q,a8,k,p,i,l,"lv","NS",o,e,j,m,f,n),"mg",A.ao(d,g,c,"MGA",k,q,i,l,"mg",h,o,e,j,m,f,n),"mk",A.ao(a6,g,q,"MKD",k,c,i,l,"mk",h,o,a7,j,m,f,n),"ml",A.ao(d,a2,c,a5,k,q,i,l,"ml",h,o,e,j,m,f,n),"mn",A.ao(b0,g,c,"MNT",k,q,i,l,"mn",h,o,e,j,m,f,n),"mr",A.ao(d,a2,c,a5,k,q,i,l,"mr",h,o,e,j,m,b6,"\u0966"),"ms",A.ao(d,g,c,"MYR",k,q,i,l,"ms",h,o,e,j,m,f,n),"mt",A.ao(d,g,c,a8,k,q,i,l,"mt",h,o,e,j,m,f,n),"my",A.ao(a6,g,c,"MMK",k,q,i,l,"my","\u1002\u100f\u1014\u103a\u1038\u1019\u101f\u102f\u1010\u103a\u101e\u1031\u102c",o,e,j,m,f,"\u1040"),"nb",A.ao(b8,g,q,"NOK",k,p,i,b4,"nb",h,o,a7,j,m,f,n),"ne",A.ao(a4,a2,c,"NPR",k,q,i,l,"ne",h,o,a3,j,m,f,"\u0966"),"nl",A.ao("\xa4\xa0#,##0.00;\xa4\xa0-#,##0.00",g,q,a8,k,c,i,l,"nl",h,o,e,j,m,f,n),"no",A.ao(b8,g,q,"NOK",k,p,i,b4,"no",h,o,a7,j,m,f,n),"no_NO",A.ao(b8,g,q,"NOK",k,p,i,b4,"no_NO",h,o,a7,j,m,f,n),"nyn",A.ao(d,g,c,"UGX",k,q,i,l,"nyn",h,o,e,j,m,f,n),"or",A.ao(d,a2,c,a5,k,q,i,l,"or",h,o,e,j,m,f,n),"pa",A.ao(b3,a2,c,a5,k,q,i,l,"pa",h,o,a3,j,m,b6,n),"pl",A.ao(a6,g,q,"PLN",k,p,i,l,"pl",h,o,e,j,m,f,n),"ps",A.ao("\xa4#,##0.00;(\xa4#,##0.00)",g,"\u066b","AFN","\xd7\u06f1\u06f0^","\u066c",i,"\u200e-\u200e","ps",h,"\u066a",e,"\u0609","\u200e+\u200e",f,"\u06f0"),"pt",A.ao(b0,g,q,"BRL",k,c,i,l,"pt",h,o,e,j,m,f,n),"pt_BR",A.ao(b0,g,q,"BRL",k,c,i,l,"pt_BR",h,o,e,j,m,f,n),"pt_PT",A.ao(a6,g,q,a8,k,p,i,l,"pt_PT",h,o,e,j,m,f,n),"ro",A.ao(a6,g,q,"RON",k,c,i,l,"ro",h,o,a7,j,m,f,n),"ru",A.ao(a6,g,q,"RUB",k,p,i,l,"ru","\u043d\u0435\xa0\u0447\u0438\u0441\u043b\u043e",o,a7,j,m,f,n),"si",A.ao(d,g,c,"LKR",k,q,i,l,"si",h,o,e,j,m,"#",n),"sk",A.ao(a6,g,q,a8,"e",p,i,l,"sk",h,o,a7,j,m,f,n),"sl",A.ao(a6,g,q,a8,"e",c,i,b4,"sl",h,o,a7,j,m,f,n),"sq",A.ao(a6,g,q,"ALL",k,p,i,l,"sq",h,o,e,j,m,f,n),"sr",A.ao(a6,g,q,"RSD",k,c,i,l,"sr",h,o,e,j,m,f,n),"sr_Latn",A.ao(a6,g,q,"RSD",k,c,i,l,"sr_Latn",h,o,e,j,m,f,n),"sv",A.ao(a6,g,q,"SEK",b5,p,i,b4,"sv",h,o,a7,j,m,f,n),"sw",A.ao(b0,g,c,"TZS",k,q,i,l,"sw",h,o,e,j,m,f,n),"ta",A.ao(b3,a2,c,a5,k,q,i,l,"ta",h,o,a3,j,m,f,n),"te",A.ao(b3,a2,c,a5,k,q,i,l,"te",h,o,e,j,m,f,n),"th",A.ao(d,g,c,"THB",k,q,i,l,"th",h,o,e,j,m,f,n),"tl",A.ao(d,g,c,"PHP",k,q,i,l,"tl",h,o,e,j,m,f,n),"tr",A.ao(d,g,q,"TRY",k,c,i,l,"tr",h,o,"%#,##0",j,m,f,n),"uk",A.ao(a6,g,q,"UAH","\u0415",p,i,l,"uk",h,o,e,j,m,f,n),"ur",A.ao(d,g,c,"PKR",k,q,i,a,"ur",h,o,e,j,b,f,n),"uz",A.ao(a6,g,q,"UZS",k,p,i,l,"uz","son\xa0emas",o,e,j,m,f,n),"vi",A.ao(a6,g,q,"VND",k,c,i,l,"vi",h,o,e,j,m,f,n),"zh",A.ao(d,g,c,"CNY",k,q,i,l,"zh",h,o,e,j,m,f,n),"zh_CN",A.ao(d,g,c,"CNY",k,q,i,l,"zh_CN",h,o,e,j,m,f,n),"zh_HK",A.ao(d,g,c,"HKD",k,q,i,l,"zh_HK","\u975e\u6578\u503c",o,e,j,m,f,n),"zh_TW",A.ao(d,g,c,"TWD",k,q,i,l,"zh_TW","\u975e\u6578\u503c",o,e,j,m,f,n),"zu",A.ao(d,g,c,"ZAR",k,q,i,l,"zu",h,o,e,j,m,f,n)],t.N,t.zr)})
 r($,"bsj","aSt",()=>A.b1t("initializeDateFormatting(<locale>)",$.b8w(),A.an("RU")))

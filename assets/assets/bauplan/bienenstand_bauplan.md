@@ -1,6 +1,6 @@
 # Bienenstand – Detaillierte Bauanleitung (Variante 2, Doppelbalken, höhenverstellbar)
 
-*Durchgehender, langlebiger, rückenschonender Stand für 4 Dadant-Beuten (10er) mit HiveWatch-Stockwaagen · 1 Stand, 4 höhenverstellbare Beine · Doppelbalken 2×90×90 (versetzt aus 1,4-m-Stücken) · ebene Plattformen statt Querriegel · Bauhaus CH (Mels).*
+*Durchgehender, langlebiger, rückenschonender Stand für 4 Dadant-Beuten (10er) mit HiveWatch-Stockwaagen · 1 Stand, 4 höhenverstellbare Beine · Doppelbalken 2×90×90 (2 durchgehende 2,8-m-Bretter) · ebene Plattformen statt Querriegel · Bauhaus CH (Mels).*
 
 **Eckdaten**
 - Beute: Dadant 10er, 90 × 45,5 × 60 cm (H×B×T), Vollvolk 40–60 kg
@@ -8,7 +8,9 @@
 - Aufbau: 1 Stand, 4 Beine, Doppelbalken
 - Beutenboden-Höhe: ca. 44 cm (±25 mm feinjustierbar)
 
-**Kurz:** 4 Krinner-Erdschrauben (eingerückt) → kurze Pfosten mit Nivellier-Bolzen (±25 mm) → durchgehender Doppelbalken 2×90×90 → je Volk eine ebene Schaltafel-Platte (trägt Waage + Beute, steift aus). Der Doppelbalken wird aus 1,4-m-Stücken versetzt verleimt – durchgehend steif (Durchbiegung < 0,5 mm), braucht trotz nur 4 Beinen kein Mittelbein.
+**Kurz:** 4 Krinner-Erdschrauben (eingerückt) → kurze Pfosten mit Nivellier-Bolzen (±25 mm) → durchgehender Doppelbalken 2×90×90 → je Volk eine ebene Schaltafel-Platte (trägt Waage + Beute, steift aus). Der Doppelbalken besteht aus zwei durchgehenden 2,8-m-Brettern (aus 3-m-Rahmenholz abgelängt), verleimt + verschraubt – durchgehend steif (Durchbiegung < 0,5 mm), braucht trotz nur 4 Beinen kein Mittelbein.
+
+> **Update Doppelbalken:** Gebaut werden **2 durchgehende 2,8-m-Bretter** je Balkenseite (3-m-Rahmenholz auf 2,8 m abgelängt). Die frühere versetzte 1,4-m-Bauweise (noch in **Abb. 4** der 6-seitigen PDF) war nur bei eingeschränktem Transport nötig – durchgehende Bretter sind strukturell besser und einfacher. Alle Masse sonst unverändert.
 
 ---
 
@@ -22,11 +24,11 @@
 
 Mit Laser/Schlauchwaage die 4 Bolzen in eine Ebene drehen, kontern – fertig. Bodensetzung später in Minuten nachstellbar.
 
-**Doppelbalken aus 1,4-m-Stücken (versetzter Stoss)**
-Je Balkenseite zwei Lagen 90×90 verleimt/verschraubt.
-- Untere Lage: 1,4 m + 1,4 m (Stoss in der Mitte).
-- Obere Lage: 0,7 + 1,4 + 0,7 m (Stösse bei 0,7 & 2,1 m).
-Die Stösse liegen nie übereinander → jede Lage überbrückt den Stoss der anderen = durchgehend steif. Verschrauben alle ~20 cm (8×100, versetzt) + D4-Leim.
+**Doppelbalken aus 2 durchgehenden Brettern**
+Je Balkenseite zwei durchgehende Lagen 90×90 (je 2,8 m) verleimt/verschraubt.
+- Untere Lage: 1 Brett 2,8 m (aus 3-m-Rahmenholz abgelängt).
+- Obere Lage: 1 Brett 2,8 m (aus 3-m-Rahmenholz abgelängt).
+Keine Stösse → durchgehend steif (Bauhaus führt Douglasie 90×90 in 3 m, das reicht für 2,8 m). Verschrauben alle ~20 cm (8×100, versetzt) + D4-Leim.
 
 **Balkenwahl:** Douglasie 90×140 führt Bauhaus CH nicht; der Doppelbalken 2×90×90 ist steifer als 90×140 und aus dem lagernden 3-m-Rahmenholz baubar.
 
@@ -41,7 +43,7 @@ Die Stösse liegen nie übereinander → jede Lage überbrückt den Stoss der an
 | Gesamtlänge Stand | 2800 mm | 4×560 + 3×160 + 2×40 Rand |
 | Beine (Erdschrauben) | 4 (2 Reihen × 2) | je ~400 mm eingerückt; Beinabstand 2000 mm |
 | Balkenachsabstand (vorn/hinten) | 400 mm | Waagenlast liegt direkt über den Balken |
-| Längsbalken | 2× Doppelbalken 2×90×90, 2800 mm | versetzt aus 1,4-m-Stücken |
+| Längsbalken | 2× Doppelbalken 2×90×90, 2800 mm | je 2 durchgehende Bretter (3 m → 2,8 m abgelängt) |
 | Pfosten | 4× 90×90×~120 mm | grob auf Höhe; Feinausgleich über Bolzen |
 | Durchbiegung (voll) | < 0,5 mm | Doppelbalken + eingerückte Beine |
 | Beutenboden-Höhe (Ziel) | ≈ 44 cm | = Balken-OK + Platte 2,7 + Waage 7,2 cm; grob wählbar 40–50 cm |
@@ -52,7 +54,7 @@ Die Stösse liegen nie übereinander → jede Lage überbrückt den Stoss der an
 
 **Draufsicht:** 4 Plattformen 560×500 (fassen die Waage 500×430), Lücke 160 mm zwischen den Platten, 4 Erdschrauben ~400 mm von den Enden eingerückt, Beinabstand 2000 mm, Balkenachse (vorn/hinten) 400 mm.
 
-**Seitenansicht:** 4 Völker auf dem durchgehenden Doppelbalken (2 Lagen, Stösse versetzt), 2 höhenverstellbare Beinpaare, Beutenboden ≈ 44 cm.
+**Seitenansicht:** 4 Völker auf dem durchgehenden Doppelbalken (2 durchgehende Lagen), 2 höhenverstellbare Beinpaare, Beutenboden ≈ 44 cm.
 
 **Ausrichtung & Platz:** Fluglöcher nach Südost (Morgensonne, windgeschützt), Flugbahn 2–3 m frei. Hinter dem Stand 80–100 cm Arbeitsraum. Weil die Beine eingerückt sind: den Stand nicht einseitig an den Enden stark belasten, bevor die Völker stehen (die Erdschrauben verankern gegen Abheben).
 
@@ -60,7 +62,7 @@ Die Stösse liegen nie übereinander → jede Lage überbrückt den Stoss der an
 
 ## 3 · Details
 
-**Doppelbalken-Stoss (versetzt):** obere Lage 0,7 + 1,4 + 0,7 m, untere Lage 1,4 + 1,4 m; Stösse nie übereinander; alle ~20 cm verschraubt + D4-Leim → durchgehend steif ohne Mittelbein. Balken gesamt 2,8 m.
+**Doppelbalken:** zwei durchgehende Lagen 90×90 je 2,8 m (aus 3-m-Rahmenholz abgelängt); keine Stösse; alle ~20 cm verschraubt + D4-Leim → durchgehend steif ohne Mittelbein. Balken gesamt 2,8 m.
 
 **Nivellier-Bolzen im Pfostenkopf:** Sechskantschraube M16 in Einschlagmutter, darauf grosse Auflagescheibe, darunter/darüber Kontermutter; Doppelbalken liegt auf der Scheibe und ist seitlich mit Schwerlast-Winkel gesichert. Verstellweg ± 25 mm.
 
@@ -95,19 +97,18 @@ Die Stösse liegen nie übereinander → jede Lage überbrückt den Stoss der an
 
 | Teil | Material | Zuschnitt | Stück | Aus |
 |---|---|---|---:|---|
-| Doppelbalken – untere Lage | Douglasie 90×90 | 1400 mm | 4 | 2× 3-m-Brett (je 2×1,4 m) |
-| Doppelbalken – obere Lage (Mittelteil) | Douglasie 90×90 | 1400 mm | 2 | 1× 3-m-Brett (1,4 + 0,7 + 0,7) |
-| Doppelbalken – obere Lage (Enden) | Douglasie 90×90 | 700 mm | 4 | aus obigen 3-m-Brettern |
+| Doppelbalken – untere Lage | Douglasie 90×90 | 2800 mm | 2 | 2× 3-m-Brett (auf 2,8 m abgelängt) |
+| Doppelbalken – obere Lage | Douglasie 90×90 | 2800 mm | 2 | 2× 3-m-Brett (auf 2,8 m abgelängt) |
 | Pfosten | Douglasie 90×90 | ~120 mm* | 4 | 1× 2-m-Brett |
 | Plattform | Schaltafel 27 mm | 560 × 500 mm | 4 | 1× Tafel 2500×500 |
 
-\* Pfosten grob ~120 mm; Feinausgleich über die Nivellier-Bolzen (±25 mm). Pro Balkenseite: untere Lage 2×1,4 m, obere Lage 0,7 + 1,4 + 0,7 m.
+\* Pfosten grob ~120 mm; Feinausgleich über die Nivellier-Bolzen (±25 mm). Pro Balkenseite: 2 durchgehende Bretter à 2,8 m (aus 3-m-Rahmenholz abgelängt, Reststück 20 cm).
 
 ---
 
 ## 5 · Vorgehen beim Bau
 
-1. **Doppelbalken bauen:** je Seite untere Lage (1,4+1,4 m) und obere Lage (0,7+1,4+0,7 m) versetzt auflegen, mit D4-Leim + 8×100-Schrauben alle ~20 cm (versetzt) verbinden. 2 fertige Balken à 2,8 m.
+1. **Doppelbalken bauen:** 4× Douglasie 3 m auf 2,8 m ablängen; je Balkenseite 2 durchgehende Lagen deckungsgleich, mit D4-Leim + 8×100-Schrauben alle ~20 cm (versetzt) verbinden. 2 fertige Balken à 2,8 m.
 2. **Standort & Werkzeug:** fester, sonniger (SE), windgeschützter Platz. Akkuschrauber, Holz-/Forstnerbohrer (M16), Säge, Laser/Schlauchwaage, Richtscheit, Wasserwaage, Stahlstab (Erdschraube), Maulschlüssel SW24, Maßband, Winkel.
 3. **4 Positionen anzeichnen:** Rechteck 2000 × 400 mm (Beine ~400 mm eingerückt). Lehre aus Latten für Rechtwinkligkeit.
 4. **4 Erdschrauben lotrecht** eindrehen; Aufnahmen grob gleiche Höhe.
@@ -140,7 +141,7 @@ Douglasie (Dauerhaftigkeit EN 350 Kl. 3–4) ist die Empfehlung: witterungsfest,
 ## Abhak-Einkaufsliste (mitnehmen)
 
 **Bauholz / Kantholz**
-- [ ] 4× Rahmenholz Douglasie 300×9×9 cm (Balken) → im Markt zuschneiden: 2 Bretter je 2×1,4 m, 2 Bretter je 1,4 + 0,7 + 0,7 m
+- [ ] 4× Rahmenholz Douglasie 300×9×9 cm (Balken) → je auf 2,8 m ablängen (4 durchgehende Bretter, Reststück 20 cm)
 - [ ] 1× Rahmenholz Douglasie 200×9×9 cm (Pfosten)
 
 **Platte**
