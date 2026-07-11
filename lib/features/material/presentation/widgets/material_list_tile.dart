@@ -17,7 +17,7 @@ class MaterialListTile extends ConsumerWidget {
     switch (status) {
       case 'bestellt':
         return AppColors.amber600;
-      case 'geliefert':
+      case 'gekauft':
         return AppColors.green600;
       default:
         return AppColors.brown300;
@@ -28,7 +28,7 @@ class MaterialListTile extends ConsumerWidget {
     switch (status) {
       case 'bestellt':
         return Icons.local_shipping;
-      case 'geliefert':
+      case 'gekauft':
         return Icons.check_circle;
       default:
         return Icons.radio_button_unchecked;
@@ -65,9 +65,9 @@ class MaterialListTile extends ConsumerWidget {
                           .updateStatus(item.id, newStatus);
                     },
                     itemBuilder: (context) => [
-                      const PopupMenuItem(value: 'offen', child: Text('Offen')),
+                      const PopupMenuItem(value: 'geplant', child: Text('Geplant')),
                       const PopupMenuItem(value: 'bestellt', child: Text('Bestellt')),
-                      const PopupMenuItem(value: 'geliefert', child: Text('Geliefert')),
+                      const PopupMenuItem(value: 'gekauft', child: Text('Gekauft')),
                     ],
                     child: Icon(
                       _statusIcon(item.status),
@@ -85,7 +85,7 @@ class MaterialListTile extends ConsumerWidget {
                           item.name,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            decoration: item.status == 'geliefert'
+                            decoration: item.status == 'gekauft'
                                 ? TextDecoration.lineThrough
                                 : null,
                           ),

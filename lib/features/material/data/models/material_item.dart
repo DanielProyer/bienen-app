@@ -9,9 +9,13 @@ class MaterialItem {
   final String? supplier;
   final String? supplierUrl;
   final int phase;
-  final String status; // 'offen', 'bestellt', 'geliefert'
+  final String status; // 'geplant', 'bestellt', 'gekauft'
   final String? notes;
   final int sortOrder;
+  final String bereich; // 'imkerei', 'standbau', 'honigverarbeitung'
+  final bool isConsumable;
+  final double stockQty;
+  final double minQty;
 
   const MaterialItem({
     required this.id,
@@ -24,9 +28,13 @@ class MaterialItem {
     this.supplier,
     this.supplierUrl,
     this.phase = 1,
-    this.status = 'offen',
+    this.status = 'geplant',
     this.notes,
     this.sortOrder = 0,
+    this.bereich = 'imkerei',
+    this.isConsumable = false,
+    this.stockQty = 0,
+    this.minQty = 0,
   });
 
   MaterialItem copyWith({
@@ -43,6 +51,10 @@ class MaterialItem {
     String? status,
     String? notes,
     int? sortOrder,
+    String? bereich,
+    bool? isConsumable,
+    double? stockQty,
+    double? minQty,
   }) {
     return MaterialItem(
       id: id ?? this.id,
@@ -58,6 +70,10 @@ class MaterialItem {
       status: status ?? this.status,
       notes: notes ?? this.notes,
       sortOrder: sortOrder ?? this.sortOrder,
+      bereich: bereich ?? this.bereich,
+      isConsumable: isConsumable ?? this.isConsumable,
+      stockQty: stockQty ?? this.stockQty,
+      minQty: minQty ?? this.minQty,
     );
   }
 
@@ -73,9 +89,13 @@ class MaterialItem {
       supplier: json['supplier'] as String?,
       supplierUrl: json['supplier_url'] as String?,
       phase: json['phase'] as int? ?? 1,
-      status: json['status'] as String? ?? 'offen',
+      status: json['status'] as String? ?? 'geplant',
       notes: json['notes'] as String?,
       sortOrder: json['sort_order'] as int? ?? 0,
+      bereich: json['bereich'] as String? ?? 'imkerei',
+      isConsumable: json['is_consumable'] as bool? ?? false,
+      stockQty: (json['stock_qty'] as num?)?.toDouble() ?? 0,
+      minQty: (json['min_qty'] as num?)?.toDouble() ?? 0,
     );
   }
 
@@ -94,6 +114,10 @@ class MaterialItem {
       'status': status,
       'notes': notes,
       'sort_order': sortOrder,
+      'bereich': bereich,
+      'is_consumable': isConsumable,
+      'stock_qty': stockQty,
+      'min_qty': minQty,
     };
   }
 
