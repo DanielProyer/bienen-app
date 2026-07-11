@@ -14,7 +14,7 @@ Das Monitoring (Waage-Tab) soll vom Start (2 Völker, Frühling 2027) bis zum Vo
 ## 3. Erweiterung
 
 ### 3.1 Neue Tabelle `funkstationen` (Gateways/Basisstationen)
-Eine Funkstation empfängt mehrere Waagen und funkt in die Cloud (HiveWatch: 4G/LTE-M).
+Eine Funkstation empfängt mehrere Waagen und funkt in die Cloud (HiveWatch: 4G/LTE-M, 2G-Fallback, SIM inkl.). **HiveWatch: 1 Funkstation = 8 Kanäle** (Waagen + Brutraumsensoren gemischt). Je Volk = 1 Waage + 1 Brutraumsensor = 2 Kanäle → 1 Funkstation für ~4 Völker, 2 für 8. StarterSet = Funkstation + 1 Waage.
 - `id` (uuid), `name`, `vendor` (default 'HiveWatch'), `gateway_id`/`hardware_id`,
   `location`, `status` ('online'|'offline'|'unbekannt'), `battery_pct` (numeric),
   `signal` (numeric/text), `last_seen_at` (timestamptz), `api_config` (jsonb),
@@ -25,7 +25,7 @@ Eine Funkstation empfängt mehrere Waagen und funkt in die Cloud (HiveWatch: 4G/
 - Jede Waage = 1 Volk, hängt an einer Funkstation. 4–8 Stationen für bis zu 8 Waagen.
 
 ### 3.3 In-Beute-Temperatur (Brutraum)
-Zusätzlich zur Waage soll die **Temperatur in der Beute** (Brutraum) je Volk gemessen werden (für Volk 1 ab Herbst/Winter 2026, für Volk 2 ab Frühling 2027). Modellierung: entweder als weiterer Messwert-Typ in `weight_readings` (Spalte `temp_brut` / generisch `readings` mit `metric`-Typ) oder als eigene `sensor_readings`-Tabelle (sensor_id, volk_id, metric, value, recorded_at). Genaues HiveWatch-Zubehör/Produkt für den Brutraum-Sensor beim Kauf bestätigen.
+Zusätzlich zur Waage soll die **Temperatur in der Beute** (Brutraum) je Volk gemessen werden (für Volk 1 ab Herbst/Winter 2026, für Volk 2 ab Frühling 2027). Produkt: **HiveWatch Brutraumsensor** (−40…+100 °C, Auflösung 0,1 °C, 2,5 m Kabel, an einen Funkstations-Kanal). Modellierung: entweder als weiterer Messwert-Typ in `weight_readings` (Spalte `temp_brut` / generisch `readings` mit `metric`-Typ) oder als eigene `sensor_readings`-Tabelle (sensor_id, volk_id, metric, value, recorded_at).
 
 ### 3.4 Optional (empfohlen für 32/64-Skalierung): Tabelle `voelker`
 Für **alle** Völker (auch ohne Waage) – die eigentliche Grundlage für 32/64:
