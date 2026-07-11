@@ -69,11 +69,14 @@ final bestandItemsProvider = Provider<List<MaterialItem>>((ref) {
   }).toList();
 });
 
-/// Verbrauchsmaterial unter Mindestbestand (Nachkauf-Warnung).
+/// Verbrauchsmaterial im Bestand (gekauft), das unter den Mindestbestand
+/// gefallen ist – die eigentliche Nachkauf-Warnung. Noch nie gekaufte
+/// (geplante) Verbrauchsartikel stehen in „Einkaufen", nicht hier.
 final nachkaufenItemsProvider = Provider<List<MaterialItem>>((ref) {
   final items = ref.watch(materialListProvider).valueOrNull ?? [];
   return items
-      .where((i) => i.isConsumable && i.stockQty < i.minQty)
+      .where((i) =>
+          i.isConsumable && i.status == 'gekauft' && i.stockQty < i.minQty)
       .toList();
 });
 
