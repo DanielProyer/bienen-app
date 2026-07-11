@@ -11,7 +11,10 @@ import 'package:intl/intl.dart';
 class MaterialListTile extends ConsumerWidget {
   final MaterialItem item;
 
-  const MaterialListTile({super.key, required this.item});
+  /// Optionaler Zusatzinhalt (z.B. Bestand/letzter Kauf in der Bestand-Ansicht).
+  final Widget? extraInfo;
+
+  const MaterialListTile({super.key, required this.item, this.extraInfo});
 
   Color _statusColor(String status) {
     switch (status) {
@@ -203,6 +206,7 @@ class MaterialListTile extends ConsumerWidget {
                   ],
                 ],
               ),
+              ?extraInfo,
             ],
           ),
         ),

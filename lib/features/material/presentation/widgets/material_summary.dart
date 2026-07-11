@@ -11,9 +11,9 @@ class MaterialSummary extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final grandTotal = ref.watch(grandTotalProvider);
     final items = ref.watch(materialListProvider).valueOrNull ?? [];
-    final offenCount = items.where((i) => i.status == 'offen').length;
+    final geplantCount = items.where((i) => i.status == 'geplant').length;
     final bestelltCount = items.where((i) => i.status == 'bestellt').length;
-    final geliefertCount = items.where((i) => i.status == 'geliefert').length;
+    final gekauftCount = items.where((i) => i.status == 'gekauft').length;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -23,11 +23,11 @@ class MaterialSummary extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          _buildStatusBadge('$offenCount offen', AppColors.brown300),
+          _buildStatusBadge('$geplantCount Geplant', AppColors.brown300),
           const SizedBox(width: 8),
-          _buildStatusBadge('$bestelltCount bestellt', AppColors.amber600),
+          _buildStatusBadge('$bestelltCount Bestellt', AppColors.amber600),
           const SizedBox(width: 8),
-          _buildStatusBadge('$geliefertCount geliefert', AppColors.green600),
+          _buildStatusBadge('$gekauftCount Gekauft', AppColors.green600),
           const Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
