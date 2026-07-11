@@ -48,7 +48,7 @@ class DashboardPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Maiensäss Tannen 85a · 1570 m ü.M. · Start Herbst 2026',
+                    'Maiensäss Tannen 85a · 1570 m ü.M. · Start Frühling 2027',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: AppColors.brown600,
                         ),
@@ -66,11 +66,13 @@ class DashboardPage extends StatelessWidget {
     final phases = [
       _Phase('Recherche & Planung', 'Beutensystem, Standort, Material', true),
       _Phase('Entscheidungen treffen', 'Beute, Rasse, Lieferant', true),
-      _Phase('Material bestellen', 'Phase 1 Einkauf', false),
-      _Phase('Unterstand vorbereiten', 'Bienenstand einrichten', false),
-      _Phase('1. Volk einsetzen', 'Herbst 2026', false),
-      _Phase('Schleuderraum ausbauen', 'Stall OG, 2027/2028', false),
-      _Phase('Erweiterung auf 4-5 Völker', 'Bis 2036', false),
+      _Phase('Material bestellen', 'Imkerhof Maienfeld + Bauhaus Mels', false),
+      _Phase('Bienenstand bauen', 'Variante 2, Doppelbalken', false),
+      _Phase('Start mit 2 Völkern', 'Frühling 2027 (Daniel + Lorena)', false),
+      _Phase('Nachzucht 1-2 Völker', 'Sommer/Herbst 2027', false),
+      _Phase('Zielgrösse 4 Völker', 'bis 2028', false),
+      _Phase('Max. 8 Völker', 'bis 2030', false),
+      _Phase('Honigverarbeitung einrichten', 'Stall OG, 2027/2028', false),
     ];
 
     return Column(
@@ -234,7 +236,7 @@ class DashboardPage extends StatelessWidget {
           children: [
             _buildFactChip('Dadant Blatt 10', Icons.grid_view),
             _buildFactChip('Holzbeuten', Icons.park),
-            _buildFactChip('4-5 Völker (bis 2036)', Icons.hive),
+            _buildFactChip('4 Völker bis 2028 · max 8 bis 2030', Icons.hive),
             _buildFactChip('Bio-Honig Ziel', Icons.eco),
             _buildFactChip('CHF 27-36k Invest', Icons.payments),
             _buildFactChip('CHF 20-28k Ersparnis', Icons.savings),
