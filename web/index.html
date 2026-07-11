@@ -55,16 +55,22 @@
         s.async = true;
         document.body.appendChild(s);
 
-        // Alle 60s auf neue Version prüfen
-        setInterval(function() {
-          fetch('version.json?_=' + Date.now(), { cache: 'no-store' })
+        // Auf neue Version prüfen (Poll + beim Wiedereinblenden der App)
+        function checkForUpdate() {
+          return fetch('version.json?_=' + Date.now(), { cache: 'no-store' })
             .then(function(r) { return r.json(); })
             .then(function(d) {
               if (d.version && d.version !== serverVer) {
                 redirectToVersion(d.version);
               }
             }).catch(function() {});
-        }, 60000);
+        }
+        setInterval(checkForUpdate, 60000);
+        // Handy/PWA: beim Zurückkehren in die App sofort auf Updates prüfen
+        document.addEventListener('visibilitychange', function() {
+          if (!document.hidden) checkForUpdate();
+        });
+        window.addEventListener('focus', checkForUpdate);
       })
       .catch(function() {
         var s = document.createElement('script');

@@ -122,6 +122,10 @@ class _BereichFilterRow extends ConsumerWidget {
           child: FilterChip(
             label: Text(label),
             selected: selected == value,
+            showCheckmark: false,
+            visualDensity: VisualDensity.compact,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 10),
             onSelected: (_) =>
                 ref.read(selectedBereichProvider.notifier).state = value,
           ),
@@ -533,13 +537,22 @@ class _AusgabenView extends ConsumerWidget {
         const SizedBox(height: 24),
 
         // Nach Bereich
-        const Text(
-          'Nach Bereich',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.brown800,
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: const [
+            Text(
+              'Nach Bereich',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.brown800,
+              ),
+            ),
+            SizedBox(width: 8),
+            Text('Beträge in CHF',
+                style: TextStyle(fontSize: 11, color: AppColors.brown300)),
+          ],
         ),
         const SizedBox(height: 8),
         Card(
@@ -562,6 +575,14 @@ class _AusgabenView extends ConsumerWidget {
                     geplant: u.bereichGeplant[b] ?? 0,
                     total: (u.bereichBisher[b] ?? 0) + (u.bereichGeplant[b] ?? 0),
                   ),
+                const Divider(height: 1),
+                _BereichRow(
+                  label: 'Gesamt',
+                  bisher: u.bisher,
+                  geplant: u.geplant,
+                  total: u.gesamt,
+                  isTotal: true,
+                ),
               ],
             ),
           ),
@@ -641,21 +662,32 @@ class _SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              label,
-              style: const TextStyle(fontSize: 11, color: AppColors.brown600),
+            SizedBox(
+              height: 28,
+              child: Text(
+                label,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontSize: 11, height: 1.15, color: AppColors.brown600),
+              ),
             ),
             const SizedBox(height: 6),
-            Text(
-              'CHF ${_chf.format(value)}',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: color,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'CHF ${_chf.format(value)}',
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
               ),
             ),
           ],
@@ -671,54 +703,62 @@ class _BereichRow extends StatelessWidget {
   final double? geplant;
   final double? total;
   final bool isHeader;
+  final bool isTotal;
   const _BereichRow({
     required this.label,
     required this.bisher,
     required this.geplant,
     required this.total,
     this.isHeader = false,
+    this.isTotal = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final labelStyle = TextStyle(
-      fontSize: isHeader ? 11 : 14,
-      fontWeight: isHeader ? FontWeight.w600 : FontWeight.w600,
+      fontSize: isHeader ? 11 : 13.5,
+      fontWeight: FontWeight.w600,
       color: isHeader ? AppColors.brown300 : AppColors.brown800,
     );
     final numStyle = TextStyle(
       fontSize: isHeader ? 11 : 13,
-      fontWeight: isHeader ? FontWeight.w600 : FontWeight.normal,
+      fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
       color: isHeader ? AppColors.brown300 : AppColors.brown600,
     );
 
-    Widget cell(String text, {bool bold = false, Color? color}) => Expanded(
-          child: Text(
-            text,
-            textAlign: TextAlign.right,
-            style: bold
-                ? const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.honeyDark,
-                  )
-                : numStyle,
+    Widget numCell(String text, {bool strong = false}) => Expanded(
+          flex: 3,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                text,
+                style: strong
+                    ? const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.honeyDark,
+                      )
+                    : numStyle,
+              ),
+            ),
           ),
         );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 9),
       child: Row(
         children: [
-          Expanded(flex: 2, child: Text(label, style: labelStyle)),
+          Expanded(flex: 4, child: Text(label, style: labelStyle)),
           if (isHeader) ...[
-            cell('bisher'),
-            cell('geplant'),
-            cell('total'),
+            numCell('Bisher'),
+            numCell('Geplant'),
+            numCell('Total'),
           ] else ...[
-            cell('CHF ${_chf.format(bisher)}'),
-            cell('CHF ${_chf.format(geplant)}'),
-            cell('CHF ${_chf.format(total)}', bold: true),
+            numCell(_chf.format(bisher)),
+            numCell(_chf.format(geplant)),
+            numCell(_chf.format(total), strong: isTotal),
           ],
         ],
       ),
