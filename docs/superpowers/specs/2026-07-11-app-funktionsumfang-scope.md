@@ -6,6 +6,12 @@ Dieses Dokument ist die verbindliche Ziel-Landkarte für die App. Es beschreibt,
 
 Prioritäten/Phasen durchgehend: **P1** = Herbst/Winter 2026 (Volk 1, Waage + Brutraumtemp live) · **P2** = Frühling/Sommer 2027 (2 Völker, 1. Ernte, Bio-Umstellung möglich) · **P3** = bis 2028 (4 Völker, Nachzucht) · **P4** = bis 2030 (max 8, evtl. Skalierung 32/64).
 
+> ## Abgestimmt mit Daniel (2026-07-11)
+> - **Ausrichtung: vollwertig ersetzen.** Die App wird die **vollständige, CH-/GR-konforme Betriebssoftware** inkl. gesetzlichem Behandlungsjournal + Bestandeskontrolle (PDF-Export für Kontrollen). Kein Dauerbetrieb von BelloBee/BeeSmart nötig – wir tragen die Konformität selbst.
+> - **Vorgehen: pragmatischer Mix.** Zuerst schlanke Basis (Auth + Rollen + **RLS-Härtung** + Betrieb/Mitglieder), dann **sofort** die Kernmodule (Völker → Durchsicht → Behandlung → Fütterung/Monitoring) **mit RLS von Anfang an**; Backup/Datenschutz/Benachrichtigung laufen direkt parallel. Ziel: rechtzeitig nutzbar für Volk 1 (Herbst 2026).
+> - **Roadmap: max. 8 Völker bis 2030** (die neuere Entscheidung gilt; das alte `00_Entscheidungen.md` mit „ab 2036/Pensionierung Lorena" ist überholt). Datenmodell/UI **von Beginn auf 32 (evtl. 64) Völker** auslegen, keine Hardcaps.
+> - **Mandantenfähig & vermarktbar.** Eine **spätere Vermarktung der App** ist möglich → strikt **mehrmandantenfähig** über die Entität `betriebe` (jeder Betrieb isoliert per RLS), **keine Arosa-Hardcodes** (Standort, Rasse, Defaults, Texte konfigurierbar/betriebsbezogen), generische Domänenmodelle, i18n-fähig vorsehen. Arosa ist der erste Mandant, nicht die Annahme.
+
 ---
 
 ## 1. Vision & Leitprinzipien
