@@ -10,8 +10,6 @@
 
 **Kurz:** 4 Krinner-Erdschrauben (eingerückt) → kurze Pfosten mit Nivellier-Bolzen (±25 mm) → durchgehender Doppelbalken 2×90×90 → je Volk eine ebene Schaltafel-Platte (trägt Waage + Beute, steift aus). Der Doppelbalken besteht aus zwei durchgehenden 2,8-m-Brettern (aus 3-m-Rahmenholz abgelängt), verleimt + verschraubt – durchgehend steif (Durchbiegung < 0,5 mm), braucht trotz nur 4 Beinen kein Mittelbein.
 
-> **Update Doppelbalken:** Gebaut werden **2 durchgehende 2,8-m-Bretter** je Balkenseite (3-m-Rahmenholz auf 2,8 m abgelängt). Die frühere versetzte 1,4-m-Bauweise (noch in **Abb. 4** der 6-seitigen PDF) war nur bei eingeschränktem Transport nötig – durchgehende Bretter sind strukturell besser und einfacher. Alle Masse sonst unverändert.
-
 ---
 
 ## 1 · Konzept, Höhenverstellung & Doppelbalken
@@ -79,7 +77,7 @@ Keine Stösse → durchgehend steif (Bauhaus führt Douglasie 90×90 in 3 m, das
 | Pos. | Artikel (Bauhaus) | Menge | Preis/St. | Summe |
 |---|---|---:|---:|---:|
 | 1 | Krinner Bodendübel U-FIX 91 (9 cm), feuerverzinkt | 4 | 27.90 | 111.60 |
-| 2 | Rahmenholz Douglasie 300×9×9 cm (3 m) · Doppelbalken (im Laden auf 1,4/0,7 m zuschneiden) | 4 | 39.95 | 159.80 |
+| 2 | Rahmenholz Douglasie 300×9×9 cm (3 m) · Doppelbalken (im Laden auf 2,8 m ablängen) | 4 | 39.95 | 159.80 |
 | 3 | Rahmenholz Douglasie 200×9×9 cm · für die 4 Pfosten | 1 | 26.95 | 26.95 |
 | 4 | 3-Schicht-Schaltafel 2500×500×27 mm → 4 Platten 560×500 | 1 | 33.60 | 33.60 |
 | 5 | Nivellier-Set/Bein: Einschlagmutter M16 + Sechskantschraube M16×100 verzinkt + Kontermutter + grosse Scheibe | 4 Sets | ~4.50 | ~18.– |
