@@ -168,8 +168,8 @@ enum _Priority { high, medium, normal }
 class _Todo {
   final String title;
   final String? subtitle;
-  final bool done;
+  final bool done = false;
   final _Priority priority;
 
-  const _Todo(this.title, this.subtitle, {this.done = false, this.priority = _Priority.normal});
+  const _Todo(this.title, this.subtitle, {this.priority = _Priority.normal});
 }

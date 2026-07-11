@@ -11,7 +11,6 @@ class WeightChart extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final weightSpots = ref.watch(weightChartDataProvider);
-    final tempSpots = ref.watch(temperatureChartDataProvider);
     final range = ref.watch(weightRangeProvider);
     final timeRange = ref.watch(timeRangeProvider);
     final timeLabels = ref.watch(chartTimeLabelProvider);

@@ -4,7 +4,6 @@ import 'package:bienen_app/core/supabase/supabase_config.dart';
 import 'package:bienen_app/features/monitoring/data/models/weight_reading.dart';
 import 'package:bienen_app/features/monitoring/data/models/scale.dart';
 import 'package:bienen_app/features/monitoring/data/models/scale_alert.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Time range selection for chart
 enum TimeRange { week, month, quarter }

@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bienen_app/features/monitoring/data/models/weight_reading.dart';
 import 'package:bienen_app/features/monitoring/presentation/providers/monitoring_provider.dart';
 
 // Chart data points for weight

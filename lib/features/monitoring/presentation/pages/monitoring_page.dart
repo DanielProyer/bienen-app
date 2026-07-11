@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
 import 'package:bienen_app/features/monitoring/presentation/providers/monitoring_provider.dart';
 import 'package:bienen_app/features/monitoring/presentation/widgets/alert_banner.dart';
 import 'package:bienen_app/features/monitoring/presentation/widgets/current_weight_card.dart';
