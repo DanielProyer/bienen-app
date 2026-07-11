@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,6 +42,10 @@ class MaterialDetailPage extends ConsumerWidget {
           children: [
             // Main product card
             _buildMainProductCard(context, current),
+            const SizedBox(height: 16),
+
+            // Bilder & Anleitungen (Fotos + PDF-Manuals)
+            _MediaSection(item: current),
             const SizedBox(height: 16),
 
             // Bestand (nur Verbrauchsmaterial)
@@ -386,6 +391,361 @@ class MaterialDetailPage extends ConsumerWidget {
 
   void _openUrl(String url) {
     launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Bilder & Anleitungen: bis 4 Produktfotos + bis 4 PDF-Manuals je Artikel.
+// Standard 1 Foto / 0 PDF; zeigt nur was vorhanden ist. Storage: material-media.
+// ---------------------------------------------------------------------------
+class _MediaSection extends ConsumerStatefulWidget {
+  final MaterialItem item;
+  const _MediaSection({required this.item});
+
+  @override
+  ConsumerState<_MediaSection> createState() => _MediaSectionState();
+}
+
+class _MediaSectionState extends ConsumerState<_MediaSection> {
+  static const _bucket = 'material-media';
+  static const _maxPhotos = 4;
+  static const _maxPdfs = 4;
+  bool _busy = false;
+
+  MaterialItem get _item {
+    final items = ref.watch(materialListProvider).valueOrNull ?? [];
+    return items.firstWhere((i) => i.id == widget.item.id,
+        orElse: () => widget.item);
+  }
+
+  void _snack(String msg) {
+    if (mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(msg)));
+    }
+  }
+
+  Future<ImageSource?> _pickSource() => showModalBottomSheet<ImageSource>(
+        context: context,
+        builder: (ctx) => SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Kamera'),
+                onTap: () => Navigator.pop(ctx, ImageSource.camera),
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Galerie'),
+                onTap: () => Navigator.pop(ctx, ImageSource.gallery),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Future<void> _addPhoto() async {
+    final item = _item;
+    if (item.photoUrls.length >= _maxPhotos) return;
+    final source = await _pickSource();
+    if (source == null) return;
+    setState(() => _busy = true);
+    try {
+      final file = await ImagePicker()
+          .pickImage(source: source, imageQuality: 75, maxWidth: 2000);
+      if (file == null) return;
+      final bytes = await file.readAsBytes();
+      final path = '${item.id}/photo_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      await SupabaseConfig.client.storage.from(_bucket).uploadBinary(
+            path,
+            bytes,
+            fileOptions:
+                const FileOptions(upsert: true, contentType: 'image/jpeg'),
+          );
+      final url = SupabaseConfig.client.storage.from(_bucket).getPublicUrl(path);
+      await ref
+          .read(materialListProvider.notifier)
+          .updatePhotoUrls(item.id, [...item.photoUrls, url]);
+    } catch (e) {
+      _snack('Foto fehlgeschlagen: $e');
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _removePhoto(String url) async {
+    final item = _item;
+    final updated = item.photoUrls.where((u) => u != url).toList();
+    try {
+      await ref
+          .read(materialListProvider.notifier)
+          .updatePhotoUrls(item.id, updated);
+      await _removeStorageObject(url);
+    } catch (e) {
+      _snack('Löschen fehlgeschlagen: $e');
+    }
+  }
+
+  Future<void> _addPdf() async {
+    final item = _item;
+    if (item.pdfUrls.length >= _maxPdfs) return;
+    setState(() => _busy = true);
+    try {
+      final res = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+        withData: true,
+      );
+      if (res == null || res.files.isEmpty) return;
+      final f = res.files.first;
+      final bytes = f.bytes;
+      if (bytes == null) {
+        _snack('PDF konnte nicht gelesen werden.');
+        return;
+      }
+      final path = '${item.id}/pdf_${DateTime.now().millisecondsSinceEpoch}.pdf';
+      await SupabaseConfig.client.storage.from(_bucket).uploadBinary(
+            path,
+            bytes,
+            fileOptions: const FileOptions(
+                upsert: true, contentType: 'application/pdf'),
+          );
+      final url = SupabaseConfig.client.storage.from(_bucket).getPublicUrl(path);
+      final name =
+          f.name.trim().isNotEmpty ? f.name.trim() : 'Anleitung ${item.pdfUrls.length + 1}.pdf';
+      await ref.read(materialListProvider.notifier).updatePdfs(
+        item.id,
+        [...item.pdfUrls, url],
+        [...item.pdfNames, name],
+      );
+    } catch (e) {
+      _snack('PDF fehlgeschlagen: $e');
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _removePdf(int index) async {
+    final item = _item;
+    if (index < 0 || index >= item.pdfUrls.length) return;
+    final removedUrl = item.pdfUrls[index];
+    final urls = [...item.pdfUrls]..removeAt(index);
+    final names = [...item.pdfNames];
+    if (index < names.length) names.removeAt(index);
+    try {
+      await ref.read(materialListProvider.notifier).updatePdfs(item.id, urls, names);
+      await _removeStorageObject(removedUrl);
+    } catch (e) {
+      _snack('Löschen fehlgeschlagen: $e');
+    }
+  }
+
+  Future<void> _removeStorageObject(String url) async {
+    const marker = '/$_bucket/';
+    final i = url.indexOf(marker);
+    if (i < 0) return;
+    final path = url.substring(i + marker.length).split('?').first;
+    try {
+      await SupabaseConfig.client.storage.from(_bucket).remove([path]);
+    } catch (_) {}
+  }
+
+  void _viewImage(String url) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => Dialog(
+        child: InteractiveViewer(
+          child: Image.network(
+            url,
+            errorBuilder: (_, _, _) => const Padding(
+              padding: EdgeInsets.all(24),
+              child: Icon(Icons.broken_image, size: 48),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final item = _item;
+    final photos = item.photoUrls;
+    final pdfs = item.pdfUrls;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.perm_media_outlined,
+                    size: 18, color: AppColors.honeyDark),
+                const SizedBox(width: 6),
+                const Text(
+                  'Bilder & Anleitungen',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.brown800),
+                ),
+                const Spacer(),
+                if (_busy)
+                  const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Fotos
+            const Text('Fotos',
+                style: TextStyle(fontSize: 12, color: AppColors.brown300)),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final url in photos) _photoThumb(url),
+                if (photos.length < _maxPhotos)
+                  _addTile(Icons.add_a_photo_outlined, 'Foto',
+                      _busy ? null : _addPhoto),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // PDFs
+            const Text('Anleitungen (PDF)',
+                style: TextStyle(fontSize: 12, color: AppColors.brown300)),
+            const SizedBox(height: 6),
+            if (pdfs.isEmpty)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 2),
+                child: Text('Keine Anleitung hinterlegt.',
+                    style: TextStyle(fontSize: 12, color: AppColors.brown300)),
+              ),
+            for (int i = 0; i < pdfs.length; i++) _pdfRow(i, pdfs[i]),
+            if (pdfs.length < _maxPdfs) ...[
+              const SizedBox(height: 6),
+              OutlinedButton.icon(
+                onPressed: _busy ? null : _addPdf,
+                icon: const Icon(Icons.picture_as_pdf_outlined, size: 18),
+                label: const Text('PDF hinzufügen'),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _photoThumb(String url) {
+    return SizedBox(
+      width: 76,
+      height: 76,
+      child: Stack(
+        children: [
+          GestureDetector(
+            onTap: () => _viewImage(url),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                url,
+                width: 76,
+                height: 76,
+                fit: BoxFit.cover,
+                errorBuilder: (_, _, _) => Container(
+                  width: 76,
+                  height: 76,
+                  color: AppColors.brown50,
+                  child: const Icon(Icons.broken_image,
+                      color: AppColors.brown300),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: _busy ? null : () => _removePhoto(url),
+              child: Container(
+                margin: const EdgeInsets.all(2),
+                decoration: const BoxDecoration(
+                    color: Colors.black54, shape: BoxShape.circle),
+                padding: const EdgeInsets.all(2),
+                child: const Icon(Icons.close, size: 14, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _addTile(IconData icon, String label, VoidCallback? onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        width: 76,
+        height: 76,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.honey),
+          color: AppColors.amber50,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: AppColors.honeyDark, size: 22),
+            const SizedBox(height: 2),
+            Text(label,
+                style:
+                    const TextStyle(fontSize: 11, color: AppColors.honeyDark)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _pdfRow(int i, String url) {
+    final item = _item;
+    final name = i < item.pdfNames.length && item.pdfNames[i].isNotEmpty
+        ? item.pdfNames[i]
+        : 'Anleitung ${i + 1}';
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          const Icon(Icons.picture_as_pdf, color: Colors.red, size: 20),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(name,
+                style: const TextStyle(fontSize: 13),
+                overflow: TextOverflow.ellipsis),
+          ),
+          IconButton(
+            icon: const Icon(Icons.open_in_new, size: 18),
+            color: AppColors.honeyDark,
+            tooltip: 'Öffnen',
+            onPressed: () =>
+                launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
+          ),
+          IconButton(
+            icon: Icon(Icons.delete_outline, size: 18, color: Colors.red.shade400),
+            tooltip: 'Entfernen',
+            onPressed: _busy ? null : () => _removePdf(i),
+          ),
+        ],
+      ),
+    );
   }
 }
 

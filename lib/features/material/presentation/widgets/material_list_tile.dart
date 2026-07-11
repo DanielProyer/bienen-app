@@ -79,6 +79,26 @@ class MaterialListTile extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
+                  // Vorschaubild (nur wenn Foto vorhanden)
+                  if (item.photoUrls.isNotEmpty) ...[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.network(
+                        item.photoUrls.first,
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, _, _) => Container(
+                          width: 40,
+                          height: 40,
+                          color: AppColors.brown50,
+                          child: const Icon(Icons.image_not_supported,
+                              size: 18, color: AppColors.brown300),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                  ],
                   // Info
                   Expanded(
                     child: Column(

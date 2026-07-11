@@ -16,6 +16,9 @@ class MaterialItem {
   final bool isConsumable;
   final double stockQty;
   final double minQty;
+  final List<String> photoUrls; // Produktfotos (max 4, App-seitig begrenzt)
+  final List<String> pdfUrls; // PDF-Anleitungen/Manuals (max 4)
+  final List<String> pdfNames; // Anzeigenamen zu pdfUrls (parallel)
 
   const MaterialItem({
     required this.id,
@@ -35,6 +38,9 @@ class MaterialItem {
     this.isConsumable = false,
     this.stockQty = 0,
     this.minQty = 0,
+    this.photoUrls = const [],
+    this.pdfUrls = const [],
+    this.pdfNames = const [],
   });
 
   MaterialItem copyWith({
@@ -55,6 +61,9 @@ class MaterialItem {
     bool? isConsumable,
     double? stockQty,
     double? minQty,
+    List<String>? photoUrls,
+    List<String>? pdfUrls,
+    List<String>? pdfNames,
   }) {
     return MaterialItem(
       id: id ?? this.id,
@@ -74,8 +83,14 @@ class MaterialItem {
       isConsumable: isConsumable ?? this.isConsumable,
       stockQty: stockQty ?? this.stockQty,
       minQty: minQty ?? this.minQty,
+      photoUrls: photoUrls ?? this.photoUrls,
+      pdfUrls: pdfUrls ?? this.pdfUrls,
+      pdfNames: pdfNames ?? this.pdfNames,
     );
   }
+
+  static List<String> _strList(dynamic v) =>
+      (v as List?)?.map((e) => e.toString()).toList() ?? const [];
 
   factory MaterialItem.fromJson(Map<String, dynamic> json) {
     return MaterialItem(
@@ -96,6 +111,9 @@ class MaterialItem {
       isConsumable: json['is_consumable'] as bool? ?? false,
       stockQty: (json['stock_qty'] as num?)?.toDouble() ?? 0,
       minQty: (json['min_qty'] as num?)?.toDouble() ?? 0,
+      photoUrls: _strList(json['photo_urls']),
+      pdfUrls: _strList(json['pdf_urls']),
+      pdfNames: _strList(json['pdf_names']),
     );
   }
 
@@ -118,6 +136,9 @@ class MaterialItem {
       'is_consumable': isConsumable,
       'stock_qty': stockQty,
       'min_qty': minQty,
+      'photo_urls': photoUrls,
+      'pdf_urls': pdfUrls,
+      'pdf_names': pdfNames,
     };
   }
 

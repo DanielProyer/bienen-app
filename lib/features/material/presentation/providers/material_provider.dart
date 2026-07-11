@@ -292,6 +292,42 @@ class MaterialListNotifier extends AsyncNotifier<List<MaterialItem>> {
     }
   }
 
+  Future<void> updatePhotoUrls(String id, List<String> urls) async {
+    final current = state.valueOrNull ?? [];
+    state = AsyncData([
+      for (final item in current)
+        if (item.id == id) item.copyWith(photoUrls: urls) else item,
+    ]);
+    try {
+      await SupabaseConfig.client
+          .from('materials')
+          .update({'photo_urls': urls}).eq('id', id);
+    } catch (_) {
+      state = AsyncData(current);
+      rethrow;
+    }
+  }
+
+  Future<void> updatePdfs(
+      String id, List<String> urls, List<String> names) async {
+    final current = state.valueOrNull ?? [];
+    state = AsyncData([
+      for (final item in current)
+        if (item.id == id)
+          item.copyWith(pdfUrls: urls, pdfNames: names)
+        else
+          item,
+    ]);
+    try {
+      await SupabaseConfig.client
+          .from('materials')
+          .update({'pdf_urls': urls, 'pdf_names': names}).eq('id', id);
+    } catch (_) {
+      state = AsyncData(current);
+      rethrow;
+    }
+  }
+
   Future<void> refresh() async {
     state = const AsyncLoading();
     state = AsyncData(await _fetchFromSupabase());
