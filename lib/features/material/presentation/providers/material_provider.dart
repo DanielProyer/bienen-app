@@ -52,7 +52,7 @@ class MaterialListNotifier extends AsyncNotifier<List<MaterialItem>> {
       final response = await SupabaseConfig.client
           .from('materials')
           .select()
-          .order('sort_order');
+          .order('sort_order', ascending: true);
       final items = (response as List)
           .map((json) => MaterialItem.fromJson(json as Map<String, dynamic>))
           .toList();
