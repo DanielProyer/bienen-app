@@ -11,6 +11,16 @@ Prioritäten/Phasen durchgehend: **P1** = Herbst/Winter 2026 (Volk 1, Waage + Br
 > - **Vorgehen: pragmatischer Mix.** Zuerst schlanke Basis (Auth + Rollen + **RLS-Härtung** + Betrieb/Mitglieder), dann **sofort** die Kernmodule (Völker → Durchsicht → Behandlung → Fütterung/Monitoring) **mit RLS von Anfang an**; Backup/Datenschutz/Benachrichtigung laufen direkt parallel. Ziel: rechtzeitig nutzbar für Volk 1 (Herbst 2026).
 > - **Roadmap: max. 8 Völker bis 2030** (die neuere Entscheidung gilt; das alte `00_Entscheidungen.md` mit „ab 2036/Pensionierung Lorena" ist überholt). Datenmodell/UI **von Beginn auf 32 (evtl. 64) Völker** auslegen, keine Hardcaps.
 > - **Mandantenfähig & vermarktbar.** Eine **spätere Vermarktung der App** ist möglich → strikt **mehrmandantenfähig** über die Entität `betriebe` (jeder Betrieb isoliert per RLS), **keine Arosa-Hardcodes** (Standort, Rasse, Defaults, Texte konfigurierbar/betriebsbezogen), generische Domänenmodelle, i18n-fähig vorsehen. Arosa ist der erste Mandant, nicht die Annahme.
+>
+> **Offene Fragen geklärt (2026-07-11):**
+> - **Backup:** automatische Export-Datei (DB + Fotos) in Daniels Cloud/Download **+ leichter Keep-alive** gegen die Supabase-Inaktivitäts-Pause.
+> - **Datenschutz:** Region **EU** (bereits gesetzt); Fotos beim Upload **EXIF/GPS-strippen**; amtliche Pflichtdaten nur **owner** und erst nach **3 Jahren** hart löschbar (editor = Soft-Delete).
+> - **Alerts:** Fallback **Telegram + E-Mail** (zusätzlich zu Web-Push).
+> - **Feld-Bedienung:** **Spracheingabe** (Durchsicht) + **QR/NFC-Etiketten** je Beute vorsehen.
+> - **Verkauf:** Direktverkauf **einplanen** (Produktlager, Kunden, Quittung, Etikett/Charge/Rückverfolgung, P2).
+> - **Bio/Knospe:** bio-taugliche Doku **ab Volk 1**, formelle Knospe-Zertifizierung erst **nach 1–2 Jahren**.
+> - **Wanderung:** vorerst **weglassen**, aber als **spätere Option/Erweiterung** dokumentiert (Todo).
+> - **Winterfutter-Default:** **25 kg** (alpin 1570 m, in Settings jederzeit änderbar).
 
 ---
 
@@ -694,6 +704,8 @@ Alle neuen Tabellen mit `id uuid pk`, `created_at`, `updated_at`, `created_by`, 
 ---
 
 ## 9. Offene Fragen an Daniel (priorisiert, max 8)
+
+> ✅ **Alle 8 am 2026-07-11 beantwortet** – siehe Callout „Offene Fragen geklärt" ganz oben. Die Fragen bleiben zur Nachvollziehbarkeit hier stehen.
 
 1. **Backup-Offsite-Ziel:** Wohin soll das tägliche Offsite-Backup (DB + Fotos) gehen – zweiter Supabase-Bucket, GitHub-Release, oder regelmässiger lokaler Download-Reminder? Und ist dir ein **Keep-alive** gegen die Supabase-Inaktivitäts-Pause recht (leichter Cron-Ping)?
 2. **Datenschutz/Region:** Kundennamen aus dem Verkauf und Gast-Zugang lösen revDSG aus. Sollen wir die Supabase-Region auf **EU** festlegen (falls möglich) und ein einfaches Bearbeitungsverzeichnis + EXIF-Stripping standardmässig aktivieren? Ok, dass amtliche Pflichtdaten (Bestandeskontrolle/Behandlungen) **nur du (owner)** und erst nach 3 Jahren hart löschen kannst?
