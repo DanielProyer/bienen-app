@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="300" viewBox="0 0 460 300" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="460" height="300" fill="#ffffff"/>
+  <text x="20" y="28" font-size="15" font-weight="700" fill="#4E342E">Draufsicht – Positionen anzeichnen</text>
+
+  <!-- Plattformen 560x500 -->
+  <g fill="#F3E7C6" stroke="#C9A24B">
+    <rect x="45"  y="80" width="80" height="120"/>
+    <rect x="147" y="80" width="80" height="120"/>
+    <rect x="249" y="80" width="80" height="120"/>
+    <rect x="351" y="80" width="80" height="120"/>
+  </g>
+  <text x="85" y="145" font-size="9" fill="#8a6d1e" text-anchor="middle">Platte</text>
+  <text x="85" y="157" font-size="9" fill="#8a6d1e" text-anchor="middle">560×500</text>
+
+  <!-- Balken (vorn/hinten) -->
+  <rect x="40" y="112" width="396" height="9" fill="#C79A5B" stroke="#8B5E0B"/>
+  <rect x="40" y="160" width="396" height="9" fill="#C79A5B" stroke="#8B5E0B"/>
+
+  <!-- Erdschrauben (4) -->
+  <g fill="#9e9e9e" stroke="#555">
+    <circle cx="95"  cy="116.5" r="7"/>
+    <circle cx="381" cy="116.5" r="7"/>
+    <circle cx="95"  cy="164.5" r="7"/>
+    <circle cx="381" cy="164.5" r="7"/>
+  </g>
+
+  <!-- Lücke 160 -->
+  <text x="136" y="215" font-size="9" fill="#333" text-anchor="middle">Lücke</text>
+  <text x="136" y="226" font-size="9" fill="#333" text-anchor="middle">160</text>
+
+  <!-- Beinabstand 2000 -->
+  <line x1="95" y1="250" x2="381" y2="250" stroke="#C0392B"/>
+  <line x1="95" y1="246" x2="95" y2="254" stroke="#C0392B"/><line x1="381" y1="246" x2="381" y2="254" stroke="#C0392B"/>
+  <text x="238" y="245" font-size="11" fill="#C0392B" text-anchor="middle">Beinabstand 2000 mm</text>
+
+  <!-- Rand ~400 -->
+  <line x1="40" y1="250" x2="95" y2="250" stroke="#C0392B"/>
+  <text x="60" y="266" font-size="9" fill="#C0392B" text-anchor="middle">~400</text>
+  <line x1="381" y1="250" x2="436" y2="250" stroke="#C0392B"/>
+  <text x="410" y="266" font-size="9" fill="#C0392B" text-anchor="middle">~400</text>
+
+  <!-- Achse 400 -->
+  <line x1="20" y1="116.5" x2="20" y2="164.5" stroke="#C0392B"/>
+  <text x="14" y="145" font-size="9" fill="#C0392B" transform="rotate(-90 14 145)" text-anchor="middle">Achse 400</text>
+
+  <text x="20" y="288" font-size="11" fill="#333">Rechteck 2000 × 400 mm, Beine ~400 mm eingerückt · Diagonalen gleich prüfen.</text>
+</svg>

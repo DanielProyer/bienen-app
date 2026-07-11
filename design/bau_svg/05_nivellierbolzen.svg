@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="300" viewBox="0 0 440 300" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="440" height="300" fill="#ffffff"/>
+  <text x="20" y="26" font-size="15" font-weight="700" fill="#4E342E">Nivellier-Bolzen im Pfostenkopf</text>
+
+  <!-- Pfosten -->
+  <rect x="180" y="150" width="80" height="120" fill="#D2A970" stroke="#8B5E0B" stroke-width="1.5"/>
+  <text x="270" y="215" font-size="11" fill="#333">Pfosten 90×90</text>
+
+  <!-- Einschlagmutter im Kopf -->
+  <rect x="205" y="150" width="30" height="12" fill="#8d9296" stroke="#555"/>
+  <text x="270" y="160" font-size="10" fill="#333">Einschlagmutter M16</text>
+
+  <!-- Schraube M16x100 -->
+  <rect x="214" y="120" width="12" height="34" fill="#9AA0A6" stroke="#555"/>
+  <g stroke="#555" stroke-width="0.8"><line x1="214" y1="126" x2="226" y2="126"/><line x1="214" y1="132" x2="226" y2="132"/><line x1="214" y1="138" x2="226" y2="138"/><line x1="214" y1="144" x2="226" y2="144"/></g>
+  <text x="270" y="132" font-size="10" fill="#333">Sechskantschraube M16×100</text>
+
+  <!-- Auflagescheibe -->
+  <rect x="188" y="112" width="64" height="7" fill="#7d8286" stroke="#555"/>
+  <text x="270" y="112" font-size="10" fill="#333">Auflagescheibe</text>
+
+  <!-- Kontermutter -->
+  <rect x="206" y="119" width="28" height="8" fill="#666" stroke="#444"/>
+  <text x="120" y="126" font-size="10" fill="#333" text-anchor="end">Kontermutter</text>
+
+  <!-- Doppelbalken -->
+  <rect x="150" y="84" width="150" height="27" fill="#C79A5B" stroke="#8B5E0B" stroke-width="1.5"/>
+  <text x="225" y="101" font-size="10" fill="#5a3d0a" text-anchor="middle">Doppelbalken</text>
+
+  <!-- Schwerlast-Winkel -->
+  <path d="M150 111 L138 111 L138 150" fill="none" stroke="#666" stroke-width="5"/>
+  <text x="132" y="140" font-size="10" fill="#333" text-anchor="end">Winkel</text>
+
+  <!-- ±25 mm Verstellweg -->
+  <line x1="330" y1="90" x2="330" y2="150" stroke="#C0392B" stroke-width="1.5"/>
+  <polygon points="326,96 334,96 330,88" fill="#C0392B"/>
+  <polygon points="326,144 334,144 330,152" fill="#C0392B"/>
+  <text x="340" y="124" font-size="12" font-weight="700" fill="#C0392B">±25 mm</text>
+
+  <text x="20" y="288" font-size="11" fill="#333">Ein-/Ausdrehen = Höhe stufenlos ±25 mm · mit Kontermutter fixieren.</text>
+</svg>

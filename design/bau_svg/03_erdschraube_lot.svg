@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="300" viewBox="0 0 440 300" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="440" height="300" fill="#ffffff"/>
+  <text x="20" y="28" font-size="15" font-weight="700" fill="#4E342E">Erdschraube lotrecht eindrehen</text>
+
+  <!-- Boden -->
+  <rect x="0" y="150" width="440" height="150" fill="#EBDFC3"/>
+  <line x1="0" y1="150" x2="440" y2="150" stroke="#B79E6A" stroke-width="2"/>
+  <g stroke="#CBB98A" stroke-width="1">
+    <line x1="20" y1="170" x2="40" y2="150"/><line x1="60" y1="170" x2="80" y2="150"/>
+    <line x1="360" y1="170" x2="380" y2="150"/><line x1="400" y1="170" x2="420" y2="150"/>
+  </g>
+
+  <!-- Aufnahme-Hülse (U-FIX) -->
+  <rect x="185" y="118" width="34" height="34" fill="#B0B4B8" stroke="#555"/>
+  <text x="150" y="112" font-size="11" fill="#333" text-anchor="middle">U-FIX 91</text>
+
+  <!-- Schraubkörper (Helix) -->
+  <path d="M185 152 L219 152 L210 250 L194 250 Z" fill="#9AA0A6" stroke="#555"/>
+  <g stroke="#555" stroke-width="1.4" fill="none">
+    <path d="M188 170 q14 6 26 0"/><path d="M190 190 q12 6 22 0"/>
+    <path d="M192 210 q10 6 18 0"/><path d="M195 230 q7 5 12 0"/>
+  </g>
+
+  <!-- Wasserwaage vertikal an der Hülse -->
+  <rect x="228" y="110" width="14" height="70" rx="2" fill="#FCE9A6" stroke="#B8860B"/>
+  <rect x="230" y="138" width="10" height="14" fill="#7ec96b" stroke="#4e9a3d"/>
+  <text x="290" y="150" font-size="11" fill="#333">Wasserwaage</text>
+  <text x="290" y="165" font-size="11" fill="#333">an der Hülse</text>
+
+  <!-- Lot-Pfeil -->
+  <line x1="202" y1="90" x2="202" y2="150" stroke="#C0392B" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="202" y="84" font-size="11" fill="#C0392B" text-anchor="middle">lotrecht (90°)</text>
+
+  <!-- Drehpfeil -->
+  <path d="M150 135 a26 26 0 1 1 -6 22" fill="none" stroke="#D4920B" stroke-width="2"/>
+  <polygon points="144,157 150,150 152,160" fill="#D4920B"/>
+  <text x="95" y="185" font-size="11" fill="#333" text-anchor="middle">mit Stahlstab</text>
+  <text x="95" y="200" font-size="11" fill="#333" text-anchor="middle">eindrehen</text>
+
+  <text x="20" y="285" font-size="11" fill="#333">4× lotrecht setzen · Aufnahmen grob auf gleiche Höhe.</text>
+</svg>
