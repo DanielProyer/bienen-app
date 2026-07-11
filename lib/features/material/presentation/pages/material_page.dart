@@ -716,7 +716,7 @@ class _BereichRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final labelStyle = TextStyle(
-      fontSize: isHeader ? 11 : 13.5,
+      fontSize: isHeader ? 11 : 13,
       fontWeight: FontWeight.w600,
       color: isHeader ? AppColors.brown300 : AppColors.brown800,
     );
@@ -750,7 +750,18 @@ class _BereichRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 9),
       child: Row(
         children: [
-          Expanded(flex: 4, child: Text(label, style: labelStyle)),
+          Expanded(
+            flex: 5,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(label,
+                    maxLines: 1, softWrap: false, style: labelStyle),
+              ),
+            ),
+          ),
           if (isHeader) ...[
             numCell('Bisher'),
             numCell('Geplant'),
