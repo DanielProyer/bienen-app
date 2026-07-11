@@ -25,6 +25,10 @@ class ConstructionPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Bienenstand-Bau'),
           bottom: const TabBar(
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white70,
+            indicatorColor: AppColors.amber400,
+            indicatorWeight: 3,
             tabs: [
               Tab(text: 'Bauplan', icon: Icon(Icons.architecture)),
               Tab(text: 'Dokumentation', icon: Icon(Icons.checklist)),
