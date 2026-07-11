@@ -27,11 +27,13 @@ class MaterialPage extends ConsumerWidget {
     final nachkaufenCount = ref.watch(nachkaufenCountProvider);
 
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Material & Lager'),
           bottom: TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white70,
             indicatorColor: AppColors.amber400,
@@ -65,26 +67,39 @@ class MaterialPage extends ConsumerWidget {
                   ],
                 ),
               ),
+              const Tab(text: 'Ausgaben'),
             ],
           ),
         ),
         body: materialsAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (e, _) => Center(child: Text('Fehler: $e')),
-          data: (_) => Column(
-            children: const [
-              _BereichFilterRow(),
-              Expanded(
-                child: TabBarView(
+          data: (_) {
+            final tabController = DefaultTabController.of(context);
+            return AnimatedBuilder(
+              animation: tabController,
+              builder: (context, _) {
+                // Bereich-Filter im Ausgaben-Tab (Index 3) ausblenden –
+                // dort wird stets die globale Übersicht gezeigt.
+                final showFilter = tabController.index != 3;
+                return Column(
                   children: [
-                    _EinkaufenView(),
-                    _BestandView(),
-                    _NachkaufenView(),
+                    if (showFilter) const _BereichFilterRow(),
+                    const Expanded(
+                      child: TabBarView(
+                        children: [
+                          _EinkaufenView(),
+                          _BestandView(),
+                          _NachkaufenView(),
+                          _AusgabenView(),
+                        ],
+                      ),
+                    ),
                   ],
-                ),
-              ),
-            ],
-          ),
+                );
+              },
+            );
+          },
         ),
       ),
     );
@@ -444,6 +459,265 @@ class _NachkaufenView extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Ausgaben: globale Übersicht (Bereich-Filter ignoriert)
+// ---------------------------------------------------------------------------
+class _AusgabenView extends ConsumerWidget {
+  const _AusgabenView();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final u = ref.watch(ausgabenUebersichtProvider);
+
+    if (u.bisher == 0 && u.geplant == 0) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: Text(
+            'Noch keine Käufe erfasst.',
+            style: TextStyle(color: AppColors.brown600),
+          ),
+        ),
+      );
+    }
+
+    // Alle vorkommenden Bereiche (aus bisher + geplant), stabil sortiert.
+    final bereiche = <String>{
+      ...u.bereichBisher.keys,
+      ...u.bereichGeplant.keys,
+    }.toList()
+      ..sort((a, b) {
+        final order = _bereichLabels.keys.toList();
+        return order.indexOf(a).compareTo(order.indexOf(b));
+      });
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        // Drei Kennzahl-Karten
+        Row(
+          children: [
+            Expanded(
+              child: _SummaryCard(
+                label: 'Bisher ausgegeben',
+                value: u.bisher,
+                color: AppColors.green600,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: _SummaryCard(
+                label: 'Geplant (offen)',
+                value: u.geplant,
+                color: AppColors.amber600,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: _SummaryCard(
+                label: 'Gesamt',
+                value: u.gesamt,
+                color: AppColors.honeyDark,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+
+        // Nach Bereich
+        const Text(
+          'Nach Bereich',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.brown800,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            child: Column(
+              children: [
+                const _BereichRow(
+                  label: 'Bereich',
+                  bisher: null,
+                  geplant: null,
+                  total: null,
+                  isHeader: true,
+                ),
+                const Divider(height: 1),
+                for (final b in bereiche)
+                  _BereichRow(
+                    label: _bereichLabels[b] ?? b,
+                    bisher: u.bereichBisher[b] ?? 0,
+                    geplant: u.bereichGeplant[b] ?? 0,
+                    total: (u.bereichBisher[b] ?? 0) + (u.bereichGeplant[b] ?? 0),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        // Nach Zahlungsart
+        const Text(
+          'Nach Zahlungsart',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.brown800,
+          ),
+        ),
+        const SizedBox(height: 8),
+        if (u.proZahlungsart.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              'Noch keine Käufe erfasst.',
+              style: TextStyle(color: AppColors.brown300),
+            ),
+          )
+        else
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              child: Column(
+                children: [
+                  for (final entry in (u.proZahlungsart.entries.toList()
+                        ..sort((a, b) => b.value.compareTo(a.value))))
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              entry.key,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: AppColors.brown800,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'CHF ${_chf.format(entry.value)}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.honeyDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _SummaryCard extends StatelessWidget {
+  final String label;
+  final double value;
+  final Color color;
+  const _SummaryCard({
+    required this.label,
+    required this.value,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(fontSize: 11, color: AppColors.brown600),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'CHF ${_chf.format(value)}',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BereichRow extends StatelessWidget {
+  final String label;
+  final double? bisher;
+  final double? geplant;
+  final double? total;
+  final bool isHeader;
+  const _BereichRow({
+    required this.label,
+    required this.bisher,
+    required this.geplant,
+    required this.total,
+    this.isHeader = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final labelStyle = TextStyle(
+      fontSize: isHeader ? 11 : 14,
+      fontWeight: isHeader ? FontWeight.w600 : FontWeight.w600,
+      color: isHeader ? AppColors.brown300 : AppColors.brown800,
+    );
+    final numStyle = TextStyle(
+      fontSize: isHeader ? 11 : 13,
+      fontWeight: isHeader ? FontWeight.w600 : FontWeight.normal,
+      color: isHeader ? AppColors.brown300 : AppColors.brown600,
+    );
+
+    Widget cell(String text, {bool bold = false, Color? color}) => Expanded(
+          child: Text(
+            text,
+            textAlign: TextAlign.right,
+            style: bold
+                ? const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.honeyDark,
+                  )
+                : numStyle,
+          ),
+        );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: [
+          Expanded(flex: 2, child: Text(label, style: labelStyle)),
+          if (isHeader) ...[
+            cell('bisher'),
+            cell('geplant'),
+            cell('total'),
+          ] else ...[
+            cell('CHF ${_chf.format(bisher)}'),
+            cell('CHF ${_chf.format(geplant)}'),
+            cell('CHF ${_chf.format(total)}', bold: true),
+          ],
+        ],
+      ),
     );
   }
 }

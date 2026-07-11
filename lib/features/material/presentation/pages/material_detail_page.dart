@@ -15,6 +15,8 @@ import 'package:intl/intl.dart';
 final _chf = NumberFormat('#,##0.00', 'de_CH');
 final _qty = NumberFormat('#,##0.##', 'de_CH');
 
+const _zahlungsarten = ['Barzahlung', 'Twint', 'QR-Rechnung Post', 'Andere'];
+
 class MaterialDetailPage extends ConsumerWidget {
   final MaterialItem item;
 
@@ -714,6 +716,19 @@ class _PurchaseTile extends ConsumerWidget {
                       ],
                     ),
                   ],
+                  if (p.zahlungsart != null && p.zahlungsart!.isNotEmpty) ...[
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        const Icon(Icons.payments_outlined,
+                            size: 13, color: AppColors.brown300),
+                        const SizedBox(width: 4),
+                        Text(p.zahlungsart!,
+                            style: const TextStyle(
+                                fontSize: 12, color: AppColors.brown600)),
+                      ],
+                    ),
+                  ],
                   if (p.belegNr != null && p.belegNr!.isNotEmpty)
                     Text('Beleg-Nr: ${p.belegNr}',
                         style: const TextStyle(
@@ -769,6 +784,7 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
   late final TextEditingController _shopCtrl;
   late final TextEditingController _belegNrCtrl;
   late final TextEditingController _notizCtrl;
+  String? _zahlungsart;
   Uint8List? _photoBytes;
   bool _saving = false;
 
@@ -889,6 +905,7 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
             _belegNrCtrl.text.trim().isEmpty ? null : _belegNrCtrl.text.trim(),
         belegFoto: photoUrl,
         notiz: _notizCtrl.text.trim().isEmpty ? null : _notizCtrl.text.trim(),
+        zahlungsart: _zahlungsart,
       );
 
       await ref.read(materialPurchasesProvider.notifier).addPurchase(purchase);
@@ -1002,6 +1019,20 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
                 labelText: 'Shop',
                 border: OutlineInputBorder(),
               ),
+            ),
+            const SizedBox(height: 12),
+
+            // Zahlungsart
+            DropdownButtonFormField<String>(
+              initialValue: _zahlungsart,
+              decoration: const InputDecoration(
+                labelText: 'Zahlungsart',
+                border: OutlineInputBorder(),
+              ),
+              items: _zahlungsarten
+                  .map((z) => DropdownMenuItem(value: z, child: Text(z)))
+                  .toList(),
+              onChanged: (v) => setState(() => _zahlungsart = v),
             ),
             const SizedBox(height: 12),
 

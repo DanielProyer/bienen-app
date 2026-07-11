@@ -9,6 +9,7 @@ class MaterialPurchase {
   final String? belegNr;
   final String? belegFoto;
   final String? notiz;
+  final String? zahlungsart;
 
   const MaterialPurchase({
     required this.id,
@@ -21,6 +22,7 @@ class MaterialPurchase {
     this.belegNr,
     this.belegFoto,
     this.notiz,
+    this.zahlungsart,
   });
 
   MaterialPurchase copyWith({
@@ -34,6 +36,7 @@ class MaterialPurchase {
     String? belegNr,
     String? belegFoto,
     String? notiz,
+    String? zahlungsart,
   }) {
     return MaterialPurchase(
       id: id ?? this.id,
@@ -46,6 +49,7 @@ class MaterialPurchase {
       belegNr: belegNr ?? this.belegNr,
       belegFoto: belegFoto ?? this.belegFoto,
       notiz: notiz ?? this.notiz,
+      zahlungsart: zahlungsart ?? this.zahlungsart,
     );
   }
 
@@ -63,6 +67,7 @@ class MaterialPurchase {
       belegNr: json['beleg_nr'] as String?,
       belegFoto: json['beleg_foto'] as String?,
       notiz: json['notiz'] as String?,
+      zahlungsart: json['zahlungsart'] as String?,
     );
   }
 
@@ -82,6 +87,7 @@ class MaterialPurchase {
       'beleg_nr': belegNr,
       'beleg_foto': belegFoto,
       'notiz': notiz,
+      'zahlungsart': zahlungsart,
     };
   }
 }

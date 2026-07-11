@@ -99,6 +99,74 @@ final purchasesByMaterialProvider =
   return map;
 });
 
+/// Aggregierte Ausgaben-Übersicht für den Ausgaben-Tab (global, ohne
+/// Bereich-Filter).
+class AusgabenUebersicht {
+  final double bisher;
+  final double geplant;
+  final Map<String, double> bereichBisher;
+  final Map<String, double> bereichGeplant;
+  final Map<String, double> proZahlungsart;
+
+  const AusgabenUebersicht({
+    required this.bisher,
+    required this.geplant,
+    required this.bereichBisher,
+    required this.bereichGeplant,
+    required this.proZahlungsart,
+  });
+
+  double get gesamt => bisher + geplant;
+}
+
+final ausgabenUebersichtProvider = Provider<AusgabenUebersicht>((ref) {
+  final items = ref.watch(materialListProvider).valueOrNull ?? [];
+  final purchases = ref.watch(materialPurchasesProvider).valueOrNull ?? [];
+
+  // id -> bereich für die Zuordnung Kauf -> Material.
+  final idToBereich = <String, String>{
+    for (final i in items) i.id: i.bereich,
+  };
+
+  var bisher = 0.0;
+  final bereichBisher = <String, double>{};
+  final proZahlungsart = <String, double>{};
+  for (final p in purchases) {
+    final amount = p.gesamtpreis ??
+        ((p.menge != null && p.stueckpreis != null)
+            ? p.menge! * p.stueckpreis!
+            : 0.0);
+    bisher += amount;
+
+    final bereich = idToBereich[p.materialId];
+    if (bereich != null) {
+      bereichBisher[bereich] = (bereichBisher[bereich] ?? 0) + amount;
+    }
+
+    final za = (p.zahlungsart == null || p.zahlungsart!.trim().isEmpty)
+        ? 'Unbekannt'
+        : p.zahlungsart!;
+    proZahlungsart[za] = (proZahlungsart[za] ?? 0) + amount;
+  }
+
+  var geplant = 0.0;
+  final bereichGeplant = <String, double>{};
+  for (final i in items) {
+    if (i.status != 'geplant' && i.status != 'bestellt') continue;
+    final amount = (i.priceCHF ?? 0) * i.quantity;
+    geplant += amount;
+    bereichGeplant[i.bereich] = (bereichGeplant[i.bereich] ?? 0) + amount;
+  }
+
+  return AusgabenUebersicht(
+    bisher: bisher,
+    geplant: geplant,
+    bereichBisher: bereichBisher,
+    bereichGeplant: bereichGeplant,
+    proZahlungsart: proZahlungsart,
+  );
+});
+
 class MaterialPurchasesNotifier extends AsyncNotifier<List<MaterialPurchase>> {
   @override
   Future<List<MaterialPurchase>> build() => _fetch();
