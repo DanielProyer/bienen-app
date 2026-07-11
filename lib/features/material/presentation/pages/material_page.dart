@@ -74,32 +74,36 @@ class MaterialPage extends ConsumerWidget {
         body: materialsAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (e, _) => Center(child: Text('Fehler: $e')),
-          data: (_) {
-            final tabController = DefaultTabController.of(context);
-            return AnimatedBuilder(
-              animation: tabController,
-              builder: (context, _) {
-                // Bereich-Filter im Ausgaben-Tab (Index 3) ausblenden –
-                // dort wird stets die globale Übersicht gezeigt.
-                final showFilter = tabController.index != 3;
-                return Column(
-                  children: [
-                    if (showFilter) const _BereichFilterRow(),
-                    const Expanded(
-                      child: TabBarView(
-                        children: [
-                          _EinkaufenView(),
-                          _BestandView(),
-                          _NachkaufenView(),
-                          _AusgabenView(),
-                        ],
+          // Builder: Context UNTERHALB des DefaultTabController, damit
+          // DefaultTabController.of(...) den Controller findet.
+          data: (_) => Builder(
+            builder: (context) {
+              final tabController = DefaultTabController.of(context);
+              return AnimatedBuilder(
+                animation: tabController,
+                builder: (context, _) {
+                  // Bereich-Filter im Ausgaben-Tab (Index 3) ausblenden –
+                  // dort wird stets die globale Übersicht gezeigt.
+                  final showFilter = tabController.index != 3;
+                  return Column(
+                    children: [
+                      if (showFilter) const _BereichFilterRow(),
+                      const Expanded(
+                        child: TabBarView(
+                          children: [
+                            _EinkaufenView(),
+                            _BestandView(),
+                            _NachkaufenView(),
+                            _AusgabenView(),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+                    ],
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );
