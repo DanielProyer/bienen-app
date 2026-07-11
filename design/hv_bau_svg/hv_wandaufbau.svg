@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="530" height="300" viewBox="0 0 530 300" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="530" height="300" fill="#ffffff"/>
+  <text x="20" y="26" font-size="15" font-weight="700" fill="#4E342E">Wandaufbau – Innendämmung (Querschnitt)</text>
+
+  <!-- Orientierung -->
+  <text x="30" y="44" font-size="10" font-weight="700" fill="#1565C0">AUSSEN (kalt)</text>
+  <text x="250" y="44" font-size="10" font-weight="700" fill="#C0392B" text-anchor="end">Raum (warm)</text>
+
+  <!-- Ziffern über den Schichten -->
+  <g font-size="10" font-weight="700" fill="#4E342E" text-anchor="middle">
+    <text x="74" y="60">1</text><text x="124" y="60">2</text><text x="161" y="60">3</text>
+    <text x="195" y="60" fill="#C0392B">4</text><text x="209" y="60">5</text><text x="223" y="60">6</text><text x="238" y="60">7</text>
+  </g>
+
+  <!-- Schichten, Wand x30..250, y66..216 -->
+  <rect x="30" y="66" width="88" height="150" fill="#C9C2B4" stroke="#8d8577"/>
+  <g stroke="#a49c8c" stroke-width="1"><line x1="40" y1="78" x2="60" y2="98"/><line x1="66" y1="76" x2="96" y2="106"/><line x1="40" y1="130" x2="72" y2="162"/><line x1="40" y1="186" x2="64" y2="210"/></g>
+  <rect x="118" y="66" width="12" height="150" fill="#B0BEC5"/>
+  <rect x="130" y="66" width="62" height="150" fill="#FFF1C4" stroke="#E0C048"/>
+  <g stroke="#E0C048" stroke-width="1"><path d="M130 86 L192 76 M130 116 L192 106 M130 146 L192 136 M130 176 L192 166 M130 206 L192 196" fill="none"/></g>
+  <rect x="192" y="66" width="7" height="150" fill="#C0392B"/>
+  <rect x="199" y="66" width="21" height="150" fill="#CFD8DC" stroke="#90A4AE"/>
+  <rect x="220" y="66" width="6" height="150" fill="#8E7CC3"/>
+  <rect x="226" y="66" width="24" height="150" fill="#E9D9B0" stroke="#C9A24B"/>
+  <g stroke="#C9A24B" stroke-width="0.8"><line x1="226" y1="106" x2="250" y2="106"/><line x1="226" y1="146" x2="250" y2="146"/><line x1="226" y1="186" x2="250" y2="186"/></g>
+
+  <!-- Diffusions-Pfeil innen->aussen, an Dampfbremse gestoppt -->
+  <line x1="250" y1="238" x2="202" y2="238" stroke="#1565C0" stroke-width="2"/>
+  <polygon points="202,233 192,238 202,243" fill="#1565C0"/>
+  <text x="255" y="242" font-size="9" fill="#1565C0">Wasserdampf (warm/feucht)</text>
+  <text x="188" y="256" font-size="9" font-weight="700" fill="#C0392B" text-anchor="middle">↑ hier gestoppt</text>
+
+  <!-- Legende -->
+  <g font-size="10.5" fill="#333">
+    <text x="300" y="76">1  Bestandswand (kalt)</text>
+    <text x="300" y="96">2  Ausgleichs-/Kleberschicht</text>
+    <text x="300" y="116">3  Dämmung (dünn, 4–8 cm)</text>
+    <text x="300" y="136" font-weight="700" fill="#C0392B">4  Dampfbremse – raumseitig (warm)!</text>
+    <text x="300" y="156">5  Aquapanel / Trägerplatte</text>
+    <text x="300" y="176">6  Verbundabdichtung (Nassbereich)</text>
+    <text x="300" y="196">7  Fliesen / abwaschbarer Belag</text>
+  </g>
+
+  <text x="20" y="280" font-size="10.5" fill="#C0392B">Dampfbremse IMMER raumseitig (warm) + lückenlos verkleben – sonst Kondensat &amp; Schimmel.</text>
+  <text x="20" y="295" font-size="9.5" fill="#666">Schematisch, nicht maßstäblich. Bauphysik vor Ausführung mit Fachmann prüfen.</text>
+</svg>

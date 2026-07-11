@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="480" height="300" fill="#ffffff"/>
+  <text x="20" y="26" font-size="15" font-weight="700" fill="#4E342E">Bodenablauf mit Wachsrückhalt</text>
+
+  <!-- Boden mit Gefälle zum Ablauf -->
+  <polygon points="30,90 176,114 176,132 30,110" fill="#C9C2B4" stroke="#8d8577"/>
+  <polygon points="214,114 372,90 372,110 214,132" fill="#C9C2B4" stroke="#8d8577"/>
+  <line x1="30" y1="90" x2="176" y2="114" stroke="#D4920B" stroke-width="3"/>
+  <line x1="214" y1="114" x2="372" y2="90" stroke="#D4920B" stroke-width="3"/>
+  <text x="70" y="86" font-size="10" fill="#C0392B">Gefälle 1–2% →</text>
+  <text x="300" y="86" font-size="10" fill="#C0392B" text-anchor="end">← Gefälle 1–2%</text>
+
+  <!-- Edelstahl-Bodenablauf -->
+  <rect x="168" y="114" width="54" height="40" fill="#CFD8DC" stroke="#607D8B" stroke-width="1.5"/>
+  <rect x="168" y="114" width="54" height="9" fill="#90A4AE" stroke="#607D8B"/>
+  <g stroke="#607D8B" stroke-width="1"><line x1="176" y1="114" x2="176" y2="123"/><line x1="184" y1="114" x2="184" y2="123"/><line x1="192" y1="114" x2="192" y2="123"/><line x1="200" y1="114" x2="200" y2="123"/><line x1="208" y1="114" x2="208" y2="123"/><line x1="214" y1="114" x2="214" y2="123"/></g>
+
+  <!-- Absetz-/Schlammfangeimer -->
+  <polygon points="160,154 230,154 224,230 166,230" fill="#E3F2FD" stroke="#607D8B" stroke-width="1.5"/>
+  <rect x="167" y="162" width="56" height="10" fill="#F5D78E" stroke="#E0C048"/>
+  <text x="195" y="170" font-size="8.5" fill="#8B5E0B" text-anchor="middle">Wachs oben</text>
+  <text x="195" y="206" font-size="8.5" fill="#607D8B" text-anchor="middle">Schlamm/</text>
+  <text x="195" y="217" font-size="8.5" fill="#607D8B" text-anchor="middle">Feststoffe</text>
+
+  <!-- Siphon (U) + Auslauf -->
+  <path d="M230 196 L256 196 L256 240 Q256 250 268 250 L286 250 Q298 250 298 240 L298 202 L340 202" fill="none" stroke="#B0BEC5" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M230 196 L256 196 L256 240 Q256 250 268 250 L286 250 Q298 250 298 240 L298 202 L340 202" fill="none" stroke="#78909C" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <polygon points="340,196 356,202 340,208" fill="#78909C"/>
+  <text x="277" y="272" font-size="10" fill="#37474F" text-anchor="middle">Siphon (Geruchsverschluss)</text>
+
+  <!-- Labels -->
+  <g font-size="10" fill="#333">
+    <line x1="221" y1="118" x2="300" y2="126" stroke="#999" stroke-width="0.8"/>
+    <text x="304" y="129">Siebeinsatz (Grobsieb)</text>
+    <line x1="222" y1="139" x2="300" y2="152" stroke="#999" stroke-width="0.8"/>
+    <text x="304" y="155">Edelstahl-Bodenablauf</text>
+    <line x1="230" y1="180" x2="300" y2="180" stroke="#999" stroke-width="0.8"/>
+    <text x="304" y="183">Absetz-/Schlammfangeimer</text>
+    <text x="344" y="199" font-size="10" fill="#37474F">zur Kanalisation</text>
+  </g>
+
+  <text x="20" y="292" font-size="10.5" fill="#C0392B">Wachs NIE direkt in den Abfluss – Grobsieb + Absetzeimer halten es zurück.</text>
+</svg>

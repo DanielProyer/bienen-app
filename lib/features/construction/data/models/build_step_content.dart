@@ -184,6 +184,7 @@ const kHonigverarbeitungSteps = <BuildStepContent>[
     ],
     soll: 'Raumhöhe ≥ 2,30 m; klare rein→sauber-Führung.',
     tip: 'Lieber 10–12 m² sehr gut ausbauen als 18 m² halb. Reale Masse später mit Daniel eintragen.',
+    drawings: ['assets/hv_bau/hv_grundriss.png'],
   ),
   BuildStepContent(
     key: 'hv_daemmung',
@@ -196,6 +197,7 @@ const kHonigverarbeitungSteps = <BuildStepContent>[
     ],
     soll: 'Dampfbremse absolut dicht (Taupunkt-Schutz).',
     tip: 'Bauphysikalisch heikel: vor Ausführung kurz mit Fachmann/Bauphysiker abklären – verhindert teure Schimmelschäden.',
+    drawings: ['assets/hv_bau/hv_wandaufbau.png'],
   ),
   BuildStepContent(
     key: 'hv_boden',
@@ -207,6 +209,7 @@ const kHonigverarbeitungSteps = <BuildStepContent>[
     ],
     soll: 'Fugenlos, abwaschbar, säurebeständig.',
     tip: 'Alpin: Epoxid härtet unter ~10–15 °C schlecht → im Sommer/Frühherbst bei aufgeheiztem Untergrund applizieren.',
+    drawings: ['assets/hv_bau/hv_boden_hohlkehle.png'],
   ),
   BuildStepContent(
     key: 'hv_waende',
@@ -239,6 +242,7 @@ const kHonigverarbeitungSteps = <BuildStepContent>[
     ],
     soll: 'Kein Wachs im Rohr; Ableitung geklärt.',
     tip: 'Ableitung in Kanalisation/Sickergrube vorab mit der Gemeinde (Gewässerschutz) abklären.',
+    drawings: ['assets/hv_bau/hv_abfluss.png'],
   ),
   BuildStepContent(
     key: 'hv_lueftung',

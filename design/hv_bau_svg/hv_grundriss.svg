@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="480" height="300" fill="#ffffff"/>
+  <text x="20" y="26" font-size="15" font-weight="700" fill="#4E342E">Grundriss – Arbeitsfluss (Einbahnstrasse)</text>
+
+  <!-- Schleuderraum -->
+  <rect x="24" y="46" width="336" height="196" fill="#ffffff" stroke="#8B5E0B" stroke-width="2"/>
+  <!-- Zonen -->
+  <rect x="26" y="48" width="150" height="192" fill="#FFF3E0"/>
+  <rect x="230" y="48" width="128" height="192" fill="#E8F5E9"/>
+  <text x="60" y="66" font-size="10" font-weight="700" fill="#B8860B">SCHMUTZIG</text>
+  <text x="268" y="66" font-size="10" font-weight="700" fill="#2E7D32">SAUBER</text>
+
+  <!-- Lagerraum -->
+  <rect x="368" y="46" width="88" height="196" fill="#E3F2FD" stroke="#607D8B" stroke-width="1.5"/>
+  <text x="412" y="120" font-size="10" fill="#37474F" text-anchor="middle">kühler</text>
+  <text x="412" y="133" font-size="10" fill="#37474F" text-anchor="middle">Lagerraum</text>
+  <text x="412" y="146" font-size="9" fill="#607D8B" text-anchor="middle">10–15 °C</text>
+  <g stroke="#90A4AE" stroke-width="1.5"><line x1="380" y1="165" x2="444" y2="165"/><line x1="380" y1="185" x2="444" y2="185"/><line x1="380" y1="205" x2="444" y2="205"/></g>
+
+  <!-- Fluss-Pfeil -->
+  <line x1="40" y1="150" x2="342" y2="150" stroke="#D4920B" stroke-width="8" stroke-linecap="round" opacity="0.35"/>
+  <polygon points="342,142 358,150 342,158" fill="#D4920B" opacity="0.55"/>
+
+  <!-- Eingang -->
+  <text x="14" y="147" font-size="10" fill="#333" transform="rotate(-90 14 147)" text-anchor="middle">rein (volle Waben)</text>
+  <rect x="20" y="130" width="6" height="40" fill="#8B5E0B"/>
+
+  <!-- Handwaschbecken -->
+  <rect x="40" y="82" width="60" height="34" rx="4" fill="#CFD8DC" stroke="#607D8B"/>
+  <text x="70" y="100" font-size="9" fill="#37474F" text-anchor="middle">Handwasch-</text>
+  <text x="70" y="111" font-size="9" fill="#37474F" text-anchor="middle">becken + Spüle</text>
+
+  <!-- Stationen -->
+  <g font-size="9.5" fill="#4E342E" text-anchor="middle">
+    <!-- 2 Entdeckelung -->
+    <rect x="60" y="128" width="70" height="46" rx="5" fill="#F3E7C6" stroke="#C9A24B"/>
+    <text x="95" y="150">Entdeckelung</text>
+    <text x="95" y="163">(Wanne)</text>
+    <!-- 3 Schleuder -->
+    <circle cx="185" cy="151" r="26" fill="#CFD8DC" stroke="#607D8B"/>
+    <text x="185" y="148">Honig-</text>
+    <text x="185" y="160">schleuder</text>
+    <!-- 4 Sieb/Klärfass -->
+    <rect x="232" y="128" width="66" height="46" rx="5" fill="#F3E7C6" stroke="#C9A24B"/>
+    <text x="265" y="150">Sieb /</text>
+    <text x="265" y="163">Klärfass</text>
+    <!-- 5 Abfülltank -->
+    <rect x="304" y="128" width="52" height="46" rx="5" fill="#F0C868" stroke="#8B5E0B"/>
+    <text x="330" y="150">Abfüll-</text>
+    <text x="330" y="163">tank</text>
+  </g>
+  <!-- Nummern-Badges -->
+  <g font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">
+    <circle cx="26" cy="150" r="9" fill="#43A047"/><text x="26" y="154">1</text>
+    <circle cx="64" cy="132" r="9" fill="#D4920B"/><text x="64" y="136">2</text>
+    <circle cx="164" cy="130" r="9" fill="#D4920B"/><text x="164" y="134">3</text>
+    <circle cx="236" cy="132" r="9" fill="#D4920B"/><text x="236" y="136">4</text>
+    <circle cx="308" cy="132" r="9" fill="#D4920B"/><text x="308" y="136">5</text>
+    <circle cx="362" cy="150" r="9" fill="#43A047"/><text x="362" y="154">6</text>
+  </g>
+  <text x="330" y="210" font-size="9" fill="#2E7D32" text-anchor="middle">fertige Gläser →</text>
+
+  <text x="20" y="266" font-size="10.5" fill="#333">1 Eingang · 2 Entdeckeln · 3 Schleudern · 4 Sieben/Klären · 5 Abfüllen · 6 Ausgang → Lager</text>
+  <text x="20" y="284" font-size="10.5" fill="#C0392B">Wege rein→sauber dürfen sich NICHT kreuzen · warm arbeiten (18–25 °C), kühl &amp; dunkel lagern.</text>
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="510" height="300" viewBox="0 0 510 300" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="510" height="300" fill="#ffffff"/>
+  <text x="20" y="26" font-size="15" font-weight="700" fill="#4E342E">Boden: Epoxidharz mit Hohlkehle</text>
+
+  <!-- Wand (links, aufsteigend) -->
+  <rect x="60" y="50" width="70" height="150" fill="#E6E1D6" stroke="#B0A990"/>
+  <text x="95" y="44" font-size="9" fill="#666" text-anchor="middle">Wand</text>
+
+  <!-- Untergrund/Rohboden -->
+  <rect x="60" y="200" width="360" height="60" fill="#C9C2B4" stroke="#8d8577"/>
+  <g stroke="#a49c8c" stroke-width="1"><line x1="80" y1="212" x2="98" y2="230"/><line x1="150" y1="216" x2="172" y2="238"/><line x1="250" y1="212" x2="268" y2="230"/><line x1="340" y1="218" x2="360" y2="240"/></g>
+  <text x="200" y="238" font-size="10" fill="#5b5342">Untergrund (Beton/Estrich)</text>
+
+  <!-- Grundierung/Primer (dünne Linie) -->
+  <rect x="130" y="196" width="290" height="4" fill="#9575CD"/>
+  <!-- Epoxid-Deckschicht 2-3mm auf Boden -->
+  <rect x="130" y="188" width="290" height="8" fill="#D4920B"/>
+  <!-- Hochgezogener Sockel an der Wand -->
+  <rect x="122" y="120" width="8" height="76" fill="#D4920B"/>
+  <!-- Hohlkehle (Viertelkreis in der Ecke) -->
+  <path d="M130 168 A38 38 0 0 1 168 196 L130 196 Z" fill="#E8A93B" stroke="#B8860B"/>
+  <path d="M130 168 A38 38 0 0 1 168 196" fill="none" stroke="#8B5E0B" stroke-width="2"/>
+
+  <!-- Sockelhöhe Bemassung -->
+  <line x1="150" y1="120" x2="150" y2="196" stroke="#C0392B"/>
+  <polygon points="146,126 154,126 150,118" fill="#C0392B"/>
+  <polygon points="146,190 154,190 150,198" fill="#C0392B"/>
+  <text x="158" y="160" font-size="11" fill="#C0392B">Sockel / Aufkantung 10–15 cm</text>
+
+  <!-- Labels mit Leader -->
+  <g font-size="10" fill="#333">
+    <line x1="255" y1="192" x2="320" y2="150" stroke="#999" stroke-width="0.8"/>
+    <text x="322" y="148">Epoxid-Deckschicht 2–3 mm</text>
+    <line x1="255" y1="198" x2="320" y2="176" stroke="#999" stroke-width="0.8"/>
+    <text x="322" y="179">Grundierung / Haftbrücke</text>
+    <line x1="150" y1="150" x2="220" y2="110" stroke="#999" stroke-width="0.8"/>
+    <text x="212" y="106" font-size="10" fill="#8B5E0B" font-weight="700">Hohlkehle (Rundung statt 90°-Ecke)</text>
+  </g>
+
+  <text x="20" y="282" font-size="10.5" fill="#333">Fugenlose Hohlkehle = kein Wachs-/Schmutznest in der Ecke, leicht abwaschbar. R10/R11 rutschfest.</text>
+</svg>
