@@ -15,6 +15,8 @@ import 'package:bienen_app/features/recherche/pages/markdown_viewer_page.dart';
 import 'package:bienen_app/features/entscheidungen/pages/entscheidungen_page.dart';
 import 'package:bienen_app/features/material/presentation/pages/material_page.dart'
     as material;
+import 'package:bienen_app/features/monitoring/presentation/pages/monitoring_page.dart';
+import 'package:bienen_app/features/monitoring/presentation/pages/scale_settings_page.dart';
 import 'package:bienen_app/shared/widgets/app_shell.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -176,6 +178,16 @@ final appRouter = GoRouter(
         GoRoute(
           path: '/material',
           builder: (context, state) => const material.MaterialPage(),
+        ),
+        GoRoute(
+          path: '/monitoring',
+          builder: (context, state) => const MonitoringPage(),
+          routes: [
+            GoRoute(
+              path: 'settings',
+              builder: (context, state) => const ScaleSettingsPage(),
+            ),
+          ],
         ),
       ],
     ),
