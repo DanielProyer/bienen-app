@@ -14,7 +14,15 @@ Das Monitoring (Waage-Tab) soll vom Start (2 Völker, Frühling 2027) bis zum Vo
 ## 3. Erweiterung
 
 ### 3.1 Neue Tabelle `funkstationen` (Gateways/Basisstationen)
-Eine Funkstation empfängt mehrere Waagen und funkt in die Cloud (HiveWatch: 4G/LTE-M, 2G-Fallback, SIM inkl.). **HiveWatch: 1 Funkstation = 8 Kanäle** (Waagen + Brutraumsensoren gemischt). Je Volk = 1 Waage + 1 Brutraumsensor = 2 Kanäle → 1 Funkstation für ~4 Völker, 2 für 8. StarterSet = Funkstation + 1 Waage.
+Eine Funkstation empfängt mehrere Waagen/Sensoren und funkt in die Cloud (HiveWatch: 4G/LTE-M, 2G-Fallback, SIM inkl.).
+
+**Kanal-Kapazität (verbindlich): 1 Funkstation = 8 Kanäle** (`funkstationen.max_kanaele`, Default 8). Ein Kanal = 1 Waage ODER 1 Brutraumsensor. **Modell: 1 Funkstation pro Stand (4 Völker):**
+- **Modus A (Standard):** 4× Gewicht + 4× Temperatur (Gewicht + Temp je Volk) = 8 Kanäle.
+- **Modus B:** 8× Gewicht (nur Waagen) = 8 Kanäle.
+
+Bis 8 Völker = 2 Stände = 2 Funkstationen. StarterSet = Funkstation + 1 Waage.
+
+**App-Anforderung:** Belegung je Funkstation als **X/8 Kanäle** anzeigen; Waage + Temperatur je Volk zuordenbar; beide Modi (A/B) abbilden; Warnung, wenn > max_kanaele belegt.
 - `id` (uuid), `name`, `vendor` (default 'HiveWatch'), `gateway_id`/`hardware_id`,
   `location`, `status` ('online'|'offline'|'unbekannt'), `battery_pct` (numeric),
   `signal` (numeric/text), `last_seen_at` (timestamptz), `api_config` (jsonb),
