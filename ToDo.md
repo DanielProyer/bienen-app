@@ -1,7 +1,7 @@
 # ToDo — Bienen Arosa
 
 **Stand:** 2026-07-11 · **Phase:** P1-Fundament · **App-Version:** 1.7.2+24
-**Aktueller Fokus:** Auth-&-Rollen-Fundament (mandantenfähig) — Spec + Plan 1 (DB) fertig; **Plan 1 auf der Produktions-DB ausgeführt (A01–A12, alle Tests grün, Live-App unverändert)**. Als Nächstes: Plan 2 (App-Auth-Schicht) + Plan 3 (Rollout/Cutover).
+**Aktueller Fokus:** Auth-&-Rollen-Fundament — **Plan 1 (DB) + Plan 2 (App-Schicht) fertig**. Als Nächstes: Plan 3 (Rollout & Cutover) — Dashboard-Config, Release 1.8.0, Owner-Registrierung, Bootstrap, Test-Gate, Cutover.
 
 > Lebende Status-Liste (Arbeitsschluss-Methode, siehe `../CLAUDE.md`). Roadmaps: `docs/roadmap-app.md` (Software) · `docs/roadmap-projekt.md` (Imkerei) · Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`.
 
@@ -26,9 +26,15 @@
   - **Verifiziert:** Mandanten-Isolation greift (Fremd-Insert/-Select blockiert) · Doppelgründung + letzter-Owner (Degradierung **und** Soft-Delete) werfen BA0xx · `created_by`/`betrieb_id` nicht fälschbar · **Live-App unverändert** (anon sieht weiterhin alle 52 materials) · Advisor: `function_search_path_mutable`/`rls_enabled_no_policy`/0028 = **0**.
   - Commits `306259b`, `5306aa1`, `39321c6`.
 
-## 🔴 OFFEN — als Nächstes
+- [x] ✓ **Plan 2 (App-Auth-Schicht) UMGESETZT** (2026-07-11) — `docs/superpowers/plans/2026-07-11-auth-fundament-2-app.md`, alle 10 Aufgaben. **analyze sauber, 34/34 Tests grün** (vorher: 2 Analyzer-Fehler + 1 roter Test im Repo).
+  - `features/auth/`: Domain (`Rolle`/`AuthSession`/`AuthGateway` mit `Angemeldet`/`OhneBetrieb`/`KeineSession`) · `AuthStatus`-Gate · `SupabaseAuthGateway` (liest `betrieb_id`/`rolle` aus dem JWT-Claim, mappt BA0xx+AuthException auf Klartext) · `FakeAuthGateway` (Tests ohne Netz) · `AuthController` (refreshSession nach Gründung/Einladung, Daten-Provider-Invalidierung).
+  - Screens: Login · Registrieren · Mail-bestätigen · Onboarding (`betrieb_gruenden`) · Einladungs-Code · Konto (Rolle, Logout, Einladen mit **einmalig** sichtbarem Code). Konto-Einstieg in der Dashboard-AppBar.
+  - Router-Gate: `laden`→Splash (navigiert bewusst nicht), `abgemeldet`→/login, `ohneBetrieb`→/onboarding.
+  - Härtungen: `materials`-Auto-Seed **entfernt** (hätte jedem Mandanten Arosa-Daten untergeschoben) · stille `catch`→Seed/`[]`-Fallbacks entfernt (maskierten RLS-/Auth-Fehler) · tote Arosa-`_seedData` gelöscht · `<betrieb_id>/`-Storage-Pfade · `index.html`-Auth-Callback-Guard.
+  - Vorab-Fix: veralteter `construction_progress_test` repariert (`progressFor` public, testet jetzt die Bereichs-Trennung).
+  - Commits `f641530`, `d990012`, `5a4e…`, `1e7…`, gepusht.
 
-- [ ] **🟡 Plan 2 (App-Auth-Schicht, Flutter)** schreiben & umsetzen — `AuthGateway`/`AuthStatus`/Router-Gate, Login/Register/Bestätigen/Onboarding/Einladungs-Code-Screens, Provider-Invalidierung bei Auth-Wechsel, `materials`-Auto-Seed entfernen, `<betrieb_id>/`-Upload-Pfade.
+## 🔴 OFFEN — als Nächstes
 - [ ] **🟡 Plan 3 (Rollout & Cutover)** schreiben & umsetzen — Dashboard-Config (Auth-Hook aktivieren, Confirm-Email, Site-URL), Daniels Bootstrap (`betrieb_gruenden` + Backfill `WHERE betrieb_id IS NULL` + NOT NULL/Default unter `ACCESS EXCLUSIVE`), authenticated-Rollen-Test-Gate, Migration B (public-Policies droppen + `revoke from anon`).
 - [ ] **🟡 Lorena invite-ready** — Mechanismus fertig; ihre Einladung erst erstellen, wenn App so weit (Daniel entscheidet). E-Mail dann nötig.
 
