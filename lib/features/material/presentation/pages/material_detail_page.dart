@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bienen_app/core/supabase/supabase_config.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/material/data/models/material_item.dart';
 import 'package:bienen_app/features/material/data/models/material_alternatives.dart';
 import 'package:bienen_app/features/material/data/models/material_purchase.dart';
@@ -457,7 +458,14 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
           .pickImage(source: source, imageQuality: 75, maxWidth: 2000);
       if (file == null) return;
       final bytes = await file.readAsBytes();
-      final path = '${item.id}/photo_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final betriebId = ref.read(currentBetriebIdProvider);
+      if (betriebId == null) {
+        _snack('Kein Betrieb aktiv — bitte neu anmelden.');
+        return;
+      }
+      // <betrieb_id>/-Praefix: mandanten-scoped (Storage-Policies A10).
+      final path =
+          '$betriebId/${item.id}/photo_${DateTime.now().millisecondsSinceEpoch}.jpg';
       await SupabaseConfig.client.storage.from(_bucket).uploadBinary(
             path,
             bytes,
@@ -505,7 +513,13 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
         _snack('PDF konnte nicht gelesen werden.');
         return;
       }
-      final path = '${item.id}/pdf_${DateTime.now().millisecondsSinceEpoch}.pdf';
+      final betriebId = ref.read(currentBetriebIdProvider);
+      if (betriebId == null) {
+        _snack('Kein Betrieb aktiv — bitte neu anmelden.');
+        return;
+      }
+      final path =
+          '$betriebId/${item.id}/pdf_${DateTime.now().millisecondsSinceEpoch}.pdf';
       await SupabaseConfig.client.storage.from(_bucket).uploadBinary(
             path,
             bytes,
@@ -1238,8 +1252,14 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
     try {
       String? photoUrl;
       if (_photoBytes != null) {
+        final betriebId = ref.read(currentBetriebIdProvider);
+        if (betriebId == null) {
+          setState(() => _saving = false);
+          return;
+        }
+        // Belege sind finanz-/personenbezogen -> mandanten-scoped Pfad.
         final path =
-            '${item.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+            '$betriebId/${item.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
         await SupabaseConfig.client.storage
             .from('material-receipts')
             .uploadBinary(

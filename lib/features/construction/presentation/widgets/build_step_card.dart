@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/construction/data/models/build_step_content.dart';
 import 'package:bienen_app/features/construction/data/models/construction_step.dart';
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
@@ -56,9 +57,17 @@ class BuildStepCard extends ConsumerWidget {
       );
       if (file == null) return;
       final Uint8List bytes = await file.readAsBytes();
+      final betriebId = ref.read(currentBetriebIdProvider);
+      if (betriebId == null) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Kein Betrieb aktiv — bitte neu anmelden.')));
+        }
+        return;
+      }
       await ref
           .read(constructionStepsProvider.notifier)
-          .attachPhoto(content.key, bytes);
+          .attachPhoto(content.key, bytes, betriebId);
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
