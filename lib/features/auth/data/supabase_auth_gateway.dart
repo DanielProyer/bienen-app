@@ -72,6 +72,18 @@ class SupabaseAuthGateway implements AuthGateway {
   Future<void> einladungAnnehmen(String code) =>
       _rpc('einladung_annehmen', {'p_code': code});
 
+  @override
+  Future<String> mitgliedEinladen(
+      {required String email, required Rolle rolle}) async {
+    try {
+      final code = await _client.rpc('mitglied_einladen',
+          params: {'p_email': email.trim(), 'p_rolle': rolle.name});
+      return code as String;
+    } on PostgrestException catch (e) {
+      throw AuthFehler(_rpcKlartext(e.code), code: e.code);
+    }
+  }
+
   Future<void> _rpc(String fn, Map<String, dynamic> params) async {
     try {
       await _client.rpc(fn, params: params);

@@ -1,4 +1,5 @@
 import 'package:bienen_app/features/auth/domain/auth_session.dart';
+import 'package:bienen_app/features/auth/domain/rolle.dart';
 
 /// Ergebnis von currentSession/signIn: der Betriebs-lose Fall ist ein
 /// ZUSTAND (-> Onboarding), kein Fehler.
@@ -47,6 +48,11 @@ abstract class AuthGateway {
 
   /// Loest einen Einladungs-Code ein (RPC einladung_annehmen).
   Future<void> einladungAnnehmen(String code);
+
+  /// Erzeugt eine Einladung (RPC mitglied_einladen, nur owner) und liefert den
+  /// Klartext-Code — der wird serverseitig NUR gehasht gespeichert und ist
+  /// daher EINMALIG sichtbar.
+  Future<String> mitgliedEinladen({required String email, required Rolle rolle});
 
   Future<void> signOut();
 }

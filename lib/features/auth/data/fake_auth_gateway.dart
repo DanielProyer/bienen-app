@@ -10,10 +10,14 @@ class FakeAuthGateway implements AuthGateway {
   AuthFehler? wirftBeiEinladung;
   bool signUpBestaetigungNoetig;
 
+  AuthFehler? wirftBeiEinladen;
+
   int signOutAufrufe = 0;
   int refreshAufrufe = 0;
   String? letzterGruendungsName;
   String? letzterCode;
+  String? letzteEingeladeneEmail;
+  Rolle? letzteEingeladeneRolle;
 
   FakeAuthGateway({
     this.ergebnis = const KeineSession(),
@@ -58,6 +62,15 @@ class FakeAuthGateway implements AuthGateway {
     if (wirftBeiEinladung != null) throw wirftBeiEinladung!;
     letzterCode = code;
     ergebnis = const Angemeldet(beispielSession);
+  }
+
+  @override
+  Future<String> mitgliedEinladen(
+      {required String email, required Rolle rolle}) async {
+    if (wirftBeiEinladen != null) throw wirftBeiEinladen!;
+    letzteEingeladeneEmail = email;
+    letzteEingeladeneRolle = rolle;
+    return 'TEST-CODE-1234';
   }
 
   @override
