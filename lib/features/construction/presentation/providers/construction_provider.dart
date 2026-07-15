@@ -20,7 +20,8 @@ typedef ConstructionProgress = ({int done, int total});
 
 /// Fortschritt nur über die Schritte eines Bereichs (Bienenstand ODER
 /// Honigverarbeitung) – beide liegen in derselben Tabelle, per step_key getrennt.
-ConstructionProgress _progressFor(
+/// Reine Funktion (public), damit sie ohne Riverpod-Container testbar ist.
+ConstructionProgress progressFor(
     List<ConstructionStep> steps, List<BuildStepContent> defs) {
   final keys = {for (final d in defs) d.key};
   final done = steps.where((s) => s.isDone && keys.contains(s.stepKey)).length;
@@ -29,12 +30,12 @@ ConstructionProgress _progressFor(
 
 final constructionProgressProvider = Provider<ConstructionProgress>((ref) {
   final steps = ref.watch(constructionStepsProvider).valueOrNull ?? const [];
-  return _progressFor(steps, kBuildSteps);
+  return progressFor(steps, kBuildSteps);
 });
 
 final honigverarbeitungProgressProvider = Provider<ConstructionProgress>((ref) {
   final steps = ref.watch(constructionStepsProvider).valueOrNull ?? const [];
-  return _progressFor(steps, kHonigverarbeitungSteps);
+  return progressFor(steps, kHonigverarbeitungSteps);
 });
 
 /// Fortschritt je stepKey für schnellen Zugriff in der UI.
