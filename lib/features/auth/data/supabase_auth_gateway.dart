@@ -1,8 +1,28 @@
+import 'dart:convert';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:bienen_app/features/auth/domain/auth_gateway.dart';
 import 'package:bienen_app/features/auth/domain/auth_session.dart';
 import 'package:bienen_app/features/auth/domain/rolle.dart';
+
+/// Dekodiert den Payload eines JWT (mittlerer Teil, base64url) zu einer Map.
+/// WICHTIG: Der Custom-Access-Token-Hook (A05) setzt betrieb_id/rolle in die
+/// JWT-CLAIMS (`app_metadata`), NICHT in `auth.users.raw_app_meta_data`. Deshalb
+/// darf man sie NICHT aus `session.user.appMetadata` lesen (das ist das
+/// DB-Feld) — sondern aus dem dekodierten Access-Token.
+Map<String, dynamic> jwtPayload(String token) {
+  final parts = token.split('.');
+  if (parts.length != 3) return const {};
+  try {
+    final decoded =
+        utf8.decode(base64Url.decode(base64Url.normalize(parts[1])));
+    final map = json.decode(decoded);
+    return map is Map<String, dynamic> ? map : const {};
+  } catch (_) {
+    return const {};
+  }
+}
 
 /// Supabase-Implementierung. betrieb_id/rolle kommen NICHT aus einer Query,
 /// sondern aus dem JWT-app_metadata-Claim (Auth-Hook `custom_access_token`,
@@ -13,10 +33,13 @@ class SupabaseAuthGateway implements AuthGateway {
 
   AuthErgebnis _ausSession(Session? session) {
     final user = session?.user;
-    if (user == null) return const KeineSession();
-    final meta = user.appMetadata;
-    final betriebId = meta['betrieb_id'] as String?;
-    final rolle = Rolle.vonString(meta['rolle'] as String?);
+    if (session == null || user == null) return const KeineSession();
+    // Claims aus dem Access-Token (JWT), NICHT aus user.appMetadata (s.o.).
+    final claims = jwtPayload(session.accessToken);
+    final meta = claims['app_metadata'];
+    final betriebId = (meta is Map) ? meta['betrieb_id'] as String? : null;
+    final rolle =
+        Rolle.vonString((meta is Map) ? meta['rolle'] as String? : null);
     // Ohne gueltigen Claim gibt es keinen Mandanten-Kontext -> Onboarding.
     if (betriebId == null || rolle == null) return const OhneBetrieb();
     return Angemeldet(AuthSession(
