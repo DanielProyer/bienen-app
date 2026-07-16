@@ -1,7 +1,7 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-11 · **Phase:** P1-Fundament · **App-Version:** 1.7.2+24
-**Aktueller Fokus:** Auth-&-Rollen-Fundament — **Plan 1 (DB) + Plan 2 (App-Schicht) fertig**. Als Nächstes: Plan 3 (Rollout & Cutover) — Dashboard-Config, Release 1.8.0, Owner-Registrierung, Bootstrap, Test-Gate, Cutover.
+**Stand:** 2026-07-16 · **Phase:** P1-Fundament ✅ abgeschlossen · **App-Version:** 1.8.1+26 (live)
+**Aktueller Fokus:** ✅ **Auth-&-Rollen-Fundament KOMPLETT & LIVE** (Plan 1+2+3). Echte Mandanten-Isolation aktiv, `anon` ausgesperrt; Daniel = Owner von „Imkerei-Projekt Arosa". **Nächster Fokus: P1-Fachmodule** → (1) Völker & Standorte.
 
 > Lebende Status-Liste (Arbeitsschluss-Methode, siehe `../CLAUDE.md`). Roadmaps: `docs/roadmap-app.md` (Software) · `docs/roadmap-projekt.md` (Imkerei) · Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`.
 
@@ -34,9 +34,15 @@
   - Vorab-Fix: veralteter `construction_progress_test` repariert (`progressFor` public, testet jetzt die Bereichs-Trennung).
   - Commits `f641530`, `d990012`, `5a4e…`, `1e7…`, gepusht.
 
+- [x] ✓ **Plan 3 (Rollout & Cutover) UMGESETZT** (2026-07-16) — `docs/superpowers/plans/2026-07-11-auth-fundament-3-rollout.md`. Auth-Hook aktiviert, Release **v1.8.0→1.8.1**, Owner-Account + Betrieb, Bootstrap (227 Zeilen), Test-Gate, Cutover B01+B02. **Live-verifiziert** (Material/Bau/Waage/Logout-Login funktionieren). Details unten.
+  - **2 Live-Bugs gefunden & gefixt** (nur real gegen die Prod-App sichtbar): (a) `betrieb_id`-Claim wurde aus `user.appMetadata` statt aus dem JWT gelesen → App hing in „ohneBetrieb" (`v1.8.1`, `jwtPayload()` + Regressionstest). (b) `set_row_actor` fror `betrieb_id` bei JEDEM UPDATE ein → Bootstrap-Backfill wirkungslos (`A13`, coalesce).
+  - **Config-Stolperstein:** Site URL stand auf `localhost:3000` → Bestätigungslink ging ins Leere (E-Mail wurde trotzdem server-seitig bestätigt). Behoben.
+  - Advisor: alle `rls_policy_always_true` + `public_bucket_allows_listing` weg; keine `rls_initplan`-Warnung. Rollback-Netz: `supabase/ops/rollback-public-policies.sql`.
+
 ## 🔴 OFFEN — als Nächstes
-- [ ] **🟡 Plan 3 (Rollout & Cutover)** schreiben & umsetzen — Dashboard-Config (Auth-Hook aktivieren, Confirm-Email, Site-URL), Daniels Bootstrap (`betrieb_gruenden` + Backfill `WHERE betrieb_id IS NULL` + NOT NULL/Default unter `ACCESS EXCLUSIVE`), authenticated-Rollen-Test-Gate, Migration B (public-Policies droppen + `revoke from anon`).
-- [ ] **🟡 Lorena invite-ready** — Mechanismus fertig; ihre Einladung erst erstellen, wenn App so weit (Daniel entscheidet). E-Mail dann nötig.
+- [ ] **🟢 Leaked-Password-Protection aktivieren** — Dashboard → Authentication → Password Security (Advisor-Empfehlung, gerade bei Passwort-Login sinnvoll). Klein.
+- [ ] **🟡 Lorena einladen**, wann Daniel bereit ist — Konto → „Mitglied einladen" (E-Mail + Rolle editor) → Code an Lorena. Mechanismus fertig & getestet, aktuell 0 offene Einladungen.
+- [ ] **🟡 P1-Fachmodul (1): Völker & Standorte** — Spec → Plan → Umsetzung (nach dem bewährten Muster). Erstes echtes Fachmodul auf dem Fundament.
 
 ## 🔵 Danach (P1-Fachmodule, Reihenfolge laut Roadmap)
 

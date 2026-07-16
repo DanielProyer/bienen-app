@@ -4,6 +4,14 @@ Chronik getroffener Entscheide (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-16 — Auth-Fundament live (Rollout & Cutover)
+
+- **Cutover vollzogen:** Das Fundament ist scharf. `anon` hat **keinen** Zugriff mehr (Policies + Table-Grants entzogen); ab jetzt gilt echte Mandanten-Isolation über die `authenticated`-RLS. Owner = Daniel (`dani.proyer@gmail.com`), Betrieb **„Imkerei-Projekt Arosa"** (`1c84d5dd-…`). App **v1.8.1** live.
+- **Erkenntnis (Gotcha, wichtig):** Der Custom-Access-Token-Hook setzt Custom-Claims in die **JWT-Claims**, NICHT in `auth.users.raw_app_meta_data`. Client-seitig MUSS man den Claim aus dem **dekodierten Access-Token** lesen (`jwtPayload()`), nicht aus `session.user.appMetadata`. Sonst „ohneBetrieb"-Dauerschleife. → Regressionstest vorhanden.
+- **Erkenntnis:** Ein `betrieb_id`-einfrierender UPDATE-Trigger (`set_row_actor`) und ein Backfill (`UPDATE … WHERE betrieb_id IS NULL`) beißen sich. Lösung: nur einfrieren, wenn bereits gesetzt (`coalesce(old, new)`) — Migration A13.
+- **Config-Lehre:** Supabase-**Site URL** ≠ Redirect-Allowlist. Der Bestätigungslink nutzt die Site URL; bleibt sie auf `localhost:3000`, geht der Link ins Leere (die E-Mail wird server-seitig trotzdem bestätigt).
+- **Offen/vorgemerkt:** Leaked-Password-Protection aktivieren; Lorena einladen wenn bereit.
+
 ## 2026-07-11 — Auth-Fundament & Ausrichtung
 
 - **D-11 · Login = E-Mail + Passwort** (mit Bestätigungs-Mail). *Begründung:* wie KMU Tool 2; E-Mail nur bei Registrierung/Reset nötig → eingebauter Supabase-Mailer reicht, kein Custom-SMTP-Blocker. *Ersetzt* die frühere Magic-Link/OTP-Idee. *Konsequenz:* App-Auth-Schicht spiegelt KMU-`AuthGateway`.

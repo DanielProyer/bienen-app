@@ -1,6 +1,6 @@
 # App-/Software-Roadmap — Bienen Arosa
 
-**Stand:** 2026-07-11 · **App-Version:** 1.7.2+24 · nachgeführt bei Arbeitsschluss.
+**Stand:** 2026-07-16 · **App-Version:** 1.8.1+26 · nachgeführt bei Arbeitsschluss.
 **Grundlage:** [Funktionsumfang-Scope](superpowers/specs/2026-07-11-app-funktionsumfang-scope.md) (26 Module + Fundament). Diese Roadmap ist die *lebende* Umsetzungssicht; die Scope-Spec die verbindliche Ziel-Landkarte.
 
 **Prinzipien:** Volk-zentriert (alles hängt an `voelker`/`betrieb_id`) · CH-/GR-konform ab Volk 1 · alpin getunt (1570 m) · **strikt mandantenfähig, keine Arosa-Hardcodes** · Muster an KMU Tool 2 ausgerichtet · skalierbar auf 32 (evtl. 64) Völker.
@@ -14,7 +14,7 @@
 
 | Baustein | Status | Notiz |
 |---|---|---|
-| **Auth & Rollen (owner/editor/viewer) + RLS-Härtung + Mandantenfähigkeit** | 🔨 Spec+Plan 1 fertig | E-Mail+Passwort, JWT-Claim-Tenancy, `betriebe`/`betrieb_mitglieder`/`einladungen`, `betrieb_id` auf 8 Tabellen. Plan 1 (DB) review-gehärtet, **Ausführung offen**. Plan 2 (App) + Plan 3 (Rollout) folgen. |
+| **Auth & Rollen (owner/editor/viewer) + RLS-Härtung + Mandantenfähigkeit** | ✅ **LIVE** (2026-07-16, v1.8.1) | E-Mail+Passwort, JWT-Claim-Tenancy, `betriebe`/`betrieb_mitglieder`/`einladungen`, `betrieb_id` NOT NULL auf allen 8 Tabellen. Plan 1 (DB A01–A13) + Plan 2 (Flutter-Auth) + Plan 3 (Cutover B01/B02) umgesetzt & live-verifiziert. Echte Mandanten-Isolation, `anon` ausgesperrt. |
 | Backup, Restore & Import (F1) | ⬜ P1 | tägl. DB+Storage-Backup, Offsite, Keep-alive, „Jetzt exportieren"-ZIP, CSV/Alt-App-Import. |
 | Datenschutz & Aufbewahrung (F2) | ⬜ P1 | Soft-Delete/Löschsperre amtl. Daten, EXIF-Stripping, Bearbeitungsverzeichnis, Retention. |
 | Benachrichtigungs-Engine (F3) | ⬜ P1 | Web-Push + E-Mail/Telegram-Fallback, Routing, Quittierung, Ruhezeiten. |
