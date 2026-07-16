@@ -1,6 +1,6 @@
-# Decision-Log — Bienen Arosa
+# Decision-Log — App-Schiene (Bienen Arosa)
 
-Chronik getroffener Entscheide (neueste zuerst). Format: **Datum — Entscheid** · Begründung · Konsequenz. Nachgeführt bei Arbeitsschluss.
+Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid** · Begründung · Konsequenz. Imkerei-Fachentscheide: `../../imkerei/decision-log.md`. Nachgeführt bei Arbeitsschluss.
 
 ---
 
@@ -29,10 +29,8 @@ Chronik getroffener Entscheide (neueste zuerst). Format: **Datum — Entscheid**
 - **Mandantenfähig & vermarktbar** → strikt mehrmandantenfähig über `betriebe`, **keine Arosa-Hardcodes**.
 - Backup (auto-Export + Keep-alive) · Datenschutz (Region EU, EXIF-Strip, amtl. Daten nur owner nach 3 J. hart löschbar) · Alerts (Telegram+E-Mail-Fallback) · Feld-Bedienung (Spracheingabe + QR/NFC) · Direktverkauf einplanen (P2) · Bio-Doku ab Volk 1 (Knospe später) · Wanderung vorerst weglassen · Winterfutter-Default 22 kg.
 
-## Frühere Entscheide (aus Memory, 2026-07-11 festgehalten)
+## Frühere App-Entscheide
 
-- **Rasse: Buckfast** (via Tino Hassler, Maladers).
-- **Lieferanten:** Imkerhof Maienfeld (Material) + HiveWatch (Stockwaage). Material-Präferenz: **Qualität & Langlebigkeit vor Preis**.
-- **Beutensystem:** Dadant Blatt 10er in Holz.
-- **Deploy manuell** via `deploy.sh` (kein Auto-Deploy); Cache-Busting gelöst.
-- **Bau-Entscheid:** durchgehende 2,8-m-Doppelbalken (statt gestückelt) — strukturell besser.
+- **Deploy manuell** via `deploy.sh` (kein Auto-Deploy); Cache-Busting über `main.dart.js?v=<version>` gelöst.
+
+> **Imkerei-Entscheide** (Rasse Buckfast, Lieferanten, Beutensystem, Bau, Fahrplan) stehen jetzt in der Imkerei-Schiene: `../../imkerei/decision-log.md`.

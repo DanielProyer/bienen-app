@@ -3,7 +3,7 @@
 **Stand:** 2026-07-16 · **Phase:** P1-Fundament ✅ abgeschlossen · **App-Version:** 1.8.1+26 (live)
 **Aktueller Fokus:** ✅ **Auth-&-Rollen-Fundament KOMPLETT & LIVE** (Plan 1+2+3). Echte Mandanten-Isolation aktiv, `anon` ausgesperrt; Daniel = Owner von „Imkerei-Projekt Arosa". **Nächster Fokus: P1-Fachmodule** → (1) Völker & Standorte.
 
-> Lebende Status-Liste (Arbeitsschluss-Methode, siehe `../CLAUDE.md`). Roadmaps: `docs/roadmap-app.md` (Software) · `docs/roadmap-projekt.md` (Imkerei) · Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`.
+> Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
 
@@ -14,7 +14,7 @@
 - [x] ✓ **An KMU Tool 2 ausgerichtet** — Login von Magic-Link/OTP → **E-Mail+Passwort** geändert (löst SMTP-Blocker); Muster (betrieb_gruenden-RPC, JWT-Claim-Auth-Hook, RLS-Recursion-Helper, Migrations-/Review-Disziplin) 1:1 übernommen, auf Bienen-Domäne gemappt.
 - [x] ✓ **Adversariales Design-Review** (Multi-Agent, ultracode) — 52 bestätigte Findings (10 Blocker), alle in die Spec eingearbeitet.
 - [x] ✓ **Plan 1 (DB-Fundament, Migration A)** — `docs/superpowers/plans/2026-07-11-auth-fundament-1-db.md` (commit `2ccb22d`). 11 additive, nicht-brechende Migrationen (A01–A11) je mit Rollback-DO-Test + Advisor-Gate. **Adversarialer SQL-Review** gegen die Live-Schema (3 Test-/Härtungs-Bugs gefunden & gefixt).
-- [x] ✓ **Arbeitsschluss-Infrastruktur** angelegt — `../CLAUDE.md` (Arbeitsschluss-Methode + Modell-/Aufwandsstrategie), diese `ToDo.md`, `docs/roadmap-app.md`, `docs/roadmap-projekt.md`, `docs/decision-log.md`.
+- [x] ✓ **Arbeitsschluss-Infrastruktur** angelegt (2026-07-11), **2026-07-16 in zwei Schienen getrennt** — SHARED-Dach `../CLAUDE.md` + `bienen_app/CLAUDE.md` (App) + `../imkerei/CLAUDE.md` (Imkerei); je eigene ToDo/Roadmap/Decision-Log/Memory.
 
 ---
 
