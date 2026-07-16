@@ -1,6 +1,6 @@
 # Imkerei-Fachwissen → App-Implikationen (Wegweiser-Landkarte)
 
-**Stand:** 2026-07-16 · **Typ:** Referenz-/Brückendokument (KEINE Implementierung, KEINE Roadmap-Änderung).
+**Stand:** 2026-07-17 · **Typ:** Referenz-/Brückendokument (KEINE Implementierung, KEINE Roadmap-Änderung).
 
 ## Zweck & Status
 
@@ -36,7 +36,7 @@ Quelle: [`../imkerei/02_Recherche/11_Imkerei_Grundlagen_Betriebsweisen.md`](../i
 | Betroffene App-Module | Datenfelder / Regeln | Priorität |
 |---|---|---|
 | 4.3 Durchsicht · 4.11 Wachskreislauf | Durchsicht-Feld `waben_erneuert`/`altwaben_entnommen` (Wabenhygiene-Zähler, Ziel ~⅓/Jahr) → speist Wachskreislauf | P1 |
-| 4.2 Völker · F4 Settings | Königinnen-Farbcode als **Betriebs-Konfiguration** (Jahr→Farbe automatisch, 2026=weiss); Winterfutter-Soll, Schwarm-Intervall, Saison-Offset als mandantenfähige Parameter | P1 |
+| 4.2 Völker · F4 Settings | Königin-Jahresfarbe **automatisch** aus Schlupfjahr (fixer internationaler 5er-Zyklus, 2026=weiss — **kein** Mandanten-Config, siehe QM-5/QM-8); Winterfutter-Soll, Schwarm-Intervall, Saison-Offset dagegen als mandantenfähige Parameter je `betrieb_id` | P1 |
 | 4.5 Behandlungen · 4.23 Recht/Bio | Bio-Regelprüfung mit Erlaubte-Mittel-Liste **und** Wachs-Rückstands-Richtwerten je Wirkstoff als Betriebsparameter (Bio Suisse/FiBL: Thymol ≤ 5 mg/kg, synth. Acarizide/Paradichlorbenzol je ≤ 0,5 mg/kg — Richtwerte, mit Kontrollstelle verifizieren) | P1/P2 |
 | 4.11 Wachskreislauf | Wachs-Chargen-Kette (Herkunft→Einschmelzung→Mittelwand→Volk/Rähmchen) append-only; Wabenalter je Rähmchen + Überalterungs-Warnung ab Schwellwert | P1 (Basis)/P2 |
 
@@ -61,7 +61,7 @@ Quelle: [`../imkerei/02_Recherche/13_Voelkervermehrung.md`](../imkerei/02_Recher
 | 4.17 Zucht · 4.2 | Königin: `jahresfarbe` **automatisch** aus `schlupf_jahr` (fixer 5er-Zyklus weiss/gelb/rot/grün/blau — **kein** Mandanten-Config); `begattungsart`, `anpaarung/drohnenherkunft` für Selektion | P1 |
 | 4.22 Auswertungen · 4.16 | Vermehrungsplaner: konfigurierbare Zielkurve, Ist-vs-Ziel, Netto-Bedarf mit Puffer (Default ~1,4 Ableger/Ziel-Wintervolk) | P2 |
 | 4.4 Kalender · 4.5 Behandlungen | Fristen-Trigger: Schwarmkontrolle alle 7 Tage (konfig. Saison); Ableger-Statuskette Tag ~5–7 / ~25–30; TBE-Ereignis erzeugt Entwurf-Journaleintrag (OS, Pflichtfelder); Weiselprobe-Schritt bei fehlenden Stiften; Begattungsfenster-Trigger (Höhe/Klima) | P1/P2 |
-| 4.18 Karten · 4.16 | Verflug-Warnung bei Ableger < konfig. Radius (Default 3 km) zum Muttervolk; Verstellungs-Reminder bei Wechsel Inspektionskreis | P2 |
+| 4.18 Karten · 4.16 · 4.23 Recht | Verflug-Warnung bei Ableger < konfig. Radius (Default 3 km) zum Muttervolk; Verstellungs-Reminder + Bestandeskontroll-Eintrag bei Wechsel Inspektionskreis | P2 |
 
 Alle Schwellen (Ableger-/Begattungsfenster, Mindeststärke, Winterfutter-Ziel, Verflug-Radius, Puffer, Kontrollintervall) **pro `betrieb_id` konfigurierbar mit Defaults**.
 
@@ -71,7 +71,7 @@ Quelle: [`../imkerei/02_Recherche/14_Bienengesundheit_Krankheiten_CH.md`](../imk
 | Betroffene App-Module | Datenfelder / Regeln | Priorität |
 |---|---|---|
 | 4.14 Gesundheit/Schädlinge | Krankheits-/Schädlings-**Katalog** (betriebsübergreifende Stammdaten): `melde_flag`, `rechtskategorie` (zu bekämpfen/überwachen/nicht meldepflichtig), `betroffenes_stadium` (offen/verdeckelt/adult); inkl. Steinbrut, Braula coeca, Amöbenruhr | P1 (Katalog) |
-| 4.14 · 4.23 Recht | Meldepflicht-Engine: Auto-Pflichthinweis mit hinterlegtem GR-Inspektor-Kontakt + Checkliste „Volk geschlossen halten"; Status-/Fristen-Tracking; separater Neobiota-Zweig Vespa velutina (Link asiatischehornisse.ch) | P1/P3 |
+| 4.14 · 4.23 Recht · 4.24 Kontakt | Meldepflicht-Engine: Auto-Pflichthinweis mit GR-Inspektor-Kontakt (aus Kontakt-/Notfall-Hub) + Checkliste „Volk geschlossen halten"; Status-/Fristen-Tracking; separater Neobiota-Zweig Vespa velutina (Link asiatischehornisse.ch) | P1/P3 |
 | 4.14 Diagnose-Journal | Diagnose je Volk (`betrieb_id`-isoliert): geführter Entscheidungsbaum offen vs. verdeckelt, Schnelltest-/Streichholzprobe, Fotos, Labor-Auftrag; Standkoffer-Checkliste als Vorlage | P1/P3 |
 | 4.23 Recht · F4 Settings | Sperr-/Sanierungsstatus je Standort mit konfig. Referenz-Radien 2 km (AFB) / 1 km (EFB) + ~30-Tage-Kontrollfrist als **versionierte Referenzdaten** | P1 |
 | 4.4 Kalender | Saisonale Gesundheits-Erinnerungen mit Höhen-/Phänologie-Offset (Wabenerneuerung, Varroa-Fenster, Mäusegitter/Spechtschutz, Aethina-Falle, velutina-Wachsamkeit) | P1 |
@@ -121,7 +121,7 @@ Quelle: [`../imkerei/02_Recherche/18_Bio_Imkerei_Knospe_Schweiz.md`](../imkerei/
 |---|---|---|
 | 4.23 Recht/Bio (Querschnitt) | **Bio-Konformitäts-Layer** quer über Fütterung/Behandlung/Wachs/Ernte/Zukauf, mandantenfähig: `label_ziel`, `zert_status`, `kontrollstelle`, `mo`, Fristen als **Daten** | P2 |
 | F4 Settings · 4.23 | Grenzwerte als label-/betriebsabhängige Konfiguration: Thymol ≤ 5 mg/kg & synth. Acarizide ≤ 0,5 mg/kg (FiBL/Bio Suisse, Richtwerte), Wasser 18 %, HMF konfigurierbar, Trachtradius-% — Demeter/Bund/Knospe & alpin vs. Flachland rein über Daten | P2 |
-| 4.23 Regel-Engine | **Blockier-Rot** (synth. Akarizid, Thymol>Grenzwert, Nicht-Bio-Futter, Wasser>18 %, PVC, chem. Abkehrmittel, Knospe-Auslobung vor 2. Kontrolle) & **Warn-Gelb** (Fütterung außerhalb Fenster / <15 Tage vor Tracht, Wachs ohne Analyse, Wabenerneuerung<⅓, Ernte ohne brutfreien Honigraum) | P2 |
+| 4.23 Regel-Engine · 4.6 Fütterung | **Blockier-Rot** (synth. Akarizid, Thymol>Grenzwert, Nicht-Bio-Futter, Wasser>18 %, PVC, chem. Abkehrmittel, Knospe-Auslobung vor 2. Kontrolle) & **Warn-Gelb** (Fütterung außerhalb Fenster / <15 Tage vor Tracht, Wachs ohne Analyse, Wabenerneuerung<⅓, Ernte ohne brutfreien Honigraum); Futter-Regeln greifen am Fütterungs-Log (`bio_qualitaet`) | P2 |
 | 4.7 Ernte · 4.23 | Ernte-/Produktfelder: `abkehrmethode`, `brutfrei_bestaetigt`, `verpackung_typ` + `konformitaetserklaerung_upload`, `produktart`, `knospe_typ`, `etikett_bezeichnung` (Produzent:in ab 1.1.2028) | P2 |
 | 4.23 Assistent | Ein-Klick Bio-Doku-Export (Standortverzeichnis + Journale) + Umstellungs-/Zertifizierungs-Assistent als 8-Schritt-Statusmaschine mit Fristen-Triggern (Kontrollvertrag 30.04., Wachsprobe UJ1, 2. Kontrolle bis Mai UJ2) | P2 |
 
@@ -133,7 +133,7 @@ Quelle: [`../imkerei/02_Recherche/19_Recht_Tierverkehr_Bestandeskontrolle_CH_GR.
 | 4.2 Völker & Standorte · 4.23 | Datenmodell (`betrieb_id`/RLS): `betrieb/halter`, `standort` (Standnummer, GPS, Höhe, Inspektionskreis/AFA Bi, Plakette-Flag), `volk` (Register-Kern mit Königin-Linie) | P1 |
 | 4.23 Recht (Pflicht) | `bestandeskontrolle_ereignis` (append-only), `behandlung` (TAMV-Journal), `tierarzneimittel_inventar`, `fuetterung`, `honig_los/ernte`, Dokument-/Belege-Ablage | P1 (Pflicht) |
 | 4.4 Kalender · 4.23 | Wiederkehrender Frist-Trigger „jährliche Völkererhebung/Bestandesmeldung" im kantonsspezifischen Meldefenster (Stichtag als Datensatz); App schlägt aktuelle Völkerzahl je Stand aus Register vor | P1 |
-| 4.5 Behandlungen · 4.23 | **Ein-Eintrag-drei-Nachweise:** eine Behandlung/Fütterung erzeugt TAMV-Journal + Bestandeskontroll-Bezug + Bio-Nachweis; Pflichtfeld-Validierung (kein Speichern ohne Wirkstoff/Menge/Datum); Wartefrist-Wächter (keine Ernte vor Ablauf) | P1 (Pflicht) |
+| 4.5 Behandlungen · 4.6 Fütterung · 4.23 | **Ein-Eintrag-drei-Nachweise:** eine Behandlung/Fütterung erzeugt TAMV-Journal + Bestandeskontroll-Bezug + Bio-Nachweis; Pflichtfeld-Validierung (kein Speichern ohne Wirkstoff/Menge/Datum); Wartefrist-Wächter (keine Ernte vor Ablauf) | P1 (Pflicht) |
 | 4.5 · F4 | Behandlung-Felder: Präparat/Wirkstoff-Enum/Konzentration/ml-oder-g-pro-Volk/Anwendungsart/Außentemperatur (AS temperaturkritisch, alpin) + Bio-Flag | P1 |
 | 4.23 Export · F1 Backup | Revisionssicherer Export (append-only, änderungsverfolgt) im BLV-Layout: Behandlungsjournal, Inventar, Bestandeskontrolle, Fütterungsnachweis, Los-/Etikettendaten | P1/P2 |
 | F4 Settings (Kanton-Steuerfeld) | **Kanton als Steuerfeld:** Formularnamen, Fristen, Kennzeichnungsvorgaben, Kontaktstellen pro Kanton als Daten (GR exemplarisch, generisch für ZH/BE/…); 10-Tage-Wandermeldung als kantonsspezifischer Regel-Datensatz | P1 |
@@ -149,7 +149,7 @@ Quelle: [`../imkerei/02_Recherche/20_Wirtschaftlichkeit_Betriebsfuehrung.md`](..
 | 4.22 Kosten-Dashboard | Kennzahlen-Kacheln: Deckungsbeitrag/Volk, Ergebnis vor/nach Arbeitslohn, AfA, Amortisation, Vollkostenpreis/Glas in 3 Stufen (var / +Fix+AfA / +Arbeit) — DB- und Vollkostensicht getrennt | P1 (Quick-Win)/P2 |
 | 4.22 Szenario | Szenario-Rechner (Ertrag×Preis-Sensitivität) + Mehrjahres-Liquiditäts-/Kapitalbedarfsprognose (Cash-Tief Aufbaujahre) | P2/P3 |
 | 4.4 Kalender · 4.23 | Trigger: Saison-Fixkosten fällig, AHV-Schwellen-Warnung (konfig. Freigrenze Default 2'300), Steuer-Export Jahresende, Chargen-/Losnummer-Pflichtfeld, Versicherungs-/Seuchen-Check vor Verkaufsstart | P2 |
-| 4.23 Bio-Check · 4.26 | Bio-Wirtschafts-Check ab konfig. Völkerschwelle (Aufpreis × Menge vs. Kontrollkosten) | P2/P3 |
+| 4.23 Bio-Check · 4.22 Auswertungen | Bio-Wirtschafts-Check ab konfig. Völkerschwelle (Aufpreis × Menge vs. Kontrollkosten) | P2/P3 |
 
 ---
 
@@ -158,10 +158,10 @@ Quelle: [`../imkerei/02_Recherche/20_Wirtschaftlichkeit_Betriebsfuehrung.md`](..
 Diese Muster tauchen in mehreren Recherchen auf und sind die eigentlichen **Architektur-Bausteine**. Sie sollten je einmal sauber entworfen und dann wiederverwendet werden.
 
 ### QM-1 · Rechtssichere Pflicht-Dokumentation (append-only Journale)
-Behandlungsjournal (TAMV), Bestandeskontrolle, Fütterungs-, Wachs- und Ernte-Journal sind **amtlich/gesetzlich** und müssen **append-only, änderungsverfolgt, revisionssicher** und exportierbar (BLV-Layout, PDF/CSV) sein. Kern-Prinzip **„Ein Eintrag → mehrere Nachweise"**: eine Behandlung speist gleichzeitig TAMV-Journal + Bestandeskontrolle + Bio-Nachweis. Pflichtfeld-Validierung blockt unvollständige Speicherung. Aufbewahrungsfristen (TAMV 3 J.; Bestandeskontrolle GR zu verifizieren) als Retention-Regel. → Quellen 14, 15, 19; Module 4.5, 4.23, F1/F2.
+Behandlungsjournal (TAMV), Bestandeskontrolle, Fütterungs-, Wachs- und Ernte-Journal sind **amtlich/gesetzlich** und müssen **append-only, änderungsverfolgt, revisionssicher** und exportierbar (BLV-Layout, PDF/CSV) sein. Kern-Prinzip **„Ein Eintrag → mehrere Nachweise"**: eine Behandlung speist gleichzeitig TAMV-Journal + Bestandeskontrolle + Bio-Nachweis. Pflichtfeld-Validierung blockt unvollständige Speicherung. Aufbewahrungsfristen (TAMV 3 J.; Bestandeskontrolle GR zu verifizieren) als Retention-Regel. → Quellen 14, 15, 19; Module 4.5, 4.6, 4.23, F1/F2.
 
 ### QM-2 · Bio-Konformitäts-Layer (Regel-Engine über viele Module)
-Querschnittlicher Layer über Fütterung/Behandlung/Wachs/Ernte/Zukauf mit **Blockier-Rot / Warn-Gelb**-Regeln. **Grenzwerte, erlaubte Mittel und Fristen sind Daten** (label-/betriebsabhängig), nie hartkodiert — so trennen sich Knospe/EU-Bio/konventionell und alpin/Flachland rein über Konfiguration. Wirkstoff-Whitelist + Wachs-Verhalten-Flags (wachsneutral/anreichernd/gesperrt) sind der gemeinsame Nenner von Varroa, Wachs und Recht. → Quellen 11, 15, 17, 18, 19; Module 4.23, 4.5, 4.11, F4.
+Querschnittlicher Layer über Fütterung/Behandlung/Wachs/Ernte/Zukauf mit **Blockier-Rot / Warn-Gelb**-Regeln. **Grenzwerte, erlaubte Mittel und Fristen sind Daten** (label-/betriebsabhängig), nie hartkodiert — so trennen sich Knospe/EU-Bio/konventionell und alpin/Flachland rein über Konfiguration. Wirkstoff-Whitelist + Wachs-Verhalten-Flags (wachsneutral/anreichernd/gesperrt) sind der gemeinsame Nenner von Varroa, Wachs und Recht; die Fütterungs-Regeln (Bio-Zucker, Fenster) hängen am Fütterungs-Log. → Quellen 11, 15, 17, 18, 19; Module 4.23, 4.5, 4.6, 4.11, F4.
 
 ### QM-3 · Fristen-/Saison-Trigger-Engine mit Höhen-/Phänologie-Offset
 Alle Erinnerungen (Schwarmkontrolle 7-tägig, Windelkontrolle, Behandlungsfenster, Wabenumtrieb, Drohnenschnitt, Fütterung, Ernte-Reife, MHD, jährliche Bestandesmeldung) hängen an einem **konfigurierbaren `saison_offset`** (Arosa +40–45 Tage) statt an festen Kalenderdaten. Temperatur-/Wetter- und Waage-/Brutraumtemperatur-Signale (HiveWatch) triggern kontextabhängig (z. B. Brutfreiheit → Restentmilbung). → Quellen 10, 13, 14, 15, 16, 17; Module 4.4, 4.9, F3.
