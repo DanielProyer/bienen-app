@@ -42,11 +42,23 @@
 
     var urlVersion = new URLSearchParams(window.location.search).get('v');
 
+    // Auth-Callback erkennen (E-Mail-Bestaetigung / Passwort-Reset):
+    // redirectToVersion() ersetzt die URL durch pathname + '?v=' und wirft dabei
+    // Query UND Hash weg — also genau das ?code=... (PKCE) bzw. #access_token=...,
+    // das supabase_flutter beim Start einloesen muss. Ohne diesen Guard waere der
+    // Token vernichtet, BEVOR die App startet. Bei hasAuth ueberspringen wir nur
+    // den Redirect: der Fall faellt in den Zweig unten und laedt weiterhin
+    // flutter_bootstrap.js?v=serverVer, also die korrekte Version. supabase raeumt
+    // die URL danach selbst per history.replaceState auf.
+    var _s = window.location.search, _h = window.location.hash;
+    var hasAuth = /[?&](code|error|error_description)=/.test(_s) ||
+                  /(access_token|refresh_token|error)=/.test(_h);
+
     fetch('version.json?_=' + Date.now(), { cache: 'no-store' })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         var serverVer = data.version || '0';
-        if (urlVersion !== serverVer) {
+        if (urlVersion !== serverVer && !hasAuth) {
           redirectToVersion(serverVer);
           return;
         }
