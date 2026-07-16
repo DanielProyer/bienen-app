@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
+import 'package:bienen_app/features/auth/presentation/auth_state.dart';
+import 'package:bienen_app/features/auth/presentation/einladung_code_page.dart';
+import 'package:bienen_app/features/auth/presentation/konto_page.dart';
+import 'package:bienen_app/features/auth/presentation/login_page.dart';
+import 'package:bienen_app/features/auth/presentation/mail_bestaetigen_page.dart';
+import 'package:bienen_app/features/auth/presentation/onboarding_page.dart';
+import 'package:bienen_app/features/auth/presentation/registrieren_page.dart';
 import 'package:bienen_app/features/dashboard/pages/dashboard_page.dart';
 import 'package:bienen_app/features/dashboard/pages/todo_page.dart';
 import 'package:bienen_app/features/recherche/pages/recherche_overview_page.dart';
@@ -23,11 +32,49 @@ import 'package:bienen_app/shared/widgets/app_shell.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-final appRouter = GoRouter(
-  navigatorKey: _rootNavigatorKey,
-  initialLocation: '/dashboard',
-  routes: [
-    ShellRoute(
+/// Routen, die ohne Session erreichbar sind.
+const _offeneRouten = {'/login', '/registrieren', '/mail-bestaetigen'};
+
+/// Routen fuer den Zustand `ohneBetrieb` (Konto da, keine Mitgliedschaft).
+const _ohneBetriebRouten = {'/onboarding', '/einladung'};
+
+final appRouterProvider = Provider<GoRouter>((ref) {
+  final gate = ref.watch(authGateNotifierProvider);
+  return GoRouter(
+    navigatorKey: _rootNavigatorKey,
+    initialLocation: '/dashboard',
+    refreshListenable: gate,
+    redirect: (context, state) {
+      final status = ref.read(authControllerProvider).status;
+      final ziel = state.matchedLocation;
+
+      // `laden`: NICHT navigieren — sonst wuerde die URL umgeschrieben, bevor
+      // die Session aufgeloest ist. main.dart zeigt solange den Splash.
+      if (status == AuthStatus.laden) return null;
+
+      if (status == AuthStatus.abgemeldet) {
+        return _offeneRouten.contains(ziel) ? null : '/login';
+      }
+      if (status == AuthStatus.ohneBetrieb) {
+        return _ohneBetriebRouten.contains(ziel) ? null : '/onboarding';
+      }
+      // angemeldet: Auth-/Onboarding-Routen sind erledigt.
+      if (_offeneRouten.contains(ziel) || _ohneBetriebRouten.contains(ziel)) {
+        return '/dashboard';
+      }
+      return null;
+    },
+    routes: [
+      GoRoute(path: '/login', builder: (c, s) => const LoginPage()),
+      GoRoute(path: '/registrieren', builder: (c, s) => const RegistrierenPage()),
+      GoRoute(
+        path: '/mail-bestaetigen',
+        builder: (c, s) =>
+            MailBestaetigenPage(email: s.uri.queryParameters['email'] ?? ''),
+      ),
+      GoRoute(path: '/onboarding', builder: (c, s) => const OnboardingPage()),
+      GoRoute(path: '/einladung', builder: (c, s) => const EinladungCodePage()),
+      ShellRoute(
       navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) => AppShell(child: child),
       routes: [
@@ -194,7 +241,12 @@ final appRouter = GoRouter(
           path: '/construction',
           builder: (context, state) => const ConstructionPage(),
         ),
+        GoRoute(
+          path: '/konto',
+          builder: (context, state) => const KontoPage(),
+        ),
       ],
-    ),
-  ],
-);
+      ),
+    ],
+  );
+});

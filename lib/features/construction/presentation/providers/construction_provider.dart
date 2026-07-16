@@ -20,7 +20,8 @@ typedef ConstructionProgress = ({int done, int total});
 
 /// Fortschritt nur über die Schritte eines Bereichs (Bienenstand ODER
 /// Honigverarbeitung) – beide liegen in derselben Tabelle, per step_key getrennt.
-ConstructionProgress _progressFor(
+/// Reine Funktion (public), damit sie ohne Riverpod-Container testbar ist.
+ConstructionProgress progressFor(
     List<ConstructionStep> steps, List<BuildStepContent> defs) {
   final keys = {for (final d in defs) d.key};
   final done = steps.where((s) => s.isDone && keys.contains(s.stepKey)).length;
@@ -29,12 +30,12 @@ ConstructionProgress _progressFor(
 
 final constructionProgressProvider = Provider<ConstructionProgress>((ref) {
   final steps = ref.watch(constructionStepsProvider).valueOrNull ?? const [];
-  return _progressFor(steps, kBuildSteps);
+  return progressFor(steps, kBuildSteps);
 });
 
 final honigverarbeitungProgressProvider = Provider<ConstructionProgress>((ref) {
   final steps = ref.watch(constructionStepsProvider).valueOrNull ?? const [];
-  return _progressFor(steps, kHonigverarbeitungSteps);
+  return progressFor(steps, kHonigverarbeitungSteps);
 });
 
 /// Fortschritt je stepKey für schnellen Zugriff in der UI.
@@ -50,18 +51,17 @@ class ConstructionStepsNotifier extends AsyncNotifier<List<ConstructionStep>> {
   @override
   Future<List<ConstructionStep>> build() => _fetch();
 
+  /// Fehler NICHT mehr schlucken: ein stiller _seedData-Fallback maskierte
+  /// Auth-/RLS-Fehler (RLS liefert 0 Zeilen statt Fehler; ein echter Fehler
+  /// sah aus wie "alles da"). Fehler gehen als AsyncError an die UI.
   Future<List<ConstructionStep>> _fetch() async {
-    try {
-      final response = await SupabaseConfig.client
-          .from('construction_steps')
-          .select()
-          .order('sort_order', ascending: true);
-      return (response as List)
-          .map((j) => ConstructionStep.fromJson(j as Map<String, dynamic>))
-          .toList();
-    } catch (_) {
-      return _seedData;
-    }
+    final response = await SupabaseConfig.client
+        .from('construction_steps')
+        .select()
+        .order('sort_order', ascending: true);
+    return (response as List)
+        .map((j) => ConstructionStep.fromJson(j as Map<String, dynamic>))
+        .toList();
   }
 
   Future<void> toggleDone(String stepKey, bool done) async {
@@ -96,8 +96,15 @@ class ConstructionStepsNotifier extends AsyncNotifier<List<ConstructionStep>> {
     }
   }
 
-  Future<void> attachPhoto(String stepKey, Uint8List bytes) async {
-    final path = '$stepKey.jpg';
+  /// Pfad ist mandanten-praefixiert. WICHTIG: stepKey ist ein STATISCHER,
+  /// im Code fest verdrahteter Schluessel ('daemmung', 'hv_planung', ...) —
+  /// ohne `<betrieb_id>/`-Praefix wuerden zwei Mandanten desselben Bauschritts
+  /// mit upsert:true auf exakt denselben Objektpfad schreiben und sich
+  /// gegenseitig ueberschreiben (kein Angriff noetig, das passiert im
+  /// Normalbetrieb). Die Storage-Policies (A10) erzwingen das Praefix zusaetzlich.
+  Future<void> attachPhoto(
+      String stepKey, Uint8List bytes, String betriebId) async {
+    final path = '$betriebId/$stepKey.jpg';
     await SupabaseConfig.client.storage.from(_bucket).uploadBinary(
           path,
           bytes,
@@ -133,12 +140,3 @@ class ConstructionStepsNotifier extends AsyncNotifier<List<ConstructionStep>> {
     state = AsyncData(await _fetch());
   }
 }
-
-// Fallback-Fortschritt (falls Supabase nicht erreichbar): alle Schritte offen.
-final _seedData = <ConstructionStep>[
-  for (var i = 0; i < kBuildSteps.length; i++)
-    ConstructionStep(stepKey: kBuildSteps[i].key, sortOrder: i),
-  for (var i = 0; i < kHonigverarbeitungSteps.length; i++)
-    ConstructionStep(
-        stepKey: kHonigverarbeitungSteps[i].key, sortOrder: 100 + i),
-];

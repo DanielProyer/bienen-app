@@ -8,7 +8,16 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Projekt Bienen Arosa')),
+      appBar: AppBar(
+        title: const Text('Projekt Bienen Arosa'),
+        actions: [
+          IconButton(
+            tooltip: 'Konto & Team',
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () => context.go('/konto'),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
