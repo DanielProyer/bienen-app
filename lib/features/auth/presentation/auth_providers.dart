@@ -10,6 +10,7 @@ import 'package:bienen_app/features/auth/presentation/auth_state.dart';
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/monitoring/presentation/providers/monitoring_provider.dart';
+import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 
 final authGatewayProvider =
     Provider<AuthGateway>((ref) => SupabaseAuthGateway(SupabaseConfig.client));
@@ -74,6 +75,10 @@ class AuthController extends Notifier<AuthState> {
     ref.invalidate(weightReadingsProvider);
     ref.invalidate(scalesProvider);
     ref.invalidate(allAlertsProvider);
+    ref.invalidate(voelkerListProvider);
+    ref.invalidate(standorteProvider);
+    ref.invalidate(koeniginnenProvider);
+    ref.invalidate(betriebsEinstellungenProvider);
   }
 }
 

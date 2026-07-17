@@ -9,11 +9,15 @@ class AppShell extends StatelessWidget {
 
   int _selectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
-    if (location.startsWith('/recherche')) return 1;
-    if (location.startsWith('/entscheidungen')) return 2;
+    if (location.startsWith('/voelker')) return 1;
+    if (location.startsWith('/monitoring')) return 2;
     if (location.startsWith('/material')) return 3;
-    if (location.startsWith('/monitoring')) return 4;
-    if (location.startsWith('/construction')) return 5;
+    if (location.startsWith('/construction')) return 4;
+    if (location.startsWith('/mehr') ||
+        location.startsWith('/recherche') ||
+        location.startsWith('/entscheidungen')) {
+      return 5;
+    }
     return 0;
   }
 
@@ -22,15 +26,15 @@ class AppShell extends StatelessWidget {
       case 0:
         context.go('/dashboard');
       case 1:
-        context.go('/recherche');
+        context.go('/voelker');
       case 2:
-        context.go('/entscheidungen');
+        context.go('/monitoring');
       case 3:
         context.go('/material');
       case 4:
-        context.go('/monitoring');
-      case 5:
         context.go('/construction');
+      case 5:
+        context.go('/mehr');
     }
   }
 
@@ -77,19 +81,9 @@ class AppShell extends StatelessWidget {
                   label: Text('Dashboard'),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.menu_book_outlined),
-                  selectedIcon: Icon(Icons.menu_book),
-                  label: Text('Recherche'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.checklist_outlined),
-                  selectedIcon: Icon(Icons.checklist),
-                  label: Text('Entscheide'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.shopping_cart_outlined),
-                  selectedIcon: Icon(Icons.shopping_cart),
-                  label: Text('Material'),
+                  icon: Icon(Icons.hive_outlined),
+                  selectedIcon: Icon(Icons.hive),
+                  label: Text('Voelker'),
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.monitor_weight_outlined),
@@ -97,9 +91,19 @@ class AppShell extends StatelessWidget {
                   label: Text('Waage'),
                 ),
                 NavigationRailDestination(
+                  icon: Icon(Icons.shopping_cart_outlined),
+                  selectedIcon: Icon(Icons.shopping_cart),
+                  label: Text('Material'),
+                ),
+                NavigationRailDestination(
                   icon: Icon(Icons.construction_outlined),
                   selectedIcon: Icon(Icons.construction),
                   label: Text('Bau'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.more_horiz),
+                  selectedIcon: Icon(Icons.more_horiz),
+                  label: Text('Mehr'),
                 ),
               ],
             ),
@@ -121,19 +125,9 @@ class AppShell extends StatelessWidget {
             label: 'Dashboard',
           ),
           NavigationDestination(
-            icon: Icon(Icons.menu_book_outlined),
-            selectedIcon: Icon(Icons.menu_book),
-            label: 'Recherche',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.checklist_outlined),
-            selectedIcon: Icon(Icons.checklist),
-            label: 'Entscheide',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.shopping_cart_outlined),
-            selectedIcon: Icon(Icons.shopping_cart),
-            label: 'Material',
+            icon: Icon(Icons.hive_outlined),
+            selectedIcon: Icon(Icons.hive),
+            label: 'Voelker',
           ),
           NavigationDestination(
             icon: Icon(Icons.monitor_weight_outlined),
@@ -141,9 +135,19 @@ class AppShell extends StatelessWidget {
             label: 'Waage',
           ),
           NavigationDestination(
+            icon: Icon(Icons.shopping_cart_outlined),
+            selectedIcon: Icon(Icons.shopping_cart),
+            label: 'Material',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.construction_outlined),
             selectedIcon: Icon(Icons.construction),
             label: 'Bau',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.more_horiz),
+            selectedIcon: Icon(Icons.more_horiz),
+            label: 'Mehr',
           ),
         ],
       ),
