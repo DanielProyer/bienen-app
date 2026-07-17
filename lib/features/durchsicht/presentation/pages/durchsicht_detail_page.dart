@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
+import 'package:bienen_app/features/durchsicht/domain/durchsicht_gateway.dart';
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_form_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht_provider.dart';
 
@@ -39,8 +40,14 @@ class DurchsichtDetailPage extends ConsumerWidget {
                   ],
                 ));
                 if (ok == true) {
-                  await ref.read(durchsichtenFuerVolkProvider(volkId).notifier).loeschen(d);
-                  if (context.mounted) context.go('/voelker/$volkId');
+                  try {
+                    await ref.read(durchsichtenFuerVolkProvider(volkId).notifier).loeschen(d);
+                    if (context.mounted) context.go('/voelker/$volkId');
+                  } on DurchsichtFehler catch (e) {
+                    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+                  } catch (e) {
+                    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Löschen fehlgeschlagen: $e')));
+                  }
                 }
               }),
             ],
@@ -59,13 +66,31 @@ class DurchsichtDetailPage extends ConsumerWidget {
             _z('Wabensitz', d.wabensitz?.toString()),
             _z('Auffälligkeiten', d.auffaelligkeiten.isEmpty ? null : d.auffaelligkeiten.join(', ')),
             _z('Massnahmen', d.massnahmen),
+            _z('Nächste Durchsicht', d.naechsteDurchsichtAm == null ? null : _datum(d.naechsteDurchsichtAm!)),
             _z('Notiz', d.notiz),
-            _z('Fotos', d.fotoUrls.isEmpty ? null : '${d.fotoUrls.length}'),
+            if (d.fotoUrls.isNotEmpty) ...[
+              const Padding(padding: EdgeInsets.only(top: 8, bottom: 4),
+                  child: Text('Fotos', style: TextStyle(color: Colors.grey))),
+              SizedBox(height: 96, child: ListView.separated(
+                scrollDirection: Axis.horizontal, itemCount: d.fotoUrls.length,
+                separatorBuilder: (_, _) => const SizedBox(width: 8),
+                itemBuilder: (_, i) => FutureBuilder<String>(
+                  future: ref.read(durchsichtGatewayProvider).fotoSignedUrl(d.fotoUrls[i]),
+                  builder: (_, snap) => snap.hasData
+                    ? ClipRRect(borderRadius: BorderRadius.circular(8),
+                        child: Image.network(snap.data!, width: 96, height: 96, fit: BoxFit.cover,
+                          errorBuilder: (_, _, _) => const SizedBox(width: 96, child: Icon(Icons.broken_image))))
+                    : const SizedBox(width: 96, child: Center(child: CircularProgressIndicator())),
+                ),
+              )),
+            ],
           ]),
         );
       },
     );
   }
+
+  String _datum(DateTime d) => '${d.day}.${d.month}.${d.year}';
 
   Widget _z(String label, String? wert) => (wert == null || wert.isEmpty)
       ? const SizedBox.shrink()

@@ -18,6 +18,7 @@ class DurchsichtFormPage extends ConsumerStatefulWidget {
 
 class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
   late DateTime _datum;
+  DateTime? _naechste;
   String? _weiselzustand, _brutbild, _pollen, _platz, _weiselzellen;
   bool _koeniginGesehen = false, _stifteGesehen = false, _busy = false;
   int? _sanftmut, _wabensitz;
@@ -38,6 +39,7 @@ class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
     super.initState();
     final b = widget.bestehend;
     _datum = b?.durchgefuehrtAm ?? DateTime.now();
+    _naechste = b?.naechsteDurchsichtAm;
     if (b != null) {
       _weiselzustand = b.weiselzustand; _brutbild = b.brutbild; _pollen = b.pollen;
       _platz = b.platz; _weiselzellen = b.weiselzellen;
@@ -100,6 +102,7 @@ class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
       wabensitz: _wabensitz,
       auffaelligkeiten: _auffaelligkeiten.toList(),
       massnahmen: _massnahmen.text.trim().isEmpty ? null : _massnahmen.text.trim(),
+      naechsteDurchsichtAm: _naechste,
       fotoUrls: _fotoPfade,
       notiz: _notiz.text.trim().isEmpty ? null : _notiz.text.trim(),
     );
@@ -181,6 +184,27 @@ class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
           ]),
           TextField(controller: _massnahmen, maxLines: 2, decoration: const InputDecoration(labelText: 'Massnahmen')),
           TextField(controller: _notiz, maxLines: 2, decoration: const InputDecoration(labelText: 'Notiz')),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Nächste Durchsicht (Empfehlung)'),
+            subtitle: Text(_naechste == null
+                ? '—'
+                : '${_naechste!.day}.${_naechste!.month}.${_naechste!.year}'),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+              if (_naechste != null)
+                IconButton(
+                  icon: const Icon(Icons.clear),
+                  tooltip: 'Zurücksetzen',
+                  onPressed: () => setState(() => _naechste = null),
+                ),
+              const Icon(Icons.event),
+            ]),
+            onTap: () async {
+              final d = await showDatePicker(context: context, initialDate: _naechste ?? _datum,
+                  firstDate: DateTime(2020), lastDate: DateTime(2100));
+              if (d != null) setState(() => _naechste = d);
+            },
+          ),
           const SizedBox(height: 12),
           Row(children: [
             OutlinedButton.icon(onPressed: _fotoAufnehmen, icon: const Icon(Icons.add_a_photo), label: const Text('Foto')),
