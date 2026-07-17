@@ -1,11 +1,18 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-16 · **Phase:** P1-Fundament ✅ abgeschlossen · **App-Version:** 1.8.1+26 (live)
-**Aktueller Fokus:** ✅ **Auth-&-Rollen-Fundament KOMPLETT & LIVE** (Plan 1+2+3). Echte Mandanten-Isolation aktiv, `anon` ausgesperrt; Daniel = Owner von „Imkerei-Projekt Arosa". **Nächster Fokus: P1-Fachmodule** → (1) Völker & Standorte.
+**Stand:** 2026-07-17 · **Phase:** P1-Fachmodule · **App-Version:** 1.9.0+27 (live)
+**Aktueller Fokus:** ✅ **Modul 4.2 „Völker & Standorte" LIVE** (v1.9.0) — erstes Fachmodul auf dem Fundament. **Nächster Fokus:** (2) Durchsicht/Stockkarte (4.3) — die erste geführte Kontrolle je Volk, dockt an die vorbereitete „Verlauf"-Sektion der Volk-Detailseite an.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-17 (Modul 4.2 Völker & Standorte)
+
+- [x] ✓ **Modul 4.2 „Völker & Standorte" LIVE** (v1.9.0+27). Spec (`docs/superpowers/specs/2026-07-17-…`) → Plan (`…/plans/2026-07-17-…`) → subagent-getriebene Umsetzung, 3-fach reviewt, 45/45 Tests, deployed.
+  - **DB (Produktion, C01–C05):** `betriebs_einstellungen` (F4-Keimzelle, `betrieb_gruenden`-Anlage + Backfill), `standorte`, `koeniginnen` (Register + Zuordnungs-Historie), `voelker` erweitert & aufgeräumt (`rasse`/`standort`/`koenigin_jahr` gedroppt, `'Buckfast'`-Hardcode weg), RPC `volk_umweiseln`. Same-Tenant-Komposit-FKs (inkl. `scales.volk_id`-Härtung), Advisor sauber. Ops-Seed Arosa.
+  - **App:** `lib/features/voelker/` (Domain/Gateway/Fake/Provider, Völkerliste, Volk-Detailseite als Drehscheibe, Formulare, Umweiseln inkl. weisellos). `Scale.volkId` + `scaleFuerVolkProvider`. Nav-Umbau: „Völker" Haupttab, „Recherche"/„Entscheidungen" ins „Mehr"-Menü. Auth-Cache-Fix (`_datenNeuLaden`).
+  - Design-Review (Multi-Agent, 43 Findings/36 eingearbeitet): u. a. Königin↔Volk-Historie, Same-Tenant-FKs, Errcode-Kollision BA020+, `tvd_betriebsnummer` gestrichen (gibt's für Bienen nicht), Rasse an die Königin.
 
 ## ✅ Erledigt — Session 2026-07-11 (Auth-Fundament-Planung)
 
@@ -42,7 +49,8 @@
 ## 🔴 OFFEN — als Nächstes
 - [ ] **🟢 Leaked-Password-Protection aktivieren** — Dashboard → Authentication → Password Security (Advisor-Empfehlung, gerade bei Passwort-Login sinnvoll). Klein.
 - [ ] **🟡 Lorena einladen**, wann Daniel bereit ist — Konto → „Mitglied einladen" (E-Mail + Rolle editor) → Code an Lorena. Mechanismus fertig & getestet, aktuell 0 offene Einladungen.
-- [ ] **🟡 P1-Fachmodul (1): Völker & Standorte** — Spec → Plan → Umsetzung (nach dem bewährten Muster). Erstes echtes Fachmodul auf dem Fundament.
+- [ ] **🟡 P1-Fachmodul (2): Durchsicht/Stockkarte (4.3)** — Spec → Plan → Umsetzung. Geführte Kontrolle je Volk (Timeline, Foto, Weiselzustand/Brutbild/Futter), dockt an die vorbereitete „Verlauf"-Sektion der Volk-Detailseite an. Erzeugt Folge-Aufgaben (→ 4.4).
+- [ ] **🟢 Modul 4.2 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): Volk anlegen, Königin zuordnen + Jahresfarbe, Umweiseln (inkl. weisellos), Standort, Nav „Mehr". Bei Auffälligkeiten melden.
 
 ## 🔵 Danach (P1-Fachmodule, Reihenfolge laut Roadmap)
 
