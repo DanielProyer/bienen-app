@@ -40,6 +40,7 @@ Future<void> showVolkForm(BuildContext context, WidgetRef ref, {Volk? volk}) asy
               if (v == _neuerStandortWert) {
                 final vorherIds = standorte.map((s) => s.id).toSet();
                 if (ctx.mounted) await showStandortForm(context, ref);
+                if (!ctx.mounted) return;
                 standorte = ref.read(standorteProvider).valueOrNull ?? [];
                 final neue = standorte.where((s) => !vorherIds.contains(s.id));
                 setState(() => standortId = neue.isNotEmpty ? neue.first.id : standortId);
@@ -65,6 +66,11 @@ Future<void> showVolkForm(BuildContext context, WidgetRef ref, {Volk? volk}) asy
               } on VoelkerFehler catch (e) {
                 if (ctx.mounted) {
                   ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));
+                }
+              } catch (e) {
+                if (ctx.mounted) {
+                  ScaffoldMessenger.of(ctx)
+                      .showSnackBar(SnackBar(content: Text('Speichern fehlgeschlagen: $e')));
                 }
               }
             },
@@ -117,6 +123,7 @@ Future<void> showUmweiselnDialog(BuildContext context, WidgetRef ref, Volk volk)
               label: const Text('Koenigin anlegen'),
               onPressed: () async {
                 if (ctx.mounted) await showKoeniginForm(context, ref);
+                if (!ctx.mounted) return;
                 final neu = (ref.read(koeniginnenProvider).valueOrNull ?? [])
                     .where((k) => k.volkId == null || k.id == volk.koeniginId)
                     .toList();
@@ -137,6 +144,11 @@ Future<void> showUmweiselnDialog(BuildContext context, WidgetRef ref, Volk volk)
               } on VoelkerFehler catch (e) {
                 if (ctx.mounted) {
                   ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));
+                }
+              } catch (e) {
+                if (ctx.mounted) {
+                  ScaffoldMessenger.of(ctx)
+                      .showSnackBar(SnackBar(content: Text('Umweiseln fehlgeschlagen: $e')));
                 }
               }
             },
@@ -208,6 +220,11 @@ Future<void> showKoeniginForm(BuildContext context, WidgetRef ref, {Koenigin? ko
                 if (ctx.mounted) {
                   ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));
                 }
+              } catch (e) {
+                if (ctx.mounted) {
+                  ScaffoldMessenger.of(ctx)
+                      .showSnackBar(SnackBar(content: Text('Speichern fehlgeschlagen: $e')));
+                }
               }
             },
             child: const Text('Speichern'),
@@ -264,6 +281,11 @@ Future<void> showStandortForm(BuildContext context, WidgetRef ref, {Standort? st
             } on VoelkerFehler catch (e) {
               if (ctx.mounted) {
                 ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));
+              }
+            } catch (e) {
+              if (ctx.mounted) {
+                ScaffoldMessenger.of(ctx)
+                    .showSnackBar(SnackBar(content: Text('Speichern fehlgeschlagen: $e')));
               }
             }
           },

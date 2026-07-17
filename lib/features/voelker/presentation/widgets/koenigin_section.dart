@@ -17,12 +17,15 @@ class KoeniginSection extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Text('Koenigin', style: TextStyle(fontWeight: FontWeight.bold)),
-            const Spacer(),
+            const Expanded(
+              child: Text('Koenigin',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis),
+            ),
             if (darf && k == null)
               TextButton(
                 onPressed: () => showKoeniginForm(context, ref),
-                child: const Text('Koenigin anlegen'),
+                child: const Text('Anlegen'),
               ),
             if (darf)
               TextButton(
