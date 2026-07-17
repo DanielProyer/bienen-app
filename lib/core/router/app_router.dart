@@ -24,9 +24,12 @@ import 'package:bienen_app/features/recherche/pages/markdown_viewer_page.dart';
 import 'package:bienen_app/features/entscheidungen/pages/entscheidungen_page.dart';
 import 'package:bienen_app/features/material/presentation/pages/material_page.dart'
     as material;
+import 'package:bienen_app/features/mehr/pages/mehr_page.dart';
 import 'package:bienen_app/features/monitoring/presentation/pages/monitoring_page.dart';
 import 'package:bienen_app/features/monitoring/presentation/pages/scale_settings_page.dart';
 import 'package:bienen_app/features/construction/presentation/pages/construction_page.dart';
+import 'package:bienen_app/features/voelker/presentation/pages/voelker_page.dart';
+import 'package:bienen_app/features/voelker/presentation/pages/volk_detail_page.dart';
 import 'package:bienen_app/shared/widgets/app_shell.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -241,6 +244,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           path: '/construction',
           builder: (context, state) => const ConstructionPage(),
         ),
+        GoRoute(
+          path: '/voelker',
+          builder: (context, state) => const VoelkerPage(),
+          routes: [
+            GoRoute(
+              path: ':id',
+              builder: (context, state) =>
+                  VolkDetailPage(volkId: state.pathParameters['id']!),
+            ),
+          ],
+        ),
+        GoRoute(path: '/mehr', builder: (context, state) => const MehrPage()),
         GoRoute(
           path: '/konto',
           builder: (context, state) => const KontoPage(),
