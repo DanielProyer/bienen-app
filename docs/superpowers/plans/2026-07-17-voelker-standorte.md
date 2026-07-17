@@ -765,6 +765,7 @@ class Koenigin {
         'herkunft': herkunft,
         'begattungsart': begattungsart,
         'status': status,
+        'mutter_koenigin_id': mutterKoeniginId,
         'notes': notes,
       };
 }
