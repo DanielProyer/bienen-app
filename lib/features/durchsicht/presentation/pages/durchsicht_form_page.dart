@@ -21,6 +21,11 @@ class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
   String? _weiselzustand, _brutbild, _pollen, _platz, _weiselzellen;
   bool _koeniginGesehen = false, _stifteGesehen = false, _busy = false;
   int? _sanftmut, _wabensitz;
+  final _wetter = TextEditingController();
+  final _temp = TextEditingController();
+  final _dauer = TextEditingController();
+  final _wzAnzahl = TextEditingController();
+  final _brutWaben = TextEditingController();
   final _staerke = TextEditingController();
   final _futter = TextEditingController();
   final _massnahmen = TextEditingController();
@@ -38,6 +43,11 @@ class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
       _platz = b.platz; _weiselzellen = b.weiselzellen;
       _koeniginGesehen = b.koeniginGesehen; _stifteGesehen = b.stifteGesehen;
       _sanftmut = b.sanftmut; _wabensitz = b.wabensitz;
+      _wetter.text = b.wetter ?? '';
+      _temp.text = b.temperaturC?.toString() ?? '';
+      _dauer.text = b.dauerMin?.toString() ?? '';
+      _wzAnzahl.text = b.weiselzellenAnzahl?.toString() ?? '';
+      _brutWaben.text = b.brutWaben?.toString() ?? '';
       _staerke.text = b.staerkeWabengassen?.toString() ?? '';
       _futter.text = b.futterKg?.toString() ?? '';
       _massnahmen.text = b.massnahmen ?? ''; _notiz.text = b.notiz ?? '';
@@ -51,11 +61,13 @@ class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
     if (betriebId == null) return;
     final file = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 75, maxWidth: 2000);
     if (file == null) return;
+    if (!mounted) return;
     setState(() => _busy = true);
     try {
       final bytes = await file.readAsBytes();
       final pfad = await ref.read(durchsichtGatewayProvider).fotoHochladen(
             betriebId: betriebId, gruppeId: widget.volkId, bytes: bytes);
+      if (!mounted) return;
       setState(() => _fotoPfade.add(pfad));
     } catch (e) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Foto fehlgeschlagen: $e')));
@@ -70,11 +82,16 @@ class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
       id: widget.bestehend?.id ?? '',
       volkId: widget.volkId,
       durchgefuehrtAm: _datum,
+      wetter: _wetter.text.trim().isEmpty ? null : _wetter.text.trim(),
+      temperaturC: num.tryParse(_temp.text.replaceAll(',', '.')),
+      dauerMin: int.tryParse(_dauer.text),
       weiselzustand: _weiselzustand,
       koeniginGesehen: _koeniginGesehen,
       stifteGesehen: _stifteGesehen,
       weiselzellen: _weiselzellen,
+      weiselzellenAnzahl: int.tryParse(_wzAnzahl.text),
       brutbild: _brutbild,
+      brutWaben: num.tryParse(_brutWaben.text.replaceAll(',', '.')),
       staerkeWabengassen: num.tryParse(_staerke.text.replaceAll(',', '.')),
       futterKg: num.tryParse(_futter.text.replaceAll(',', '.')),
       pollen: _pollen,
@@ -111,6 +128,12 @@ class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (!ref.watch(darfSchreibenProvider)) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Durchsicht')),
+        body: const Center(child: Text('Nur Lesezugriff.')),
+      );
+    }
     final gassen = num.tryParse(_staerke.text.replaceAll(',', '.'));
     final schaetzung = bienenSchaetzung(gassen);
     return Scaffold(
@@ -129,12 +152,21 @@ class _DurchsichtFormPageState extends ConsumerState<DurchsichtFormPage> {
               if (d != null) setState(() => _datum = d);
             },
           ),
+          const Padding(padding: EdgeInsets.only(top: 12, bottom: 4), child: Text('Kontext', style: TextStyle(fontWeight: FontWeight.w600))),
+          TextField(controller: _wetter, decoration: const InputDecoration(labelText: 'Wetter')),
+          Row(children: [
+            Expanded(child: TextField(controller: _temp, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Temperatur (°C)'))),
+            const SizedBox(width: 12),
+            Expanded(child: TextField(controller: _dauer, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Dauer (min)'))),
+          ]),
           _chips('Weiselzustand', const ['weiselrichtig', 'weisellos', 'drohnenbruetig', 'unsicher'], _weiselzustand, (v) => setState(() => _weiselzustand = v)),
           SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Königin gesehen'), value: _koeniginGesehen, onChanged: (v) => setState(() => _koeniginGesehen = v)),
           SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Stifte gesehen'), value: _stifteGesehen, onChanged: (v) => setState(() => _stifteGesehen = v)),
           if (_stifteGesehen) const Padding(padding: EdgeInsets.only(bottom: 4), child: Text('Frische Stifte sprechen für weiselrichtig.', style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey))),
           _chips('Weiselzellen', const ['keine', 'spielnaepfchen', 'schwarmzellen', 'nachschaffungszellen'], _weiselzellen, (v) => setState(() => _weiselzellen = v)),
+          TextField(controller: _wzAnzahl, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Anzahl Weiselzellen')),
           _chips('Brutbild', const ['geschlossen', 'lueckig', 'bunt', 'kaum', 'kein'], _brutbild, (v) => setState(() => _brutbild = v)),
+          TextField(controller: _brutWaben, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Brutwaben (Anzahl)')),
           TextField(controller: _staerke, keyboardType: TextInputType.number, onChanged: (_) => setState(() {}), decoration: InputDecoration(labelText: 'Besetzte Wabengassen', helperText: schaetzung != null ? '≈ $schaetzung Bienen' : null)),
           TextField(controller: _futter, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Futter (kg, Schätzung)')),
           _chips('Pollen', const ['viel', 'mittel', 'wenig', 'kein'], _pollen, (v) => setState(() => _pollen = v)),
