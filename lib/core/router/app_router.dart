@@ -28,6 +28,8 @@ import 'package:bienen_app/features/mehr/pages/mehr_page.dart';
 import 'package:bienen_app/features/monitoring/presentation/pages/monitoring_page.dart';
 import 'package:bienen_app/features/monitoring/presentation/pages/scale_settings_page.dart';
 import 'package:bienen_app/features/construction/presentation/pages/construction_page.dart';
+import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_detail_page.dart';
+import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_form_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/voelker_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/volk_detail_page.dart';
 import 'package:bienen_app/shared/widgets/app_shell.dart';
@@ -252,6 +254,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               path: ':id',
               builder: (context, state) =>
                   VolkDetailPage(volkId: state.pathParameters['id']!),
+              routes: [
+                GoRoute(
+                  path: 'durchsicht',
+                  builder: (c, s) => DurchsichtFormPage(volkId: s.pathParameters['id']!),
+                ),
+                GoRoute(
+                  path: 'durchsicht/:did',
+                  builder: (c, s) => DurchsichtDetailPage(
+                    volkId: s.pathParameters['id']!, durchsichtId: s.pathParameters['did']!),
+                ),
+              ],
             ),
           ],
         ),

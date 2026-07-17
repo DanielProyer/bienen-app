@@ -8,6 +8,7 @@ import 'package:bienen_app/features/auth/domain/auth_gateway.dart';
 import 'package:bienen_app/features/auth/domain/rolle.dart';
 import 'package:bienen_app/features/auth/presentation/auth_state.dart';
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
+import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht_provider.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/monitoring/presentation/providers/monitoring_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
@@ -79,6 +80,8 @@ class AuthController extends Notifier<AuthState> {
     ref.invalidate(standorteProvider);
     ref.invalidate(koeniginnenProvider);
     ref.invalidate(betriebsEinstellungenProvider);
+    ref.invalidate(durchsichtenFuerVolkProvider);
+    ref.invalidate(letzteDurchsichtenProvider);
   }
 }
 

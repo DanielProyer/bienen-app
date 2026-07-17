@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
+import 'package:bienen_app/features/durchsicht/presentation/widgets/durchsicht_timeline.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/koenigin_section.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/standort_section.dart';
@@ -67,13 +68,7 @@ class VolkDetailPage extends ConsumerWidget {
                   onTap: scale == null ? null : () => context.go('/monitoring'),
                 ),
               ),
-              const Card(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text('Verlauf — kommt mit Durchsicht & Behandlung',
-                      style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
-                ),
-              ),
+              DurchsichtTimeline(volkId: volk.id),
             ],
           ),
         );
