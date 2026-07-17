@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/voelker/domain/jahresfarbe.dart';
 import 'package:bienen_app/features/voelker/domain/volk.dart';
+import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/volk_form.dart';
 
 class KoeniginSection extends ConsumerWidget {
@@ -12,6 +13,7 @@ class KoeniginSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final k = volk.koenigin;
     final darf = ref.watch(darfSchreibenProvider);
+    final rasseDefault = ref.watch(betriebsEinstellungenProvider).valueOrNull?.rasseDefault;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -33,9 +35,12 @@ class KoeniginSection extends ConsumerWidget {
                 child: const Text('Umweiseln'),
               ),
           ]),
-          if (k == null)
-            const Text('weisellos / nicht erfasst')
-          else ...[
+          if (k == null) ...[
+            const Text('weisellos / nicht erfasst'),
+            if (rasseDefault != null)
+              Text('Rasse (Betriebs-Default): $rasseDefault',
+                  style: const TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
+          ] else ...[
             Text('Kennung: ${k.kennung ?? '—'}'),
             Text('Schlupfjahr: ${k.schlupfjahr ?? '—'}'
                 '${k.schlupfjahr != null ? ' (${jahresfarbe(k.schlupfjahr!).label})' : ''}'),

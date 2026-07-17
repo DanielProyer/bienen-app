@@ -14,6 +14,11 @@ class VoelkerPage extends ConsumerWidget {
     final async = ref.watch(voelkerListProvider);
     final aktive = ref.watch(aktiveVoelkerProvider);
     final darfSchreiben = ref.watch(darfSchreibenProvider);
+    // Stammdaten vorwaermen, damit die Formular-Dropdowns beim ersten Oeffnen
+    // bereits gefuellt sind (AsyncNotifier laedt sonst erst beim ersten Read).
+    ref.watch(standorteProvider);
+    ref.watch(koeniginnenProvider);
+    ref.watch(betriebsEinstellungenProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Voelker')),

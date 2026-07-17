@@ -16,6 +16,10 @@ class VolkDetailPage extends ConsumerWidget {
     final async = ref.watch(voelkerListProvider);
     final darf = ref.watch(darfSchreibenProvider);
     final scale = ref.watch(scaleFuerVolkProvider(volkId));
+    // Stammdaten vorwaermen fuer die Formular-Dropdowns/Vorbelegungen.
+    ref.watch(standorteProvider);
+    ref.watch(koeniginnenProvider);
+    ref.watch(betriebsEinstellungenProvider);
 
     return async.when(
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),

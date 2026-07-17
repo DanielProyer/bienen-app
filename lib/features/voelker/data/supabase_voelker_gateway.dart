@@ -76,21 +76,29 @@ class SupabaseVoelkerGateway implements VoelkerGateway {
 
   @override
   Future<void> standortSpeichern(Standort s) async {
-    final json = s.toInsertJson();
-    if (s.id.isEmpty) {
-      await _c.from('standorte').insert(json);
-    } else {
-      await _c.from('standorte').update(json).eq('id', s.id);
+    try {
+      final json = s.toInsertJson();
+      if (s.id.isEmpty) {
+        await _c.from('standorte').insert(json);
+      } else {
+        await _c.from('standorte').update(json).eq('id', s.id);
+      }
+    } catch (e) {
+      _rethrow(e);
     }
   }
 
   @override
   Future<void> koeniginSpeichern(Koenigin k) async {
-    final json = k.toInsertJson();
-    if (k.id.isEmpty) {
-      await _c.from('koeniginnen').insert(json);
-    } else {
-      await _c.from('koeniginnen').update(json).eq('id', k.id);
+    try {
+      final json = k.toInsertJson();
+      if (k.id.isEmpty) {
+        await _c.from('koeniginnen').insert(json);
+      } else {
+        await _c.from('koeniginnen').update(json).eq('id', k.id);
+      }
+    } catch (e) {
+      _rethrow(e);
     }
   }
 

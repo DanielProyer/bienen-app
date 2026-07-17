@@ -9,153 +9,190 @@ import 'package:bienen_app/features/voelker/presentation/providers/voelker_provi
 /// Sentinel-Wert fuer den Standort-Dropdown im Volk-Formular ("+ neuer Standort").
 const _neuerStandortWert = '__neu__';
 
+/// Stellt sicher, dass die Stammdaten-Provider geladen sind, BEVOR ein Formular
+/// oeffnet. Sonst liefert der AsyncNotifier beim ersten Read `AsyncLoading` (kein
+/// Wert) und Dropdowns/Vorbelegungen blieben beim ersten Aufruf pro Session leer.
+/// Fehler werden bewusst geschluckt — sie tauchen beim Speichern als SnackBar auf,
+/// und das Formular soll sich trotzdem oeffnen lassen.
+Future<void> _stammdatenLaden(WidgetRef ref) async {
+  try {
+    await Future.wait([
+      ref.read(standorteProvider.future),
+      ref.read(koeniginnenProvider.future),
+      ref.read(betriebsEinstellungenProvider.future),
+    ]);
+  } catch (_) {
+    // absichtlich ignoriert (siehe Doc-Kommentar)
+  }
+}
+
 Future<void> showVolkForm(BuildContext context, WidgetRef ref, {Volk? volk}) async {
+  await _stammdatenLaden(ref);
+  if (!context.mounted) return;
   final einst = ref.read(betriebsEinstellungenProvider).valueOrNull;
   final nameCtrl = TextEditingController(text: volk?.name ?? '');
   final beuteCtrl = TextEditingController(text: volk?.beutentyp ?? einst?.beutensystemDefault ?? '');
   String? standortId = volk?.standortId;
-  var standorte = ref.read(standorteProvider).valueOrNull ?? [];
 
   await showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
-    builder: (ctx) => StatefulBuilder(
-      builder: (ctx, setState) => Padding(
-        padding: EdgeInsets.only(
-            bottom: MediaQuery.of(ctx).viewInsets.bottom, left: 16, right: 16, top: 16),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Text(volk == null ? 'Volk anlegen' : 'Volk bearbeiten',
-              style: Theme.of(ctx).textTheme.titleLarge),
-          TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Name')),
-          TextField(controller: beuteCtrl, decoration: const InputDecoration(labelText: 'Beutentyp')),
-          DropdownButtonFormField<String?>(
-            initialValue: standortId,
-            decoration: const InputDecoration(labelText: 'Standort'),
-            items: [
-              const DropdownMenuItem(value: null, child: Text('— kein —')),
-              for (final s in standorte) DropdownMenuItem(value: s.id, child: Text(s.name)),
-              const DropdownMenuItem(value: _neuerStandortWert, child: Text('+ neuer Standort')),
-            ],
-            onChanged: (v) async {
-              if (v == _neuerStandortWert) {
-                final vorherIds = standorte.map((s) => s.id).toSet();
-                if (ctx.mounted) await showStandortForm(context, ref);
-                if (!ctx.mounted) return;
-                standorte = ref.read(standorteProvider).valueOrNull ?? [];
-                final neue = standorte.where((s) => !vorherIds.contains(s.id));
-                setState(() => standortId = neue.isNotEmpty ? neue.first.id : standortId);
-              } else {
-                setState(() => standortId = v);
-              }
-            },
+    builder: (ctx) => Consumer(
+      builder: (ctx, ref, _) {
+        // Reaktiv: aktualisiert sich, sobald Standorte eintreffen oder ein neuer
+        // Stand angelegt wird. Aufgeloeste Staende ausblenden (Spec §7), den aktuell
+        // zugeordneten Stand aber weiter zeigen, damit die Auswahl sichtbar bleibt.
+        final alle = ref.watch(standorteProvider).valueOrNull ?? const <Standort>[];
+        final standorte = alle
+            .where((s) => s.status != 'aufgeloest' || s.id == volk?.standortId)
+            .toList();
+        return StatefulBuilder(
+          builder: (ctx, setState) => Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(ctx).viewInsets.bottom, left: 16, right: 16, top: 16),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Text(volk == null ? 'Volk anlegen' : 'Volk bearbeiten',
+                  style: Theme.of(ctx).textTheme.titleLarge),
+              TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Name')),
+              TextField(controller: beuteCtrl, decoration: const InputDecoration(labelText: 'Beutentyp')),
+              DropdownButtonFormField<String?>(
+                key: ValueKey(standortId),
+                initialValue: standortId,
+                decoration: const InputDecoration(labelText: 'Standort'),
+                items: [
+                  const DropdownMenuItem(value: null, child: Text('— kein —')),
+                  for (final s in standorte) DropdownMenuItem(value: s.id, child: Text(s.name)),
+                  const DropdownMenuItem(value: _neuerStandortWert, child: Text('+ neuer Standort')),
+                ],
+                onChanged: (v) async {
+                  if (v == _neuerStandortWert) {
+                    final vorherIds = standorte.map((s) => s.id).toSet();
+                    await showStandortForm(context, ref);
+                    if (!ctx.mounted) return;
+                    final neueListe = await ref.read(standorteProvider.future);
+                    if (!ctx.mounted) return;
+                    final neue = neueListe.where((s) => !vorherIds.contains(s.id));
+                    setState(() => standortId = neue.isNotEmpty ? neue.first.id : standortId);
+                  } else {
+                    setState(() => standortId = v);
+                  }
+                },
+              ),
+              const SizedBox(height: 12),
+              FilledButton(
+                onPressed: () async {
+                  final neu = Volk(
+                    id: volk?.id ?? '',
+                    name: nameCtrl.text.trim(),
+                    status: volk?.status ?? 'aktiv',
+                    standortId: standortId,
+                    koeniginId: volk?.koeniginId,
+                    beutentyp: beuteCtrl.text.trim().isEmpty ? null : beuteCtrl.text.trim(),
+                  );
+                  try {
+                    await ref.read(voelkerListProvider.notifier).speichern(neu);
+                    if (ctx.mounted) Navigator.pop(ctx);
+                  } on VoelkerFehler catch (e) {
+                    if (ctx.mounted) {
+                      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));
+                    }
+                  } catch (e) {
+                    if (ctx.mounted) {
+                      ScaffoldMessenger.of(ctx)
+                          .showSnackBar(SnackBar(content: Text('Speichern fehlgeschlagen: $e')));
+                    }
+                  }
+                },
+                child: const Text('Speichern'),
+              ),
+              const SizedBox(height: 16),
+            ]),
           ),
-          const SizedBox(height: 12),
-          FilledButton(
-            onPressed: () async {
-              final neu = Volk(
-                id: volk?.id ?? '',
-                name: nameCtrl.text.trim(),
-                status: volk?.status ?? 'aktiv',
-                standortId: standortId,
-                koeniginId: volk?.koeniginId,
-                beutentyp: beuteCtrl.text.trim().isEmpty ? null : beuteCtrl.text.trim(),
-              );
-              try {
-                await ref.read(voelkerListProvider.notifier).speichern(neu);
-                if (ctx.mounted) Navigator.pop(ctx);
-              } on VoelkerFehler catch (e) {
-                if (ctx.mounted) {
-                  ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));
-                }
-              } catch (e) {
-                if (ctx.mounted) {
-                  ScaffoldMessenger.of(ctx)
-                      .showSnackBar(SnackBar(content: Text('Speichern fehlgeschlagen: $e')));
-                }
-              }
-            },
-            child: const Text('Speichern'),
-          ),
-          const SizedBox(height: 16),
-        ]),
-      ),
+        );
+      },
     ),
   );
 }
 
 Future<void> showUmweiselnDialog(BuildContext context, WidgetRef ref, Volk volk) async {
-  var koeniginnen = (ref.read(koeniginnenProvider).valueOrNull ?? [])
-      .where((k) => k.volkId == null || k.id == volk.koeniginId)
-      .toList();
+  await _stammdatenLaden(ref);
+  if (!context.mounted) return;
   String? neueId;
   String altGrund = 'ersetzt';
 
   await showDialog<void>(
     context: context,
-    builder: (ctx) => StatefulBuilder(
-      builder: (ctx, setState) => AlertDialog(
-        title: const Text('Umweiseln'),
-        content: Column(mainAxisSize: MainAxisSize.min, children: [
-          DropdownButtonFormField<String?>(
-            initialValue: neueId,
-            decoration: const InputDecoration(labelText: 'Neue Koenigin'),
-            items: [
-              const DropdownMenuItem(value: null, child: Text('— ohne (weisellos) —')),
-              for (final k in koeniginnen)
-                DropdownMenuItem(value: k.id, child: Text(k.kennung ?? k.id)),
+    builder: (ctx) => Consumer(
+      builder: (ctx, ref, _) {
+        // Reaktiv: neu angelegte Koeniginnen erscheinen sofort in der Auswahl.
+        final koeniginnen = (ref.watch(koeniginnenProvider).valueOrNull ?? const <Koenigin>[])
+            .where((k) => k.volkId == null || k.id == volk.koeniginId)
+            .toList();
+        return StatefulBuilder(
+          builder: (ctx, setState) => AlertDialog(
+            title: const Text('Umweiseln'),
+            content: Column(mainAxisSize: MainAxisSize.min, children: [
+              DropdownButtonFormField<String?>(
+                initialValue: neueId,
+                decoration: const InputDecoration(labelText: 'Neue Koenigin'),
+                items: [
+                  const DropdownMenuItem(value: null, child: Text('— ohne (weisellos) —')),
+                  for (final k in koeniginnen)
+                    DropdownMenuItem(value: k.id, child: Text(k.kennung ?? k.id)),
+                ],
+                onChanged: (v) => neueId = v,
+              ),
+              DropdownButtonFormField<String>(
+                initialValue: altGrund,
+                decoration: const InputDecoration(labelText: 'Alte Koenigin'),
+                items: const [
+                  DropdownMenuItem(value: 'ersetzt', child: Text('ersetzt')),
+                  DropdownMenuItem(value: 'tot', child: Text('tot')),
+                  DropdownMenuItem(value: 'verschollen', child: Text('verschollen')),
+                ],
+                onChanged: (v) => altGrund = v ?? 'ersetzt',
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  icon: const Icon(Icons.add),
+                  label: const Text('Koenigin anlegen'),
+                  onPressed: () async {
+                    await showKoeniginForm(context, ref);
+                    if (!ctx.mounted) return;
+                    // Liste per await sicher aktualisieren; Consumer rebuildet ohnehin.
+                    await ref.read(koeniginnenProvider.future);
+                    if (ctx.mounted) setState(() {});
+                  },
+                ),
+              ),
+            ]),
+            actions: [
+              TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Abbrechen')),
+              FilledButton(
+                onPressed: () async {
+                  try {
+                    await ref.read(voelkerListProvider.notifier).umweiseln(
+                          volkId: volk.id, neueKoeniginId: neueId, altGrund: altGrund,
+                        );
+                    if (ctx.mounted) Navigator.pop(ctx);
+                  } on VoelkerFehler catch (e) {
+                    if (ctx.mounted) {
+                      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));
+                    }
+                  } catch (e) {
+                    if (ctx.mounted) {
+                      ScaffoldMessenger.of(ctx)
+                          .showSnackBar(SnackBar(content: Text('Umweiseln fehlgeschlagen: $e')));
+                    }
+                  }
+                },
+                child: const Text('Umweiseln'),
+              ),
             ],
-            onChanged: (v) => neueId = v,
           ),
-          DropdownButtonFormField<String>(
-            initialValue: altGrund,
-            decoration: const InputDecoration(labelText: 'Alte Koenigin'),
-            items: const [
-              DropdownMenuItem(value: 'ersetzt', child: Text('ersetzt')),
-              DropdownMenuItem(value: 'tot', child: Text('tot')),
-              DropdownMenuItem(value: 'verschollen', child: Text('verschollen')),
-            ],
-            onChanged: (v) => altGrund = v ?? 'ersetzt',
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton.icon(
-              icon: const Icon(Icons.add),
-              label: const Text('Koenigin anlegen'),
-              onPressed: () async {
-                if (ctx.mounted) await showKoeniginForm(context, ref);
-                if (!ctx.mounted) return;
-                final neu = (ref.read(koeniginnenProvider).valueOrNull ?? [])
-                    .where((k) => k.volkId == null || k.id == volk.koeniginId)
-                    .toList();
-                setState(() => koeniginnen = neu);
-              },
-            ),
-          ),
-        ]),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Abbrechen')),
-          FilledButton(
-            onPressed: () async {
-              try {
-                await ref.read(voelkerListProvider.notifier).umweiseln(
-                      volkId: volk.id, neueKoeniginId: neueId, altGrund: altGrund,
-                    );
-                if (ctx.mounted) Navigator.pop(ctx);
-              } on VoelkerFehler catch (e) {
-                if (ctx.mounted) {
-                  ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));
-                }
-              } catch (e) {
-                if (ctx.mounted) {
-                  ScaffoldMessenger.of(ctx)
-                      .showSnackBar(SnackBar(content: Text('Umweiseln fehlgeschlagen: $e')));
-                }
-              }
-            },
-            child: const Text('Umweiseln'),
-          ),
-        ],
-      ),
+        );
+      },
     ),
   );
 }
@@ -163,6 +200,8 @@ Future<void> showUmweiselnDialog(BuildContext context, WidgetRef ref, Volk volk)
 /// Königin anlegen — analog zu [showVolkForm]. Rasse wird aus
 /// `betriebsEinstellungenProvider.rasseDefault` vorbelegt.
 Future<void> showKoeniginForm(BuildContext context, WidgetRef ref, {Koenigin? koenigin}) async {
+  await _stammdatenLaden(ref);
+  if (!context.mounted) return;
   final einst = ref.read(betriebsEinstellungenProvider).valueOrNull;
   final kennungCtrl = TextEditingController(text: koenigin?.kennung ?? '');
   final schlupfjahrCtrl =
@@ -240,6 +279,8 @@ Future<void> showKoeniginForm(BuildContext context, WidgetRef ref, {Koenigin? ko
 /// `betriebsEinstellungenProvider.beutensystemDefault` und die Hoehe aus
 /// `hoeheDefaultM` vorbelegt.
 Future<void> showStandortForm(BuildContext context, WidgetRef ref, {Standort? standort}) async {
+  await _stammdatenLaden(ref);
+  if (!context.mounted) return;
   final einst = ref.read(betriebsEinstellungenProvider).valueOrNull;
   final nameCtrl = TextEditingController(text: standort?.name ?? '');
   final adresseCtrl = TextEditingController(text: standort?.adresse ?? '');
