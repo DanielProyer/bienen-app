@@ -5,10 +5,18 @@ import 'package:bienen_app/features/durchsicht/domain/durchsicht_gateway.dart';
 class FakeDurchsichtGateway implements DurchsichtGateway {
   final _map = <String, Durchsicht>{};
   final entfernteFotos = <String>[];
+  final _reihenfolge = <String, int>{}; // Einfuege-Reihenfolge als Tiebreak (analog created_at)
   int _seq = 0;
+  int _ord = 0;
 
-  List<Durchsicht> get _alle =>
-      _map.values.toList()..sort((a, b) => b.durchgefuehrtAm.compareTo(a.durchgefuehrtAm));
+  List<Durchsicht> get _alle {
+    final list = _map.values.toList();
+    list.sort((a, b) {
+      final d = b.durchgefuehrtAm.compareTo(a.durchgefuehrtAm);
+      return d != 0 ? d : (_reihenfolge[b.id] ?? 0).compareTo(_reihenfolge[a.id] ?? 0);
+    });
+    return list;
+  }
 
   @override
   Future<List<Durchsicht>> fuerVolk(String volkId) async =>
@@ -26,6 +34,7 @@ class FakeDurchsichtGateway implements DurchsichtGateway {
   @override
   Future<void> speichern(Durchsicht d) async {
     final id = d.id.isEmpty ? 'd${++_seq}' : d.id;
+    _reihenfolge[id] = ++_ord;
     _map[id] = Durchsicht(
       id: id, volkId: d.volkId, durchgefuehrtAm: d.durchgefuehrtAm, wetter: d.wetter,
       temperaturC: d.temperaturC, dauerMin: d.dauerMin, weiselzustand: d.weiselzustand,

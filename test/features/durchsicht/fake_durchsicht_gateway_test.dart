@@ -16,6 +16,16 @@ void main() {
     expect(list.first.durchgefuehrtAm, DateTime.parse('2026-06-01'));
   });
 
+  test('letzteJeVolk nimmt bei gleichem Datum die zuletzt gespeicherte', () async {
+    final gw = FakeDurchsichtGateway();
+    await gw.speichern(Durchsicht(
+        id: '', volkId: 'v1', durchgefuehrtAm: DateTime.parse('2026-05-01'), notiz: 'frueh'));
+    await gw.speichern(Durchsicht(
+        id: '', volkId: 'v1', durchgefuehrtAm: DateTime.parse('2026-05-01'), notiz: 'spaet'));
+    final letzte = await gw.letzteJeVolk();
+    expect(letzte.single.notiz, 'spaet');
+  });
+
   test('letzteJeVolk = neueste je Volk', () async {
     final gw = FakeDurchsichtGateway();
     await gw.speichern(_d('', 'v1', '2026-05-01'));
