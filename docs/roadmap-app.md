@@ -2,6 +2,7 @@
 
 **Stand:** 2026-07-16 · **App-Version:** 1.8.1+26 · nachgeführt bei Arbeitsschluss.
 **Grundlage:** [Funktionsumfang-Scope](superpowers/specs/2026-07-11-app-funktionsumfang-scope.md) (26 Module + Fundament). Diese Roadmap ist die *lebende* Umsetzungssicht; die Scope-Spec die verbindliche Ziel-Landkarte.
+**Fachliche Untermauerung (2026-07-16):** Die Module sind neu mit 11 tiefen Imkerei-Recherchen hinterlegt — welche Recherche welches Modul mit welchen Datenfeldern/Regeln speist, steht in [imkerei-fachwissen-app-implikationen.md](imkerei-fachwissen-app-implikationen.md) (Wegweiser-Landkarte, **keine** Roadmap-Änderung). Fachwissen wohnt in `../imkerei/02_Recherche/10–20`; Zahlen dort sind Richtwerte (Fachstellen-Check).
 
 **Prinzipien:** Volk-zentriert (alles hängt an `voelker`/`betrieb_id`) · CH-/GR-konform ab Volk 1 · alpin getunt (1570 m) · **strikt mandantenfähig, keine Arosa-Hardcodes** · Muster an KMU Tool 2 ausgerichtet · skalierbar auf 32 (evtl. 64) Völker.
 
