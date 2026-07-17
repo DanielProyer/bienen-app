@@ -226,7 +226,7 @@ features/voelker/
   2. `/voelker/:id` — **Drehscheibe**: Sektionen Stammdaten · Königin · Beute · Standort · Waage + **Platzhalter-Sektion „Verlauf — kommt mit Durchsicht/Behandlung"**.
   3. Formulare als Bottom-Sheet/Dialog: Volk anlegen/bearbeiten, Königin anlegen/zuordnen, **Umweiseln** (inkl. „ohne neue Königin" + Grund), Standort verwalten.
 
-> **⚠ Navigation — Entscheid nötig:** Die App hat bereits 6 Nav-Tabs; „Völker" wäre der 7. und sprengt die mobile Bottom-NavigationBar. **Vorschlag:** „Völker" wird primärer Tab (es ist die Drehscheibe), „Recherche" + „Entscheidungen" wandern in ein Overflow-/„Mehr"-Menü — es sind Nachschlage-Inhalte, keine Feld-Aktionen. **Von Daniel zu bestätigen.**
+> **Navigation (entschieden):** „Völker" wird **primärer Nav-Tab** (die Drehscheibe, an der künftig Durchsicht/Behandlung/Fütterung hängen). „Recherche" + „Entscheidungen" wandern in ein Overflow-/„Mehr"-Menü — Nachschlage-Inhalte, keine Feld-Aktionen am Stand. Die Bottom-Bar bleibt bei 5 handlichen Tabs. Umbau der Nav-Struktur ist Teil dieses Moduls.
 
 ## 8. Migrationen & Rollout
 
@@ -276,7 +276,7 @@ Reihenfolge folgt den FK-Abhängigkeiten (`koeniginnen.volk_id` → `voelker` wi
 - **Spalten-Drops (`rasse`, `standort`, `koenigin_jahr`):** nur zulässig, weil `voelker` leer und kein Code sie referenziert → **doppelt abgesichert**: repo-seitiger `grep` im Plan **und** DB-seitiger Leer-Guard in C04 (§4.4).
 - **`betrieb_gruenden` ändern** heisst, eine live genutzte RPC anfassen: rein additiv, mit Rollback-Test, und der Insert übergibt `betrieb_id` **explizit** (§4.1) — sonst bricht jede Neugründung.
 - **Zwei Zeiger auf dieselbe Beziehung** (`voelker.koenigin_id` + `koeniginnen.volk_id`): Drift-Risiko ist durch die Regel „Historien-Spur nur vom RPC" (§4.3) und den partiellen Unique-Index gebannt — im Review als Auflage bestätigt.
-- **Navigation (7. Tab)** ist ein offener Produktentscheid (§7).
+- **Navigation** entschieden (§7): „Völker" wird primärer Tab, „Recherche"/„Entscheidungen" ins „Mehr"-Menü — Nav-Umbau ist Teil dieses Moduls.
 - **Fachliche Richtwerte** (1570 m, Offset 42) sind Betriebsdaten; der Offset ist ein Startwert und wird anhand realer Beobachtung/Stockwaage kalibriert (`02_Recherche/02`).
 - **Jahresfarbe** ist bewusst **kein** Mandanten-Parameter (international fixer Zyklus) — Abweichung wäre ein Fehler, keine Konfiguration.
 - **Nicht in dieser Spec gelöst:** Die Scope-Spec (§4.5) nennt „Bio-Suisse-Grenzwert 5 mg/kg Wachs vs. Bund 500" — der 500er-Wert liess sich in der Recherche an keiner Primärquelle belegen und wurde dort verworfen. Beim Bau von 4.5 zu korrigieren.
