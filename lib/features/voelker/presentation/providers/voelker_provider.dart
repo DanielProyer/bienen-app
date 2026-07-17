@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bienen_app/core/supabase/supabase_config.dart';
+import 'package:bienen_app/features/monitoring/data/models/scale.dart';
+import 'package:bienen_app/features/monitoring/presentation/providers/monitoring_provider.dart';
 import 'package:bienen_app/features/voelker/data/supabase_voelker_gateway.dart';
 import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
 import 'package:bienen_app/features/voelker/domain/koenigin.dart';
@@ -64,3 +66,13 @@ class EinstellungenNotifier extends AsyncNotifier<BetriebsEinstellungen> {
   Future<BetriebsEinstellungen> build() async =>
       await _gw.einstellungen() ?? const BetriebsEinstellungen.leer();
 }
+
+/// Die Waage eines Volks (oder null). Filtert die bestehende scalesProvider-Liste,
+/// kein Extra-Query.
+final scaleFuerVolkProvider = Provider.family<Scale?, String>((ref, volkId) {
+  final scales = ref.watch(scalesProvider).valueOrNull ?? const <Scale>[];
+  for (final s in scales) {
+    if (s.volkId == volkId) return s;
+  }
+  return null;
+});

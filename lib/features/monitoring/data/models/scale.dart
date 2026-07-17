@@ -8,6 +8,7 @@ class Scale {
   final bool alertEnabled;
   final Map<String, dynamic>? apiConfig;
   final DateTime? createdAt;
+  final String? volkId;
 
   const Scale({
     required this.id,
@@ -19,6 +20,7 @@ class Scale {
     this.alertEnabled = true,
     this.apiConfig,
     this.createdAt,
+    this.volkId,
   });
 
   Scale copyWith({
@@ -30,6 +32,7 @@ class Scale {
     double? alertSwarmThreshold,
     bool? alertEnabled,
     Map<String, dynamic>? apiConfig,
+    String? volkId,
   }) {
     return Scale(
       id: id ?? this.id,
@@ -41,6 +44,7 @@ class Scale {
       alertEnabled: alertEnabled ?? this.alertEnabled,
       apiConfig: apiConfig ?? this.apiConfig,
       createdAt: createdAt,
+      volkId: volkId ?? this.volkId,
     );
   }
 
@@ -60,6 +64,7 @@ class Scale {
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'] as String)
           : null,
+      volkId: json['volk_id'] as String?,
     );
   }
 
@@ -73,6 +78,7 @@ class Scale {
       'alert_swarm_threshold': alertSwarmThreshold,
       'alert_enabled': alertEnabled,
       'api_config': apiConfig,
+      'volk_id': volkId,
     };
   }
 }
