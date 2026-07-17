@@ -1,6 +1,6 @@
 # App-/Software-Roadmap — Bienen Arosa
 
-**Stand:** 2026-07-17 · **App-Version:** 1.9.0+27 · nachgeführt bei Arbeitsschluss.
+**Stand:** 2026-07-17 · **App-Version:** 1.10.0+28 · nachgeführt bei Arbeitsschluss.
 **Grundlage:** [Funktionsumfang-Scope](superpowers/specs/2026-07-11-app-funktionsumfang-scope.md) (26 Module + Fundament). Diese Roadmap ist die *lebende* Umsetzungssicht; die Scope-Spec die verbindliche Ziel-Landkarte.
 **Fachliche Untermauerung (2026-07-16):** Die Module sind neu mit 11 tiefen Imkerei-Recherchen hinterlegt — welche Recherche welches Modul mit welchen Datenfeldern/Regeln speist, steht in [imkerei-fachwissen-app-implikationen.md](imkerei-fachwissen-app-implikationen.md) (Wegweiser-Landkarte, **keine** Roadmap-Änderung). Fachwissen wohnt in `../imkerei/02_Recherche/10–20`; Zahlen dort sind Richtwerte (Fachstellen-Check).
 
@@ -28,7 +28,7 @@
 |---|---|---|
 | 4.1 | Dashboard/Cockpit (Ampeln, Alarm-Feed, Saison-Kontext) | 🔨 statisch → erweitern |
 | 4.2 | **Völker & Standorte** (Drehscheibe, Königin-Register Jahresfarbe) | ✅ **LIVE** (v1.9.0) — `standorte`/`koeniginnen`/`betriebs_einstellungen`, `volk_umweiseln`, Nav-Umbau |
-| 4.3 | **Durchsicht/Stockkarte** (geführt, Timeline, Foto, Spracheingabe) | 🔜 |
+| 4.3 | **Durchsicht/Stockkarte** (geführt, Timeline, Foto) | ✅ **LIVE** (v1.10.0) — `inspections` + View, privater Foto-Bucket (Signed-URL), Andocken an Volk-Detailseite. Spracheingabe/Offline später |
 | 4.4 | Aufgaben & Kalender (alpiner Generator + Schutztermine) | 🔜 (heute statisch) |
 | 4.5 | **Behandlungen (Varroa/Gesundheit)** — CH-Behandlungsjournal (Pflicht) | 🔜 |
 | 4.6 | Fütterung (Winterfutter-Ziel, Bio-Nachweis) | 🔜 |

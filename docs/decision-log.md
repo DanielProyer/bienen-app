@@ -4,6 +4,18 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-17 — Modul 4.3 „Durchsicht/Stockkarte" live (v1.10.0)
+
+Digitale Stockkarte je Volk (fünf Kernfragen W-B-F-P-G). Spec→Plan→Umsetzung, subagent-getrieben, 4-fach reviewt (Design-Review 25 Findings/14 eingearbeitet). 53/53 Tests, live.
+
+- **D-19 · Foto-Datenschutz:** Durchsichts-Fotos (Brutbild/Krankheiten = Gesundheitsdaten) liegen im **privaten** Bucket `inspection-photos` (anders als die public Bau-Fotos), `foto_urls` speichert **Pfade**, Anzeige via **Signed-URL**. `loeschen` entfernt die Storage-Objekte aktiv (Löschpflicht); der Volk-Hard-Delete-Pfad (CASCADE) hinterlässt best-effort Orphans → 4.25 räumt serverseitig nach.
+- **D-20 · Record-only:** Eine Durchsicht ist reine Beobachtung und mutiert `voelker` **nicht** (kein Auto-Umweiseln/Statusflip). „weisellos"/„faulbrut_verdacht" wird in der Timeline sichtbar; Handeln läuft über 4.2/4.5/4.14.
+- **D-21 · Kein `tasks`-Modul jetzt:** statt „Folge-Aufgabe erzeugt `tasks`" nur ein Empfehlungsdatum `naechste_durchsicht_am` am Eintrag. Voice/Offline/konfigurierbare Feldsätze vertagt.
+- **D-22 · `auffaelligkeiten` als `text[]` mit DB-CHECK** (`<@`-Whitelist, 9 Werte inkl. der meldepflichtigen `faulbrut_verdacht`/`sauerbrut_verdacht`) — harte Integrität in der DB, freundliche Filterung in der App.
+- **D-23 · „letzte Durchsicht je Volk" via View** `v_letzte_durchsichten` (`security_invoker`, `distinct on`) statt N Family-Loads — PostgREST kann kein `distinct on`.
+- **Notiz:** Foto-Storage-Pfad ist `<betrieb_id>/<volk_id>/…` (nicht `<inspection_id>`), weil eine neue Durchsicht beim Foto-Upload noch keine id hat — RLS greift auf das erste Pfadsegment (`betrieb_id`), also mandanten-sicher.
+- **Gotcha (App):** neue Family-Provider (`durchsichtenFuerVolkProvider`, `letzteDurchsichtenProvider`) in `AuthController._datenNeuLaden()` invalidieren (Fremd-Cache); vollflächige Formular-Routen brauchen einen eigenen Rollen-Guard (`viewer` → „Nur Lesezugriff"), da per URL direkt erreichbar (anders als 4.2-Modals).
+
 ## 2026-07-17 — Modul 4.2 „Völker & Standorte" live (v1.9.0)
 
 Erstes Fachmodul auf dem Auth-Fundament. Spec→Plan→Umsetzung (Fable 5), subagent-getrieben, 3-fach reviewt (adversariales Design-Review: 43 Findings/36 eingearbeitet; + Spec- und Code-Qualitäts-Review je Milestone; + holistischer End-Review). 45/45 Tests, live deployed.

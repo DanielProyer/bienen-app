@@ -1,11 +1,18 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-17 · **Phase:** P1-Fachmodule · **App-Version:** 1.9.0+27 (live)
-**Aktueller Fokus:** ✅ **Modul 4.2 „Völker & Standorte" LIVE** (v1.9.0) — erstes Fachmodul auf dem Fundament. **Nächster Fokus:** (2) Durchsicht/Stockkarte (4.3) — die erste geführte Kontrolle je Volk, dockt an die vorbereitete „Verlauf"-Sektion der Volk-Detailseite an.
+**Stand:** 2026-07-17 · **Phase:** P1-Fachmodule · **App-Version:** 1.10.0+28 (live)
+**Aktueller Fokus:** ✅ **Modul 4.3 „Durchsicht/Stockkarte" LIVE** (v1.10.0) — geführte Kontrolle je Volk, Timeline in der Volk-Detailseite, Foto (privat, Signed-URL). **Nächster Fokus:** (3) **Behandlungen (Varroa/Gesundheit) 4.5** — CH-Behandlungsjournal (Pflicht) + Milbendiagnose; dockt an die `auffaelligkeiten`-Flags (u. a. `faulbrut_verdacht`) aus 4.3 an.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-17 (Modul 4.3 Durchsicht/Stockkarte)
+
+- [x] ✓ **Modul 4.3 „Durchsicht/Stockkarte" LIVE** (v1.10.0+28). Spec → Plan → subagent-getriebene Umsetzung, 4-fach reviewt (Design-Review 25 Findings/14 eingearbeitet + Spec/Qualität je Milestone + holistischer End-Review), 53/53 Tests.
+  - **DB (Produktion, D01/D02):** `inspections` (5 Kernfragen W-B-F-P-G + Kontext/Foto, Same-Tenant-Komposit-FK `(betrieb_id,volk_id)→voelker ON DELETE CASCADE`, `auffaelligkeiten <@`-Whitelist inkl. `faulbrut_verdacht`/`sauerbrut_verdacht`), View `v_letzte_durchsichten` (`security_invoker`), **privater** Bucket `inspection-photos` (Signed-URL, `<betrieb_id>/`-Pfad). Advisor sauber.
+  - **App:** `lib/features/durchsicht/` (Domain/Gateway/Fake/Provider, geführtes Formular, Timeline in der Volk-Detailseite, Detailansicht mit Foto-Thumbnails). `FotoSpeicher`-Helfer (`lib/core/storage/`). Andocken: „Verlauf"-Sektion → echte Timeline, `VolkCard` → „zuletzt gesehen". Record-only (mutiert `voelker` nicht). Foto-Löschpflicht beim Löschen.
+  - Design-Review-Kernpunkte: privater statt public Bucket (Gesundheitsdaten), Foto-Pfade statt URLs, DB-CHECK-Whitelist, `brut_waben`/Faulbrut-Flags, View statt `distinct on`.
 
 ## ✅ Erledigt — Session 2026-07-17 (Modul 4.2 Völker & Standorte)
 
@@ -49,8 +56,8 @@
 ## 🔴 OFFEN — als Nächstes
 - [ ] **🟢 Leaked-Password-Protection aktivieren** — Dashboard → Authentication → Password Security (Advisor-Empfehlung, gerade bei Passwort-Login sinnvoll). Klein.
 - [ ] **🟡 Lorena einladen**, wann Daniel bereit ist — Konto → „Mitglied einladen" (E-Mail + Rolle editor) → Code an Lorena. Mechanismus fertig & getestet, aktuell 0 offene Einladungen.
-- [ ] **🟡 P1-Fachmodul (2): Durchsicht/Stockkarte (4.3)** — Spec → Plan → Umsetzung. Geführte Kontrolle je Volk (Timeline, Foto, Weiselzustand/Brutbild/Futter), dockt an die vorbereitete „Verlauf"-Sektion der Volk-Detailseite an. Erzeugt Folge-Aufgaben (→ 4.4).
-- [ ] **🟢 Modul 4.2 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): Volk anlegen, Königin zuordnen + Jahresfarbe, Umweiseln (inkl. weisellos), Standort, Nav „Mehr". Bei Auffälligkeiten melden.
+- [ ] **🟡 P1-Fachmodul (3): Behandlungen (Varroa/Gesundheit) 4.5** — Spec → Plan → Umsetzung. CH-Behandlungsjournal (Pflicht, TAMV) + Milbendiagnose (Gemüll/Puderzucker) + Ampel-Schwellen; nur organische Säuren/Biotechnik (Bio); dockt an `auffaelligkeiten` (4.3) + Material-Verbrauch an. Errcode-Block ab BA030.
+- [ ] **🟢 Module 4.2 + 4.3 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): 4.2 (Volk/Königin/Umweiseln/Standort/Nav „Mehr"), 4.3 (Durchsicht anlegen → Timeline, Foto aufnehmen → Thumbnail lädt, „zuletzt gesehen" in der Liste, Löschen). Bei Auffälligkeiten melden.
 
 ## 🔵 Danach (P1-Fachmodule, Reihenfolge laut Roadmap)
 
