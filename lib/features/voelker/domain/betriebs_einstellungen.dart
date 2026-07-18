@@ -5,6 +5,7 @@ class BetriebsEinstellungen {
   final int saisonOffsetDefaultTage;
   final String? kanton;
   final String? imkerIdentnummer;
+  final num winterfutterZielKg;
 
   const BetriebsEinstellungen({
     this.rasseDefault,
@@ -13,6 +14,7 @@ class BetriebsEinstellungen {
     this.saisonOffsetDefaultTage = 0,
     this.kanton,
     this.imkerIdentnummer,
+    this.winterfutterZielKg = 22,
   });
 
   /// Legitimer Leerzustand, wenn (noch) keine Zeile existiert.
@@ -25,5 +27,6 @@ class BetriebsEinstellungen {
         saisonOffsetDefaultTage: (j['saison_offset_default_tage'] as int?) ?? 0,
         kanton: j['kanton'] as String?,
         imkerIdentnummer: j['imker_identnummer'] as String?,
+        winterfutterZielKg: (j['winterfutter_ziel_kg'] as num?) ?? 22,
       );
 }
