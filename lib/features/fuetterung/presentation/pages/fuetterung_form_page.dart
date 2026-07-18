@@ -20,7 +20,7 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
   DateTime _datum = DateTime.now();
   String _zweck = 'auffuetterung';
   String _futterart = 'zuckersirup';
-  bool _bio = true;
+  bool _bio = false; // Fail-safe: kein stiller Bio-Falsch-Positiv; Warnung führt zur bewussten Bio-Markierung
   final _menge = TextEditingController();
   final _person = TextEditingController();
   String? _materialId;

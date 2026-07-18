@@ -24,7 +24,7 @@ class WinterfutterBalken extends StatelessWidget {
       Row(children: [
         const Text('Winterfutter', style: TextStyle(fontWeight: FontWeight.bold)),
         const Spacer(),
-        Text('${kg.toStringAsFixed(1)} / ${zielKg.toStringAsFixed(0)} kg (${(prozent * 100).round()} %)',
+        Text('${kg.toStringAsFixed(1)} / ${zielKg.toStringAsFixed(0)} kg (${(prozent * 100).floor()} %)',
             style: TextStyle(color: color, fontWeight: FontWeight.bold)),
       ]),
       const SizedBox(height: 6),
