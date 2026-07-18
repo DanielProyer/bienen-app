@@ -24,7 +24,10 @@ const _statusLabels = {
 };
 
 class _GesundheitFormPageState extends ConsumerState<GesundheitFormPage> {
-  late String _krankheit = widget.vorbefuelltKrankheit ?? 'afb';
+  late String _krankheit =
+      (widget.vorbefuelltKrankheit != null && katalogEintrag(widget.vorbefuelltKrankheit!) != null)
+          ? widget.vorbefuelltKrankheit!
+          : 'afb';
   DateTime _datum = DateTime.now();
   String? _schweregrad;
   String _status = 'verdacht';
@@ -175,6 +178,10 @@ class _GesundheitFormPageState extends ConsumerState<GesundheitFormPage> {
   Future<void> _speichern() async {
     if (_status == 'gemeldet' && _gemeldetAm == null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Bei Status „gemeldet" bitte das Melde-Datum setzen.')));
+      return;
+    }
+    if (_gemeldetAm != null && _gemeldetAm!.isBefore(_datum)) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Das Melde-Datum darf nicht vor dem Feststellungsdatum liegen.')));
       return;
     }
     setState(() => _busy = true);

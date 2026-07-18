@@ -28,10 +28,8 @@ class GesundheitNotifier extends FamilyAsyncNotifier<List<Gesundheitsereignis>, 
   }
 }
 
-/// Aktive zu_bekaempfen-Ereignisse fürs Meldepflicht-Banner (reine Ableitung — refresht nach Storno/Status).
+/// Aktive meldepflichtige Ereignisse (zu_bekaempfen + neobiota) fürs Melde-Banner (reine Ableitung — refresht nach Storno/Status).
 final aktiveMeldepflichtProvider = Provider.family<List<Gesundheitsereignis>, String>((ref, volkId) {
   final list = ref.watch(gesundheitFuerVolkProvider(volkId)).valueOrNull ?? const [];
-  return list
-      .where((e) => e.istAktiv && rechtskategorieVon(e.krankheit) == Rechtskategorie.zuBekaempfen)
-      .toList();
+  return list.where((e) => e.istAktiv && istMeldepflichtig(e.krankheit)).toList();
 });

@@ -39,10 +39,11 @@ class GesundheitSection extends ConsumerWidget {
                 icon: const Icon(Icons.medical_information_outlined, size: 18),
                 label: const Text('Diagnose erfassen')),
           ]),
-          // Meldepflicht-Banner (aktive zu_bekaempfen-Ereignisse)
-          for (final e in aktivMelde) MeldepflichtBanner(krankheitKey: e.krankheit),
+          // Meldepflicht-Banner (aktive meldepflichtige Ereignisse; nach Krankheit dedupliziert)
+          for (final key in {for (final e in aktivMelde) e.krankheit}) MeldepflichtBanner(krankheitKey: key),
           // 4.3-Nudge: je gesundheitsrelevantem Flag der letzten Durchsicht ohne aktives Ereignis gleicher Krankheit
-          if (darf && letzte != null)
+          // (nur wenn die Gesundheitsliste geladen ist — sonst würde der Nudge kurz trotz aktivem Ereignis erscheinen)
+          if (darf && letzte != null && async.hasValue)
             ..._nudges(context, async.valueOrNull ?? const [], letzte.auffaelligkeiten),
           async.when(
             loading: () => const Padding(padding: EdgeInsets.all(8), child: LinearProgressIndicator()),
