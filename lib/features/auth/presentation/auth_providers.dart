@@ -7,6 +7,7 @@ import 'package:bienen_app/features/auth/data/supabase_auth_gateway.dart';
 import 'package:bienen_app/features/auth/domain/auth_gateway.dart';
 import 'package:bienen_app/features/auth/domain/rolle.dart';
 import 'package:bienen_app/features/auth/presentation/auth_state.dart';
+import 'package:bienen_app/features/behandlung/presentation/providers/behandlung_provider.dart';
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
 import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht_provider.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
@@ -82,6 +83,8 @@ class AuthController extends Notifier<AuthState> {
     ref.invalidate(betriebsEinstellungenProvider);
     ref.invalidate(durchsichtenFuerVolkProvider);
     ref.invalidate(letzteDurchsichtenProvider);
+    ref.invalidate(kontrollenFuerVolkProvider);
+    ref.invalidate(behandlungenFuerVolkProvider);
   }
 }
 
