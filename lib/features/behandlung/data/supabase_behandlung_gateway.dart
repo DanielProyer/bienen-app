@@ -65,7 +65,7 @@ class SupabaseBehandlungGateway implements BehandlungGateway {
     }
   }
 
-  String? _iso(DateTime? d) => d == null ? null : d.toIso8601String().substring(0, 10);
+  String? _iso(DateTime? d) => d?.toIso8601String().substring(0, 10);
 
   @override
   Future<int> behandlungErfassen({
