@@ -1,11 +1,20 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-18 · **Phase:** P1-Fachmodule · **App-Version:** 1.11.0+29 (live)
-**Aktueller Fokus:** ✅ **Modul 4.5 „Behandlungen (Varroa/Gesundheit)" LIVE** (v1.11.0) — TAMV-Behandlungsjournal (amtlich, revisionssicher) + Varroa-Milbendiagnose + methodenbewusstes Cockpit, angedockt an die Volk-Detailseite, atomare Lager-Abbuchung. **Nächster Fokus:** (4) **Fütterung 4.6** (Winterfutter-Ziel, Bio-Nachweis) + Monitoring-Ausbau 4.9.
+**Stand:** 2026-07-18 · **Phase:** P1-Fachmodule · **App-Version:** 1.12.0+30 (live)
+**Aktueller Fokus:** ✅ **Modul 4.6 „Fütterung" LIVE** (v1.12.0) — Fütterungs-Log (Bio-Nachweis) + Winterfutter-Fortschrittsbalken je Volk + atomare Lager-Abbuchung, angedockt an die Volk-Detailseite. **Nächster Fokus:** Monitoring-Ausbau 4.9 (HiveWatch-Gewicht/Brutraumtemp, Alerts) oder 4.14 Gesundheit/Schädlinge — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-18 (Modul 4.6 Fütterung)
+
+- [x] ✓ **Modul 4.6 „Fütterung" LIVE** (v1.12.0+30). Brainstorming → Spec v2 → **adversariales Multi-Agent-Review (4 fokussierte Lupen, 20 Funde → 13 eingearbeitet)** → Plan → subagent-getriebene Umsetzung (3 Buckets) + finaler Code-Review. **flutter analyze sauber, 86/86 Tests** (+14 neue), live. Zwilling von 4.5 auf **Bio-Nachweis-Niveau**.
+  - **DB (Produktion, F01/F02):** `fuetterungen` (Bio-Nachweis-Log) + `betriebs_einstellungen.winterfutter_ziel_kg` (F4-Parameter, Default 22, CHECK > 0). RPC `fuetterung_erfassen` (einziger Schreibpfad: `distinct` Völker → je 1 Zeile, Lager-Abbuchung `menge_pro_volk_kg × ROW_COUNT`, `betrieb_id` explizit, BA040–042 inkl. Enum-Validierung). Advisor: genau 1 erwartete neue 0029, sonst 0.
+  - **Integrität (Bio-Nachweis, NICHT federal Pflichtjournal):** bewusst **Soft-Delete + Storno statt** der 4.5-Immutable-Maschinerie (kein Trigger, Edit DB-erlaubt) — das Review bestätigte diesen Leichtbau. **Aber** volk-FK **`ON DELETE RESTRICT`** (M1: sonst hätte ein Volk-Hard-Delete den Log via CASCADE ausgehebelt) + keine INSERT/DELETE-Policy.
+  - **App:** `lib/features/fuetterung/` (Domain: Futterart/Zweck-Enums, `winterfutterKg` mit **gekapseltem Saison-Anker** [M2: Monat < 7 → Vorjahr, sonst Balken Jan–Juni fälschlich 0], Modell, Gateway/Fake/Supabase; Provider mit Sammel-Invalidierung). UI: **WinterfutterBalken** (Σ Auffütterung/Ziel), `FuetterungSection` an der Volk-Detailseite, Erfassungs-Formular (Sammel-Multi-Select, Material-Kopplung, Bio-Warnbanner auf Auswahl). `BetriebsEinstellungen`-Modell um `winterfutterZielKg` erweitert.
+  - **Review-Kernpunkte:** M1 CASCADE→RESTRICT; M2 Saison-Anker gekapselt; M3 `menge_kg`→`menge_pro_volk_kg` (Pro-Volk-Semantik); Skeptiker verwarfen 4.5-Härte (Immutable) korrekt als Over-Engineering. Finaler Review: Balken-`floor()` statt `round()`, Bio-Schalter-Default **fail-safe** (`false`, kein stiller Falsch-Positiv).
+  - Docs: `docs/superpowers/specs/2026-07-18-fuetterung-design.md` (v2), `…/plans/2026-07-18-fuetterung.md`.
 
 ## ✅ Erledigt — Session 2026-07-18 (Modul 4.5 Behandlungen Varroa/Gesundheit)
 
@@ -63,10 +72,10 @@
   - Advisor: alle `rls_policy_always_true` + `public_bucket_allows_listing` weg; keine `rls_initplan`-Warnung. Rollback-Netz: `supabase/ops/rollback-public-policies.sql`.
 
 ## 🔴 OFFEN — als Nächstes
-- [ ] **🟡 P1-Fachmodul (4): Fütterung 4.6** — Spec → Plan → Umsetzung. Winterfutter-Ziel (Default 22 kg), Bio-Nachweis; koppelt an Material-Verbrauch (wie 4.5). Danach Monitoring-Ausbau 4.9.
+- [ ] **🟡 Nächstes P1-Fachmodul** — nach Absprache: **4.9 Monitoring-Ausbau** (HiveWatch-Gewicht/Brutraumtemp, Alerts, Analytics, Datenqualität — Demo → real) oder **4.14 Gesundheit/Schädlinge** (Katalog + Diagnose-Journal, dockt an 4.3-`auffaelligkeiten`/4.5). Spec → Plan → Umsetzung.
 - [ ] **🟢 Leaked-Password-Protection aktivieren** — Dashboard → Authentication → Password Security (Advisor-Empfehlung, gerade bei Passwort-Login sinnvoll). Klein.
 - [ ] **🟡 Lorena einladen**, wann Daniel bereit ist — Konto → „Mitglied einladen" (E-Mail + Rolle editor) → Code an Lorena. Mechanismus fertig & getestet, aktuell 0 offene Einladungen.
-- [ ] **🟢 Module 4.2 + 4.3 + 4.5 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): 4.2 (Volk/Königin/Umweiseln/Standort/Nav „Mehr"), 4.3 (Durchsicht → Timeline, Foto → Thumbnail, „zuletzt gesehen", Löschen), **4.5 (Milbendiagnose → Cockpit-Kurve/Ampel-Chip; Behandlung erfassen → Liste + Lager sinkt; Storno → durchgestrichen; Bio-Warnbanner)**. Bei Auffälligkeiten melden.
+- [ ] **🟢 Module 4.2 + 4.3 + 4.5 + 4.6 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): 4.2 (Volk/Königin/Umweiseln/Standort/Nav „Mehr"), 4.3 (Durchsicht → Timeline, Foto → Thumbnail, „zuletzt gesehen", Löschen), 4.5 (Milbendiagnose → Cockpit/Ampel; Behandlung → Liste + Lager sinkt; Storno; Bio-Banner), **4.6 (Fütterung erfassen → Winterfutter-Balken steigt + Lager sinkt; Zweck/Futterart; Bio-Schalter aus + Bio-Volk → Warnbanner; Storno → durchgestrichen)**. Bei Auffälligkeiten melden.
 
 ## 🔵 Danach (P1-Fachmodule, Reihenfolge laut Roadmap)
 

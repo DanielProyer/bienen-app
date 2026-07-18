@@ -1,6 +1,6 @@
 # App-/Software-Roadmap — Bienen Arosa
 
-**Stand:** 2026-07-18 · **App-Version:** 1.11.0+29 · nachgeführt bei Arbeitsschluss.
+**Stand:** 2026-07-18 · **App-Version:** 1.12.0+30 · nachgeführt bei Arbeitsschluss.
 **Grundlage:** [Funktionsumfang-Scope](superpowers/specs/2026-07-11-app-funktionsumfang-scope.md) (26 Module + Fundament). Diese Roadmap ist die *lebende* Umsetzungssicht; die Scope-Spec die verbindliche Ziel-Landkarte.
 **Fachliche Untermauerung (2026-07-16):** Die Module sind neu mit 11 tiefen Imkerei-Recherchen hinterlegt — welche Recherche welches Modul mit welchen Datenfeldern/Regeln speist, steht in [imkerei-fachwissen-app-implikationen.md](imkerei-fachwissen-app-implikationen.md) (Wegweiser-Landkarte, **keine** Roadmap-Änderung). Fachwissen wohnt in `../imkerei/02_Recherche/10–20`; Zahlen dort sind Richtwerte (Fachstellen-Check).
 
@@ -31,7 +31,7 @@
 | 4.3 | **Durchsicht/Stockkarte** (geführt, Timeline, Foto) | ✅ **LIVE** (v1.10.0) — `inspections` + View, privater Foto-Bucket (Signed-URL), Andocken an Volk-Detailseite. Spracheingabe/Offline später |
 | 4.4 | Aufgaben & Kalender (alpiner Generator + Schutztermine) | 🔜 (heute statisch) |
 | 4.5 | **Behandlungen (Varroa/Gesundheit)** — CH-Behandlungsjournal (Pflicht) | ✅ **LIVE** (v1.11.0) — `varroa_kontrollen`/`behandlungen` (amtlich, RESTRICT/Immutable-Trigger), RPC `behandlung_erfassen`, methodenbewusstes Cockpit, Material-Kopplung |
-| 4.6 | Fütterung (Winterfutter-Ziel, Bio-Nachweis) | 🔜 |
+| 4.6 | **Fütterung** (Winterfutter-Ziel, Bio-Nachweis) | ✅ **LIVE** (v1.12.0) — `fuetterungen` (Bio-Nachweis, volk-FK RESTRICT/Soft-Delete), RPC `fuetterung_erfassen`, Winterfutter-Balken (Saison-Σ), `betriebs_einstellungen.winterfutter_ziel_kg`, Material-Kopplung |
 | 4.9 | Monitoring/Waage (HiveWatch, Brutraumtemp, Alerts, Datenqualität) | 🔨 Demo → ausbauen |
 | 4.10 | Material & Lager (Verbrauch↔Behandlung/Fütterung koppeln) | ✅ bestehend → verzahnen |
 | 4.11 | Wachskreislauf-Basis (Wabenalter/Zukauf-Doku) | ⬜ |
