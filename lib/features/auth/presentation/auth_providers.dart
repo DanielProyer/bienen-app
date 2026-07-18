@@ -11,6 +11,7 @@ import 'package:bienen_app/features/behandlung/presentation/providers/behandlung
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
 import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht_provider.dart';
 import 'package:bienen_app/features/fuetterung/presentation/providers/fuetterung_provider.dart';
+import 'package:bienen_app/features/gesundheit/presentation/providers/gesundheit_provider.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/monitoring/presentation/providers/monitoring_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
@@ -87,6 +88,7 @@ class AuthController extends Notifier<AuthState> {
     ref.invalidate(kontrollenFuerVolkProvider);
     ref.invalidate(behandlungenFuerVolkProvider);
     ref.invalidate(fuetterungenFuerVolkProvider);
+    ref.invalidate(gesundheitFuerVolkProvider);
   }
 }
 
