@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/behandlung/presentation/widgets/behandlung_section.dart';
 import 'package:bienen_app/features/durchsicht/presentation/widgets/durchsicht_timeline.dart';
+import 'package:bienen_app/features/fuetterung/presentation/widgets/fuetterung_section.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/koenigin_section.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/standort_section.dart';
@@ -71,6 +72,7 @@ class VolkDetailPage extends ConsumerWidget {
               ),
               DurchsichtTimeline(volkId: volk.id),
               BehandlungSection(volkId: volk.id),
+              FuetterungSection(volkId: volk.id),
             ],
           ),
         );
