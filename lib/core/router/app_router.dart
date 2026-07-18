@@ -9,6 +9,8 @@ import 'package:bienen_app/features/auth/presentation/login_page.dart';
 import 'package:bienen_app/features/auth/presentation/mail_bestaetigen_page.dart';
 import 'package:bienen_app/features/auth/presentation/onboarding_page.dart';
 import 'package:bienen_app/features/auth/presentation/registrieren_page.dart';
+import 'package:bienen_app/features/behandlung/presentation/pages/behandlung_form_page.dart';
+import 'package:bienen_app/features/behandlung/presentation/pages/kontrolle_form_page.dart';
 import 'package:bienen_app/features/dashboard/pages/dashboard_page.dart';
 import 'package:bienen_app/features/dashboard/pages/todo_page.dart';
 import 'package:bienen_app/features/recherche/pages/recherche_overview_page.dart';
@@ -263,6 +265,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   path: 'durchsicht/:did',
                   builder: (c, s) => DurchsichtDetailPage(
                     volkId: s.pathParameters['id']!, durchsichtId: s.pathParameters['did']!),
+                ),
+                GoRoute(
+                  path: 'varroa',
+                  builder: (c, s) => KontrolleFormPage(volkId: s.pathParameters['id']!),
+                ),
+                GoRoute(
+                  path: 'behandlung',
+                  builder: (c, s) => BehandlungFormPage(volkId: s.pathParameters['id']!),
                 ),
               ],
             ),

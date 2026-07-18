@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
+import 'package:bienen_app/features/behandlung/presentation/widgets/behandlung_section.dart';
 import 'package:bienen_app/features/durchsicht/presentation/widgets/durchsicht_timeline.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/koenigin_section.dart';
@@ -69,6 +70,7 @@ class VolkDetailPage extends ConsumerWidget {
                 ),
               ),
               DurchsichtTimeline(volkId: volk.id),
+              BehandlungSection(volkId: volk.id),
             ],
           ),
         );
