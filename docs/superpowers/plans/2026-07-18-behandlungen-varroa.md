@@ -624,7 +624,7 @@ void main() {
   });
   test('ampelFuerKontrolle wählt die Skala nach Methode', () {
     expect(ampelFuerKontrolle(methode: 'gemuell', milbenGesamt: 44, messdauerTage: 4, monat: 8), Ampel.gelb); // 11/Tag
-    expect(ampelFuerKontrolle(methode: 'puderzucker', milbenGesamt: 12, bienenProbe: 300, monat: 8), Ampel.gelb); // 4%? -> rot
+    expect(ampelFuerKontrolle(methode: 'puderzucker', milbenGesamt: 12, bienenProbe: 300, monat: 8), Ampel.rot); // 12/300 = 4% -> rot
   });
 }
 ```
