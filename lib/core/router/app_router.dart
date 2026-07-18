@@ -33,6 +33,7 @@ import 'package:bienen_app/features/construction/presentation/pages/construction
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_detail_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_form_page.dart';
 import 'package:bienen_app/features/fuetterung/presentation/pages/fuetterung_form_page.dart';
+import 'package:bienen_app/features/gesundheit/presentation/pages/gesundheit_form_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/voelker_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/volk_detail_page.dart';
 import 'package:bienen_app/shared/widgets/app_shell.dart';
@@ -278,6 +279,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 GoRoute(
                   path: 'fuetterung',
                   builder: (c, s) => FuetterungFormPage(volkId: s.pathParameters['id']!),
+                ),
+                GoRoute(
+                  path: 'gesundheit',
+                  builder: (c, s) => GesundheitFormPage(
+                    volkId: s.pathParameters['id']!,
+                    vorbefuelltKrankheit: s.uri.queryParameters['k'],
+                  ),
                 ),
               ],
             ),
