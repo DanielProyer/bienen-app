@@ -36,7 +36,8 @@ class BehandlungSection extends ConsumerWidget {
           switch ((kontrollen, behandlungen)) {
             (AsyncData(value: final ks), AsyncData(value: final bs)) =>
               VarroaCockpit(kontrollen: ks, behandlungen: bs),
-            (AsyncError(error: final e), _) => Padding(padding: const EdgeInsets.all(8), child: Text('Fehler: $e')),
+            (AsyncError(error: final e), _) || (_, AsyncError(error: final e)) =>
+              Padding(padding: const EdgeInsets.all(8), child: Text('Fehler: $e')),
             _ => const Padding(padding: EdgeInsets.all(8), child: LinearProgressIndicator()),
           },
           const Divider(),
@@ -85,6 +86,7 @@ class BehandlungSection extends ConsumerWidget {
         ],
       ),
     );
+    ctrl.dispose();
     if (grund == null || grund.isEmpty || !context.mounted) return;
     try {
       await ref.read(behandlungenFuerVolkProvider(volkId).notifier).stornieren(id, grund);

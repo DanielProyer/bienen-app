@@ -33,10 +33,13 @@ class _KontrolleFormPageState extends ConsumerState<KontrolleFormPage> {
 
   int? get _milbenVal => int.tryParse(_milben.text);
 
-  Ampel get _ampel => ampelFuerKontrolle(
-        methode: _methode, milbenGesamt: _milbenVal ?? 0,
-        messdauerTage: int.tryParse(_messdauer.text), bienenProbe: int.tryParse(_bienen.text), monat: _datum.month,
-      );
+  // Ohne eingegebene Milbenzahl kein Richtwert (nicht faelschlich "gruen" bei leerem Feld).
+  Ampel get _ampel => _milbenVal == null
+      ? Ampel.keinRichtwert
+      : ampelFuerKontrolle(
+          methode: _methode, milbenGesamt: _milbenVal!,
+          messdauerTage: int.tryParse(_messdauer.text), bienenProbe: int.tryParse(_bienen.text), monat: _datum.month,
+        );
 
   @override
   Widget build(BuildContext context) {

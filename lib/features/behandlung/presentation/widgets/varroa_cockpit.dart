@@ -43,7 +43,7 @@ class VarroaCockpit extends StatelessWidget {
         ampelChip = Chip(
           backgroundColor: _ampelColor(a).withAlpha(38),
           avatar: CircleAvatar(backgroundColor: _ampelColor(a), radius: 6),
-          label: Text('Befall: ${_ampelText(a)}'),
+          label: Text('${k.methode == 'gemuell' ? 'Milbenfall' : 'Befall'}: ${_ampelText(a)}'),
         );
       }
     }

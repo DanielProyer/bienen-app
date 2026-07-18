@@ -18,11 +18,17 @@ class BehandlungFormPage extends ConsumerStatefulWidget {
 class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
   late final Set<String> _volkIds = {widget.volkId};
   DateTime _datum = DateTime.now();
+  DateTime? _datumEnde;
   final _praeparat = TextEditingController();
   String _wirkstoff = 'ameisensaeure';
   String _anwendungsart = 'dispenser_verdunster';
   final _menge = TextEditingController();
   String _einheit = 'ml';
+  final _konzentration = TextEditingController();
+  final _charge = TextEditingController();
+  final _aussentemp = TextEditingController();
+  final _wartefrist = TextEditingController();
+  final _indikation = TextEditingController(text: 'Varroabekämpfung');
   final _person = TextEditingController();
   String? _materialId;
   bool _speichert = false;
@@ -49,6 +55,11 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
   void dispose() {
     _praeparat.dispose();
     _menge.dispose();
+    _konzentration.dispose();
+    _charge.dispose();
+    _aussentemp.dispose();
+    _wartefrist.dispose();
+    _indikation.dispose();
     _person.dispose();
     super.dispose();
   }
@@ -88,12 +99,26 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
               const SizedBox(height: 12),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text('Datum: ${_datum.day}.${_datum.month}.${_datum.year}'),
+                title: Text('Beginn: ${_datum.day}.${_datum.month}.${_datum.year}'),
                 trailing: const Icon(Icons.calendar_today),
                 onTap: () async {
                   final d = await showDatePicker(context: context, initialDate: _datum,
                       firstDate: DateTime(2020), lastDate: DateTime(2100));
                   if (d != null) setState(() => _datum = d);
+                },
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(_datumEnde == null
+                    ? 'Ende: — (optional, mehrtägig)'
+                    : 'Ende: ${_datumEnde!.day}.${_datumEnde!.month}.${_datumEnde!.year}'),
+                trailing: _datumEnde == null
+                    ? const Icon(Icons.calendar_today)
+                    : IconButton(icon: const Icon(Icons.clear), onPressed: () => setState(() => _datumEnde = null)),
+                onTap: () async {
+                  final d = await showDatePicker(context: context, initialDate: _datumEnde ?? _datum,
+                      firstDate: _datum, lastDate: DateTime(2100));
+                  if (d != null) setState(() => _datumEnde = d);
                 },
               ),
               DropdownButtonFormField<String>(
@@ -129,6 +154,14 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
                     ),
                   ),
                 ]),
+              if (!_biotech)
+                Row(children: [
+                  Expanded(child: TextField(controller: _konzentration,
+                      decoration: const InputDecoration(labelText: 'Konzentration (z.B. 60%)'))),
+                  const SizedBox(width: 12),
+                  Expanded(child: TextField(controller: _charge,
+                      decoration: const InputDecoration(labelText: 'Charge'))),
+                ]),
               DropdownButtonFormField<String?>(
                 initialValue: _materialId,
                 decoration: const InputDecoration(labelText: 'Material (Lager-Abbuchung, optional)'),
@@ -138,6 +171,14 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
                 ],
                 onChanged: (v) => setState(() => _materialId = v),
               ),
+              Row(children: [
+                Expanded(child: TextField(controller: _aussentemp, keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'Aussentemp. °C'))),
+                const SizedBox(width: 12),
+                Expanded(child: TextField(controller: _wartefrist, keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'Wartefrist (Tage)'))),
+              ]),
+              TextField(controller: _indikation, decoration: const InputDecoration(labelText: 'Indikation')),
               TextField(controller: _person, decoration: const InputDecoration(labelText: 'Verantwortliche Person')),
               if (zeigeBioBanner)
                 Container(
@@ -162,6 +203,8 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
     );
   }
 
+  String? _leerZuNull(String s) => s.trim().isEmpty ? null : s.trim();
+
   Future<void> _speichern() async {
     if (_volkIds.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Mindestens ein Volk wählen.')));
@@ -172,12 +215,18 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
       await ref.read(behandlungAktionenProvider).erfassen(
             volkIds: _volkIds.toList(),
             datumBeginn: _datum,
+            datumEnde: _datumEnde,
             wirkstoff: _wirkstoff,
             anwendungsart: _anwendungsart,
             verantwortlichePerson: _person.text.trim(),
-            praeparat: _biotech ? null : _praeparat.text.trim(),
+            praeparat: _biotech ? null : _leerZuNull(_praeparat.text),
             mengeProVolk: _biotech ? null : num.tryParse(_menge.text.replaceAll(',', '.')),
             einheit: _biotech ? null : _einheit,
+            konzentration: _biotech ? null : _leerZuNull(_konzentration.text),
+            charge: _biotech ? null : _leerZuNull(_charge.text),
+            aussentemperaturC: num.tryParse(_aussentemp.text.replaceAll(',', '.')),
+            wartefristTage: int.tryParse(_wartefrist.text),
+            indikation: _leerZuNull(_indikation.text),
             materialId: _materialId,
           );
       if (mounted) context.pop();
