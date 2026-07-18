@@ -32,6 +32,7 @@ import 'package:bienen_app/features/monitoring/presentation/pages/scale_settings
 import 'package:bienen_app/features/construction/presentation/pages/construction_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_detail_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_form_page.dart';
+import 'package:bienen_app/features/fuetterung/presentation/pages/fuetterung_form_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/voelker_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/volk_detail_page.dart';
 import 'package:bienen_app/shared/widgets/app_shell.dart';
@@ -273,6 +274,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 GoRoute(
                   path: 'behandlung',
                   builder: (c, s) => BehandlungFormPage(volkId: s.pathParameters['id']!),
+                ),
+                GoRoute(
+                  path: 'fuetterung',
+                  builder: (c, s) => FuetterungFormPage(volkId: s.pathParameters['id']!),
                 ),
               ],
             ),
