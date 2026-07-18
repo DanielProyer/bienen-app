@@ -1947,7 +1947,7 @@ class BehandlungFormPage extends ConsumerStatefulWidget {
 }
 
 class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
-  late Set<String> _volkIds = {widget.volkId};
+  late final Set<String> _volkIds = {widget.volkId};
   DateTime _datum = DateTime.now();
   final _praeparat = TextEditingController();
   String _wirkstoff = 'ameisensaeure';
