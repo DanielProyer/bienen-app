@@ -1,11 +1,19 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-18 · **Phase:** P1-Fachmodule · **App-Version:** 1.12.0+30 (live)
-**Aktueller Fokus:** ✅ **Modul 4.6 „Fütterung" LIVE** (v1.12.0) — Fütterungs-Log (Bio-Nachweis) + Winterfutter-Fortschrittsbalken je Volk + atomare Lager-Abbuchung, angedockt an die Volk-Detailseite. **Nächster Fokus:** Monitoring-Ausbau 4.9 (HiveWatch-Gewicht/Brutraumtemp, Alerts) oder 4.14 Gesundheit/Schädlinge — nach Absprache.
+**Stand:** 2026-07-18 · **Phase:** P1-Fachmodule · **App-Version:** 1.13.0+31 (live)
+**Aktueller Fokus:** ✅ **Modul 4.14 „Gesundheit/Schädlinge" LIVE** (v1.13.0) — CH-Krankheits-Katalog (Dart, kanton-neutral) + Diagnose-Journal je Volk + Meldepflicht-Banner (AFB/EFB), angedockt an die Volk-Detailseite. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung nächste Woche); bis dahin ggf. 4.4 Kalender/Aufgaben oder 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-18 (Modul 4.14 Gesundheit/Schädlinge)
+
+- [x] ✓ **Modul 4.14 „Gesundheit/Schädlinge" LIVE** (v1.13.0+31). Brainstorming → Spec v2 → **adversariales Review (4 Lupen, 21 Funde → 18 eingearbeitet)** → Plan → subagent-getriebene Umsetzung (3 Buckets) + finaler Code-Review. **flutter analyze sauber, 96/96 Tests** (+10 neue), live.
+  - **DB (Produktion, G01/G02):** `gesundheitsereignisse` (Diagnose-Journal je Volk, **Bestandeskontroll-Spur:** Soft-Delete/Storno, volk-FK **`RESTRICT`**, keine DELETE-Policy, **kein RPC/Immutable**; CHECK **`status=gemeldet⇒gemeldet_am`** [M2, einzige DB-Invariante ohne RPC] + Zukunfts-Guard). Privater Bucket **`health-photos`** (D02-Muster). Advisor sauber (0 neue). **Keine neuen Errcodes** (reines CRUD, wie 4.3).
+  - **App:** `lib/features/gesundheit/` — Katalog `krankheit.dart` (Dart-Fachkonstante, **17 CH-Krankheiten**, `rechtskategorie` zu_bekaempfen/zu_ueberwachen/nicht/neobiota, **kanton-neutral + nationale BGD-Hotline 0800 274 274**), Diagnose-Journal-Gateway/Fake/Supabase (+ Fotos wie 4.3), Provider + `aktiveMeldepflichtProvider`. UI: **MeldepflichtBanner** (rot/neobiota + Rechtsauskunft-Disclaimer), `GesundheitSection` (Banner + **krankheitsscharfer 4.3-Nudge** aus `faulbrut_verdacht`→afb), Diagnose-Formular (Katalog gruppiert, Status/`gemeldet_am`, Fotos).
+  - **Review-Kernpunkte:** M1 GR-Hardcode raus (kanton-neutral); M2 gemeldet-CHECK; M8 Rechtskategorie = **Bundesrecht/national** (bleibt Dart-const); M4 Vergiftung (eigener BGD/Agroscope-Meldeweg) + Tracheenmilbe; M3 Katalog↔CHECK-Paritätstest. Finaler Review: URL-Param-Validierung, Neobiota-Banner-Fix, gemeldet_am-Ordnung.
+  - Architektur bestätigt: Soft-Delete ohne Immutable proportional (kein federal TAMV-Journal), Katalog als Dart-const richtig. Docs: `docs/superpowers/specs/2026-07-18-gesundheit-design.md` (v2), `…/plans/2026-07-18-gesundheit.md`.
 
 ## ✅ Erledigt — Session 2026-07-18 (Modul 4.6 Fütterung)
 
@@ -72,10 +80,10 @@
   - Advisor: alle `rls_policy_always_true` + `public_bucket_allows_listing` weg; keine `rls_initplan`-Warnung. Rollback-Netz: `supabase/ops/rollback-public-policies.sql`.
 
 ## 🔴 OFFEN — als Nächstes
-- [ ] **🟡 Nächstes P1-Fachmodul** — nach Absprache: **4.9 Monitoring-Ausbau** (HiveWatch-Gewicht/Brutraumtemp, Alerts, Analytics, Datenqualität — Demo → real) oder **4.14 Gesundheit/Schädlinge** (Katalog + Diagnose-Journal, dockt an 4.3-`auffaelligkeiten`/4.5). Spec → Plan → Umsetzung.
+- [ ] **🟡 4.9 Monitoring-Ausbau — sobald die HiveWatch-Waage da ist** (Bestellung nächste Woche): Gewicht/Brutraumtemp, Alerts, Analytics, Datenqualität (Demo → real). Bis dahin optional: **4.4 Kalender/Aufgaben** (alpiner Generator + Schutztermine, dockt an `naechste_durchsicht_am` 4.3) oder **4.22 Kosten-Dashboard** (Quick-Win aus `material_purchases`). Spec → Plan → Umsetzung.
 - [ ] **🟢 Leaked-Password-Protection aktivieren** — Dashboard → Authentication → Password Security (Advisor-Empfehlung, gerade bei Passwort-Login sinnvoll). Klein.
 - [ ] **🟡 Lorena einladen**, wann Daniel bereit ist — Konto → „Mitglied einladen" (E-Mail + Rolle editor) → Code an Lorena. Mechanismus fertig & getestet, aktuell 0 offene Einladungen.
-- [ ] **🟢 Module 4.2 + 4.3 + 4.5 + 4.6 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): 4.2 (Volk/Königin/Umweiseln/Standort/Nav „Mehr"), 4.3 (Durchsicht → Timeline, Foto → Thumbnail, „zuletzt gesehen", Löschen), 4.5 (Milbendiagnose → Cockpit/Ampel; Behandlung → Liste + Lager sinkt; Storno; Bio-Banner), **4.6 (Fütterung erfassen → Winterfutter-Balken steigt + Lager sinkt; Zweck/Futterart; Bio-Schalter aus + Bio-Volk → Warnbanner; Storno → durchgestrichen)**. Bei Auffälligkeiten melden.
+- [ ] **🟢 Module 4.2 + 4.3 + 4.5 + 4.6 + 4.14 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): 4.2 (Volk/Königin/Umweiseln/Standort/Nav „Mehr"), 4.3 (Durchsicht → Timeline, Foto, „zuletzt gesehen", Löschen), 4.5 (Milbendiagnose → Cockpit/Ampel; Behandlung → Liste + Lager sinkt; Storno; Bio-Banner), 4.6 (Fütterung → Winterfutter-Balken + Lager sinkt; Bio-Warnbanner; Storno), **4.14 (Diagnose `afb` → roter Meldepflicht-Banner + Disclaimer; Foto; Nudge aus Durchsicht mit Faulbrut-Verdacht; Storno → durchgestrichen)**. Der reale Live-Test läuft ohnehin ab Volk 1 (morgen). Bei Auffälligkeiten melden.
 
 ## 🔵 Danach (P1-Fachmodule, Reihenfolge laut Roadmap)
 
