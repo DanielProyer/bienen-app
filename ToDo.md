@@ -1,11 +1,20 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-17 · **Phase:** P1-Fachmodule · **App-Version:** 1.10.0+28 (live)
-**Aktueller Fokus:** ✅ **Modul 4.3 „Durchsicht/Stockkarte" LIVE** (v1.10.0) — geführte Kontrolle je Volk, Timeline in der Volk-Detailseite, Foto (privat, Signed-URL). **Nächster Fokus:** (3) **Behandlungen (Varroa/Gesundheit) 4.5** — CH-Behandlungsjournal (Pflicht) + Milbendiagnose; dockt an die `auffaelligkeiten`-Flags (u. a. `faulbrut_verdacht`) aus 4.3 an.
+**Stand:** 2026-07-18 · **Phase:** P1-Fachmodule · **App-Version:** 1.11.0+29 (live)
+**Aktueller Fokus:** ✅ **Modul 4.5 „Behandlungen (Varroa/Gesundheit)" LIVE** (v1.11.0) — TAMV-Behandlungsjournal (amtlich, revisionssicher) + Varroa-Milbendiagnose + methodenbewusstes Cockpit, angedockt an die Volk-Detailseite, atomare Lager-Abbuchung. **Nächster Fokus:** (4) **Fütterung 4.6** (Winterfutter-Ziel, Bio-Nachweis) + Monitoring-Ausbau 4.9.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-18 (Modul 4.5 Behandlungen Varroa/Gesundheit)
+
+- [x] ✓ **Modul 4.5 „Behandlungen (Varroa/Gesundheit)" LIVE** (v1.11.0+29). Brainstorming → Spec v2 → **adversariales Multi-Agent-Review (6 Lupen, 41 Funde → 33 eingearbeitet)** → Plan → subagent-getriebene Umsetzung (3 Buckets) + finaler Code-Review. **flutter analyze sauber, 72/72 Tests** (+19 neue), live.
+  - **DB (Produktion, E01/E02):** `varroa_kontrollen` (Milbendiagnose, normale CRUD, CASCADE) + `behandlungen` (**amtliches TAMV-Journal, revisionssicher**) + `materials` `unique(betrieb_id,id)`. RPC `behandlung_erfassen` (einziger Schreibpfad: `distinct` Völker → je eine Zeile, Lager-Abbuchung aus `ROW_COUNT`, `betrieb_id` explizit, BA030–033). Advisor: genau 1 erwartete neue 0029 (RPC), sonst 0.
+  - **Revisionssicherheit (Review-Kritik K1, DB-erzwungen ab Eintrag 1):** FK `volk_id` **`ON DELETE RESTRICT`** (Volk mit Journal hart-löschsicher — sonst hätte die `voelker_del_writer`-Policy via CASCADE das Journal umgangen, TAMV Art. 29); **keine INSERT-Policy** (Insert nur via RPC), **keine DELETE-Policy**; BEFORE-UPDATE-Trigger `behandlungen_schutz` (Kernfelder unveränderlich, Einweg-Storno, server-seitiges `storno_am`, BA034); `material_id` **`ON DELETE SET NULL (material_id)`** spaltenqualifiziert.
+  - **App:** `lib/features/behandlung/` (Domain: Wirkstoff+Bio-Whitelist, methodenbewusste Ampel [Gemüll=Milben/Tag, Puderzucker=Befall-%], Modelle, Gateway/Fake/Supabase; Provider mit Sammel-Invalidierung ALLER beteiligten Volk-Families + `materialListProvider`). UI: **VarroaCockpit** (fl_chart, Behandlungs-Marker ohne stornierte, Ampel-Chip, Höhen-Caveat), `BehandlungSection` an der Volk-Detailseite, Milbendiagnose- + Behandlungs-Formular (Sammel-Multi-Select, Material-Kopplung, Bio-Warnbanner auf Auswahl, volle TAMV-Felder inkl. Charge/Wartefrist/Aussentemp).
+  - **Review-Kernpunkte eingearbeitet:** K1 CASCADE→RESTRICT; RPC-Härtung (distinct/ROW_COUNT/betrieb_id explizit); Thymol = **bio-konform** (nicht „grenzwertig"); methodenbewusste Ampel; Bio-Banner auf Multi-Select-Auswahl; finaler Review: Journal-Ladefehler-Maskierung gefixt, Formular-Vollständigkeit (TAMV-Felder).
+  - Docs: `docs/superpowers/specs/2026-07-17-behandlungen-varroa-design.md` (v2), `…/plans/2026-07-18-behandlungen-varroa.md`.
 
 ## ✅ Erledigt — Session 2026-07-17 (Modul 4.3 Durchsicht/Stockkarte)
 
@@ -54,10 +63,10 @@
   - Advisor: alle `rls_policy_always_true` + `public_bucket_allows_listing` weg; keine `rls_initplan`-Warnung. Rollback-Netz: `supabase/ops/rollback-public-policies.sql`.
 
 ## 🔴 OFFEN — als Nächstes
+- [ ] **🟡 P1-Fachmodul (4): Fütterung 4.6** — Spec → Plan → Umsetzung. Winterfutter-Ziel (Default 22 kg), Bio-Nachweis; koppelt an Material-Verbrauch (wie 4.5). Danach Monitoring-Ausbau 4.9.
 - [ ] **🟢 Leaked-Password-Protection aktivieren** — Dashboard → Authentication → Password Security (Advisor-Empfehlung, gerade bei Passwort-Login sinnvoll). Klein.
 - [ ] **🟡 Lorena einladen**, wann Daniel bereit ist — Konto → „Mitglied einladen" (E-Mail + Rolle editor) → Code an Lorena. Mechanismus fertig & getestet, aktuell 0 offene Einladungen.
-- [ ] **🟡 P1-Fachmodul (3): Behandlungen (Varroa/Gesundheit) 4.5** — Spec → Plan → Umsetzung. CH-Behandlungsjournal (Pflicht, TAMV) + Milbendiagnose (Gemüll/Puderzucker) + Ampel-Schwellen; nur organische Säuren/Biotechnik (Bio); dockt an `auffaelligkeiten` (4.3) + Material-Verbrauch an. Errcode-Block ab BA030.
-- [ ] **🟢 Module 4.2 + 4.3 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): 4.2 (Volk/Königin/Umweiseln/Standort/Nav „Mehr"), 4.3 (Durchsicht anlegen → Timeline, Foto aufnehmen → Thumbnail lädt, „zuletzt gesehen" in der Liste, Löschen). Bei Auffälligkeiten melden.
+- [ ] **🟢 Module 4.2 + 4.3 + 4.5 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): 4.2 (Volk/Königin/Umweiseln/Standort/Nav „Mehr"), 4.3 (Durchsicht → Timeline, Foto → Thumbnail, „zuletzt gesehen", Löschen), **4.5 (Milbendiagnose → Cockpit-Kurve/Ampel-Chip; Behandlung erfassen → Liste + Lager sinkt; Storno → durchgestrichen; Bio-Warnbanner)**. Bei Auffälligkeiten melden.
 
 ## 🔵 Danach (P1-Fachmodule, Reihenfolge laut Roadmap)
 
