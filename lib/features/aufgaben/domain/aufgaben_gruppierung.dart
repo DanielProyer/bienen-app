@@ -26,3 +26,11 @@ Map<AufgabenGruppe, List<Aufgabe>> gruppiereOffene(List<Aufgabe> alle, DateTime 
   }
   return m;
 }
+
+/// Die nächsten [n] OFFENEN Aufgaben, aufsteigend nach faellig_am —
+/// überfällige stehen damit automatisch zuerst. Fürs Cockpit („Heute & demnächst").
+List<Aufgabe> naechsteOffene(List<Aufgabe> alle, DateTime stichtag, int n) {
+  final offen = alle.where((a) => a.status == 'offen').toList()
+    ..sort((a, b) => a.faelligAm.compareTo(b.faelligAm));
+  return offen.take(n).toList();
+}
