@@ -37,16 +37,24 @@ class SupabaseAufgabenGateway implements AufgabenGateway {
     }
   }
 
+  /// Zeilenweise statt als Batch-INSERT: PostgREST-Batches sind atomar —
+  /// EIN 23505-Konflikt wuerde auch alle konfliktfreien Zeilen zurueckrollen
+  /// (Race: zwei Editoren nehmen denselben Vorschlag an). Upsert mit
+  /// ignoreDuplicates geht nicht: der Dedup-Index ist PARTIELL
+  /// (where quelle='regel'), und PostgREST kann die dafuer noetige
+  /// ON-CONFLICT-WHERE-Klausel nicht ausdruecken. Batch-Groessen sind klein
+  /// (<= Anzahl Voelker) — Schleife ist ok und exakt Fake-Paritaet.
   @override
   Future<void> speichernBatch(List<Aufgabe> aufgaben) async {
-    if (aufgaben.isEmpty) return;
-    try {
-      await _c.from('aufgaben').insert(aufgaben.map((a) => a.toInsertJson()).toList());
-    } on PostgrestException catch (e) {
-      if (e.code == '23505') return; // Dedup-Index: Doppelklick, still ignorieren
-      _rethrow(e);
-    } catch (e) {
-      _rethrow(e);
+    for (final a in aufgaben) {
+      try {
+        await _c.from('aufgaben').insert(a.toInsertJson());
+      } on PostgrestException catch (e) {
+        if (e.code == '23505') continue; // Dedup-Index: Zeile existiert schon
+        _rethrow(e);
+      } catch (e) {
+        _rethrow(e);
+      }
     }
   }
 

@@ -43,6 +43,23 @@ void main() {
     expect(rows.map((a) => a.volkId).toSet(), {'v1', 'v2'});
   });
 
+  test('Notifier: vorschlagAnnehmen betrieb-Ebene: EINE Zeile, volkIds ignoriert', () async {
+    final gw = FakeAufgabenGateway();
+    final c = ProviderContainer(overrides: [aufgabenGatewayProvider.overrideWithValue(gw)]);
+    addTearDown(c.dispose);
+    await c.read(aufgabenListProvider.future);
+    final regel = kSaisonRegeln.firstWhere((r) => r.key == 'maeuseschutz_ansetzen');
+    final v = AufgabenVorschlag(
+      regel: regel, fensterStart: DateTime(2026, 10, 1), fensterEnde: DateTime(2026, 10, 31),
+      faelligAm: DateTime(2026, 10, 31), saisonJahr: 2026,
+    );
+    await c.read(aufgabenListProvider.notifier).vorschlagAnnehmen(v, volkIds: ['v1', 'v2']);
+    final rows = await gw.alle();
+    expect(rows.single.volkId, isNull);
+    expect(rows.single.regelKey, 'maeuseschutz_ansetzen');
+    expect(rows.single.status, 'offen');
+  });
+
   test('Notifier: vorschlagUeberspringen legt EINE Zeile ohne volk_id an', () async {
     final gw = FakeAufgabenGateway();
     final c = ProviderContainer(overrides: [aufgabenGatewayProvider.overrideWithValue(gw)]);
