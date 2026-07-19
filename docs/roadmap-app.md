@@ -1,6 +1,6 @@
 # App-/Software-Roadmap — Bienen Arosa
 
-**Stand:** 2026-07-19 · **App-Version:** 1.15.0+33 · nachgeführt bei Arbeitsschluss.
+**Stand:** 2026-07-19 · **App-Version:** 1.15.1+34 · nachgeführt bei Arbeitsschluss.
 **Grundlage:** [Funktionsumfang-Scope](superpowers/specs/2026-07-11-app-funktionsumfang-scope.md) (26 Module + Fundament). Diese Roadmap ist die *lebende* Umsetzungssicht; die Scope-Spec die verbindliche Ziel-Landkarte.
 **Fachliche Untermauerung (2026-07-16):** Die Module sind neu mit 11 tiefen Imkerei-Recherchen hinterlegt — welche Recherche welches Modul mit welchen Datenfeldern/Regeln speist, steht in [imkerei-fachwissen-app-implikationen.md](imkerei-fachwissen-app-implikationen.md) (Wegweiser-Landkarte, **keine** Roadmap-Änderung). Fachwissen wohnt in `../imkerei/02_Recherche/10–20`; Zahlen dort sind Richtwerte (Fachstellen-Check).
 
@@ -41,7 +41,7 @@
 | 4.15 | Volk-Ausfall & Desinfektion | ⬜ |
 | 4.18 | Karten-Basis (Stände-Ansicht) | ⬜ |
 | 4.19 | Wetter-Basis (Anzeige + Frost/Sturm-Warnung) | ⬜ |
-| 4.21 | Wissensdatenbank DB-gestützt (iterativ) | 🔨 statisch → DB |
+| 4.21 | Wissensdatenbank DB-gestützt (iterativ) | 🔨 statisch → DB (v1.15.1: alle 20 Recherchen als statische Bibliothek in der App) |
 | 4.22 | Kosten-Dashboard (Quick-Win aus Material-Käufen) | ⬜ |
 | 4.23 | **Recht & Rückverfolgbarkeit** — Compliance-Checkliste, Bestandeskontrolle, Journal-Export (Pflicht) | ⬜ |
 | 4.24 | Kontakt-/Notfall-Hub | ⬜ |

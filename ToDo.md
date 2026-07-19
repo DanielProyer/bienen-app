@@ -1,6 +1,6 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-19 · **Phase:** P1-Fachmodule · **App-Version:** 1.15.0+33 (live)
+**Stand:** 2026-07-19 · **Phase:** P1-Fachmodule · **App-Version:** 1.15.1+34 (live)
 **Aktueller Fokus:** ✅ **Cockpit & IA-Umbau LIVE** (v1.15.0) — 4 Betriebs-Tabs (Cockpit · Völker · Aufgaben · Projekt), Dashboard ist jetzt Betriebszentrale, Projekt-Sammelseite mit aktualisiertem Fortschritt. Davor am selben Tag: ✅ **Modul 4.4 „Aufgaben & Kalender" LIVE** (v1.14.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
@@ -15,6 +15,7 @@
   - **Projekt-Seite** (neu): 6 Bereichs-Kacheln (Material/Bau/Recherche/Entscheidungen/Monitoring/Konto) + **aktualisierter Projektfortschritt** (`kProjektMeilensteine`: Bienenstand ✓, Erstausstattung ✓, Volk 1 ✓ 19.07.; nächster: Waage) + KeyFacts. `mehr_page.dart` + statische Reste entfernt.
   - **Helpers:** `naechsteOffene(alle, n)` (toter Param im Review entfernt), `relativGesehen` (DST-sicher via UTC, Regressionstests über beide CH-Zeitumstellungen).
   - Docs: `docs/superpowers/specs/2026-07-19-cockpit-ia-design.md`, `…/plans/2026-07-19-cockpit-ia.md`.
+- [x] ✓ **Fachwissen-Bibliothek** (v1.15.1+34): Recherchen **10–20** der Imkerei-Schiene (Bienenbiologie, Betriebsweisen, Königinnenzucht, Völkervermehrung, Gesundheit CH, Varroa alpin, Honig, Wachs, Bio/Knospe, Recht CH/GR, Wirtschaftlichkeit) als Assets + 11 Karten/Routen auf der Recherche-Seite (MarkdownViewer-Muster), mit Stand-Fussnote. Kopien altern bewusst (DB-Wissensbasis = 4.21).
 
 ## ✅ Erledigt — Session 2026-07-19 (Modul 4.4 Aufgaben & Kalender)
 
