@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bienen_app/features/aufgaben/presentation/pages/aufgaben_page.dart';
+import 'package:bienen_app/features/aufgaben/presentation/pages/aufgabe_form_page.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/auth/presentation/auth_state.dart';
 import 'package:bienen_app/features/auth/presentation/einladung_code_page.dart';
@@ -94,6 +96,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             GoRoute(
               path: 'todo',
               builder: (context, state) => const TodoPage(),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: '/aufgaben',
+          builder: (context, state) => const AufgabenPage(),
+          routes: [
+            GoRoute(
+              path: 'neu',
+              builder: (c, s) => const AufgabeFormPage(),
+            ),
+            GoRoute(
+              path: ':id/bearbeiten',
+              builder: (c, s) => AufgabeFormPage(aufgabeId: s.pathParameters['id']),
             ),
           ],
         ),
