@@ -81,6 +81,37 @@ void main() {
     expect(am12.where((x) => x.regel.key == 'schwarmkontrolle'), isEmpty); // 17.5. > 12.5.+2
   });
 
+  test('Intervall ohne bisherige Zeile: mitten im Fenster faellig = heute', () {
+    // Offset 0: Fenster 15.4.–1.6.; keine Zeilen → Einstieg am Stichtag selbst.
+    final v = anstehendeVorschlaege(
+      stichtag: DateTime(2026, 5, 1), saisonOffsetTage: 0,
+      regelAufgaben: const [], anzahlAktiveVoelker: 1,
+    );
+    final sk = v.where((x) => x.regel.key == 'schwarmkontrolle').toList();
+    expect(sk.single.faelligAm, DateTime(2026, 5, 1));
+  });
+
+  test('Intervall ohne bisherige Zeile: im Vorlauf vor Fensterstart faellig = start', () {
+    // 5.4. liegt im 14-Tage-Vorlauf vor Fensterstart 15.4. → faellig = Fensterstart.
+    final v = anstehendeVorschlaege(
+      stichtag: DateTime(2026, 4, 5), saisonOffsetTage: 0,
+      regelAufgaben: const [], anzahlAktiveVoelker: 1,
+    );
+    final sk = v.where((x) => x.regel.key == 'schwarmkontrolle').toList();
+    expect(sk.single.faelligAm, DateTime(2026, 4, 15));
+  });
+
+  test('DST-Regression: erste_durchsicht Offset 42 — Fensterende 6.5. bleibt inklusiv', () {
+    // Basis-Ende 25.3. + 42 Tage schiebt über die Frühjahrs-Zeitumstellung (29.3.).
+    // Kalenderkomponenten-Arithmetik muss exakt den 6.5. (lokale Mitternacht) liefern.
+    final v = anstehendeVorschlaege(
+      stichtag: DateTime(2026, 5, 6), saisonOffsetTage: 42,
+      regelAufgaben: const [], anzahlAktiveVoelker: 1,
+    );
+    final ed = v.where((x) => x.regel.key == 'erste_durchsicht').toList();
+    expect(ed.single.faelligAm, DateTime(2026, 5, 6));
+  });
+
   test('Intervall: nach Fensterende kein Vorschlag mehr', () {
     final v = anstehendeVorschlaege(
       stichtag: DateTime(2026, 6, 10), saisonOffsetTage: 0,

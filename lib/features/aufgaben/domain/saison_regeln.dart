@@ -191,10 +191,13 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
   final out = <AufgabenVorschlag>[];
   for (final r in kSaisonRegeln) {
     if (r.ebene == RegelEbene.volk && anzahlAktiveVoelker == 0) continue;
-    final offset = Duration(days: r.offsetAnwenden ? saisonOffsetTage : 0);
+    // DST-sicher: Tages-Arithmetik ausschliesslich über Kalenderkomponenten
+    // (Dart normalisiert Überlauf auf lokale Mitternacht) — NIE Duration addieren,
+    // sonst kippt das Datum bei Offsets über die Zeitumstellung (Europe/Zurich).
+    final off = r.offsetAnwenden ? saisonOffsetTage : 0;
     for (final jahr in [heute.year - 1, heute.year, heute.year + 1]) {
-      final start = DateTime(jahr, r.startMonat, r.startTag).add(offset);
-      final ende = DateTime(jahr, r.endMonat, r.endTag).add(offset);
+      final start = DateTime(jahr, r.startMonat, r.startTag + off);
+      final ende = DateTime(jahr, r.endMonat, r.endTag + off);
       if (heute.isAfter(ende)) continue;
       final vorhanden = regelAufgaben
           .where((a) => a.regelKey == r.key && a.saisonJahr == jahr)
@@ -202,18 +205,21 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
       if (vorhanden.any((a) => a.status == 'uebersprungen' && a.volkId == null)) continue;
       if (r.intervallTage == null) {
         if (vorhanden.isNotEmpty) continue;
-        if (heute.isBefore(start.subtract(const Duration(days: kVorlaufTage)))) continue;
+        if (heute.isBefore(DateTime(start.year, start.month, start.day - kVorlaufTage))) continue;
         out.add(AufgabenVorschlag(
             regel: r, fensterStart: start, fensterEnde: ende, faelligAm: ende, saisonJahr: jahr));
       } else {
         DateTime faellig;
         if (vorhanden.isEmpty) {
-          if (heute.isBefore(start.subtract(const Duration(days: kVorlaufTage)))) continue;
+          if (heute.isBefore(DateTime(start.year, start.month, start.day - kVorlaufTage))) continue;
           faellig = heute.isBefore(start) ? start : heute;
         } else {
           final juengste = vorhanden.map((a) => _tag(a.faelligAm)).reduce((a, b) => a.isAfter(b) ? a : b);
-          faellig = juengste.add(Duration(days: r.intervallTage!));
-          if (faellig.difference(heute).inDays > kIntervallVorlaufTage) continue;
+          faellig = DateTime(juengste.year, juengste.month, juengste.day + r.intervallTage!);
+          // Kalendertag-Vergleich statt difference(): eine Duration über die
+          // Zeitumstellung verlöre eine Stunde und damit ggf. einen Tag.
+          final vorlaufGrenze = DateTime(heute.year, heute.month, heute.day + kIntervallVorlaufTage);
+          if (faellig.isAfter(vorlaufGrenze)) continue;
         }
         if (faellig.isAfter(ende)) continue;
         out.add(AufgabenVorschlag(
