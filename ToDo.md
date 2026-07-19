@@ -1,11 +1,20 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-19 · **Phase:** P1-Fachmodule · **App-Version:** 1.14.0+32 (live)
-**Aktueller Fokus:** ✅ **Modul 4.4 „Aufgaben & Kalender" LIVE** (v1.14.0) — Aufgabenverwaltung mit Saison-Vorschlags-Generator (25 alpine Regeln, Offset als Datenwert), neuer Haupt-Tab „Aufgaben", Dashboard-Kachel, Volk-Section. **Heute kommt Volk 1** (Tino Hassler) → Live-Test mit echten Daten. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. 4.22 Kosten-Dashboard — nach Absprache.
+**Stand:** 2026-07-19 · **Phase:** P1-Fachmodule · **App-Version:** 1.15.0+33 (live)
+**Aktueller Fokus:** ✅ **Cockpit & IA-Umbau LIVE** (v1.15.0) — 4 Betriebs-Tabs (Cockpit · Völker · Aufgaben · Projekt), Dashboard ist jetzt Betriebszentrale, Projekt-Sammelseite mit aktualisiertem Fortschritt. Davor am selben Tag: ✅ **Modul 4.4 „Aufgaben & Kalender" LIVE** (v1.14.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-19 (Cockpit & IA-Umbau)
+
+- [x] ✓ **Cockpit & IA-Umbau LIVE** (v1.15.0+33). Brainstorming mit **Inline-Mockups** (3 Nav-Varianten, Cockpit, Projekt-Seite) → Spec → Plan (5 Tasks) → subagent-getrieben + Reviews. **Reine UI-Schicht, keine Migration.** 133/133 Tests (+6 neue), live.
+  - **IA:** Nav von 7 auf **4 Betriebs-Tabs** (Cockpit · Völker · Aufgaben · Projekt) — Entscheid Variante A, Waage-Tab bewusst eingespart (Waage kommt mit 4.9 an die Volk-Detailseite; Reserve-Slots für künftige Tabs frei). `/mehr` → Redirect `/projekt`; alle Routen bleiben gültig.
+  - **Cockpit** (`dashboard_page` + 4 Widgets): Warnband (überfällige Aufgaben + aktive Meldepflicht je Volk), **HeuteKarte** (nächste 3 Aufgaben, direkt abhakbar mit Undo, Saisonvorschlags-Hinweis), **VoelkerKarte** (Ampel `gesundheitsstatus`, „gesehen: heute/gestern/vor N Tagen", Meldepflicht-Icon), **WaageKachel** (ehrlicher Platzhalter ohne Demo-Daten, 4.9-Andockpunkt). **Arosa-Hardcode-Header raus** aus dem täglichen Cockpit.
+  - **Projekt-Seite** (neu): 6 Bereichs-Kacheln (Material/Bau/Recherche/Entscheidungen/Monitoring/Konto) + **aktualisierter Projektfortschritt** (`kProjektMeilensteine`: Bienenstand ✓, Erstausstattung ✓, Volk 1 ✓ 19.07.; nächster: Waage) + KeyFacts. `mehr_page.dart` + statische Reste entfernt.
+  - **Helpers:** `naechsteOffene(alle, n)` (toter Param im Review entfernt), `relativGesehen` (DST-sicher via UTC, Regressionstests über beide CH-Zeitumstellungen).
+  - Docs: `docs/superpowers/specs/2026-07-19-cockpit-ia-design.md`, `…/plans/2026-07-19-cockpit-ia.md`.
 
 ## ✅ Erledigt — Session 2026-07-19 (Modul 4.4 Aufgaben & Kalender)
 

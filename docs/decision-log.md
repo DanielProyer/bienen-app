@@ -4,6 +4,14 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-19 — Cockpit & IA-Umbau live (v1.15.0)
+
+Nav-Neuordnung nach Betriebsstart: tägliche Funktionen 1 Klick, Aufbau-Inhalte gebündelt. Brainstorming erstmals mit Inline-Mockups (3 Varianten). Reine UI-Schicht ohne Migration. 133/133 Tests, live.
+
+- **D-38 · 4 Betriebs-Tabs statt 7 (Variante A, Waage-Tab eingespart):** Bottom-Bar/Rail = Cockpit · Völker · Aufgaben · **Projekt** (bündelt Material, Bau, Recherche, Entscheidungen, Monitoring-Verwaltung, Konto). Waage-Tab bewusst gestrichen — die Waage ist volk-bezogen (4.9 baut den Chart in die Volk-Detailseite; `scaleFuerVolkProvider` als Andockpunkt) + Cockpit-Kachel; damit bleiben **Reserve-Slots** für künftige Betriebs-Tabs (User will nach Betriebserfahrung nachjustieren). `/mehr` → GoRoute-Redirect auf `/projekt`, `mehr_page.dart` gelöscht, alle Routen bleiben gültig.
+- **D-39 · Dashboard = Betriebszentrale, Projekt-Inhalte ausgelagert:** Cockpit stapelt nach Dringlichkeit (Warnband → HeuteKarte mit Direkt-Abhaken → VoelkerKarte mit Ampel/„gesehen" → WaageKachel), konsumiert **nur bestehende Provider** (keine neuen Fetches). Der **Arosa-Hardcode-Header** („Maiensäss … Start Herbst 2026") flog aus dem täglichen Cockpit; statische Projektinhalte (Meilensteine, KeyFacts) leben als dokumentierte **Mandant-1-Ausnahme** auf der Projekt-Seite (`kProjektMeilensteine`, gepflegt beim Arbeitsschluss, kein Datenmodell/YAGNI). WaageKachel zeigt **bewusst keine Demo-Daten**.
+- **Gotcha (App):** (1) `Border(left:)` + `borderRadius` im selben `BoxDecoration` wirft einen Flutter-Assert (nicht-uniformer Border) → Rundung via `Material.borderRadius` + `clipBehavior`, Border ohne Radius. (2) Relativ-Tage (`relativGesehen`) über **UTC-Konstruktion** rechnen — Regressionstests über beide CH-Zeitumstellungen. (3) Tote Parameter in pure Helpers vermeiden (Review: `stichtag` aus `naechsteOffene` entfernt — aufsteigende Sortierung stellt Überfällige ohne Referenzdatum voran).
+
 ## 2026-07-19 — Modul 4.4 „Aufgaben & Kalender" live (v1.14.0)
 
 Aufgabenverwaltung + regelbasierter Saison-Vorschlags-Generator (alpiner Jahresablauf). Brainstorm (Kern-Scope) → Spec → Plan → subagent-getrieben mit Spec-/Quality-Reviews je Bucket + finaler Review. 127/127 Tests, live. Ab heute mit Volk 1 real im Einsatz.
