@@ -1,11 +1,18 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-19 · **Phase:** P1-Fachmodule · **App-Version:** 1.15.1+34 (live)
+**Stand:** 2026-07-19 · **Phase:** P1-Fachmodule · **App-Version:** 1.15.2+35 (live)
 **Aktueller Fokus:** ✅ **Cockpit & IA-Umbau LIVE** (v1.15.0) — 4 Betriebs-Tabs (Cockpit · Völker · Aufgaben · Projekt), Dashboard ist jetzt Betriebszentrale, Projekt-Sammelseite mit aktualisiertem Fortschritt. Davor am selben Tag: ✅ **Modul 4.4 „Aufgaben & Kalender" LIVE** (v1.14.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-19 (bienen.ch/BGD-Wissenserschliessung)
+
+- [x] ✓ **bienen.ch (BienenSchweiz/BGD) vollständig ausgewertet** (autonomer Auftrag). 96 offizielle Merkblätter/PDFs erschlossen (Text + Grafik), 8-Agenten-Synthese → **9 BGD-Fachrecherchen** in der Imkerei-Schiene (`../imkerei/02_Recherche/21–29`).
+  - **App-Bibliothek erweitert** (v1.15.2+35): neue Sektion **„Offizielle BGD-Merkblätter (BienenSchweiz)"** mit 8 Karten/Routen (Betriebskonzept, Varroa, Krankheiten, Vespa velutina, Vermehrung, Zucht, Gute Praxis, Honig/Recht) — Assets 21–28. „Dieselbe Grundlage wie Lorenas Kurs."
+  - **App-Verbesserungs-Findings** priorisiert dokumentiert: [docs/bienen-ch-findings.md](docs/bienen-ch-findings.md). **Nichts autonom an bestehenden Modulen geändert** (bewusst: Bio-Nachweis/Generator/Katalog folgen Spec→Freigabe).
+  - **🔴 OFFEN — mit Daniel besprechen (aus Findings):** Quick Wins 4.6 `futterart`-Enum + 20-kg-Warnschwelle · 4.5 Varroa-Methoden-Katalog + Temperatur-Gate + Schwellen · 4.4-Bug `gemuelldiagnose_sommer` an Ernte koppeln · 4.4 fehlende Regeln (Ableger/Zucht/Notbehandlung/Winter-Erfolgskontrolle) · **strukturell: phänologischer Generator** statt fixem +42-Offset · Betriebskonzept-Onboarding. Verify: Tropilaelaps-Rechtskategorie, TSV-18a-Meldefrist.
 
 ## ✅ Erledigt — Session 2026-07-19 (Cockpit & IA-Umbau)
 

@@ -313,6 +313,63 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 assetPath: 'assets/recherche/20_Wirtschaftlichkeit_Betriebsfuehrung.md',
               ),
             ),
+            // Offizielle BGD-Merkblätter (BienenSchweiz), ausgewertet Juli 2026
+            GoRoute(
+              path: 'bgd-betriebskonzept',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Betriebskonzept & Jahresplanung (BGD)',
+                assetPath: 'assets/recherche/21_Betriebskonzept_Jahresplanung_BGD.md',
+              ),
+            ),
+            GoRoute(
+              path: 'bgd-varroa',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Varroa-Behandlungskonzept (BGD)',
+                assetPath: 'assets/recherche/22_Varroa_Behandlungskonzept_BGD.md',
+              ),
+            ),
+            GoRoute(
+              path: 'bgd-krankheiten',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Krankheiten & Schädlinge (BGD)',
+                assetPath: 'assets/recherche/23_Krankheiten_Schaedlinge_BGD.md',
+              ),
+            ),
+            GoRoute(
+              path: 'bgd-vespa',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Asiatische Hornisse (Vespa velutina)',
+                assetPath: 'assets/recherche/24_Asiatische_Hornisse_Vespa_velutina.md',
+              ),
+            ),
+            GoRoute(
+              path: 'bgd-vermehrung',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Vermehrung & Jungvolkbildung (BGD)',
+                assetPath: 'assets/recherche/25_Vermehrung_Jungvolkbildung_BGD.md',
+              ),
+            ),
+            GoRoute(
+              path: 'bgd-zucht',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Zucht & Völkerbeurteilung (BGD)',
+                assetPath: 'assets/recherche/26_Zucht_Voelkerbeurteilung_BGD.md',
+              ),
+            ),
+            GoRoute(
+              path: 'bgd-praxis',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Gute imkerliche Praxis (BGD)',
+                assetPath: 'assets/recherche/27_Gute_imkerliche_Praxis_BGD.md',
+              ),
+            ),
+            GoRoute(
+              path: 'bgd-honig-recht',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Honig-Qualität & Recht/Pflichten (BGD)',
+                assetPath: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md',
+              ),
+            ),
           ],
         ),
         GoRoute(
