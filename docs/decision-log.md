@@ -4,6 +4,15 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-19 — Modul 4.4 „Aufgaben & Kalender" live (v1.14.0)
+
+Aufgabenverwaltung + regelbasierter Saison-Vorschlags-Generator (alpiner Jahresablauf). Brainstorm (Kern-Scope) → Spec → Plan → subagent-getrieben mit Spec-/Quality-Reviews je Bucket + finaler Review. 127/127 Tests, live. Ab heute mit Volk 1 real im Einsatz.
+
+- **D-35 · Kern-Scope + Vorschlags-Generator statt Cron:** Erste Ausbaustufe bewusst OHNE Push (F3 fehlt), Wetter (4.19), Waage-Trigger (4.9), `assigned_to` (nur 1 Mitglied), Kalender-Grid/rrule/Bulk. Der Generator ist eine **reine Dart-Funktion** (`anstehendeVorschlaege`): Regeln + Stichtag + Offset → Vorschläge; erst **Annehmen** materialisiert Task-Zeilen, **Überspringen** legt einen `uebersprungen`-Marker (dedupt die Regel fürs Saisonjahr, per Marker-Löschen **wiederherstellbar**). Kein pg_cron, kein SQL-Duplikat des Regelwerks, keine Duplikate (DB-Dedup-Unique-Index `nulls not distinct where quelle='regel'`). Muster-konsistent mit Jahresfarbe/Ampel/Winterfutter/Krankheits-Katalog.
+- **D-36 · Integritätsstufe „normale CRUD":** Aufgaben sind operative Planung, kein Journal/Nachweis → volle CRUD via RLS, Hard-Delete erlaubt, volk-FK **`ON DELETE CASCADE`** (anders als 4.5/4.6/4.14 — Planungsdaten dürfen mit dem Volk verschwinden), kein RPC, kein Errcode-Block. Proportionalitäts-Skala damit komplett: 4.5 amtlich-immutable → 4.6/4.14 Soft-Delete → **4.4 frei**.
+- **D-37 · Saison-Offset-Semantik (mandantenfähig):** Regelfenster = Basisdaten Mittelland als **Dart-Fachkonstante** (25 Regeln aus Recherche 02); `betriebs_einstellungen.saison_offset_default_tage` (existierte seit C01! Arosa-Seed 42) verschiebt NUR die 9 Frühjahrs-/Trachtregeln (`offsetAnwenden`). **Herbst-/Winterregeln kalenderfix mit alpin-sicheren Fenstern** — der alpine Herbst kommt FRÜHER, ein positiver Offset wäre dort falsch; früh einfüttern schadet nie (Deadline-Regel „Auffütterung abschliessen 10.9."). Fenster-Feintuning je Betrieb später via F4. Statische Projekt-Todo-Seite (`todo_page.dart`) ersatzlos entfernt — Inhalt lebt in `../imkerei/ToDo.md`.
+- **Gotcha (App):** (1) **DST:** `DateTime.add(Duration(days:))` über die Frühjahrs-Zeitumstellung verliert 1 h → Kalendertag kippt (erste_durchsicht+42 endete einen Tag zu früh). Tages-Arithmetik IMMER über Kalenderkomponenten (`DateTime(y, m, d + n)`), Tagesdifferenzen über UTC-Konstruktion. (2) **PostgREST-Batch-INSERT ist atomar** — 1 Konflikt verwirft ALLE Zeilen; mit partiellem Unique-Index geht `onConflict`-Upsert nicht (Index-Inferenz braucht WHERE) → **zeilenweise inserten**, 23505 je Zeile ignorieren. (3) Erfolgs-Snackbar erst NACH `await` der Mutation (sonst „erledigt"-Meldung bei Offline-Fehler).
+
 ## 2026-07-18 — Modul 4.14 „Gesundheit/Schädlinge" live (v1.13.0)
 
 CH-Krankheits-Katalog + Diagnose-Journal je Volk + Meldepflicht-Hinweis. Brainstorming → Spec v2 → adversariales Review (4 Lupen, 21 Funde/18 eingearbeitet) → Plan → subagent-getriebene Umsetzung + finaler Code-Review. 96/96 Tests, live. Startet ab Volk 1 (Übernahme 19.07.).

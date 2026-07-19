@@ -1,11 +1,19 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-18 · **Phase:** P1-Fachmodule · **App-Version:** 1.13.0+31 (live)
-**Aktueller Fokus:** ✅ **Modul 4.14 „Gesundheit/Schädlinge" LIVE** (v1.13.0) — CH-Krankheits-Katalog (Dart, kanton-neutral) + Diagnose-Journal je Volk + Meldepflicht-Banner (AFB/EFB), angedockt an die Volk-Detailseite. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung nächste Woche); bis dahin ggf. 4.4 Kalender/Aufgaben oder 4.22 Kosten-Dashboard — nach Absprache.
+**Stand:** 2026-07-19 · **Phase:** P1-Fachmodule · **App-Version:** 1.14.0+32 (live)
+**Aktueller Fokus:** ✅ **Modul 4.4 „Aufgaben & Kalender" LIVE** (v1.14.0) — Aufgabenverwaltung mit Saison-Vorschlags-Generator (25 alpine Regeln, Offset als Datenwert), neuer Haupt-Tab „Aufgaben", Dashboard-Kachel, Volk-Section. **Heute kommt Volk 1** (Tino Hassler) → Live-Test mit echten Daten. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-19 (Modul 4.4 Aufgaben & Kalender)
+
+- [x] ✓ **Modul 4.4 „Aufgaben & Kalender" LIVE** (v1.14.0+32). Brainstorming (Kern-Scope: Tasks + Vorschlags-Generator, KEIN Push [F3 fehlt], kein assigned_to, kein Kalender-Grid) → Spec → Plan (13 Tasks) → subagent-getriebene Umsetzung (3 Buckets, je Spec- + Quality-Review) + finaler Code-Review. **flutter analyze sauber, 127/127 Tests** (+31 neue), live.
+  - **DB (Produktion, H01):** `aufgaben` (operative Planung → **normale CRUD**, kein RPC/Soft-Delete/Errcodes; volk-FK **CASCADE** [Planungsdaten], standort **SET NULL**; CHECK-Paare `erledigt⇔erledigt_am`, `regel⇔regel_key/saison_jahr`; **Dedup-Unique-Index `nulls not distinct` where quelle='regel'**). DO-Tests + Advisor sauber (0 neue). `saison_offset_default_tage` existierte schon (C01, Arosa-Seed 42) — H01 blieb schlank.
+  - **App:** `lib/features/aufgaben/` — **`saison_regeln.dart`** (25 Regeln aus Recherche 02: 16 kalenderfix alpin-sicher + 9 Frühjahrs-/Trachtregeln mit `offsetAnwenden`; Intervalle Schwarmkontrolle 7/Drohnenschnitt 14; `aktionRoute`-Deep-Links inkl. `varroa`), Generator `anstehendeVorschlaege()` (pure: 14-Tage-Vorlauf, Intervall-Vorlauf 2, Dedup via Zeilen inkl. `uebersprungen`-Marker, Kandidatenjahre über Jahreswechsel), Gruppierung (Überfällig/Heute/Demnächst/Später), Gateway/Fake/Supabase (Batch **zeilenweise**), Provider (Notifier + reine Ableitungen). UI: Tab **„Aufgaben"** (Index 2), Vorschlags-Karten (Annehmen je Volk/Überspringen), FAB-Formular, Dashboard-Kachel `X offen · Y überfällig`, `AufgabenSection` an der Volk-Detailseite. **Statische Projekt-Todo-Seite entfernt** (`todo_page.dart`, war veraltetes Duplikat von `../imkerei/ToDo.md`).
+  - **Review-Kernpunkte:** DST-Off-by-one in der Offset-Arithmetik (Duration→**Kalenderkomponenten**, Regressionstest); PostgREST-Batch-Atomizität vs. partieller Dedup-Index (→ zeilenweiser Insert mit 23505-continue); fehlerfeste Interaktionen (Snackbar erst nach await); Überspringen **wiederherstellbar** (Marker löschen → Vorschlag wieder aktiv).
+  - Docs: `docs/superpowers/specs/2026-07-19-aufgaben-kalender-design.md`, `…/plans/2026-07-19-aufgaben-kalender.md`.
 
 ## ✅ Erledigt — Session 2026-07-18 (Modul 4.14 Gesundheit/Schädlinge)
 
@@ -80,10 +88,10 @@
   - Advisor: alle `rls_policy_always_true` + `public_bucket_allows_listing` weg; keine `rls_initplan`-Warnung. Rollback-Netz: `supabase/ops/rollback-public-policies.sql`.
 
 ## 🔴 OFFEN — als Nächstes
-- [ ] **🟡 4.9 Monitoring-Ausbau — sobald die HiveWatch-Waage da ist** (Bestellung nächste Woche): Gewicht/Brutraumtemp, Alerts, Analytics, Datenqualität (Demo → real). Bis dahin optional: **4.4 Kalender/Aufgaben** (alpiner Generator + Schutztermine, dockt an `naechste_durchsicht_am` 4.3) oder **4.22 Kosten-Dashboard** (Quick-Win aus `material_purchases`). Spec → Plan → Umsetzung.
+- [ ] **🟡 4.9 Monitoring-Ausbau — sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25): Gewicht/Brutraumtemp, Alerts, Analytics, Datenqualität (Demo → real). Bis dahin optional: **4.22 Kosten-Dashboard** (Quick-Win aus `material_purchases`). Spec → Plan → Umsetzung.
 - [ ] **🟢 Leaked-Password-Protection aktivieren** — Dashboard → Authentication → Password Security (Advisor-Empfehlung, gerade bei Passwort-Login sinnvoll). Klein.
 - [ ] **🟡 Lorena einladen**, wann Daniel bereit ist — Konto → „Mitglied einladen" (E-Mail + Rolle editor) → Code an Lorena. Mechanismus fertig & getestet, aktuell 0 offene Einladungen.
-- [ ] **🟢 Module 4.2 + 4.3 + 4.5 + 4.6 + 4.14 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): 4.2 (Volk/Königin/Umweiseln/Standort/Nav „Mehr"), 4.3 (Durchsicht → Timeline, Foto, „zuletzt gesehen", Löschen), 4.5 (Milbendiagnose → Cockpit/Ampel; Behandlung → Liste + Lager sinkt; Storno; Bio-Banner), 4.6 (Fütterung → Winterfutter-Balken + Lager sinkt; Bio-Warnbanner; Storno), **4.14 (Diagnose `afb` → roter Meldepflicht-Banner + Disclaimer; Foto; Nudge aus Durchsicht mit Faulbrut-Verdacht; Storno → durchgestrichen)**. Der reale Live-Test läuft ohnehin ab Volk 1 (morgen). Bei Auffälligkeiten melden.
+- [ ] **🟢 Module 4.2 + 4.3 + 4.5 + 4.6 + 4.14 + 4.4 im Browser klick-testen** (Deploy-Preview war headless nicht renderbar): 4.2 (Volk/Königin/Umweiseln/Standort/Nav „Mehr"), 4.3 (Durchsicht → Timeline, Foto, „zuletzt gesehen", Löschen), 4.5 (Milbendiagnose → Cockpit/Ampel; Behandlung → Liste + Lager sinkt; Storno; Bio-Banner), 4.6 (Fütterung → Winterfutter-Balken + Lager sinkt; Bio-Warnbanner; Storno), 4.14 (Diagnose `afb` → roter Meldepflicht-Banner + Disclaimer; Foto; Nudge aus Durchsicht mit Faulbrut-Verdacht; Storno → durchgestrichen), **4.4 (Tab „Aufgaben": Saison-Vorschläge [aktuell erwartbar: Startfütterung, 1. Sommerbehandlung, Hauptfütterung] → Annehmen/Überspringen/Wiederherstellen; Abhaken + Undo; „Erfassen"-Pfeil → Formular; Dashboard-Kachel; Volk-Section)**. Der reale Live-Test läuft ohnehin ab Volk 1 (heute). Bei Auffälligkeiten melden.
 
 ## 🔵 Danach (P1-Fachmodule, Reihenfolge laut Roadmap)
 
