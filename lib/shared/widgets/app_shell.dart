@@ -11,13 +11,15 @@ class AppShell extends StatelessWidget {
     final location = GoRouterState.of(context).uri.toString();
     if (location.startsWith('/voelker')) return 1;
     if (location.startsWith('/aufgaben')) return 2;
-    if (location.startsWith('/monitoring')) return 3;
-    if (location.startsWith('/material')) return 4;
-    if (location.startsWith('/construction')) return 5;
-    if (location.startsWith('/mehr') ||
+    if (location.startsWith('/projekt') ||
+        location.startsWith('/material') ||
+        location.startsWith('/construction') ||
+        location.startsWith('/monitoring') ||
         location.startsWith('/recherche') ||
-        location.startsWith('/entscheidungen')) {
-      return 6;
+        location.startsWith('/entscheidungen') ||
+        location.startsWith('/konto') ||
+        location.startsWith('/mehr')) {
+      return 3;
     }
     return 0;
   }
@@ -31,13 +33,7 @@ class AppShell extends StatelessWidget {
       case 2:
         context.go('/aufgaben');
       case 3:
-        context.go('/monitoring');
-      case 4:
-        context.go('/material');
-      case 5:
-        context.go('/construction');
-      case 6:
-        context.go('/mehr');
+        context.go('/projekt');
     }
   }
 
@@ -79,9 +75,9 @@ class AppShell extends StatelessWidget {
               ),
               destinations: const [
                 NavigationRailDestination(
-                  icon: Icon(Icons.dashboard_outlined),
-                  selectedIcon: Icon(Icons.dashboard),
-                  label: Text('Dashboard'),
+                  icon: Icon(Icons.home_outlined),
+                  selectedIcon: Icon(Icons.home),
+                  label: Text('Cockpit'),
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.hive_outlined),
@@ -94,24 +90,9 @@ class AppShell extends StatelessWidget {
                   label: Text('Aufgaben'),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.monitor_weight_outlined),
-                  selectedIcon: Icon(Icons.monitor_weight),
-                  label: Text('Waage'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.shopping_cart_outlined),
-                  selectedIcon: Icon(Icons.shopping_cart),
-                  label: Text('Material'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.construction_outlined),
-                  selectedIcon: Icon(Icons.construction),
-                  label: Text('Bau'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.more_horiz),
-                  selectedIcon: Icon(Icons.more_horiz),
-                  label: Text('Mehr'),
+                  icon: Icon(Icons.folder_open_outlined),
+                  selectedIcon: Icon(Icons.folder_open),
+                  label: Text('Projekt'),
                 ),
               ],
             ),
@@ -128,9 +109,9 @@ class AppShell extends StatelessWidget {
         onDestinationSelected: (i) => _onDestinationSelected(context, i),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Cockpit',
           ),
           NavigationDestination(
             icon: Icon(Icons.hive_outlined),
@@ -143,24 +124,9 @@ class AppShell extends StatelessWidget {
             label: 'Aufgaben',
           ),
           NavigationDestination(
-            icon: Icon(Icons.monitor_weight_outlined),
-            selectedIcon: Icon(Icons.monitor_weight),
-            label: 'Waage',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.shopping_cart_outlined),
-            selectedIcon: Icon(Icons.shopping_cart),
-            label: 'Material',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.construction_outlined),
-            selectedIcon: Icon(Icons.construction),
-            label: 'Bau',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.more_horiz),
-            selectedIcon: Icon(Icons.more_horiz),
-            label: 'Mehr',
+            icon: Icon(Icons.folder_open_outlined),
+            selectedIcon: Icon(Icons.folder_open),
+            label: 'Projekt',
           ),
         ],
       ),

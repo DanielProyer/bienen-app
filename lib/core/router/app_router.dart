@@ -27,9 +27,9 @@ import 'package:bienen_app/features/recherche/pages/markdown_viewer_page.dart';
 import 'package:bienen_app/features/entscheidungen/pages/entscheidungen_page.dart';
 import 'package:bienen_app/features/material/presentation/pages/material_page.dart'
     as material;
-import 'package:bienen_app/features/mehr/pages/mehr_page.dart';
 import 'package:bienen_app/features/monitoring/presentation/pages/monitoring_page.dart';
 import 'package:bienen_app/features/monitoring/presentation/pages/scale_settings_page.dart';
+import 'package:bienen_app/features/projekt/pages/projekt_page.dart';
 import 'package:bienen_app/features/construction/presentation/pages/construction_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_detail_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_form_page.dart';
@@ -300,7 +300,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             ),
           ],
         ),
-        GoRoute(path: '/mehr', builder: (context, state) => const MehrPage()),
+        GoRoute(path: '/projekt', builder: (context, state) => const ProjektPage()),
+        GoRoute(path: '/mehr', redirect: (context, state) => '/projekt'),
         GoRoute(
           path: '/konto',
           builder: (context, state) => const KontoPage(),
