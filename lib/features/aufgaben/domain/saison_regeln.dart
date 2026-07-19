@@ -6,6 +6,8 @@
 /// FRÜHER — ein positiver Offset wäre dort falsch; früh einfüttern schadet nie).
 library;
 
+import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
+
 enum RegelEbene { volk, betrieb }
 
 class SaisonRegel {
@@ -148,4 +150,77 @@ SaisonRegel? regelVon(String? key) {
     if (r.key == key) return r;
   }
   return null;
+}
+
+// --- Generator ---
+
+/// Vorlauf, mit dem Fenster-Regeln vor Fensterbeginn erscheinen.
+const kVorlaufTage = 14;
+
+/// Kürzerer Vorlauf für Intervall-Regeln (sonst erschiene der 7-Tage-Rhythmus sofort wieder).
+const kIntervallVorlaufTage = 2;
+
+class AufgabenVorschlag {
+  final SaisonRegel regel;
+  final DateTime fensterStart;
+  final DateTime fensterEnde;
+  final DateTime faelligAm;
+  final int saisonJahr;
+  const AufgabenVorschlag({
+    required this.regel,
+    required this.fensterStart,
+    required this.fensterEnde,
+    required this.faelligAm,
+    required this.saisonJahr,
+  });
+}
+
+DateTime _tag(DateTime d) => DateTime(d.year, d.month, d.day);
+
+/// Reine Funktion: welche Saisonaufgaben stehen am [stichtag] an?
+/// [regelAufgaben] = alle Aufgaben mit quelle='regel' (jeder Status — angenommene UND
+/// übersprungene Zeilen dedupen). Saison-Anker gekapselt: Kandidatenjahre Vorjahr/aktuell/Folgejahr
+/// (Vorlauf über Jahreswechsel; Gotcha 11 aus 4.6).
+List<AufgabenVorschlag> anstehendeVorschlaege({
+  required DateTime stichtag,
+  required int saisonOffsetTage,
+  required List<Aufgabe> regelAufgaben,
+  required int anzahlAktiveVoelker,
+}) {
+  final heute = _tag(stichtag);
+  final out = <AufgabenVorschlag>[];
+  for (final r in kSaisonRegeln) {
+    if (r.ebene == RegelEbene.volk && anzahlAktiveVoelker == 0) continue;
+    final offset = Duration(days: r.offsetAnwenden ? saisonOffsetTage : 0);
+    for (final jahr in [heute.year - 1, heute.year, heute.year + 1]) {
+      final start = DateTime(jahr, r.startMonat, r.startTag).add(offset);
+      final ende = DateTime(jahr, r.endMonat, r.endTag).add(offset);
+      if (heute.isAfter(ende)) continue;
+      final vorhanden = regelAufgaben
+          .where((a) => a.regelKey == r.key && a.saisonJahr == jahr)
+          .toList();
+      if (vorhanden.any((a) => a.status == 'uebersprungen' && a.volkId == null)) continue;
+      if (r.intervallTage == null) {
+        if (vorhanden.isNotEmpty) continue;
+        if (heute.isBefore(start.subtract(const Duration(days: kVorlaufTage)))) continue;
+        out.add(AufgabenVorschlag(
+            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: ende, saisonJahr: jahr));
+      } else {
+        DateTime faellig;
+        if (vorhanden.isEmpty) {
+          if (heute.isBefore(start.subtract(const Duration(days: kVorlaufTage)))) continue;
+          faellig = heute.isBefore(start) ? start : heute;
+        } else {
+          final juengste = vorhanden.map((a) => _tag(a.faelligAm)).reduce((a, b) => a.isAfter(b) ? a : b);
+          faellig = juengste.add(Duration(days: r.intervallTage!));
+          if (faellig.difference(heute).inDays > kIntervallVorlaufTage) continue;
+        }
+        if (faellig.isAfter(ende)) continue;
+        out.add(AufgabenVorschlag(
+            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: faellig, saisonJahr: jahr));
+      }
+    }
+  }
+  out.sort((a, b) => a.faelligAm.compareTo(b.faelligAm));
+  return out;
 }
