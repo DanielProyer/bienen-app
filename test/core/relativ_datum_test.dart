@@ -12,4 +12,10 @@ void main() {
   test('relativGesehen: Zukunftsdatum (Uhr verstellt) fällt auf heute zurück', () {
     expect(relativGesehen(DateTime(2026, 7, 25), heute), 'heute');
   });
+  test('relativGesehen: DST-Umstellungen (CH) verfälschen die Tagesdifferenz nicht', () {
+    // Frühjahrs-Umstellung 29.03.2026
+    expect(relativGesehen(DateTime(2026, 3, 28), DateTime(2026, 3, 30)), 'vor 2 Tagen');
+    // Herbst-Umstellung 25.10.2026
+    expect(relativGesehen(DateTime(2026, 10, 24), DateTime(2026, 10, 26)), 'vor 2 Tagen');
+  });
 }

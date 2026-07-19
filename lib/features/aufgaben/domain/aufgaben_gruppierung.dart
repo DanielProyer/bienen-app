@@ -9,7 +9,7 @@ int _tagDiff(DateTime a, DateTime b) =>
 /// Gruppiert OFFENE Aufgaben nach Fälligkeit relativ zu [stichtag] (nur Datumsteil).
 /// demnaechst = 1..14 Tage voraus. Innerhalb jeder Gruppe aufsteigend nach faellig_am.
 Map<AufgabenGruppe, List<Aufgabe>> gruppiereOffene(List<Aufgabe> alle, DateTime stichtag) {
-  final offen = alle.where((a) => a.status == 'offen').toList()
+  final offen = alle.where((a) => a.istOffen).toList()
     ..sort((a, b) => a.faelligAm.compareTo(b.faelligAm));
   final m = {for (final g in AufgabenGruppe.values) g: <Aufgabe>[]};
   for (final a in offen) {
@@ -28,9 +28,10 @@ Map<AufgabenGruppe, List<Aufgabe>> gruppiereOffene(List<Aufgabe> alle, DateTime 
 }
 
 /// Die nächsten [n] OFFENEN Aufgaben, aufsteigend nach faellig_am —
-/// überfällige stehen damit automatisch zuerst. Fürs Cockpit („Heute & demnächst").
-List<Aufgabe> naechsteOffene(List<Aufgabe> alle, DateTime stichtag, int n) {
-  final offen = alle.where((a) => a.status == 'offen').toList()
+/// überfällige stehen damit automatisch zuerst (kein Referenzdatum nötig).
+/// Fürs Cockpit („Heute & demnächst").
+List<Aufgabe> naechsteOffene(List<Aufgabe> alle, int n) {
+  final offen = alle.where((a) => a.istOffen).toList()
     ..sort((a, b) => a.faelligAm.compareTo(b.faelligAm));
   return offen.take(n).toList();
 }

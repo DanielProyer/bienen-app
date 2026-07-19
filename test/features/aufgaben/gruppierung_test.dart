@@ -34,7 +34,6 @@ void main() {
   });
 
   test('naechsteOffene: sortiert aufsteigend (überfällige automatisch zuerst), max n, nur offene', () {
-    final heute = DateTime(2026, 7, 19);
     final res = naechsteOffene([
       _a('c', DateTime(2026, 8, 1)),
       _a('u', DateTime(2026, 7, 10)),
@@ -42,7 +41,7 @@ void main() {
       _a('x', DateTime(2026, 7, 2), status: 'uebersprungen'),
       _a('b', DateTime(2026, 7, 25)),
       _a('d', DateTime(2026, 9, 1)),
-    ], heute, 3);
+    ], 3);
     expect(res.map((x) => x.id).toList(), ['u', 'b', 'c']);
   });
 }
