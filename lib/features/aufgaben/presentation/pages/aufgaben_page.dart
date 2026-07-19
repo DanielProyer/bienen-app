@@ -120,14 +120,32 @@ class _AufgabeZeile extends ConsumerWidget {
     'schutz': 'Schutz', 'werkstatt': 'Werkstatt', 'verwaltung': 'Verwaltung', 'sonstiges': 'Sonstiges',
   };
 
-  void _abhaken(BuildContext context, WidgetRef ref, bool erledigt) {
+  Future<void> _abhaken(BuildContext context, WidgetRef ref, bool erledigt) async {
     final notifier = ref.read(aufgabenListProvider.notifier);
-    notifier.abhaken(aufgabe.id, erledigt: erledigt);
+    try {
+      await notifier.abhaken(aufgabe.id, erledigt: erledigt);
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Fehler: $e')));
+      }
+      return;
+    }
+    if (!context.mounted) return;
     if (erledigt) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('„${aufgabe.titel}" erledigt'),
         action: SnackBarAction(
-            label: 'Rückgängig', onPressed: () => notifier.abhaken(aufgabe.id, erledigt: false)),
+            label: 'Rückgängig',
+            onPressed: () async {
+              try {
+                await notifier.abhaken(aufgabe.id, erledigt: false);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Fehler: $e')));
+                }
+              }
+            }),
       ));
     }
   }
@@ -196,9 +214,33 @@ class _AufgabeZeile extends ConsumerWidget {
                 const PopupMenuItem(value: 'del', child: Text('Löschen')),
               ],
             ),
+          if (darfSchreiben && uebersprungen)
+            PopupMenuButton<String>(
+              onSelected: (_) => _wiederherstellen(context, ref),
+              itemBuilder: (_) => const [
+                PopupMenuItem(
+                    value: 'restore', child: Text('Vorschlag wiederherstellen')),
+              ],
+            ),
         ]),
       ),
     );
+  }
+
+  /// Übersprungen-Marker löschen → Generator zeigt den Vorschlag wieder an.
+  Future<void> _wiederherstellen(BuildContext context, WidgetRef ref) async {
+    try {
+      await ref.read(aufgabenListProvider.notifier).loeschen(aufgabe.id);
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Fehler: $e')));
+      }
+      return;
+    }
+    if (context.mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Vorschlag wieder aktiv')));
+    }
   }
 
   Future<void> _loeschen(BuildContext context, WidgetRef ref) async {

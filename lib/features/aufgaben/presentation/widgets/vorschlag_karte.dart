@@ -13,24 +13,40 @@ class VorschlagKarte extends ConsumerWidget {
 
   Future<void> _annehmen(BuildContext context, WidgetRef ref) async {
     final notifier = ref.read(aufgabenListProvider.notifier);
-    if (vorschlag.regel.ebene == RegelEbene.betrieb) {
-      await notifier.vorschlagAnnehmen(vorschlag);
-      return;
+    try {
+      if (vorschlag.regel.ebene == RegelEbene.betrieb) {
+        await notifier.vorschlagAnnehmen(vorschlag);
+        return;
+      }
+      final voelker = ref.read(aktiveVoelkerProvider);
+      if (voelker.length == 1) {
+        await notifier.vorschlagAnnehmen(vorschlag, volkIds: [voelker.single.id]);
+        return;
+      }
+      if (!context.mounted) return;
+      final gewaehlt = await showDialog<List<String>>(
+        context: context,
+        builder: (_) => _VoelkerAuswahlDialog(
+            titel: vorschlag.regel.titel,
+            voelker: [for (final v in voelker) (id: v.id, name: v.name)]),
+      );
+      if (gewaehlt == null || gewaehlt.isEmpty) return;
+      await notifier.vorschlagAnnehmen(vorschlag, volkIds: gewaehlt);
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Fehler: $e')));
+      }
     }
-    final voelker = ref.read(aktiveVoelkerProvider);
-    if (voelker.length == 1) {
-      await notifier.vorschlagAnnehmen(vorschlag, volkIds: [voelker.single.id]);
-      return;
+  }
+
+  Future<void> _ueberspringen(BuildContext context, WidgetRef ref) async {
+    try {
+      await ref.read(aufgabenListProvider.notifier).vorschlagUeberspringen(vorschlag);
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Fehler: $e')));
+      }
     }
-    if (!context.mounted) return;
-    final gewaehlt = await showDialog<List<String>>(
-      context: context,
-      builder: (_) => _VoelkerAuswahlDialog(
-          titel: vorschlag.regel.titel,
-          voelker: [for (final v in voelker) (id: v.id, name: v.name)]),
-    );
-    if (gewaehlt == null || gewaehlt.isEmpty) return;
-    await notifier.vorschlagAnnehmen(vorschlag, volkIds: gewaehlt);
   }
 
   @override
@@ -55,7 +71,7 @@ class VorschlagKarte extends ConsumerWidget {
             const SizedBox(height: 8),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               TextButton(
-                onPressed: () => ref.read(aufgabenListProvider.notifier).vorschlagUeberspringen(vorschlag),
+                onPressed: () => _ueberspringen(context, ref),
                 child: const Text('Überspringen'),
               ),
               const SizedBox(width: 8),
