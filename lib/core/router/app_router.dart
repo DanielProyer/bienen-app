@@ -235,6 +235,84 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 assetPath: 'assets/recherche/03_Erstausstattung_Einkaufsliste.md',
               ),
             ),
+            // Fachwissen-Bibliothek (Recherchen 10-20 der Imkerei-Schiene)
+            GoRoute(
+              path: 'bienenbiologie',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Bienenbiologie: Das Bienenvolk',
+                assetPath: 'assets/recherche/10_Bienenbiologie_Das_Bienenvolk.md',
+              ),
+            ),
+            GoRoute(
+              path: 'betriebsweisen',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Imkerei-Grundlagen & Betriebsweisen',
+                assetPath: 'assets/recherche/11_Imkerei_Grundlagen_Betriebsweisen.md',
+              ),
+            ),
+            GoRoute(
+              path: 'koeniginnenzucht',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Königinnenzucht',
+                assetPath: 'assets/recherche/12_Koeniginnenzucht.md',
+              ),
+            ),
+            GoRoute(
+              path: 'voelkervermehrung',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Völkervermehrung',
+                assetPath: 'assets/recherche/13_Voelkervermehrung.md',
+              ),
+            ),
+            GoRoute(
+              path: 'bienengesundheit',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Bienengesundheit & Krankheiten CH',
+                assetPath: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md',
+              ),
+            ),
+            GoRoute(
+              path: 'varroa-konzept',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Varroa-Bekämpfungskonzept alpin',
+                assetPath: 'assets/recherche/15_Varroa_Bekaempfungskonzept_alpin.md',
+              ),
+            ),
+            GoRoute(
+              path: 'honig',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Honig: Ernte, Qualität, Vermarktung',
+                assetPath: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md',
+              ),
+            ),
+            GoRoute(
+              path: 'wachs',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Wachs & Wabenmanagement',
+                assetPath: 'assets/recherche/17_Wachs_Wabenmanagement.md',
+              ),
+            ),
+            GoRoute(
+              path: 'bio-knospe',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Bio-Imkerei & Knospe Schweiz',
+                assetPath: 'assets/recherche/18_Bio_Imkerei_Knospe_Schweiz.md',
+              ),
+            ),
+            GoRoute(
+              path: 'recht',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Recht, Tierverkehr & Bestandeskontrolle CH/GR',
+                assetPath: 'assets/recherche/19_Recht_Tierverkehr_Bestandeskontrolle_CH_GR.md',
+              ),
+            ),
+            GoRoute(
+              path: 'wirtschaftlichkeit',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Wirtschaftlichkeit & Betriebsführung',
+                assetPath: 'assets/recherche/20_Wirtschaftlichkeit_Betriebsfuehrung.md',
+              ),
+            ),
           ],
         ),
         GoRoute(
