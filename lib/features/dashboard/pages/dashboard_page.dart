@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/features/aufgaben/presentation/providers/aufgaben_provider.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Projekt Bienen Arosa'),
@@ -25,6 +27,8 @@ class DashboardPage extends StatelessWidget {
           children: [
             _buildHeader(context),
             const SizedBox(height: 32),
+            _buildAufgabenKachel(context, ref),
+            const SizedBox(height: 24),
             _buildProjectPhases(context),
             const SizedBox(height: 32),
             _buildQuickLinks(context),
@@ -66,6 +70,39 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAufgabenKachel(BuildContext context, WidgetRef ref) {
+    final stats = ref.watch(offeneAufgabenStatsProvider);
+    return Card(
+      child: InkWell(
+        onTap: () => context.go('/aufgaben'),
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(children: [
+            Icon(Icons.task_alt,
+                size: 32,
+                color: stats.ueberfaellig > 0 ? Colors.red.shade700 : AppColors.honey),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Text('Aufgaben', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  stats.ueberfaellig > 0
+                      ? '${stats.offen} offen · ${stats.ueberfaellig} überfällig'
+                      : '${stats.offen} offen',
+                  style: TextStyle(
+                      fontSize: 13,
+                      color: stats.ueberfaellig > 0 ? Colors.red.shade700 : AppColors.brown300),
+                ),
+              ]),
+            ),
+            const Icon(Icons.chevron_right, color: AppColors.brown300),
+          ]),
         ),
       ),
     );
@@ -164,8 +201,8 @@ class DashboardPage extends StatelessWidget {
           'Getroffene & offene Entscheide'),
       _QuickLink('Materialliste', Icons.shopping_cart, '/material',
           'Interaktive Einkaufsliste'),
-      _QuickLink('Aufgaben', Icons.task_alt, '/dashboard/todo',
-          'Projekt-Aufgaben & Phasenplan'),
+      _QuickLink('Aufgaben', Icons.task_alt, '/aufgaben',
+          'Saisonaufgaben & Planung'),
     ];
 
     return Column(

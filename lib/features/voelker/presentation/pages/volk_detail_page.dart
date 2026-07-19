@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bienen_app/features/aufgaben/presentation/widgets/aufgaben_section.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/behandlung/presentation/widgets/behandlung_section.dart';
 import 'package:bienen_app/features/durchsicht/presentation/widgets/durchsicht_timeline.dart';
@@ -64,6 +65,7 @@ class VolkDetailPage extends ConsumerWidget {
               ),
               KoeniginSection(volk: volk),
               StandortSection(volk: volk),
+              AufgabenSection(volkId: volk.id),
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.monitor_weight_outlined),

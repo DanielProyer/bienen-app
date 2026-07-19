@@ -14,7 +14,6 @@ import 'package:bienen_app/features/auth/presentation/registrieren_page.dart';
 import 'package:bienen_app/features/behandlung/presentation/pages/behandlung_form_page.dart';
 import 'package:bienen_app/features/behandlung/presentation/pages/kontrolle_form_page.dart';
 import 'package:bienen_app/features/dashboard/pages/dashboard_page.dart';
-import 'package:bienen_app/features/dashboard/pages/todo_page.dart';
 import 'package:bienen_app/features/recherche/pages/recherche_overview_page.dart';
 import 'package:bienen_app/features/recherche/pages/imkerei_schweiz_page.dart';
 import 'package:bienen_app/features/recherche/pages/jahresablauf_page.dart';
@@ -92,12 +91,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         GoRoute(
           path: '/dashboard',
           builder: (context, state) => const DashboardPage(),
-          routes: [
-            GoRoute(
-              path: 'todo',
-              builder: (context, state) => const TodoPage(),
-            ),
-          ],
         ),
         GoRoute(
           path: '/aufgaben',
