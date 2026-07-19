@@ -10,13 +10,14 @@ class AppShell extends StatelessWidget {
   int _selectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
     if (location.startsWith('/voelker')) return 1;
-    if (location.startsWith('/monitoring')) return 2;
-    if (location.startsWith('/material')) return 3;
-    if (location.startsWith('/construction')) return 4;
+    if (location.startsWith('/aufgaben')) return 2;
+    if (location.startsWith('/monitoring')) return 3;
+    if (location.startsWith('/material')) return 4;
+    if (location.startsWith('/construction')) return 5;
     if (location.startsWith('/mehr') ||
         location.startsWith('/recherche') ||
         location.startsWith('/entscheidungen')) {
-      return 5;
+      return 6;
     }
     return 0;
   }
@@ -28,12 +29,14 @@ class AppShell extends StatelessWidget {
       case 1:
         context.go('/voelker');
       case 2:
-        context.go('/monitoring');
+        context.go('/aufgaben');
       case 3:
-        context.go('/material');
+        context.go('/monitoring');
       case 4:
-        context.go('/construction');
+        context.go('/material');
       case 5:
+        context.go('/construction');
+      case 6:
         context.go('/mehr');
     }
   }
@@ -86,6 +89,11 @@ class AppShell extends StatelessWidget {
                   label: Text('Voelker'),
                 ),
                 NavigationRailDestination(
+                  icon: Icon(Icons.task_alt_outlined),
+                  selectedIcon: Icon(Icons.task_alt),
+                  label: Text('Aufgaben'),
+                ),
+                NavigationRailDestination(
                   icon: Icon(Icons.monitor_weight_outlined),
                   selectedIcon: Icon(Icons.monitor_weight),
                   label: Text('Waage'),
@@ -128,6 +136,11 @@ class AppShell extends StatelessWidget {
             icon: Icon(Icons.hive_outlined),
             selectedIcon: Icon(Icons.hive),
             label: 'Voelker',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.task_alt_outlined),
+            selectedIcon: Icon(Icons.task_alt),
+            label: 'Aufgaben',
           ),
           NavigationDestination(
             icon: Icon(Icons.monitor_weight_outlined),

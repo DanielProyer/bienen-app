@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bienen_app/features/aufgaben/presentation/pages/aufgaben_page.dart';
+import 'package:bienen_app/features/aufgaben/presentation/pages/aufgabe_form_page.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/auth/presentation/auth_state.dart';
 import 'package:bienen_app/features/auth/presentation/einladung_code_page.dart';
@@ -12,7 +14,6 @@ import 'package:bienen_app/features/auth/presentation/registrieren_page.dart';
 import 'package:bienen_app/features/behandlung/presentation/pages/behandlung_form_page.dart';
 import 'package:bienen_app/features/behandlung/presentation/pages/kontrolle_form_page.dart';
 import 'package:bienen_app/features/dashboard/pages/dashboard_page.dart';
-import 'package:bienen_app/features/dashboard/pages/todo_page.dart';
 import 'package:bienen_app/features/recherche/pages/recherche_overview_page.dart';
 import 'package:bienen_app/features/recherche/pages/imkerei_schweiz_page.dart';
 import 'package:bienen_app/features/recherche/pages/jahresablauf_page.dart';
@@ -90,10 +91,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         GoRoute(
           path: '/dashboard',
           builder: (context, state) => const DashboardPage(),
+        ),
+        GoRoute(
+          path: '/aufgaben',
+          builder: (context, state) => const AufgabenPage(),
           routes: [
             GoRoute(
-              path: 'todo',
-              builder: (context, state) => const TodoPage(),
+              path: 'neu',
+              builder: (c, s) => const AufgabeFormPage(),
+            ),
+            GoRoute(
+              path: ':id/bearbeiten',
+              builder: (c, s) => AufgabeFormPage(aufgabeId: s.pathParameters['id']),
             ),
           ],
         ),
