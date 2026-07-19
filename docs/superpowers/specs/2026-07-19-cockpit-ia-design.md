@@ -22,13 +22,13 @@
 
 Nach Dringlichkeit gestapelt; **konsumiert ausschliesslich bestehende Provider** (keine neuen Fetches):
 
-1. **Kopfzeile** (schlank): „Cockpit" + Wochentag/Datum + Name des aktiven Betriebs (aus dem Auth-State). Der bisherige grosse Header mit **Arosa-Hardcode** („Maiensäss Tannen 85a · 1570 m · Start Herbst 2026") **entfällt ersatzlos** (Mandanten-Regel).
+1. **Kopfzeile** (schlank): „Cockpit" + Wochentag/Datum. (Korrektur nach Codebase-Check: der Auth-State trägt nur `betriebId`, keinen Betriebsnamen — ein Name-Fetch dafür wäre YAGNI.) Das Konto-Icon in der AppBar bleibt. Der bisherige grosse Header mit **Arosa-Hardcode** („Maiensäss Tannen 85a · 1570 m · Start Herbst 2026") **entfällt ersatzlos** (Mandanten-Regel).
 2. **Warnband** (nur wenn nötig, rotes Band je Befund):
    - überfällige Aufgaben (`offeneAufgabenStatsProvider.ueberfaellig > 0`) → Tap `/aufgaben`;
    - aktive meldepflichtige Gesundheitsereignisse: über die aktiven Völker `aktiveMeldepflichtProvider(volkId)` gesammelt (Family-Watch je Volk; bei Zielgrösse ≤ 8 Völker unkritisch) → Tap Volk-Detail.
    - Später (4.9): Waage-Alarme. Kein Befund → kein Band.
 3. **Karte „Heute & demnächst":** die nächsten **3 offenen Aufgaben** (überfällige zuerst, dann nach `faellig_am`; reine Ableitung aus `aufgabenListProvider` — kleine pure Funktion `naechsteOffene(alle, stichtag, n)` in `aufgaben/domain/aufgaben_gruppierung.dart`, mit Test). Je Zeile: **Checkbox direkt abhakbar** (bestehender `abhaken`-Notifier, fehlerfest + Undo-Snackbar wie in 4.4), Titel, Volk-Chip, Fälligkeit (überfällig rot). Fusszeile: „✨ N Saisonvorschläge warten" (`vorschlaegeProvider`, nur wenn N>0) + „alle →" → `/aufgaben`. Schreibrechte beachtet (viewer: read-only).
-4. **Karte „Völker":** je aktivem Volk eine Zeile (aus `aktiveVoelkerProvider`): Ampel-Punkt (`gesundheitsstatus`: gesund=grün, beobachten=amber, krank=rot, unbekannt=grau), Name, „gesehen: <relativ>" aus `letzteDurchsichtenProvider` (View `v_letzte_durchsichten`), Meldepflicht-Badge falls aktiv. Tap → `/voelker/:id`. „alle →" → `/voelker`. Leerzustand: „Noch kein Volk erfasst" + Link.
+4. **Karte „Völker":** je aktivem Volk eine Zeile (aus `aktiveVoelkerProvider`): Ampel-Punkt (`gesundheitsstatus` laut C04-CHECK: `unauffaellig`=grün, `beobachtung`=amber, `krank`/`sperre`=rot), Name, „gesehen: <relativ>" aus `letzteDurchsichtenProvider` (View `v_letzte_durchsichten`), Meldepflicht-Badge falls aktiv. Tap → `/voelker/:id`. „alle →" → `/voelker`. Leerzustand: „Noch kein Volk erfasst" + Link.
 5. **Karte „Waage & Sensorik":** bis 4.9 ein **statischer Platzhalter** („HiveWatch-Stockwaage folgt — danach hier: Gewicht 24 h, Brutraumtemperatur, Alarme"); **Demo-Daten werden bewusst NICHT angezeigt** (ehrlich statt Show). Tap → `/monitoring`. Die Kachel ist der spätere 4.9-Andockpunkt.
 
 **Dateien:** `dashboard_page.dart` wird zum schlanken Kompositum; die vier Blöcke als eigene Widgets unter `lib/features/dashboard/widgets/` (`warnband.dart`, `heute_karte.dart`, `voelker_karte.dart`, `waage_kachel.dart`). Die alten Bausteine (`_buildHeader`, `_buildProjectPhases`, `_buildQuickLinks`, `_buildKeyFacts`) entfallen dort.
