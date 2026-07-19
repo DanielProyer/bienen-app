@@ -4,6 +4,14 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-19 — bienen.ch/BGD-Wissenserschliessung + Bibliothek (v1.15.2)
+
+Autonomer Auftrag: bienen.ch komplett ausgewertet (96 Merkblätter), Wissen in Imkerei-Schiene (Recherchen 21–29) integriert, App-Bibliothek erweitert, Verbesserungs-Findings dokumentiert.
+
+- **D-40 · BGD-Wissen als eigene Bibliotheks-Sektion + Findings-Doc statt autonomer Modul-Änderungen.** Die 8 substanziellen BGD-Digests (21–28) sind als **eigene Recherche-Serie** in die App-Fachwissen-Bibliothek aufgenommen (Sektion „Offizielle BGD-Merkblätter", Assets kopiert aus imkerei/02_Recherche — gleiche Quellentrennung wie bei 01–20). **Bewusst NICHT** wurden die identifizierten Modul-Verbesserungen (futterart-Enum 4.6, Varroa-Methoden-Katalog 4.5, Generator-Regeln/-Bugfix 4.4, Katalog-Erweiterung 4.14) autonom umgesetzt — sie berühren Bio-Nachweis-Schema, Compliance-Katalog und Generator-Logik und gehören in den normalen Spec→Freigabe-Fluss. Stattdessen priorisierter Findings-Bericht [bienen-ch-findings.md](bienen-ch-findings.md) für Daniel.
+- **D-41 · Strukturelle Kernerkenntnis: Generator sollte phänologisch werden.** Der offizielle BienenSchweiz-Jahresplan koppelt Arbeiten an **Indikatorpflanzen-Blüte** (Schneeglöckchen→Sal-Weide→Löwenzahn→Linde), nicht an fixe Daten. Unser 4.4-Generator ist rein kalendarisch (`saison_offset_default_tage=+42`). Für Höhenlagen/Mehrmandantenfähigkeit ist der phänologische Anker robuster → vorgemerkt als grössere Spec (koppelt an Modul 4.20 Phänologie + F5 Onboarding). Zwei kleinere Generator-Timing-Bugs (gemuelldiagnose_sommer ohne Offset vor der offset-basierten Ernte; sommerbehandlung_1 für Tallagen spät) ebenfalls dokumentiert.
+- **D-42 · 22-kg-Winterfutter bestätigt als korrekter Mandantenwert.** bienen.ch-Standard = 20 kg (Mittelland-Minimum); Arosa 22–25 kg fachlich fundiert. Der als `betriebs_einstellungen.winterfutter_ziel_kg` gebaute Mandantenparameter (kein Hardcode) ist damit validiert; Vorschlag: 20 kg als BGD-Warnschwelle ergänzen.
+
 ## 2026-07-19 — Cockpit & IA-Umbau live (v1.15.0)
 
 Nav-Neuordnung nach Betriebsstart: tägliche Funktionen 1 Klick, Aufbau-Inhalte gebündelt. Brainstorming erstmals mit Inline-Mockups (3 Varianten). Reine UI-Schicht ohne Migration. 133/133 Tests, live.
