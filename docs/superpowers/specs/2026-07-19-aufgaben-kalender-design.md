@@ -131,7 +131,7 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
 ```
 - Fenster je Regel: Basis + Offset (falls `offsetAnwenden`). Vorschlag sichtbar ab **14 Tage Vorlauf** vor Fensterbeginn bis Fensterende.
 - `ebene=volk`-Regeln nur bei `anzahlAktiveVoelker > 0`.
-- **Dedup:** Regel unterdrückt, wenn für `(regel_key, saison_jahr)` bereits Zeile(n) existieren — bei Intervall-Regeln: wenn die jüngste Zeile weniger als `intervallTage` zurückliegt (nächster Vorschlag: `faellig = jüngste.faellig_am + intervallTage`, solange im Fenster).
+- **Dedup:** Regel unterdrückt, wenn für `(regel_key, saison_jahr)` bereits Zeile(n) existieren — bei Intervall-Regeln: wenn die jüngste Zeile weniger als `intervallTage` zurückliegt (nächster Vorschlag: `faellig = jüngste.faellig_am + intervallTage`, solange im Fenster; sichtbar ab **2 Tagen Vorlauf** `kIntervallVorlaufTage` — der 14-Tage-Fenster-Vorlauf wäre bei 7-Tage-Rhythmen Dauerrauschen).
 - **Fälligkeits-Default beim Annehmen:** `faellig_am = Fensterende` (Deadline-Charakter); Intervall-Regeln: nächstes Intervalldatum.
 - **Annehmen** einer `ebene=volk`-Regel: Checkbox-Liste aller aktiven Völker, vorbelegt „alle" → 1 Zeile je gewähltem Volk (Client-seitige Batch-Inserts; kein RPC nötig, Dedup-Index fängt Doppelklicks). `ebene=betrieb`: 1 Zeile ohne volk_id.
 - **Überspringen:** 1 Zeile `status='uebersprungen'` (bei volk-Regeln OHNE volk_id — überspringt die Regel fürs ganze Saisonjahr; `nulls not distinct` macht das eindeutig). Generator wertet eine `uebersprungen`-Zeile ohne volk_id als „Regel für dieses Jahr aus".
