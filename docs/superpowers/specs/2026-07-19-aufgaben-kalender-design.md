@@ -51,14 +51,9 @@ Ein angenommener ODER übersprungener Vorschlag existiert als Zeile → der Gene
 
 Indizes: `(betrieb_id, status, faellig_am)` für die Listenabfrage, `(betrieb_id, volk_id)` für die Volk-Section.
 
-### 2.2 `betriebs_einstellungen.saison_offset_tage`
+### 2.2 Saison-Offset: Spalte existiert bereits (Korrektur nach Codebase-Check)
 
-```sql
-alter table public.betriebs_einstellungen
-  add column saison_offset_tage int not null default 0
-  check (saison_offset_tage between -60 and 90);
-```
-F4-Parameter. **Default 0 = Mittelland-Basis (mandanten-neutral). Arosa = +42 ist ein Datenwert** → Ops-Update `supabase/ops/seed-arosa-einstellungen.sql` ergänzen (kein Migrationsinhalt). `BetriebsEinstellungen`-Dart-Modell um das Feld erweitern.
+`betriebs_einstellungen.saison_offset_default_tage int not null default 0` besteht seit C01 (Modul 4.2), das Dart-Modell `BetriebsEinstellungen.saisonOffsetDefaultTage` liest sie bereits, und der Ops-Seed `seed-arosa-einstellungen.sql` setzt Arosa schon auf **42**. → **H01 legt NUR die `aufgaben`-Tabelle an**; kein neues Feld, kein Seed-Update, kein Modell-Ausbau. Der Generator konsumiert `saisonOffsetDefaultTage`.
 
 ## 3. Regelwerk `saison_regeln.dart` (Dart-Fachkonstante)
 
