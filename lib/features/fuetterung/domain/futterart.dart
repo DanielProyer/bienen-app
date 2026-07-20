@@ -1,11 +1,12 @@
-/// Physische Futterform (DB-CHECK-Whitelist). Bio-Status separat via `bio_zertifiziert`.
+/// Physische Futterform (DB-CHECK-Whitelist, Sync mit I02 + RPC F02). Bio-Status separat.
 class Futterart {
   static const werte = <String>[
-    'zuckersirup', 'zuckerwasser', 'futterteig', 'futterwaben', 'honig', 'sonstige',
+    'zuckerwasser_1_1', 'zuckerwasser_3_2', 'invertsirup', 'futterteig', 'futterwaben', 'honig', 'sonstige',
   ];
   static const labels = <String, String>{
-    'zuckersirup': 'Zuckersirup',
-    'zuckerwasser': 'Zuckerwasser (Sirup selbst)',
+    'zuckerwasser_1_1': 'Zuckerwasser 1:1 (anfüttern)',
+    'zuckerwasser_3_2': 'Zuckerwasser 3:2 (Winterfutter)',
+    'invertsirup': 'Invertsirup (Apiinvert)',
     'futterteig': 'Futterteig',
     'futterwaben': 'Futterwaben',
     'honig': 'Honig',
