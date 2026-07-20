@@ -92,7 +92,7 @@ const kWissensKatalog = <WissensEintrag>[
     kurzinfo: 'Rotbraun, ~1,6 mm breit / 1,1 mm lang (als Punkt mit blossem Auge sichtbar). Sitzt phoretisch zwischen den Bauchsegmenten '
         'der Biene oder — geschützt — in der verdeckelten Brut (Drohnenbrut wird 8–10× bevorzugt). Der eigentliche '
         'Schaden sind übertragene Viren (v. a. DWV → verkrüppelte Flügel), die geschädigte Winterbienen erzeugen — '
-        'daran stirbt das Volk. **Hinweis:** nicht alle Bienenviren sind varroagekoppelt — die Chronische '
+        'daran stirbt das Volk. Hinweis: nicht alle Bienenviren sind varroagekoppelt — die Chronische '
         'Bienenparalyse (CBPV: zitternde, haarlose schwarze Bienen) entsteht durch Stress/Dichte.',
     skizze: 'assets/wissen/varroa_milbe.svg',
     mehr: [
