@@ -12,6 +12,7 @@ class ProjektPage extends StatelessWidget {
     (icon: Icons.menu_book, titel: 'Recherche', sub: 'Fachthemen', route: '/recherche'),
     (icon: Icons.checklist, titel: 'Entscheidungen', sub: 'Chronik', route: '/entscheidungen'),
     (icon: Icons.monitor_weight, titel: 'Monitoring', sub: 'Waagen-Verwaltung', route: '/monitoring'),
+    (icon: Icons.tune, titel: 'Betriebs-Einstellungen', sub: 'Saison-Offset · Ernten · Strategie', route: '/einstellungen'),
     (icon: Icons.account_circle, titel: 'Konto & Team', sub: 'Mitglieder · Einladungen', route: '/konto'),
   ];
 

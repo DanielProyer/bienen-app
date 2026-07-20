@@ -34,7 +34,7 @@ class AufgabenNotifier extends AsyncNotifier<List<Aufgabe>> {
   }
 
   Aufgabe _ausVorschlag(AufgabenVorschlag v, {String? volkId, String status = 'offen'}) => Aufgabe(
-        id: '', titel: v.regel.titel, beschreibung: v.regel.beschreibung,
+        id: '', titel: v.regel.titel, beschreibung: v.beschreibung,
         kategorie: v.regel.kategorie, faelligAm: v.faelligAm, status: status,
         volkId: volkId, quelle: 'regel', regelKey: v.regel.key, saisonJahr: v.saisonJahr,
       );
@@ -82,5 +82,6 @@ final vorschlaegeProvider = Provider<List<AufgabenVorschlag>>((ref) {
     saisonOffsetTage: einst.saisonOffsetDefaultTage,
     regelAufgaben: aufgaben.where((a) => a.quelle == 'regel').toList(),
     anzahlAktiveVoelker: aktive.length,
+    einstellungen: einst,
   );
 });

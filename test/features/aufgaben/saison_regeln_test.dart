@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bienen_app/features/aufgaben/domain/saison_regeln.dart';
 
 void main() {
-  test('Katalog: 25 Regeln, Keys unique', () {
-    expect(kSaisonRegeln.length, 25);
-    expect(kSaisonRegeln.map((r) => r.key).toSet().length, 25);
+  test('Katalog: 36 Regeln, Keys unique', () {
+    expect(kSaisonRegeln.length, 36);
+    expect(kSaisonRegeln.map((r) => r.key).toSet().length, 36);
   });
 
   test('Kategorien = DB-CHECK-Werte', () {
@@ -43,7 +43,10 @@ void main() {
     expect(regelVon(null), isNull);
   });
 
-  test('Offset nur auf Frühjahrs-/Trachtregeln (9 Stück)', () {
-    expect(kSaisonRegeln.where((r) => r.offsetAnwenden).length, 9);
+  test('Offset nur auf Frühjahrs-/Trachtregeln (15 Stück)', () {
+    // 9 Bestand + gemuelldiagnose_sommer (jetzt offset) + 5 neue offset-Regeln
+    // (serbelvoelker_fruehjahr, varroakontrolle_fruehsommer, trachtluecke_notfuetterung,
+    //  jungvoelker_bilden, koeniginnen_vermehren) = 15. Herbst-Regeln bleiben kalenderfix.
+    expect(kSaisonRegeln.where((r) => r.offsetAnwenden).length, 15);
   });
 }

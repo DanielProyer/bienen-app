@@ -7,6 +7,7 @@
 library;
 
 import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
+import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
 
 enum RegelEbene { volk, betrieb }
 
@@ -20,6 +21,8 @@ class SaisonRegel {
   final bool offsetAnwenden;
   final int? intervallTage;
   final String? aktionRoute; // 'durchsicht'|'behandlung'|'fuetterung'|'varroa'|null
+  final bool nurBeiVermehrung;
+  final int? nurBeiAnzahlErnten;
 
   const SaisonRegel({
     required this.key,
@@ -34,6 +37,8 @@ class SaisonRegel {
     this.offsetAnwenden = false,
     this.intervallTage,
     this.aktionRoute,
+    this.nurBeiVermehrung = false,
+    this.nurBeiAnzahlErnten,
   });
 }
 
@@ -55,10 +60,6 @@ const kSaisonRegeln = <SaisonRegel>[
       beschreibung: 'Nach dem Reinigungsflug Flugloch wieder freigeben (Pollenhöschen dürfen nicht abgestreift werden).',
       kategorie: 'schutz', ebene: RegelEbene.betrieb,
       startMonat: 3, startTag: 15, endMonat: 4, endTag: 15),
-  SaisonRegel(key: 'gemuelldiagnose_sommer', titel: 'Gemülldiagnose nach Ernte',
-      beschreibung: 'Milbenfall/Tag nach der Ernte messen — Entscheidungsgrundlage für die Sommerbehandlung.',
-      kategorie: 'behandlung', ebene: RegelEbene.volk,
-      startMonat: 7, startTag: 1, endMonat: 7, endTag: 15, aktionRoute: 'varroa'),
   SaisonRegel(key: 'startfuetterung', titel: 'Startfütterung (~5 kg)',
       beschreibung: 'Nach dem Abschleudern sofort ~5 kg füttern, damit das Volk nicht in eine Futterlücke fällt.',
       kategorie: 'fuetterung', ebene: RegelEbene.volk,
@@ -113,7 +114,7 @@ const kSaisonRegeln = <SaisonRegel>[
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
       startMonat: 3, startTag: 15, endMonat: 4, endTag: 10, offsetAnwenden: true, aktionRoute: 'durchsicht'),
   SaisonRegel(key: 'wabenhygiene', titel: 'Wabenhygiene/Bodentausch',
-      beschreibung: 'Alte, dunkle Waben ausscheiden; Boden tauschen oder reinigen.',
+      beschreibung: 'Alte, dunkle Waben ausscheiden; Boden tauschen oder reinigen. Ziel: 1/3 der Brutwaben pro Jahr erneuern (3-Jahres-Zyklus).',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
       startMonat: 3, startTag: 1, endMonat: 4, endTag: 15, offsetAnwenden: true),
   SaisonRegel(key: 'drohnenrahmen_einsetzen', titel: 'Drohnenrahmen einsetzen',
@@ -141,6 +142,55 @@ const kSaisonRegeln = <SaisonRegel>[
       beschreibung: 'Verdeckelungsgrad/Wassergehalt prüfen, reife Honigwaben abschleudern.',
       kategorie: 'sonstiges', ebene: RegelEbene.volk,
       startMonat: 5, startTag: 20, endMonat: 6, endTag: 5, offsetAnwenden: true),
+  SaisonRegel(key: 'gemuelldiagnose_sommer', titel: 'Gemülldiagnose nach Ernte',
+      beschreibung: 'Milbenfall/Tag nach der Ernte messen — Entscheidungsgrundlage für die Sommerbehandlung.',
+      kategorie: 'behandlung', ebene: RegelEbene.volk,
+      startMonat: 6, startTag: 6, endMonat: 6, endTag: 20, offsetAnwenden: true, aktionRoute: 'varroa'),
+  // ---- neu: Frühjahr/Frühsommer (Task I, BGD/bienen.ch) ----
+  SaisonRegel(key: 'fluglochunterlage_beobachten', titel: 'Fluglochunterlage wöchentlich beobachten',
+      beschreibung: 'Windel einlegen und wöchentlich analysieren: Stummelflügel→Varroa, Kotspritzer→Nosema/Durchfall, Gemüllstreifen→Wintersitz (BGD 4.8).',
+      kategorie: 'durchsicht', ebene: RegelEbene.volk,
+      startMonat: 2, startTag: 1, endMonat: 3, endTag: 31, intervallTage: 7),
+  SaisonRegel(key: 'serbelvoelker_fruehjahr', titel: 'Schwache/weisellose Völker beurteilen',
+      beschreibung: 'Serbel-/weisellose Völker erkennen und mit Jungvölkern vereinen (BGD 4.7).',
+      kategorie: 'durchsicht', ebene: RegelEbene.volk,
+      startMonat: 3, startTag: 15, endMonat: 4, endTag: 20, offsetAnwenden: true),
+  SaisonRegel(key: 'varroakontrolle_fruehsommer', titel: 'Milbenkontrolle Frühsommer (Notbehandlungs-Schwelle)',
+      beschreibung: 'Natürlichen Milbenfall messen: Ende Mai >3 (bis 7 Optionen, >7 Notbehandlung), Juni/Juli >10 Milben/Tag → sofortige Notbehandlung (BGD 1.5.1/Varroakonzept).',
+      kategorie: 'behandlung', ebene: RegelEbene.volk,
+      startMonat: 5, startTag: 20, endMonat: 7, endTag: 5, offsetAnwenden: true, aktionRoute: 'varroa'),
+  SaisonRegel(key: 'trachtluecke_notfuetterung', titel: 'Trachtlücke prüfen — bei Bedarf Notfütterung',
+      beschreibung: 'Nektarengpass (Mitte Mai–Mitte Juli): Futtervorrat prüfen, bei Bedarf Futterteig geben (kein Zuckerwasser vor der Tracht).',
+      kategorie: 'fuetterung', ebene: RegelEbene.volk,
+      startMonat: 5, startTag: 25, endMonat: 7, endTag: 5, offsetAnwenden: true, aktionRoute: 'fuetterung'),
+  SaisonRegel(key: 'jungvoelker_bilden', titel: 'Jungvölker/Ableger bilden (Zeitfenster)',
+      beschreibung: 'Ableger/Kunstschwarm bilden — biotechnische Varroabremse; frühe Ableger (Juni) sind alpin vorzuziehen (BGD 1.4).',
+      kategorie: 'durchsicht', ebene: RegelEbene.volk,
+      startMonat: 5, startTag: 20, endMonat: 6, endTag: 30, offsetAnwenden: true, nurBeiVermehrung: true),
+  SaisonRegel(key: 'koeniginnen_vermehren', titel: 'Königinnen vermehren (Nachschaffung)',
+      beschreibung: 'Von guten Völkern nachziehen (MiniPlus/Laurenz); nur bei aktiver Vermehrung (BGD 4.6).',
+      kategorie: 'durchsicht', ebene: RegelEbene.volk,
+      startMonat: 5, startTag: 20, endMonat: 6, endTag: 30, offsetAnwenden: true, nurBeiVermehrung: true),
+  SaisonRegel(key: 'honigernte_sommer', titel: '2. Honigernte (Sommer) — Reife prüfen',
+      beschreibung: 'Sommertracht abschleudern (Verdeckelung/Wassergehalt prüfen) — vor der Sommerbehandlung.',
+      kategorie: 'sonstiges', ebene: RegelEbene.volk,
+      startMonat: 7, startTag: 1, endMonat: 7, endTag: 20, nurBeiAnzahlErnten: 2),
+  SaisonRegel(key: 'umweiselung_pruefen', titel: 'Alte Königin ersetzen prüfen',
+      beschreibung: 'Königinnen >2-jährig oder schwache Völker: Umweiselung mit begatteter Königin (letzte Möglichkeit vor Winter).',
+      kategorie: 'durchsicht', ebene: RegelEbene.volk,
+      startMonat: 8, startTag: 1, endMonat: 8, endTag: 31),
+  SaisonRegel(key: 'wabenerneuerung_herbst', titel: 'Alte Brutwaben entnehmen (1/3-Ziel)',
+      beschreibung: 'Dunkle Brutwaben ausscheiden/einschmelzen — Ziel 1/3 pro Jahr (3-Jahres-Zyklus, BGD 4.4).',
+      kategorie: 'durchsicht', ebene: RegelEbene.volk,
+      startMonat: 8, startTag: 15, endMonat: 9, endTag: 30),
+  SaisonRegel(key: 'serbelvoelker_herbst', titel: 'Serbelvölker auflösen/abschwefeln',
+      beschreibung: 'Aussichtslose Völker vor der Einwinterung auflösen/abschwefeln (BGD 4.7.2) — nicht in den Winter mitnehmen.',
+      kategorie: 'durchsicht', ebene: RegelEbene.volk,
+      startMonat: 9, startTag: 1, endMonat: 9, endTag: 30),
+  SaisonRegel(key: 'winterbehandlung_erfolgskontrolle', titel: 'Winterbehandlung-Erfolgskontrolle (Totenfall)',
+      beschreibung: 'Totenfall ~2 Wochen nach der Oxalsäure-Winterbehandlung zählen: >500 Milben → Winterbehandlung wiederholen (Sprühen/Verdampfen).',
+      kategorie: 'behandlung', ebene: RegelEbene.volk,
+      startMonat: 1, startTag: 1, endMonat: 1, endTag: 20, aktionRoute: 'varroa'),
 ];
 
 /// Katalog-Lookup (null bei unbekanntem/fehlendem Key — Drift-tolerant).
@@ -150,6 +200,21 @@ SaisonRegel? regelVon(String? key) {
     if (r.key == key) return r;
   }
   return null;
+}
+
+/// Auflösung des Aufgabentexts je Betriebsstrategie (heute nur sommerbehandlung_1 nach Methode).
+String beschreibungFuer(SaisonRegel r, BetriebsEinstellungen e) {
+  if (r.key == 'sommerbehandlung_1') {
+    switch (e.sommerbehandlungMethode) {
+      case 'biotechnisch':
+        return '1. Sommerbehandlung biotechnisch (Brutstopp/Bannwabe/komplette Brutentnahme) — Vorbereitung ab 1. Juli-Hälfte.';
+      case 'beide':
+        return '1. Sommerbehandlung: Ameisensäure ODER biotechnisch (Brutstopp/Bannwabe) — nach der Ernte, vor Ende Juli.';
+      default: // ameisensaeure
+        return '1. Sommerbehandlung mit Ameisensäure starten (vor Ende Juli, Temperaturfenster beachten).';
+    }
+  }
+  return r.beschreibung;
 }
 
 // --- Generator ---
@@ -166,12 +231,14 @@ class AufgabenVorschlag {
   final DateTime fensterEnde;
   final DateTime faelligAm;
   final int saisonJahr;
+  final String beschreibung;
   const AufgabenVorschlag({
     required this.regel,
     required this.fensterStart,
     required this.fensterEnde,
     required this.faelligAm,
     required this.saisonJahr,
+    required this.beschreibung,
   });
 }
 
@@ -186,11 +253,14 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
   required int saisonOffsetTage,
   required List<Aufgabe> regelAufgaben,
   required int anzahlAktiveVoelker,
+  BetriebsEinstellungen einstellungen = const BetriebsEinstellungen.leer(),
 }) {
   final heute = _tag(stichtag);
   final out = <AufgabenVorschlag>[];
   for (final r in kSaisonRegeln) {
     if (r.ebene == RegelEbene.volk && anzahlAktiveVoelker == 0) continue;
+    if (r.nurBeiVermehrung && !einstellungen.vermehrungAktiv) continue;
+    if (r.nurBeiAnzahlErnten != null && einstellungen.anzahlErnten != r.nurBeiAnzahlErnten) continue;
     // DST-sicher: Tages-Arithmetik ausschliesslich über Kalenderkomponenten
     // (Dart normalisiert Überlauf auf lokale Mitternacht) — NIE Duration addieren,
     // sonst kippt das Datum bei Offsets über die Zeitumstellung (Europe/Zurich).
@@ -207,7 +277,8 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
         if (vorhanden.isNotEmpty) continue;
         if (heute.isBefore(DateTime(start.year, start.month, start.day - kVorlaufTage))) continue;
         out.add(AufgabenVorschlag(
-            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: ende, saisonJahr: jahr));
+            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: ende, saisonJahr: jahr,
+            beschreibung: beschreibungFuer(r, einstellungen)));
       } else {
         DateTime faellig;
         if (vorhanden.isEmpty) {
@@ -223,7 +294,8 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
         }
         if (faellig.isAfter(ende)) continue;
         out.add(AufgabenVorschlag(
-            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: faellig, saisonJahr: jahr));
+            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: faellig, saisonJahr: jahr,
+            beschreibung: beschreibungFuer(r, einstellungen)));
       }
     }
   }

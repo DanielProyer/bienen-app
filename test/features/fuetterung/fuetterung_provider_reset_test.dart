@@ -9,7 +9,7 @@ void main() {
   test('signOut invalidiert den Fütterungs-Cache (kein Stale nach Mandantenwechsel)', () async {
     final fake = FakeFuetterungGateway();
     await fake.fuetterungErfassen(volkIds: ['v1'], durchgefuehrtAm: DateTime(2026, 8, 1),
-        zweck: 'auffuetterung', futterart: 'zuckersirup', bioZertifiziert: true, mengeProVolkKg: 5);
+        zweck: 'auffuetterung', futterart: 'invertsirup', bioZertifiziert: true, mengeProVolkKg: 5);
 
     final container = ProviderContainer(overrides: [
       authGatewayProvider.overrideWithValue(FakeAuthGateway()),

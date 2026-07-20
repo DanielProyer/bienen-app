@@ -17,6 +17,7 @@ abstract class VoelkerGateway {
   Future<List<Standort>> standorte();
   Future<List<Koenigin>> koeniginnen();
   Future<BetriebsEinstellungen?> einstellungen();
+  Future<void> einstellungenSpeichern(String betriebId, BetriebsEinstellungen e);
 
   Future<void> volkSpeichern(Volk volk); // insert wenn id leer, sonst update
   Future<void> volkLoeschen(String id);
