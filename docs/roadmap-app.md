@@ -50,7 +50,7 @@
 
 ## Phase 2 — Frühling/Sommer 2027 (Volk 2, 2. Waage, 1. Ernte, Bio möglich)
 
-Ernte & Honig (4.7) · Verkauf & Vertrieb (4.8) · Schwarmkontrolle + Ableger (4.16) · Ertrags-/Waage-/Wetter-Analytics (Korrelation) · Trachtpflanzen/Blühkalender (4.20) · Wachskreislauf voll (4.11) · Geräte-Wartung (4.12) · Versicherung/Schaden (4.26) · Bio-Suisse-Assistent (4.23) · Gast-viewer-Account · PWA-Härtung (Read-Cache/Write-Outbox/Offline-Kacheln) · Medien-Galerie/Quota.
+Ernte & Honig (4.7) · Verkauf & Vertrieb (4.8) · **Schwarmkontrolle + Ableger (4.16): ✅ Basis LIVE (D1, v1.18.0)** — Vermehrungs-Event-Ketten (4 Methoden, `vermehrungs_ereignisse`/K01); Rest (Zucht/Umlarv 4.17 = D2, 3 komplexe Methoden) später · Ertrags-/Waage-/Wetter-Analytics (Korrelation) · Trachtpflanzen/Blühkalender (4.20) · Wachskreislauf voll (4.11) · Geräte-Wartung (4.12) · Versicherung/Schaden (4.26) · Bio-Suisse-Assistent (4.23) · Gast-viewer-Account · PWA-Härtung (Read-Cache/Write-Outbox/Offline-Kacheln) · Medien-Galerie/Quota.
 
 ## Phase 3 — bis 2028 (4 Völker, Nachzucht)
 

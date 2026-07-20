@@ -1,11 +1,21 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.17.0+38 (live)
-**Aktueller Fokus:** ✅ **Phänologischer Anker (Baustein C) LIVE** (v1.17.0) — Zeigerpflanzen-Blüte statt fixem Offset: phänologischer Offset (Frühjahr) + Ketten-Verankerung der Sommer-Behandlung an der beobachteten Ernte (löst die alpine Sommer-Stauchung), Honigreinheit-Hinweis. Davor: ✅ Betriebsprofil & Generator-Ausbau (A+B, v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **D Ableger/Zucht-Event-Ketten (4.16/4.17)** oder 4.22 Kosten-Dashboard — nach Absprache.
+**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.18.0+39 (live)
+**Aktueller Fokus:** ✅ **Vermehrungs-Event-Ketten (Baustein D1, Modul 4.16) LIVE** (v1.18.0) — Ableger/Schwarm als Event-Ketten: Ereignis erfassen (4 Methoden) → datierte Aufgaben mit relativen Fristen im Aufgaben-Tab. Davor am selben Tag: ✅ Phänologischer Anker (C, v1.17.0), ✅ Betriebsprofil & Generator-Ausbau (A+B, v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **D2 (Zucht/Umlarv 4.17)** oder 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-20 (Vermehrungs-Event-Ketten, Baustein D1, v1.18.0)
+
+- [x] ✓ **Vermehrungs-Event-Ketten LIVE** (v1.18.0+39, Modul 4.16). Baustein D1: Ableger/Schwarm-Vermehrung als event-getriebene Aufgaben-Ketten. Brainstorming (Scope-Zerlegung D1/D2) → Spec → **adversarialer 5-Lupen-Review (29 bestätigte Findings, 2 Blocker)** → v2-Spec → Plan (10 Tasks) → **subagent-getrieben** (K01 selbst, Buckets B/C/D; Generator-Review Fable 5). **181/181 Tests, analyze sauber**, live.
+  - **DB (Produktion, K01):** `vermehrungs_ereignisse` (Startereignis: methode/erstellt_am/stammvolk/jungvolk/os_bei_erstellung; stammvolk-FK **SET NULL**; RLS Mitglied/kann_schreiben) + `aufgaben` erweitert (`quelle='ereignis'`, `ereignis_id`/`schritt_key`, biconditional-CHECK, **Dedup-Index ohne volk_id**). 0 neue Advisor-Findings (FK-Indizes gesetzt).
+  - **Generator (`vermehrungs_ketten.dart`):** Ketten-Katalog **4 Methoden** (Kunstschwarm, Königinnen-Kunstschwarm, Brutableger, Flugling) mit relativen Fristen (Tag 9 Zellen brechen, Tag 25–30 Weiselkontrolle+OS, Kellerhaft-Offset Tag 10–12, Stammvolk-Doppelbremse). `kettenVorschlaege` (pure): Dedup über (ereignis_id, schritt_key), **überfällige Einmal-Schritte bleiben sichtbar**, stichtag-Normalisierung, DST-sicher, jungvolk-null unterdrückt, Katalog-Drift-tolerant.
+  - **App:** neues Feature `lib/features/vermehrung/` (Katalog/Modell/Gateway-Trio/Provider). **Erfassung vom Volk aus** (`/voelker/:id/vermehrung`, Stammvolk vorbelegt, Ketten-Vorschau, OS-Switch nur bei brutfreien Methoden, erstellt_am-Plausi). **Vermehrungs-Sektion** auf der Volk-Detailseite (Ereignisse als Stamm-/Jungvolk, Jungvolk verknüpfen, löschen). **Vermehrungs-Vorschlags-Sektion** im Aufgaben-Tab (neben Saison; überfällig-Badge; Annehmen→normale Aufgabe mit `kategorie='behandlung'` für OS).
+  - **Review fing echte Fehler:** OS-Gate hätte die Pflicht-Weiselkontrolle mit-unterdrückt (Blocker); 3 der 7 Methoden sprengen das flache Modell (Blocker) → 4-Methoden-Schnitt; Dedup-volk_id-Doppelmaterialisierung; überfällige-Schritte-Verschwinden; Kellerhaft-Offset + fehlende Stammvolk-Doppelbremse.
+  - Docs: `docs/superpowers/specs/2026-07-20-vermehrung-event-ketten-design.md` (v2), `…/plans/2026-07-20-vermehrung-event-ketten.md`.
+  - **🔴 OFFEN (Folge):** **D2 — Zucht-Bewertung + Umlarv-Kalender (4.17)** (7-Stufen-Skala, Zuchtwerte, Herdebuch, Umlarv-Kette) · die **3 komplexen Methoden** (Sammelbrutableger/Natur-Schwarm/Schwarmtrieb) brauchen Modell-Erweiterungen · Vermehrung live mit echten Daten testen (Ableger-Saison 2027).
 
 ## ✅ Erledigt — Session 2026-07-20 (Phänologischer Anker, Baustein C, v1.17.0)
 
