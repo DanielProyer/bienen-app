@@ -33,6 +33,15 @@ void main() {
     }
   });
 
+  test('DST-Sicherheit: Fenster über die Zeitumstellung (Ende März) landet auf dem richtigen Kalendertag', () {
+    // erstellt_am 25.3.2026 (CET), Kunstschwarm Tag 10–12 → Fenster 4.4.–6.4. (nach CEST-Umstellung 29.3.).
+    final v = lauf(stichtag: DateTime(2026, 4, 5),
+        ev: [_ev(methode: 'kunstschwarm', am: DateTime(2026, 3, 25), jung: 'j1')]);
+    final wk = v.firstWhere((x) => x.schritt.schrittKey == 'weiselkontrolle_os');
+    expect(wk.fensterStart, DateTime(2026, 4, 4)); // 25.3.+10, kein Stundendrift über DST
+    expect(wk.fensterEnde, DateTime(2026, 4, 6)); // 25.3.+12
+  });
+
   test('Vorlauf: Schritt erscheint ab start-14, im Fenster', () {
     // brutableger Tag 9 (start=ende=14.6.), Vorlauf ab 31.5.
     final vor = lauf(stichtag: DateTime(2026, 5, 20)); // vor Vorlauf
