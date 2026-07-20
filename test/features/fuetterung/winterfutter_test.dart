@@ -3,7 +3,7 @@ import 'package:bienen_app/features/fuetterung/domain/fuetterung.dart';
 import 'package:bienen_app/features/fuetterung/domain/winterfutter.dart';
 
 Fuetterung _f(String zweck, DateTime am, num kg, {bool storniert = false}) => Fuetterung(
-      id: 'x', volkId: 'v1', durchgefuehrtAm: am, zweck: zweck, futterart: 'zuckersirup',
+      id: 'x', volkId: 'v1', durchgefuehrtAm: am, zweck: zweck, futterart: 'invertsirup',
       bioZertifiziert: true, mengeProVolkKg: kg, isStorniert: storniert);
 
 void main() {
