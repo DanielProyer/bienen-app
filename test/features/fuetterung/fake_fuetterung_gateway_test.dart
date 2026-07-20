@@ -4,7 +4,7 @@ import 'package:bienen_app/features/fuetterung/domain/fuetterung_gateway.dart';
 
 Future<int> erfasse(FakeFuetterungGateway g, {required List<String> volkIds, num menge = 5, String zweck = 'auffuetterung', String? material}) =>
     g.fuetterungErfassen(volkIds: volkIds, durchgefuehrtAm: DateTime(2026, 8, 1), zweck: zweck,
-        futterart: 'zuckersirup', bioZertifiziert: true, mengeProVolkKg: menge, materialId: material);
+        futterart: 'invertsirup', bioZertifiziert: true, mengeProVolkKg: menge, materialId: material);
 
 void main() {
   test('Sammelfütterung: distinct Völker -> je 1 Zeile, Lager je Volk abgebucht', () async {

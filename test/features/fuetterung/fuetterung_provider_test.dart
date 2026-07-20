@@ -16,7 +16,7 @@ void main() {
 
     final n = await container.read(fuetterungAktionenProvider).erfassen(
           volkIds: ['v1', 'v2'], durchgefuehrtAm: DateTime(2026, 8, 1), zweck: 'auffuetterung',
-          futterart: 'zuckersirup', bioZertifiziert: true, mengeProVolkKg: 5);
+          futterart: 'invertsirup', bioZertifiziert: true, mengeProVolkKg: 5);
     expect(n, 2);
 
     expect((await container.read(fuetterungenFuerVolkProvider('v1').future)).length, 1);
