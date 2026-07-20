@@ -4,6 +4,12 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Wissensdatenbank Zyklus 2: Varroa live (v1.22.0)
+
+Erster Folgezyklus des Wissensdatenbank-Ausbaus (autonom, Fachreview als Gate): Kategorie **Varroa** (7 Einträge) + Andock an das Behandlungs-/Diagnose-Modul. Keine DB-Änderung — reine const-Katalog-Erweiterung. 213/213 Tests, live.
+
+- **D-62 · Modul-Andock über dynamisches ⓘ pro Feld (statt pro Option).** Für Formulare mit Auswahl-Feldern (Milbendiagnose-Methode = ChoiceChip, Behandlungs-Wirkstoff = Dropdown) dockt EIN `WissenInfoButton` neben dem Feld an, dessen `wissenKey` sich aus dem aktuell gewählten Wert auflöst (`kVarroaMethodeWissen[_methode]` / `kBehandlungWirkstoffWissen[_wirkstoff]`, neue Maps in `behandlung_wissen.dart`). Bei unbelegten Werten (`kombi_os_as`/`sonstige`) rendert der Button nichts (`wissenVon('') == null`). Skaliert auf Dropdowns, wo ein ⓘ pro Option nicht geht. Fachinhalt der 7 Einträge aus Recherche 15 (alpin) + 22 (BGD), **Fachreview (Fable 5)** als Gate vor dem Bau — fand 4 belegte Fach-/Sicherheitsvervollständigungen (OS-Höchstmenge 50 ml/Volk, AS „Dämpfe nicht einatmen", Milbengröße 1,6 mm breit/1,1 mm lang, „Richtwert – Etikett/Merkblatt beachten" auf allen Wirkstoff-Einträgen). Muster für die Folge-Kategorien (Krankheiten→Gesundheit, Fütterung→Fütterung).
+
 ## 2026-07-20 — Wissensdatenbank Zyklus 1 live (v1.21.0)
 
 Modul 4.21: die statische Wissensbibliothek bekommt eine schnelle Häppchen-Schicht davor — Kontext-Wissen mit SVG-Skizze, generisch per `key` an jedes Modul andockbar, + eigene Fotos je Betrieb. Nach adversarialem 5-Lupen-Review (19 bestätigte Findings) eingearbeitet; subagent-getrieben (M01 selbst, 5 Buckets je mit Review). Migration M01 auf Prod, 209/209 Tests, live.

@@ -1,11 +1,15 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.21.0+42 (live)
-**Aktueller Fokus:** ✅ **Wissensdatenbank Zyklus 1 (Modul 4.21) LIVE** (v1.21.0) — Kontext-Wissen mit SVG-Skizzen + eigenen Fotos je Betrieb, generischer `key`-Deep-Link, ⓘ-Andock in der Durchsicht (Brut/Pollen/Futter/Stifte/Weiselzelle/…). Davor am selben Tag: ✅ Geführte Durchsicht (v1.20.0), ✅ D2a Volk-Bewertung (v1.19.0), ✅ D1 Vermehrung (v1.18.0), ✅ C Phänologie (v1.17.0), ✅ A+B Betriebsprofil (v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **Durchsicht-Spracheingabe (Zyklus 2)**, **Wissensdatenbank-Ausbau (weitere Kategorien)**, **D2b Umlarv-Kalender** oder 4.22 Kosten-Dashboard — nach Absprache.
+**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.22.0+43 (live)
+**Aktueller Fokus:** 🔄 **Wissensdatenbank-Folgezyklen** (autonom, Fachreview als Gate). ✅ **Zyklus 2 Varroa LIVE** (v1.22.0): 7 Einträge (Milbe, Gemüll-/Puderzucker-Diagnose, AS/OS/Milchsäure/Thymol) mit Skizzen + ⓘ-Andock in Milbendiagnose + Behandlungs-Journal. ✅ **Zyklus 1 (Modul 4.21) LIVE** (v1.21.0) — Kontext-Wissen mit SVG-Skizzen + eigenen Fotos je Betrieb, generischer `key`-Deep-Link, ⓘ-Andock in der Durchsicht. **Nächste Zyklen:** Krankheiten→Gesundheit, Fütterung→Fütterung, dann Honig-Ernte/Zucht/Recht. Davor am selben Tag: ✅ Geführte Durchsicht (v1.20.0), ✅ D2a Volk-Bewertung (v1.19.0), ✅ D1 Vermehrung (v1.18.0), ✅ C Phänologie (v1.17.0), ✅ A+B Betriebsprofil (v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **Durchsicht-Spracheingabe (Zyklus 2)**, **Wissensdatenbank-Ausbau (weitere Kategorien)**, **D2b Umlarv-Kalender** oder 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-20 (Wissensdatenbank Zyklus 2 — Varroa, v1.22.0)
+
+- [x] ✓ **Varroa-Kategorie LIVE** (v1.22.0+43). 7 Einträge (`varroa_milbe`, `gemuelldiagnose`, `puderzucker_auswaschung`, `ameisensaeure`, `oxalsaeure`, `milchsaeure`, `thymol`) mit SVG-Skizzen, fachlich aus `../imkerei/02_Recherche/15` (+22 BGD). **Andock:** dynamisches ⓘ je Feld in der Milbendiagnose (`kontrolle_form`, methode) + im Behandlungs-Journal (`behandlung_form`, wirkstoff) via `behandlung_wissen.dart`-Maps. **Fachreview (Fable 5)** fand 4 Fach-/Sicherheitspunkte (OS-Höchstmenge 50 ml/Volk, AS „Dämpfe nicht einatmen", Milbengröße korrigiert, „Richtwert – Etikett beachten" auf Wirkstoffen) → eingearbeitet. **213/213 Tests, analyze sauber**, live. Kein DB-Schritt (reine Katalog-Erweiterung). Spec: `docs/superpowers/specs/2026-07-20-wissen-varroa-zyklus2.md`.
 
 ## ✅ Erledigt — Session 2026-07-20 (Wissensdatenbank Zyklus 1, Modul 4.21, v1.21.0)
 
