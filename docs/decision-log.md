@@ -4,6 +4,16 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Betriebsprofil & Generator-Ausbau live (v1.16.0)
+
+Erste Sub-Spec (A+B) des grossen bienen.ch-Hebels: Generator konfigurierbar + gehärtet, F4-Settings-Seite. Nach adversarialem 5-Lupen-Review (26 Findings) v2-überarbeitet. 149/149 Tests, live.
+
+- **D-45 · Zerlegung A+B → C → D statt Monster-Spec.** Der „phänologische Generator"-Wunsch ist mehrere Teilsysteme. Erste Spec = **A (Generator-Härtung + fehlende Regeln) + B (Betriebsprofil/Strategie-Weichen)** im bestehenden Fenster+Offset-Modell. **C (Phänologie/Indikatorpflanzen)** und **D (Ableger/Zucht-Event-Ketten, 4.16/4.17)** folgen als eigene Zyklen — die Regeln behalten ihr Basis-Fenster, C ersetzt später nur die Offset-*Berechnung* (keine Doppelarbeit).
+- **D-46 · Strategie-Weichen (I01) gaten Regeln, Column-Grant härtet amtliche Felder.** `betriebs_einstellungen` +`anzahl_ernten`/`sommerbehandlung_methode`/`vermehrung_aktiv`. Der Generator (`anstehendeVorschlaege(..., einstellungen)`) filtert/formt danach; Default-Param `const BetriebsEinstellungen.leer()` hält 14 Bestandstests kompilierbar. Der App-UPDATE-Grant wurde auf die **5 editierbaren Spalten** beschränkt (amtliche `imker_identnummer`/`kanton` bleiben aussen; Ops/Service-Role bypasst Grants). Settings-Speichern via direktem `.eq('betrieb_id')`-Update (Repo-Standard, RLS `kann_schreiben`).
+- **D-47 · Timing-Härtung minimal-invasiv (Review-getrieben).** NUR `gemuelldiagnose_sommer` wird offset (6.6.–20.6.), `sommerbehandlung_1` bleibt **kalenderfix Arosa-getunt** (v1-Offset-Umbau hätte Arosa ~11 T verschlechtert [Winterbienen-Risiko] + den 2-Ernten-Pfad fachlich falsch gemacht [AS vor Ernte]). Neue Herbst-Regeln + `honigernte_sommer` = **kalenderfix** (alpin früher — positiver Offset wäre richtungsverkehrt; war ein v1-Blocker). Exakte alpine Sommer-Präzision → C (Phänologie).
+- **D-48 · futterart-Konzentration + RPC atomar in derselben Migration.** `zuckerwasser`→`zuckerwasser_1_1`/`_3_2`, `zuckersirup`→`invertsirup` (I02, 0 Zeilen Backfill). RPC `fuetterung_erfassen` muss im selben File `create or replace` (sonst CHECK↔RPC-Drift) → dreifach-Paritätstest Dart==DB==RPC.
+- **Gotcha (App):** (1) **Enum-Migration bricht hartkodierte Formular-Defaults** — `fuetterung_form_page` hatte `_futterart='zuckersirup'` (nicht mehr Whitelist) → Dropdown-`initialValue`-Absturz. Bei jeder futterart/enum-Migration die Formular-Defaults + Test-Fixtures mit-migrieren. (2) Neuer **required** Generator-Param hätte 14 Bestandstests gebrochen → Default `const …leer()`. (3) Neue Provider-Verdrahtung: der Generator-Aufruf im `vorschlaegeProvider` MUSS `einstellungen` durchreichen und die Karte/`_ausVorschlag` `v.beschreibung` (aufgelöst) lesen — sonst ist das Gating/beschreibungFuer live wirkungslos (Quality-Review-Fund). (4) Jede neue Route in `_selectedIndex` (app_shell) eintragen, sonst falscher Tab-Highlight.
+
 ## 2026-07-20 — bienen.ch Quick-Wins (Teil-Umsetzung, v1.15.3)
 
 Nach Code-Prüfung des „Quick-Win-Bündels 4.6/4.5/4.4" zeigte sich: die Findings (von Agenten ohne Schema-Zugriff erstellt) trafen die Realität nur teilweise. Umgesetzt wurde der **sichere, fachlich abgesegnete Teil**, der Rest bewusst zu einer Spec gebündelt.

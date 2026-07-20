@@ -1,11 +1,20 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.15.3+36 (live)
+**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.16.0+37 (live)
 **Aktueller Fokus:** ✅ **Cockpit & IA-Umbau LIVE** (v1.15.0) — 4 Betriebs-Tabs (Cockpit · Völker · Aufgaben · Projekt), Dashboard ist jetzt Betriebszentrale, Projekt-Sammelseite mit aktualisiertem Fortschritt. Davor am selben Tag: ✅ **Modul 4.4 „Aufgaben & Kalender" LIVE** (v1.14.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-20 (Betriebsprofil & Generator-Ausbau, v1.16.0)
+
+- [x] ✓ **Betriebsprofil & Generator-Ausbau LIVE** (v1.16.0+37). Der grosse Hebel aus der bienen.ch-Auswertung (A+B der Zerlegung; C Phänologie + D Ableger/Zucht-Events folgen). Brainstorming → Spec → **adversarialer Multi-Agent-Review (5 Lupen, 26 Findings/25 bestätigt)** → v2-Spec → Plan (13 Tasks) → subagent-getrieben (Migrationen selbst + 2 Domain-/UI-Buckets, je Spec+Quality-Review) + finaler Review. **149/149 Tests, analyze sauber**, live.
+  - **DB (Produktion, I01/I02):** `betriebs_einstellungen` +3 Strategie-Weichen (`anzahl_ernten`, `sommerbehandlung_methode`, `vermehrung_aktiv`) + **Column-Grant-Härtung** (App-UPDATE nur auf 5 editierbare Spalten; amtliche `imker_identnummer`/`kanton` ausgeschlossen). `fuetterungen`-futterart um **Konzentrationen** (`zuckerwasser_1_1`/`_3_2`/`invertsirup`) erweitert (0 Zeilen Backfill) — RPC `fuetterung_erfassen` im selben File mitgezogen (dreifach-Parität Dart==DB==RPC).
+  - **App:** neue **F4-Settings-Seite** (`/einstellungen`, Projekt-Kachel): Saison-Offset, Winterfutter-Ziel (+20-kg-BGD-Warnung als weicher Hinweis), 3 Strategie-Weichen; Rollen-Guard; `.eq(betrieb_id)`-Update. **Generator** (`saison_regeln.dart`): konfigurierbar (Gating `nurBeiVermehrung`/`nurBeiAnzahlErnten`), Methoden-Text via `beschreibungFuer`, **Timing-Härtung** (`gemuelldiagnose_sommer`→offset 6.6.–20.6.; `sommerbehandlung_1` bewusst unverändert Arosa-getunt; Herbst-Regeln + 2. Ernte kalenderfix), **11 neue Regeln** (Notbehandlung, 2. Ernte, Jungvölker/Königinnen [gated], Serbelvölker Frühjahr/Herbst, Trachtlücke, Fluglochbeobachtung, Wabenerneuerung, Umweiselung, Winterbehandlungs-Erfolgskontrolle). Ordnungs-Invarianten (1+2 Ernten, Offset 0/42) getestet.
+  - **Review fing echte Fehler:** v1 hatte Herbst-Regeln fälschlich offset=ja (Blocker, alpin fatal); der `sommerbehandlung_1`-Offset-Umbau hätte Arosa verschlechtert + den 2-Ernten-Pfad kaputt gemacht — beides in v2 korrigiert. Quality-Review fand den Formular-Default-Absturz (`futterart='zuckersirup'`) + fehlende Generator-Verdrahtung.
+  - Docs: `docs/superpowers/specs/2026-07-20-betriebsprofil-generator-ausbau-design.md` (v2), `…/plans/2026-07-20-betriebsprofil-generator-ausbau.md`.
+  - **🔴 OFFEN (Folge-Specs):** **C Phänologie** (Indikatorpflanzen-Anker statt fixem Offset — löst die alpine Sommer-Präzision exakt) · **D Ableger/Zucht-Event-Ketten** (4.16/4.17) · Honigreinheit-Warnung (braucht Tracht-Signal aus C).
 
 ## ✅ Erledigt — Session 2026-07-20 (bienen.ch Quick-Wins, Teil-Umsetzung)
 

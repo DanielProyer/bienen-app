@@ -1,6 +1,6 @@
 # App-/Software-Roadmap — Bienen Arosa
 
-**Stand:** 2026-07-19 · **App-Version:** 1.15.2+35 · nachgeführt bei Arbeitsschluss.
+**Stand:** 2026-07-20 · **App-Version:** 1.16.0+37 · nachgeführt bei Arbeitsschluss.
 **Grundlage:** [Funktionsumfang-Scope](superpowers/specs/2026-07-11-app-funktionsumfang-scope.md) (26 Module + Fundament). Diese Roadmap ist die *lebende* Umsetzungssicht; die Scope-Spec die verbindliche Ziel-Landkarte.
 **Fachliche Untermauerung (2026-07-16):** Die Module sind neu mit 11 tiefen Imkerei-Recherchen hinterlegt — welche Recherche welches Modul mit welchen Datenfeldern/Regeln speist, steht in [imkerei-fachwissen-app-implikationen.md](imkerei-fachwissen-app-implikationen.md) (Wegweiser-Landkarte, **keine** Roadmap-Änderung). Fachwissen wohnt in `../imkerei/02_Recherche/10–20`; Zahlen dort sind Richtwerte (Fachstellen-Check).
 
@@ -29,9 +29,10 @@
 | 4.1 | **Dashboard/Cockpit** (Ampeln, Alarm-Feed, Saison-Kontext) | ✅ **Basis LIVE** (v1.15.0, IA-Umbau) — 4 Betriebs-Tabs (Cockpit/Völker/Aufgaben/Projekt), Cockpit = Warnband + abhakbare Aufgaben + Völker-Ampeln + Waage-Platzhalter; Projekt-Sammelseite. Ausbau (Waage-Live-Daten, Wetter) mit 4.9/4.19 |
 | 4.2 | **Völker & Standorte** (Drehscheibe, Königin-Register Jahresfarbe) | ✅ **LIVE** (v1.9.0) — `standorte`/`koeniginnen`/`betriebs_einstellungen`, `volk_umweiseln`, Nav-Umbau |
 | 4.3 | **Durchsicht/Stockkarte** (geführt, Timeline, Foto) | ✅ **LIVE** (v1.10.0) — `inspections` + View, privater Foto-Bucket (Signed-URL), Andocken an Volk-Detailseite. Spracheingabe/Offline später |
-| 4.4 | **Aufgaben & Kalender** (alpiner Generator + Schutztermine) | ✅ **LIVE** (v1.14.0) — `aufgaben` (normale CRUD, Regel-Dedup-Index), 25-Regel-Saisonkatalog (Dart, `saison_offset` nur Frühjahr/Tracht), Vorschlags-Generator, Haupt-Tab + Dashboard-Kachel + Volk-Section. Push/assigned_to/Kalender-Grid später (F3/Mehrbenutzer) |
+| 4.4 | **Aufgaben & Kalender** (alpiner Generator + Schutztermine) | ✅ **LIVE** (v1.14.0; ausgebaut v1.16.0) — `aufgaben` (normale CRUD, Regel-Dedup-Index), **36-Regel-Saisonkatalog** (Dart), Vorschlags-Generator, Haupt-Tab + Dashboard-Kachel + Volk-Section. **v1.16.0:** konfigurierbar (Strategie-Weichen aus F4-Settings gaten Regeln), Timing gehärtet, +11 BGD-Regeln. Phänologie-Anker (C) + Ableger/Zucht-Events (D/4.16-17) + Push (F3) später |
 | 4.5 | **Behandlungen (Varroa/Gesundheit)** — CH-Behandlungsjournal (Pflicht) | ✅ **LIVE** (v1.11.0) — `varroa_kontrollen`/`behandlungen` (amtlich, RESTRICT/Immutable-Trigger), RPC `behandlung_erfassen`, methodenbewusstes Cockpit, Material-Kopplung |
-| 4.6 | **Fütterung** (Winterfutter-Ziel, Bio-Nachweis) | ✅ **LIVE** (v1.12.0) — `fuetterungen` (Bio-Nachweis, volk-FK RESTRICT/Soft-Delete), RPC `fuetterung_erfassen`, Winterfutter-Balken (Saison-Σ), `betriebs_einstellungen.winterfutter_ziel_kg`, Material-Kopplung |
+| — | **Einstellungen/Settings (F4)** — Betriebsprofil editierbar | ✅ **Basis LIVE** (v1.16.0) — `/einstellungen`: Saison-Offset, Winterfutter-Ziel (+20-kg-BGD-Warnung), 3 Strategie-Weichen (Anzahl Ernten, Sommerbehandlung-Methode, Vermehrung aktiv). Onboarding-Assistent (F5), weitere Defaults später |
+| 4.6 | **Fütterung** (Winterfutter-Ziel, Bio-Nachweis) | ✅ **LIVE** (v1.12.0; v1.16.0 futterart-Konzentration 1:1/3:2/Invertsirup) — `fuetterungen` (Bio-Nachweis, volk-FK RESTRICT/Soft-Delete), RPC `fuetterung_erfassen`, Winterfutter-Balken (Saison-Σ), `betriebs_einstellungen.winterfutter_ziel_kg`, Material-Kopplung |
 | 4.9 | Monitoring/Waage (HiveWatch, Brutraumtemp, Alerts, Datenqualität) | 🔨 Demo → ausbauen |
 | 4.10 | Material & Lager (Verbrauch↔Behandlung/Fütterung koppeln) | ✅ bestehend → verzahnen |
 | 4.11 | Wachskreislauf-Basis (Wabenalter/Zukauf-Doku) | ⬜ |
