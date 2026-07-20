@@ -8,6 +8,8 @@ library;
 
 import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
 import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
+import 'package:bienen_app/features/phaenologie/domain/phaenologie.dart';
+import 'package:bienen_app/features/phaenologie/domain/beobachtung.dart';
 
 enum RegelEbene { volk, betrieb }
 
@@ -23,6 +25,13 @@ class SaisonRegel {
   final String? aktionRoute; // 'durchsicht'|'behandlung'|'fuetterung'|'varroa'|null
   final bool nurBeiVermehrung;
   final int? nurBeiAnzahlErnten;
+  /// Offset-Override-Phase (fruehjahr|tracht); null = kein phänologischer Offset-Override.
+  final PhaenoAnker? phase;
+  /// Ketten-Anker: Key der Regel, an deren effektives Ende diese Regel hängt (nur bei Tracht-Beobachtung).
+  /// Sentinel '__letzte_ernte' -> honigernte_sommer (bei 2 Ernten) bzw. honigernte.
+  final String? ankerRegelKey;
+  final int ankerVersatzStartTage;
+  final int ankerVersatzEndeTage;
 
   const SaisonRegel({
     required this.key,
@@ -39,6 +48,10 @@ class SaisonRegel {
     this.aktionRoute,
     this.nurBeiVermehrung = false,
     this.nurBeiAnzahlErnten,
+    this.phase,
+    this.ankerRegelKey,
+    this.ankerVersatzStartTage = 0,
+    this.ankerVersatzEndeTage = 0,
   });
 }
 
@@ -112,7 +125,8 @@ const kSaisonRegeln = <SaisonRegel>[
   SaisonRegel(key: 'fruehjahrsdurchsicht', titel: 'Frühjahrsdurchsicht (vollständig)',
       beschreibung: 'Vollständige Durchsicht bei 16–20 °C: Brutbild, Futterkranzprobe, Bodentausch.',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 3, startTag: 15, endMonat: 4, endTag: 10, offsetAnwenden: true, aktionRoute: 'durchsicht'),
+      startMonat: 3, startTag: 15, endMonat: 4, endTag: 10, offsetAnwenden: true, aktionRoute: 'durchsicht',
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'wabenhygiene', titel: 'Wabenhygiene/Bodentausch',
       beschreibung: 'Alte, dunkle Waben ausscheiden; Boden tauschen oder reinigen. Ziel: 1/3 der Brutwaben pro Jahr erneuern (3-Jahres-Zyklus).',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
@@ -200,6 +214,36 @@ SaisonRegel? regelVon(String? key) {
     if (r.key == key) return r;
   }
   return null;
+}
+
+/// Beobachtung für ein Kandidatenjahr + Anker (Inline-Helper statt package:collection).
+PhaenoBeobachtung? _beobachtungFuer(List<PhaenoBeobachtung> bs, int jahr, PhaenoAnker anker) {
+  for (final b in bs) {
+    if (b.jahr == jahr && b.anker == anker) return b;
+  }
+  return null;
+}
+
+/// Effektiver Offset (Tage) einer Regel für ein Kandidatenjahr:
+/// - phänologisch (beobachtete Blüte − referenzDoy, geklemmt ±kMaxOffsetTage), wenn eine
+///   zum Anker passende Beobachtung vorliegt;
+/// - sonst A+B-Baseline (flacher Offset wenn offsetAnwenden, sonst 0).
+int effektiverOffset({
+  required SaisonRegel regel,
+  required int saisonJahr,
+  required List<PhaenoBeobachtung> beobachtungen,
+  required int flatOffset,
+}) {
+  final phase = regel.phase;
+  if (phase != null) {
+    final b = _beobachtungFuer(beobachtungen, saisonJahr, phase);
+    final ind = b == null ? null : indikatorVon(b.indikatorKey);
+    if (b != null && ind != null && ind.anker == phase) {
+      final off = doyVon(b.bluehAm) - ind.referenzDoy;
+      return off.clamp(-kMaxOffsetTage, kMaxOffsetTage);
+    }
+  }
+  return regel.offsetAnwenden ? flatOffset : 0;
 }
 
 /// Auflösung des Aufgabentexts je Betriebsstrategie (heute nur sommerbehandlung_1 nach Methode).

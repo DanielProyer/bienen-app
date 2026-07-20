@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
 import 'package:bienen_app/features/aufgaben/domain/saison_regeln.dart';
 import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
+import 'package:bienen_app/features/phaenologie/domain/phaenologie.dart';
+import 'package:bienen_app/features/phaenologie/domain/beobachtung.dart';
 
 Aufgabe _regelAufgabe(String key, int jahr, DateTime faellig,
         {String status = 'offen', String? volkId = 'v1'}) =>
@@ -236,5 +238,27 @@ void main() {
 
   test('Notbehandlungs-Regel varroakontrolle_fruehsommer existiert', () {
     expect(kSaisonRegeln.map((r) => r.key), contains('varroakontrolle_fruehsommer'));
+  });
+
+  group('Phänologie: effektiverOffset', () {
+    final loewenzahn = kSaisonRegeln.firstWhere((r) => r.key == 'fruehjahrsdurchsicht'); // phase=fruehjahr (nach Task 7)
+    test('Beobachtung -> DOY-Differenz, geklemmt auf ±60', () {
+      // Löwenzahn referenzDoy 115; Blüte 6.6. (DOY 157) -> +42
+      final b = PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.fruehjahr, indikatorKey: 'loewenzahn', bluehAm: DateTime(2026, 6, 6));
+      expect(effektiverOffset(regel: loewenzahn, saisonJahr: 2026, beobachtungen: [b], flatOffset: 0), 42);
+      // Fehleingabe 5.2. (DOY 36) -> -79 -> geklemmt auf -60
+      final falsch = PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.fruehjahr, indikatorKey: 'loewenzahn', bluehAm: DateTime(2026, 2, 5));
+      expect(effektiverOffset(regel: loewenzahn, saisonJahr: 2026, beobachtungen: [falsch], flatOffset: 0), -60);
+    });
+    test('keine passende Beobachtung -> flatOffset (offsetAnwenden) bzw. 0', () {
+      expect(effektiverOffset(regel: loewenzahn, saisonJahr: 2026, beobachtungen: const [], flatOffset: 42), 42);
+      final kalenderfix = kSaisonRegeln.firstWhere((r) => r.key == 'sommerbehandlung_2');
+      expect(effektiverOffset(regel: kalenderfix, saisonJahr: 2026, beobachtungen: const [], flatOffset: 42), 0);
+    });
+    test('anker-Mismatch (tracht-Key auf fruehjahr-Regel) -> Fallback', () {
+      final b = PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.fruehjahr, indikatorKey: 'alpenrose', bluehAm: DateTime(2026, 6, 14));
+      // indikatorVon('alpenrose').anker == tracht != fruehjahr -> Fallback flatOffset
+      expect(effektiverOffset(regel: loewenzahn, saisonJahr: 2026, beobachtungen: [b], flatOffset: 42), 42);
+    });
   });
 }
