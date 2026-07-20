@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <g fill="#FAC775" stroke="#633806" stroke-width="2">
+    <rect x="24" y="34" width="52" height="52" rx="6"/>
+    <rect x="94" y="34" width="52" height="52" rx="6"/>
+    <rect x="164" y="34" width="52" height="52" rx="6"/>
+  </g>
+  <g stroke="#633806" stroke-width="4" stroke-linecap="round" fill="none">
+    <line x1="50" y1="82" x2="50" y2="46"/>
+    <line x1="120" y1="82" x2="128" y2="50"/>
+    <line x1="190" y1="82" x2="205" y2="66"/>
+  </g>
+  <g fill="#633806" font-family="sans-serif" font-size="13" text-anchor="middle">
+    <text x="50" y="108">Tag 1</text><text x="120" y="108">Tag 2</text><text x="190" y="108">Tag 3</text>
+    <text x="120" y="134" font-size="14">senkrecht = frisch (≤3 Tage)</text>
+  </g>
+</svg>

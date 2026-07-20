@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <g stroke="#633806" stroke-width="2">
+    <rect x="34" y="36" width="56" height="56" rx="6" fill="#E8B84D"/>
+    <rect x="150" y="36" width="56" height="56" rx="6" fill="#FBF0D6"/>
+  </g>
+  <path d="M110 64 h24" stroke="#633806" stroke-width="3" marker-end="url(#a)"/>
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0 0 L6 3 L0 6 z" fill="#633806"/></marker></defs>
+  <g fill="#633806" font-family="sans-serif" font-size="13" text-anchor="middle">
+    <text x="62" y="110">offen · glänzend</text><text x="178" y="110">verdeckelt</text>
+    <text x="120" y="136" font-size="14">Nektar reift zu Honig</text>
+  </g>
+</svg>
