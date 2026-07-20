@@ -7,6 +7,8 @@ import 'package:bienen_app/features/behandlung/domain/wirkstoff.dart';
 import 'package:bienen_app/features/behandlung/presentation/providers/behandlung_provider.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/features/wissen/domain/behandlung_wissen.dart';
+import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
 
 class BehandlungFormPage extends ConsumerStatefulWidget {
   final String volkId;
@@ -121,12 +123,17 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
                   if (d != null) setState(() => _datumEnde = d);
                 },
               ),
-              DropdownButtonFormField<String>(
-                initialValue: _wirkstoff,
-                decoration: const InputDecoration(labelText: 'Wirkstoff'),
-                items: [for (final w in Wirkstoff.werte) DropdownMenuItem(value: w, child: Text(Wirkstoff.labels[w]!))],
-                onChanged: (v) => setState(() => _wirkstoff = v!),
-              ),
+              Row(children: [
+                Expanded(
+                  child: DropdownButtonFormField<String>(
+                    initialValue: _wirkstoff,
+                    decoration: const InputDecoration(labelText: 'Wirkstoff'),
+                    items: [for (final w in Wirkstoff.werte) DropdownMenuItem(value: w, child: Text(Wirkstoff.labels[w]!))],
+                    onChanged: (v) => setState(() => _wirkstoff = v!),
+                  ),
+                ),
+                WissenInfoButton(wissenKey: kBehandlungWirkstoffWissen[_wirkstoff] ?? ''),
+              ]),
               DropdownButtonFormField<String>(
                 initialValue: _anwendungsart,
                 decoration: const InputDecoration(labelText: 'Anwendungsart'),
