@@ -80,7 +80,8 @@ const kSaisonRegeln = <SaisonRegel>[
   SaisonRegel(key: 'sommerbehandlung_1', titel: '1. Varroa-Sommerbehandlung starten',
       beschreibung: 'Ameisensäure-Langzeitbehandlung nach der Ernte starten (Temperaturfenster beachten).',
       kategorie: 'behandlung', ebene: RegelEbene.volk,
-      startMonat: 7, startTag: 20, endMonat: 8, endTag: 15, aktionRoute: 'behandlung'),
+      startMonat: 7, startTag: 20, endMonat: 8, endTag: 15, aktionRoute: 'behandlung',
+      ankerRegelKey: '__letzte_ernte', ankerVersatzStartTage: 5, ankerVersatzEndeTage: 12),
   SaisonRegel(key: 'hauptfuetterung', titel: 'Hauptfütterung (Etappen)',
       beschreibung: 'Winterfutter in 2–3 Etappen auffüttern (Ziel siehe Winterfutter-Balken je Volk).',
       kategorie: 'fuetterung', ebene: RegelEbene.volk,
@@ -121,7 +122,8 @@ const kSaisonRegeln = <SaisonRegel>[
   SaisonRegel(key: 'erste_durchsicht', titel: 'Erste kurze Durchsicht (ab ~15 °C)',
       beschreibung: 'Kurzkontrolle: Volksstärke, Futter, Weiselrichtigkeit — nicht auseinanderreissen.',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 3, startTag: 1, endMonat: 3, endTag: 25, offsetAnwenden: true, aktionRoute: 'durchsicht'),
+      startMonat: 3, startTag: 1, endMonat: 3, endTag: 25, offsetAnwenden: true, aktionRoute: 'durchsicht',
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'fruehjahrsdurchsicht', titel: 'Frühjahrsdurchsicht (vollständig)',
       beschreibung: 'Vollständige Durchsicht bei 16–20 °C: Brutbild, Futterkranzprobe, Bodentausch.',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
@@ -130,36 +132,43 @@ const kSaisonRegeln = <SaisonRegel>[
   SaisonRegel(key: 'wabenhygiene', titel: 'Wabenhygiene/Bodentausch',
       beschreibung: 'Alte, dunkle Waben ausscheiden; Boden tauschen oder reinigen. Ziel: 1/3 der Brutwaben pro Jahr erneuern (3-Jahres-Zyklus).',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 3, startTag: 1, endMonat: 4, endTag: 15, offsetAnwenden: true),
+      startMonat: 3, startTag: 1, endMonat: 4, endTag: 15, offsetAnwenden: true,
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'drohnenrahmen_einsetzen', titel: 'Drohnenrahmen einsetzen',
       beschreibung: 'Drohnenrahmen als biotechnische Varroa-Falle einhängen.',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 3, startTag: 20, endMonat: 4, endTag: 10, offsetAnwenden: true),
+      startMonat: 3, startTag: 20, endMonat: 4, endTag: 10, offsetAnwenden: true,
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'drohnenschnitt', titel: 'Drohnenrahmen schneiden',
       beschreibung: 'Verdeckelte Drohnenbrut alle ~14 Tage ausschneiden (Varroa-Entnahme).',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 4, startTag: 1, endMonat: 6, endTag: 30, offsetAnwenden: true, intervallTage: 14),
+      startMonat: 4, startTag: 1, endMonat: 6, endTag: 30, offsetAnwenden: true, intervallTage: 14,
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'brutraum_erweitern', titel: 'Brutraum erweitern',
       beschreibung: 'Bei starkem Wachstum Brutraum mit Mittelwänden erweitern.',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 4, startTag: 1, endMonat: 4, endTag: 20, offsetAnwenden: true),
+      startMonat: 4, startTag: 1, endMonat: 4, endTag: 20, offsetAnwenden: true,
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'honigraum_aufsetzen', titel: 'Honigraum aufsetzen',
       beschreibung: 'Bei Trachtbeginn Honigraum aufsetzen (Absperrgitter kontrollieren).',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 4, startTag: 10, endMonat: 4, endTag: 30, offsetAnwenden: true),
+      startMonat: 4, startTag: 10, endMonat: 4, endTag: 30, offsetAnwenden: true,
+      phase: PhaenoAnker.tracht),
   SaisonRegel(key: 'schwarmkontrolle', titel: 'Schwarmkontrolle (alle 7 Tage!)',
       beschreibung: 'Wöchentlich auf Schwarmzellen kontrollieren — ein versäumter Termin kann das halbe Volk kosten.',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
       startMonat: 4, startTag: 15, endMonat: 6, endTag: 1, offsetAnwenden: true, intervallTage: 7,
-      aktionRoute: 'durchsicht'),
+      aktionRoute: 'durchsicht', phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'honigernte', titel: 'Honigernte (Reife prüfen)',
       beschreibung: 'Verdeckelungsgrad/Wassergehalt prüfen, reife Honigwaben abschleudern.',
       kategorie: 'sonstiges', ebene: RegelEbene.volk,
-      startMonat: 5, startTag: 20, endMonat: 6, endTag: 5, offsetAnwenden: true),
+      startMonat: 5, startTag: 20, endMonat: 6, endTag: 5, offsetAnwenden: true,
+      phase: PhaenoAnker.tracht),
   SaisonRegel(key: 'gemuelldiagnose_sommer', titel: 'Gemülldiagnose nach Ernte',
       beschreibung: 'Milbenfall/Tag nach der Ernte messen — Entscheidungsgrundlage für die Sommerbehandlung.',
       kategorie: 'behandlung', ebene: RegelEbene.volk,
-      startMonat: 6, startTag: 6, endMonat: 6, endTag: 20, offsetAnwenden: true, aktionRoute: 'varroa'),
+      startMonat: 6, startTag: 6, endMonat: 6, endTag: 20, offsetAnwenden: true, aktionRoute: 'varroa',
+      ankerRegelKey: '__letzte_ernte', ankerVersatzStartTage: 0, ankerVersatzEndeTage: 3),
   // ---- neu: Frühjahr/Frühsommer (Task I, BGD/bienen.ch) ----
   SaisonRegel(key: 'fluglochunterlage_beobachten', titel: 'Fluglochunterlage wöchentlich beobachten',
       beschreibung: 'Windel einlegen und wöchentlich analysieren: Stummelflügel→Varroa, Kotspritzer→Nosema/Durchfall, Gemüllstreifen→Wintersitz (BGD 4.8).',
@@ -168,27 +177,33 @@ const kSaisonRegeln = <SaisonRegel>[
   SaisonRegel(key: 'serbelvoelker_fruehjahr', titel: 'Schwache/weisellose Völker beurteilen',
       beschreibung: 'Serbel-/weisellose Völker erkennen und mit Jungvölkern vereinen (BGD 4.7).',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 3, startTag: 15, endMonat: 4, endTag: 20, offsetAnwenden: true),
+      startMonat: 3, startTag: 15, endMonat: 4, endTag: 20, offsetAnwenden: true,
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'varroakontrolle_fruehsommer', titel: 'Milbenkontrolle Frühsommer (Notbehandlungs-Schwelle)',
       beschreibung: 'Natürlichen Milbenfall messen: Ende Mai >3 (bis 7 Optionen, >7 Notbehandlung), Juni/Juli >10 Milben/Tag → sofortige Notbehandlung (BGD 1.5.1/Varroakonzept).',
       kategorie: 'behandlung', ebene: RegelEbene.volk,
-      startMonat: 5, startTag: 20, endMonat: 7, endTag: 5, offsetAnwenden: true, aktionRoute: 'varroa'),
+      startMonat: 5, startTag: 20, endMonat: 7, endTag: 5, offsetAnwenden: true, aktionRoute: 'varroa',
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'trachtluecke_notfuetterung', titel: 'Trachtlücke prüfen — bei Bedarf Notfütterung',
       beschreibung: 'Nektarengpass (Mitte Mai–Mitte Juli): Futtervorrat prüfen, bei Bedarf Futterteig geben (kein Zuckerwasser vor der Tracht).',
       kategorie: 'fuetterung', ebene: RegelEbene.volk,
-      startMonat: 5, startTag: 25, endMonat: 7, endTag: 5, offsetAnwenden: true, aktionRoute: 'fuetterung'),
+      startMonat: 5, startTag: 25, endMonat: 7, endTag: 5, offsetAnwenden: true, aktionRoute: 'fuetterung',
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'jungvoelker_bilden', titel: 'Jungvölker/Ableger bilden (Zeitfenster)',
       beschreibung: 'Ableger/Kunstschwarm bilden — biotechnische Varroabremse; frühe Ableger (Juni) sind alpin vorzuziehen (BGD 1.4).',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 5, startTag: 20, endMonat: 6, endTag: 30, offsetAnwenden: true, nurBeiVermehrung: true),
+      startMonat: 5, startTag: 20, endMonat: 6, endTag: 30, offsetAnwenden: true, nurBeiVermehrung: true,
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'koeniginnen_vermehren', titel: 'Königinnen vermehren (Nachschaffung)',
       beschreibung: 'Von guten Völkern nachziehen (MiniPlus/Laurenz); nur bei aktiver Vermehrung (BGD 4.6).',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
-      startMonat: 5, startTag: 20, endMonat: 6, endTag: 30, offsetAnwenden: true, nurBeiVermehrung: true),
+      startMonat: 5, startTag: 20, endMonat: 6, endTag: 30, offsetAnwenden: true, nurBeiVermehrung: true,
+      phase: PhaenoAnker.fruehjahr),
   SaisonRegel(key: 'honigernte_sommer', titel: '2. Honigernte (Sommer) — Reife prüfen',
       beschreibung: 'Sommertracht abschleudern (Verdeckelung/Wassergehalt prüfen) — vor der Sommerbehandlung.',
       kategorie: 'sonstiges', ebene: RegelEbene.volk,
-      startMonat: 7, startTag: 1, endMonat: 7, endTag: 20, nurBeiAnzahlErnten: 2),
+      startMonat: 7, startTag: 1, endMonat: 7, endTag: 20, nurBeiAnzahlErnten: 2,
+      ankerRegelKey: 'honigernte', ankerVersatzStartTage: 35, ankerVersatzEndeTage: 45),
   SaisonRegel(key: 'umweiselung_pruefen', titel: 'Alte Königin ersetzen prüfen',
       beschreibung: 'Königinnen >2-jährig oder schwache Völker: Umweiselung mit begatteter Königin (letzte Möglichkeit vor Winter).',
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
@@ -288,6 +303,56 @@ class AufgabenVorschlag {
 
 DateTime _tag(DateTime d) => DateTime(d.year, d.month, d.day);
 
+bool _hatTrachtBeobachtung(List<PhaenoBeobachtung> bs, int jahr) =>
+    _beobachtungFuer(bs, jahr, PhaenoAnker.tracht) != null;
+
+String _ankerKeyAufloesen(String ankerRegelKey, BetriebsEinstellungen e) =>
+    ankerRegelKey == '__letzte_ernte'
+        ? (e.anzahlErnten == 2 ? 'honigernte_sommer' : 'honigernte')
+        : ankerRegelKey;
+
+/// Effektives [start, ende]-Fenster einer Regel für ein Kandidatenjahr.
+/// Ketten-Anker greift NUR bei vorhandener Tracht-Beobachtung (sonst A+B-Basisfenster + Offset).
+/// Rekursion terminiert: __letzte_ernte -> honigernte(_sommer) -> honigernte (kein ankerRegelKey).
+(DateTime, DateTime) _effektivesFenster(
+  SaisonRegel r,
+  int jahr, {
+  required int flatOffset,
+  required List<PhaenoBeobachtung> beobachtungen,
+  required BetriebsEinstellungen einstellungen,
+}) {
+  if (r.ankerRegelKey != null && _hatTrachtBeobachtung(beobachtungen, jahr)) {
+    final anker = regelVon(_ankerKeyAufloesen(r.ankerRegelKey!, einstellungen))!;
+    final (_, ankerEnde) = _effektivesFenster(anker, jahr,
+        flatOffset: flatOffset, beobachtungen: beobachtungen, einstellungen: einstellungen);
+    return (
+      DateTime(ankerEnde.year, ankerEnde.month, ankerEnde.day + r.ankerVersatzStartTage),
+      DateTime(ankerEnde.year, ankerEnde.month, ankerEnde.day + r.ankerVersatzEndeTage),
+    );
+  }
+  final off = effektiverOffset(
+      regel: r, saisonJahr: jahr, beobachtungen: beobachtungen, flatOffset: flatOffset);
+  return (DateTime(jahr, r.startMonat, r.startTag + off), DateTime(jahr, r.endMonat, r.endTag + off));
+}
+
+/// Effektives Tracht-Fenster [honigraum_aufsetzen-Start … letzte-Ernte-Ende] für ein Jahr,
+/// oder null wenn keine Tracht-Beobachtung existiert (dann keine Honigreinheit-Warnung).
+(DateTime, DateTime)? trachtFensterFuer({
+  required int jahr,
+  required int flatOffset,
+  required List<PhaenoBeobachtung> beobachtungen,
+  required BetriebsEinstellungen einstellungen,
+}) {
+  if (!_hatTrachtBeobachtung(beobachtungen, jahr)) return null;
+  final aufsetzen = regelVon('honigraum_aufsetzen')!;
+  final letzteErnte = regelVon(einstellungen.anzahlErnten == 2 ? 'honigernte_sommer' : 'honigernte')!;
+  final (start, _) = _effektivesFenster(aufsetzen, jahr,
+      flatOffset: flatOffset, beobachtungen: beobachtungen, einstellungen: einstellungen);
+  final (_, ende) = _effektivesFenster(letzteErnte, jahr,
+      flatOffset: flatOffset, beobachtungen: beobachtungen, einstellungen: einstellungen);
+  return (start, ende);
+}
+
 /// Reine Funktion: welche Saisonaufgaben stehen am [stichtag] an?
 /// [regelAufgaben] = alle Aufgaben mit quelle='regel' (jeder Status — angenommene UND
 /// übersprungene Zeilen dedupen). Saison-Anker gekapselt: Kandidatenjahre Vorjahr/aktuell/Folgejahr
@@ -298,6 +363,7 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
   required List<Aufgabe> regelAufgaben,
   required int anzahlAktiveVoelker,
   BetriebsEinstellungen einstellungen = const BetriebsEinstellungen.leer(),
+  List<PhaenoBeobachtung> beobachtungen = const [],
 }) {
   final heute = _tag(stichtag);
   final out = <AufgabenVorschlag>[];
@@ -308,10 +374,10 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
     // DST-sicher: Tages-Arithmetik ausschliesslich über Kalenderkomponenten
     // (Dart normalisiert Überlauf auf lokale Mitternacht) — NIE Duration addieren,
     // sonst kippt das Datum bei Offsets über die Zeitumstellung (Europe/Zurich).
-    final off = r.offsetAnwenden ? saisonOffsetTage : 0;
+    // Die Kalenderkomponenten-Arithmetik steckt jetzt in _effektivesFenster.
     for (final jahr in [heute.year - 1, heute.year, heute.year + 1]) {
-      final start = DateTime(jahr, r.startMonat, r.startTag + off);
-      final ende = DateTime(jahr, r.endMonat, r.endTag + off);
+      final (start, ende) = _effektivesFenster(r, jahr,
+          flatOffset: saisonOffsetTage, beobachtungen: beobachtungen, einstellungen: einstellungen);
       if (heute.isAfter(ende)) continue;
       final vorhanden = regelAufgaben
           .where((a) => a.regelKey == r.key && a.saisonJahr == jahr)
