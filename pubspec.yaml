@@ -1,7 +1,7 @@
 name: bienen_app
 description: "Bienen Arosa - Imkerei Projekt WebApp"
 publish_to: 'none'
-version: 1.19.0+40
+version: 1.20.0+41
 
 environment:
   sdk: ^3.11.0

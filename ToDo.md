@@ -1,11 +1,21 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.19.0+40 (live)
-**Aktueller Fokus:** ✅ **Volk-Bewertung (Baustein D2a, Modul 4.17) LIVE** (v1.19.0) — 6-Achsen-BGD-Bewertung + Saison-Aggregat/Gesamtnote je Volk auf der Volk-Detailseite (kein Ranking in v1). Davor am selben Tag: ✅ D1 Vermehrungs-Event-Ketten (v1.18.0), ✅ C Phänologie (v1.17.0), ✅ A+B Betriebsprofil (v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **D2b Umlarv-Kalender** oder 4.22 Kosten-Dashboard — nach Absprache.
+**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.20.0+41 (live)
+**Aktueller Fokus:** ✅ **Geführte Durchsicht + Waben-Erfassung (Modul 4.3-Ausbau) LIVE** (v1.20.0) — handschuh-tauglicher 3-Schritt-Wizard (Tap-Stepper) + optionale Wabe-für-Wabe-Erfassung (`inspections.waben`). Davor am selben Tag: ✅ D2a Volk-Bewertung (v1.19.0), ✅ D1 Vermehrung (v1.18.0), ✅ C Phänologie (v1.17.0), ✅ A+B Betriebsprofil (v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **Durchsicht-Spracheingabe (Zyklus 2)**, **D2b Umlarv-Kalender** oder 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-20 (Geführte Durchsicht + Waben-Erfassung, v1.20.0)
+
+- [x] ✓ **Geführte Durchsicht + Waben-Erfassung LIVE** (v1.20.0+41, Modul 4.3-Ausbau). Auf User-Wunsch (Rähmchen-Beurteilung + handschuh-taugliche Eingabe). Brainstorming (mit Mockup) → Spec → **adversarialer 5-Lupen-Review (28 Findings, 3 Blocker)** → v2-Spec → Plan (6 Tasks) → **subagent-getrieben** (D03 selbst, Domain- + UI-Bucket; UI-Review von Fable 5 fand 3 Minor-Defekte, gefixt). **194/194 Tests, analyze sauber**, live.
+  - **DB (Produktion, D03):** `inspections.waben jsonb` + Struktur-CHECK; **View `v_letzte_durchsichten` neu gebaut** (`select *` fror die Spaltenliste sonst ein). 0 neue Advisor-Findings.
+  - **Domain (`wabe.dart`):** `WabeBeobachtung` (7 Inhalte-Whitelist, Schied-Normalisierung, Position=Listenindex) + Ableitung (`brutWabenAus`/`koeniginAus`/`stifteAus`/`futterKgHinweisAus`) + **`vorbefuellungAus` → null bei leeren Waben** (Datenverlust-Schutz).
+  - **App:** neuer 3-Schritt-Wizard `durchsicht_wizard_page` (ersetzt das Scroll-Formular, **alle 22 Felder erhalten**, Number→Tap-Stepper mit Clear) + controlled `waben_schritt` (Multi-Toggle, Flags Königin/Weiselzelle/Stifte, Trennschied). Waben-Schritt **optional**; Kennzahl-Vorbefüllung nur bei genutzten Waben, überschreibt keine Handwerte.
+  - **Review-getriebene Fixes:** Wizard hätte 7 Felder gedroppt → alle erhalten + Waben optional (Blocker); **Stifte/Eier** ergänzt (primäres Weiselsignal); Gassen NICHT aus Inhalt abgeleitet; Weiselzellen-Typ bleibt; Futter nur Hinweis. UI-Review: Vorbefüllungs-Guard (`_wabenModus`), Stepper-Clear + Temp-Untergrenze, Waben-Verwerf-Dialog.
+  - Docs: `docs/superpowers/specs/2026-07-20-durchsicht-wizard-design.md` (v2), `…/plans/2026-07-20-durchsicht-wizard.md`.
+  - **🔴 OFFEN (Folge):** **Spracheingabe (Zyklus 2)** — Web Speech API als Eingabe-Beschleuniger · Waben-Streifen (read-only) in der Detail-Ansicht · Füllgrad-Gewichtung Futter · live testen (Durchsicht Volk 1 mit Handschuhen).
 
 ## ✅ Erledigt — Session 2026-07-20 (Volk-Bewertung, Baustein D2a, v1.19.0)
 

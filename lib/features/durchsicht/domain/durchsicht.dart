@@ -1,3 +1,5 @@
+import 'wabe.dart';
+
 class Durchsicht {
   static const auffaelligkeitenWhitelist = <String>{
     'kalkbrut', 'sackbrut', 'faulbrut_verdacht', 'sauerbrut_verdacht',
@@ -28,6 +30,7 @@ class Durchsicht {
   final DateTime? naechsteDurchsichtAm;
   final List<String> fotoUrls; // Storage-PFADE
   final String? notiz;
+  final List<WabeBeobachtung> waben;
 
   const Durchsicht({
     required this.id,
@@ -54,6 +57,7 @@ class Durchsicht {
     this.naechsteDurchsichtAm,
     this.fotoUrls = const [],
     this.notiz,
+    this.waben = const [],
   });
 
   static List<String> gueltigeFlags(List<String> flags) =>
@@ -89,6 +93,10 @@ class Durchsicht {
             : null,
         fotoUrls: ((j['foto_urls'] as List?)?.cast<String>() ?? const []),
         notiz: j['notiz'] as String?,
+        waben: ((j['waben'] as List?)
+                ?.map((e) => WabeBeobachtung.fromJson(e as Map<String, dynamic>))
+                .toList()) ??
+            const [],
       );
 
   String _iso(DateTime d) => d.toIso8601String().substring(0, 10);
@@ -118,5 +126,6 @@ class Durchsicht {
             naechsteDurchsichtAm != null ? _iso(naechsteDurchsichtAm!) : null,
         'foto_urls': fotoUrls,
         'notiz': notiz,
+        'waben': waben.isEmpty ? null : waben.map((w) => w.toJson()).toList(),
       };
 }

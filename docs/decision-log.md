@@ -4,6 +4,14 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Geführte Durchsicht + Waben-Erfassung live (v1.20.0)
+
+Ausbau Modul 4.3: die Durchsicht wird ein handschuh-tauglicher 3-Schritt-Wizard mit optionaler Wabe-für-Wabe-Erfassung. Nach adversarialem 5-Lupen-Review (28 Findings, 3 Blocker) v2-überarbeitet; subagent-getrieben (D03 selbst, Domain- + UI-Bucket, UI-Review von Fable 5 fand 3 Minor-Defekte). Migration D03 auf Prod, 194/194 Tests, live.
+
+- **D-57 · Durchsicht als geführter 3-Schritt-Wizard (Kontext → optional Waben → Kennzahlen), ersetzt das Scroll-Formular, ALLE Felder erhalten.** Number-Felder → Tap-Stepper (handschuh-tauglich). Neue optionale **Waben-Erfassung** (`inspections.waben` jsonb): je Wabe Multi-Toggle (brut/pollen/futter/honig/mittelwand/leer/baurahmen) + Flags (Königin/Weiselzelle/**Stifte**) + **Trennschied** (engt ein, „dahinter Schluss"). Ableitung (`brut_waben`/`koenigin_gesehen`/`stifte_gesehen`, Futter nur Hinweis) **nur als überschreibbare Vorbefüllung, NIE bei leeren Waben** (kein Datenverlust im Edit). Position = Listenindex.
+- **D-58 · Review-getriebene Scope-/Fach-Korrekturen.** „Wizard ersetzt Formular" hätte 7 Felder gedroppt → **alle Felder erhalten** + Waben-Schritt **optional**. **Stifte/Eier** ergänzt (primäres Weiselsignal; Königin-Sichtung ist BGD-optional). **Besetzte Gassen NICHT aus Waben-Inhalt abgeleitet** (misst Bienenbesatz ≠ Inhalt) → direkte Eingabe. **Weiselzellen-Typ** (Chip) bleibt; Zellenzahl manuell (nicht #Waben-mit-Zelle). Spracheingabe = Zyklus 2.
+- **Gotcha (App):** (1) **View mit `select *` friert die Spaltenliste zur Erstellzeit ein** — beim Hinzufügen einer Spalte die View (`v_letzte_durchsichten`) identisch neu bauen, sonst fehlt die neue Spalte. (2) `Durchsicht.waben` leer → `toInsertJson['waben']=null` (rückwärtskompat). (3) Ableitung/Vorbefüllung nur bei `_wabenModus` UND nicht-leeren Waben feuern (sonst 0/false-Overwrite). (4) `_TapStepper` braucht Clear-Affordance (Tap-Wert→null) + eigene Untergrenze für Temperatur (`min:-30`, alpin negativ), sonst 0 ≠ „nicht erfasst"-Regression. (5) Waben hinter Schied / Schalter-AUS im Edit = Ein-Tap-Verlustpfade → Bestätigungsdialog beim Verwerfen.
+
 ## 2026-07-20 — Volk-Bewertung live (v1.19.0)
 
 Baustein **D2a** (Modul 4.17): schlanke BGD-Volk-Bewertung je Volk. Nach adversarialem 5-Lupen-Review (25 bestätigte Findings) v2-überarbeitet; subagent-getrieben (L01 selbst, 2 Buckets). Migration L01 auf Prod, 187/187 Tests, live.

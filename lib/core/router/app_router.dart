@@ -33,7 +33,7 @@ import 'package:bienen_app/features/projekt/pages/projekt_page.dart';
 import 'package:bienen_app/features/construction/presentation/pages/construction_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_detail_page.dart';
 import 'package:bienen_app/features/einstellungen/pages/einstellungen_page.dart';
-import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_form_page.dart';
+import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_wizard_page.dart';
 import 'package:bienen_app/features/fuetterung/presentation/pages/fuetterung_form_page.dart';
 import 'package:bienen_app/features/gesundheit/presentation/pages/gesundheit_form_page.dart';
 import 'package:bienen_app/features/vermehrung/presentation/pages/vermehrung_form_page.dart';
@@ -408,7 +408,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               routes: [
                 GoRoute(
                   path: 'durchsicht',
-                  builder: (c, s) => DurchsichtFormPage(volkId: s.pathParameters['id']!),
+                  builder: (c, s) => DurchsichtWizardPage(volkId: s.pathParameters['id']!),
                 ),
                 GoRoute(
                   path: 'durchsicht/:did',

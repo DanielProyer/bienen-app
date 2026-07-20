@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/durchsicht/domain/durchsicht_gateway.dart';
-import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_form_page.dart';
+import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_wizard_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht_provider.dart';
 
 class DurchsichtDetailPage extends ConsumerWidget {
@@ -29,7 +29,7 @@ class DurchsichtDetailPage extends ConsumerWidget {
             title: Text('${d.durchgefuehrtAm.day}.${d.durchgefuehrtAm.month}.${d.durchgefuehrtAm.year}'),
             actions: [
               if (darf) IconButton(icon: const Icon(Icons.edit), onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => DurchsichtFormPage(volkId: volkId, bestehend: d)))),
+                  MaterialPageRoute(builder: (_) => DurchsichtWizardPage(volkId: volkId, bestehend: d)))),
               if (darf) IconButton(icon: const Icon(Icons.delete_outline), onPressed: () async {
                 final ok = await showDialog<bool>(context: context, builder: (c) => AlertDialog(
                   title: const Text('Durchsicht löschen?'),
