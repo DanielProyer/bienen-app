@@ -89,7 +89,23 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
     return 10;
   }
 
-  void _wabenModusSetzen(bool on) {
+  Future<void> _wabenModusSetzen(bool on) async {
+    // Edit mit erfassten Waben: Ausschalten erst nach Bestätigung (sonst stumm verworfen).
+    if (!on && (widget.bestehend?.waben.isNotEmpty ?? false)) {
+      final verwerfen = await showDialog<bool>(
+        context: context,
+        builder: (c) => AlertDialog(
+          title: const Text('Erfasste Waben verwerfen?'),
+          content: const Text('Die Wabe-für-Wabe-Erfassung dieser Durchsicht wird beim Speichern entfernt.'),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Abbrechen')),
+            FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Verwerfen')),
+          ],
+        ),
+      );
+      if (verwerfen != true) return; // Schalter bleibt an
+    }
+    if (!mounted) return;
     setState(() {
       _wabenModus = on;
       if (on && _waben.isEmpty) {
@@ -101,6 +117,7 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
   /// Beim Wechsel Waben -> Kennzahlen (Seite 2->3), EINMALIG. Leere Waben -> null -> kein Overwrite.
   /// Nur brut_waben / koenigin_gesehen / stifte_gesehen; Futter nur als Hinweis, Gassen/Zellen bleiben manuell.
   void _uebernehmeVorbefuellung() {
+    if (!_wabenModus) return; // nur aus GENUTZTEN Waben ableiten (Schalter aus -> nichts überschreiben)
     if (_vorbefuellt) return;
     final v = vorbefuellungAus(_waben);
     if (v == null) return;
@@ -225,7 +242,7 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
         }),
         const Padding(padding: EdgeInsets.only(top: 12, bottom: 4), child: Text('Kontext', style: TextStyle(fontWeight: FontWeight.w600))),
         TextField(controller: _wetter, decoration: const InputDecoration(labelText: 'Wetter')),
-        _TapStepper(label: 'Temperatur (°C)', wert: _temp, onCh: (v) => setState(() => _temp = v)),
+        _TapStepper(label: 'Temperatur (°C)', wert: _temp, min: -30, onCh: (v) => setState(() => _temp = v)),
         _TapStepper(label: 'Dauer (min)', wert: _dauer, schritt: 5, onCh: (v) => setState(() => _dauer = v)),
         _chips('Weiselzustand', const ['weiselrichtig', 'weisellos', 'drohnenbruetig', 'unsicher'], _weiselzustand, (v) => setState(() => _weiselzustand = v)),
       ]);
@@ -340,9 +357,10 @@ class _TapStepper extends StatelessWidget {
   final String label;
   final num? wert;
   final num schritt;
+  final num min;
   final ValueChanged<num?> onCh;
   final String? hinweis;
-  const _TapStepper({required this.label, required this.wert, this.schritt = 1, required this.onCh, this.hinweis});
+  const _TapStepper({required this.label, required this.wert, this.schritt = 1, this.min = 0, required this.onCh, this.hinweis});
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
@@ -352,8 +370,11 @@ class _TapStepper extends StatelessWidget {
             if (hinweis != null) Text(hinweis!, style: const TextStyle(fontSize: 12, color: Colors.grey)),
           ])),
           IconButton(iconSize: 28, icon: const Icon(Icons.remove_circle_outline),
-              onPressed: () => onCh(((wert ?? 0) - schritt).clamp(0, 999))),
-          SizedBox(width: 40, child: Text('${wert ?? '—'}', textAlign: TextAlign.center, style: const TextStyle(fontSize: 18))),
+              onPressed: () => onCh(((wert ?? 0) - schritt).clamp(min, 999))),
+          SizedBox(width: 40, child: InkWell(
+            onTap: wert == null ? null : () => onCh(null), // Tap auf Wert -> zurück auf "—" (null ≠ 0)
+            child: Padding(padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text('${wert ?? '—'}', textAlign: TextAlign.center, style: const TextStyle(fontSize: 18))))),
           IconButton(iconSize: 28, icon: const Icon(Icons.add_circle_outline),
               onPressed: () => onCh((wert ?? 0) + schritt)),
         ]),
