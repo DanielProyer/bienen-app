@@ -263,7 +263,7 @@ void main() {
   });
 
   group('Phänologie: Ketten-Anker', () {
-    // Alpenrose 14.6. (DOY 165), referenzDoy 160 -> honigernte-Offset +5
+    // Alpenrose 14.6. (DOY 165), referenzDoy 125 -> honigernte-Offset +40 (Ernte ~15.7., Arosa-nah).
     final trachtBeob = [PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.tracht, indikatorKey: 'alpenrose', bluehAm: DateTime(2026, 6, 14))];
 
     List<AufgabenVorschlag> lauf({List<PhaenoBeobachtung> beob = const [], BetriebsEinstellungen? e, DateTime? stichtag}) =>
@@ -279,26 +279,32 @@ void main() {
     DateTime faellig(List<AufgabenVorschlag> v, String key) =>
         v.firstWhere((x) => x.regel.key == key).faelligAm;
 
+    // Robuste Stichtag-Wahl: je Regel im eigenen Sichtfenster ([start-14 .. ende]) abgreifen.
+    DateTime faelligBei(String key, DateTime stichtag, {List<PhaenoBeobachtung> beob = const [], BetriebsEinstellungen? e}) =>
+        faellig(lauf(beob: beob, e: e, stichtag: stichtag), key);
+
     test('Rückwärtskompatibilität: ohne Beobachtung sommerbehandlung_1 kalenderfix 15.8.', () {
       // Stichtag 10.7. liegt im 14-Tage-Vorlauf des Basisfensters (sichtbar ab 6.7.).
       final v = lauf(stichtag: DateTime(2026, 7, 10));
       expect(faellig(v, 'sommerbehandlung_1'), DateTime(2026, 8, 15));
     });
 
-    test('Mit Tracht-Beobachtung: sommerbehandlung_1 folgt der Ernte (ErnteEnde+12, nicht 15.8.)', () {
-      // Ernte-Ende aus eigenem Lauf (am 20.6. ist das honigernte-Fenster selbst schon vorbei).
-      final ernteEnde = faellig(lauf(beob: trachtBeob, stichtag: DateTime(2026, 6, 1)), 'honigernte');
-      final beh = faellig(lauf(beob: trachtBeob, stichtag: DateTime(2026, 6, 20)), 'sommerbehandlung_1');
+    test('Mit Tracht-Beobachtung: sommerbehandlung_1 folgt der Ernte (ErnteEnde+12) und trifft Ende Juli', () {
+      // Ernte-Ende bei Stichtag 1.7. (honigernte-Fenster ~29.6.-15.7. sichtbar), Behandlung bei 10.7.
+      final ernteEnde = faelligBei('honigernte', DateTime(2026, 7, 1), beob: trachtBeob);
+      final beh = faelligBei('sommerbehandlung_1', DateTime(2026, 7, 10), beob: trachtBeob);
       expect(beh, isNot(DateTime(2026, 8, 15))); // nicht mehr kalenderfix
       // Ketten-Anker exakt: Behandlungs-Ende = Ernte-Ende + ankerVersatzEndeTage (12).
       expect(beh, DateTime(ernteEnde.year, ernteEnde.month, ernteEnde.day + 12));
-      // HINWEIS Kalibrierung: referenzDoy(alpenrose)=160 ist Richtwert (Fachstellen-Check, Spec §10).
-      // Das Spec-Ziel "Behandlung Ende Juli" bei Juni-Blüte braucht referenzDoy ~125-130 —
-      // reine Katalog-Konstante (phaenologie.dart), kein Struktureingriff am Generator.
+      // Spec-Ziel erreicht: Behandlung Ende Juli (nach der Alpenrose-kalibrierten Ernte Mitte Juli).
+      expect(beh.month, 7);
+      expect(beh.isBefore(DateTime(2026, 8, 1)), isTrue);
     });
 
     test('Ordnung mit Beobachtung: honigernte <= gemuelldiagnose_sommer <= sommerbehandlung_1', () {
-      final v = lauf(beob: trachtBeob, stichtag: DateTime(2026, 6, 1));
+      // 10.7. liegt im gemeinsamen Sichtfenster aller drei (honigernte ~29.6.-15.7.,
+      // gemuelldiagnose ~15.-18.7. ab Vorlauf 1.7., sommerbehandlung_1 ~20.-27.7. ab Vorlauf 6.7.).
+      final v = lauf(beob: trachtBeob, stichtag: DateTime(2026, 7, 10));
       final e = faellig(v, 'honigernte');
       final d = faellig(v, 'gemuelldiagnose_sommer');
       final b = faellig(v, 'sommerbehandlung_1');
@@ -308,20 +314,18 @@ void main() {
 
     test('2-Ernten: __letzte_ernte -> honigernte_sommer; Behandlung nach der 2. Ernte', () {
       final e2 = const BetriebsEinstellungen(anzahlErnten: 2);
-      // 20.7.: gemeinsames Sichtfenster beider Kettenregeln (honigernte_sommer 15.-25.7.,
-      // sommerbehandlung_1 ab 16.7. im Vorlauf).
-      final v = lauf(beob: trachtBeob, e: e2, stichtag: DateTime(2026, 7, 20));
-      final sommer = faellig(v, 'honigernte_sommer');
-      final beh = faellig(v, 'sommerbehandlung_1');
+      // 2. Ernte hängt an der 1. (+35..45): honigernte_sommer ~19.-29.8.; sommerbehandlung_1 danach.
+      final sommer = faelligBei('honigernte_sommer', DateTime(2026, 8, 25), beob: trachtBeob, e: e2);
+      final beh = faelligBei('sommerbehandlung_1', DateTime(2026, 9, 1), beob: trachtBeob, e: e2);
       expect(beh.isBefore(sommer), isFalse);
     });
 
     test('Cross-Phasen bei Teil-Beobachtung: nur Frühjahr -> honigraum_aufsetzen <= honigernte', () {
       final nurFr = [PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.fruehjahr, indikatorKey: 'loewenzahn', bluehAm: DateTime(2026, 6, 10))];
-      // Kein gemeinsamer Stichtag: honigraum_aufsetzen (Tracht-Fallback +42: 22.5.-11.6.) ist vorbei,
-      // bevor honigernte (1.7.-17.7.) in den 14-Tage-Vorlauf kommt — je im eigenen Sichtfenster abgreifen.
-      final auf = faellig(lauf(beob: nurFr, stichtag: DateTime(2026, 6, 1)), 'honigraum_aufsetzen');
-      final ernte = faellig(lauf(beob: nurFr, stichtag: DateTime(2026, 7, 1)), 'honigernte');
+      // Ohne Tracht-Beobachtung fallen honigraum_aufsetzen + honigernte auf den flachen Offset +42
+      // zurück (22.5.-11.6. bzw. 1.7.-17.7.) — je im eigenen Sichtfenster abgreifen.
+      final auf = faelligBei('honigraum_aufsetzen', DateTime(2026, 6, 1), beob: nurFr);
+      final ernte = faelligBei('honigernte', DateTime(2026, 7, 1), beob: nurFr);
       expect(auf.isAfter(ernte), isFalse);
     });
   });

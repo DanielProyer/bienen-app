@@ -22,9 +22,13 @@ const kIndikatorpflanzen = <Indikatorpflanze>[
   Indikatorpflanze(key: 'kirschbluete',  name: 'Kirschblüte',          anker: PhaenoAnker.fruehjahr, referenzDoy: 110), // ~20.4.
   Indikatorpflanze(key: 'loewenzahn',    name: 'Löwenzahn',            anker: PhaenoAnker.fruehjahr, referenzDoy: 115), // ~25.4. (Default)
   // Tracht — treibt Honigernte + (per Kette) Varroa-Sommerbehandlung. Hochlagen-Zeiger zuerst.
-  Indikatorpflanze(key: 'alpenrose',     name: 'Alpenrose',            anker: PhaenoAnker.tracht,    referenzDoy: 160), // Hochlagen-Haupttracht (Default)
-  Indikatorpflanze(key: 'bergwiesen',    name: 'Bergwiesen-Vollblüte', anker: PhaenoAnker.tracht,    referenzDoy: 160),
-  Indikatorpflanze(key: 'weidenroeschen',name: 'Weidenröschen',        anker: PhaenoAnker.tracht,    referenzDoy: 175),
+  // Hochlagen-Zeiger (Alpenrose/Bergwiesen/Weidenröschen) blühen nicht im Mittelland → referenzDoy
+  // ist ein KALIBRIER-Wert: normale Arosa-Blüte minus Ziel-Offset (~+42) ⇒ Ernte Mitte/Ende Juli,
+  // Behandlung (per Kette) Ende Juli. Tal-Zeiger (Linde/Edelkastanie) tragen ihren echten
+  // Mittelland-Blüh-DOY ⇒ Offset ~0 für Tallagen-Mandanten. Alle Werte: Fachstellen-Check (Spec §10).
+  Indikatorpflanze(key: 'alpenrose',     name: 'Alpenrose',            anker: PhaenoAnker.tracht,    referenzDoy: 125), // Blüte Arosa ~Mitte Juni → +42 (Default)
+  Indikatorpflanze(key: 'bergwiesen',    name: 'Bergwiesen-Vollblüte', anker: PhaenoAnker.tracht,    referenzDoy: 125),
+  Indikatorpflanze(key: 'weidenroeschen',name: 'Weidenröschen',        anker: PhaenoAnker.tracht,    referenzDoy: 148), // blüht später (~Anf. Juli)
   Indikatorpflanze(key: 'linde',         name: 'Linde',                anker: PhaenoAnker.tracht,    referenzDoy: 176), // Tal (~25.6.)
   Indikatorpflanze(key: 'edelkastanie',  name: 'Edelkastanie',         anker: PhaenoAnker.tracht,    referenzDoy: 182), // Tal (~1.7.)
 ];
