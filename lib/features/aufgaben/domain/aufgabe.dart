@@ -9,9 +9,11 @@ class Aufgabe {
   final DateTime? erledigtAm;
   final String? volkId;
   final String? standortId;
-  final String quelle; // manuell|regel
+  final String quelle; // manuell|regel|ereignis
   final String? regelKey;
   final int? saisonJahr;
+  final String? ereignisId; // quelle='ereignis': Vermehrungs-Ereignis
+  final String? schrittKey; // quelle='ereignis': Ketten-Schritt
 
   const Aufgabe({
     required this.id,
@@ -27,6 +29,8 @@ class Aufgabe {
     this.quelle = 'manuell',
     this.regelKey,
     this.saisonJahr,
+    this.ereignisId,
+    this.schrittKey,
   });
 
   bool get istOffen => status == 'offen';
@@ -48,6 +52,8 @@ class Aufgabe {
         quelle: (j['quelle'] as String?) ?? 'manuell',
         regelKey: j['regel_key'] as String?,
         saisonJahr: j['saison_jahr'] as int?,
+        ereignisId: j['ereignis_id'] as String?,
+        schrittKey: j['schritt_key'] as String?,
       );
 
   /// Ohne id/erledigt_am: id vergibt die DB, erledigt_am nur via setzeStatus.
@@ -63,5 +69,7 @@ class Aufgabe {
         'quelle': quelle,
         'regel_key': regelKey,
         'saison_jahr': saisonJahr,
+        'ereignis_id': ereignisId,
+        'schritt_key': schrittKey,
       };
 }

@@ -9,6 +9,8 @@ import 'package:bienen_app/features/aufgaben/domain/saison_regeln.dart';
 import 'package:bienen_app/features/aufgaben/presentation/providers/aufgaben_provider.dart';
 import 'package:bienen_app/features/aufgaben/presentation/widgets/vorschlag_karte.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
+import 'package:bienen_app/features/vermehrung/presentation/providers/vermehrung_provider.dart';
+import 'package:bienen_app/features/vermehrung/presentation/widgets/ketten_vorschlag_karte.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 
 class AufgabenPage extends ConsumerWidget {
@@ -25,6 +27,7 @@ class AufgabenPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(aufgabenListProvider);
     final vorschlaege = ref.watch(vorschlaegeProvider);
+    final ketten = ref.watch(kettenVorschlaegeProvider);
     final darfSchreiben = ref.watch(darfSchreibenProvider);
 
     return Scaffold(
@@ -42,13 +45,18 @@ class AufgabenPage extends ConsumerWidget {
         data: (alle) {
           final gruppen = gruppiereOffene(alle, DateTime.now());
           final erledigt = _kuerzlichErledigt(alle);
-          final leer = alle.isEmpty && vorschlaege.isEmpty;
+          final leer = alle.isEmpty && vorschlaege.isEmpty && ketten.isEmpty;
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
               if (darfSchreiben && vorschlaege.isNotEmpty) ...[
                 const _SektionTitel('Saisonaufgaben'),
                 ...vorschlaege.map((v) => VorschlagKarte(vorschlag: v)),
+                const SizedBox(height: 16),
+              ],
+              if (darfSchreiben && ketten.isNotEmpty) ...[
+                const _SektionTitel('Vermehrung'),
+                ...ketten.map((v) => KettenVorschlagKarte(vorschlag: v)),
                 const SizedBox(height: 16),
               ],
               if (leer)

@@ -4,6 +4,15 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Vermehrungs-Event-Ketten live (v1.18.0)
+
+Baustein **D1** (Modul 4.16): Ableger/Schwarm als **Event-Ketten** — der Imker erfasst ein Startereignis, ein Ketten-Katalog leitet datierte Aufgaben mit relativen Fristen ab. Nach adversarialem 5-Lupen-Review (29 bestätigte Findings, 2 Blocker) v2-überarbeitet; subagent-getrieben (K01 selbst, 4 Buckets, Generator-Review Fable 5). Migration K01 auf Prod, 181/181 Tests, live.
+
+- **D-52 · Vermehrung als Event-Ketten über die bestehende `aufgaben`-Infrastruktur.** Neue Tabelle `vermehrungs_ereignisse` (Ereignis-Anker) + `aufgaben` erweitert (`quelle='ereignis'`, `ereignis_id`, `schritt_key`, Dedup-Index — Analog zu `quelle='regel'`). Der Ketten-Generator (`kettenVorschlaege`, pure) rechnet aus Ereignis + Dart-Katalog datierte Vorschläge; Annehmen materialisiert eine normale Aufgabe, Überspringen dedupt. **Relative Fristen kalenderunabhängig** (Volksbiologie, anders als C/Phänologie). Der Review bestätigte die aufgaben-Kopplung als richtig (einziger widerlegter Gegen-Befund).
+- **D-53 · v1 = 4 flach-modellierbare Methoden** (Kunstschwarm, Königinnen-Kunstschwarm, Brutableger, Flugling). `sammelbrutableger` (3–5 Spender, n:m), `natur_schwarm` (Stammvolk oft null, bedingte +14-Frist), `schwarmtrieb_vermehrung` (verschachtelt, Mehrfach-Jungvolk) sprengen das flache Ein-Ereignis-Modell → deferred (Review-Blocker). **Kein Genericity-Anspruch** für 4.17.
+- **D-54 · OS-Gate entfernt (Blocker).** Ein `optionalBeiOs`-Gate hätte beim Kunstschwarm die zwingende Weiselkontrolle mit-unterdrückt (abgelehnte zugesetzte Königin bliebe unentdeckt). `os_bei_erstellung` bleibt reines Notiz-Feld; Switch nur bei brutfreien Methoden.
+- **Gotcha (App):** (1) **Dedup ohne volk_id** (`(ereignis_id, schritt_key)`) — sonst Doppel-Materialisierung, sobald das Jungvolk nachträglich verknüpft wird. (2) **Überfällige Einmal-Ketten-Schritte** bleiben sichtbar (nicht wie Saison lautlos nach fensterEnde verschwinden). (3) `stichtag` im Generator zuerst `_tag()`-normalisieren (Rand-Tag-Off-by-one). (4) **Aufgabe-Modell-Erweiterung** (`ereignisId`/`schrittKey`): der generische `aufgabe_form_page._speichern` MUSS die Felder aus `_basis` durchreichen (supabase-Gateway nutzt `toInsertJson` auch fürs UPDATE → sonst bricht der Biconditional-CHECK beim Bearbeiten). (5) stammvolk-FK **SET NULL** (Ereignis + Jungvolk-Kette überleben Stammvolk-Löschung); Ereignis-Löschen kaskadiert Ketten-Aufgaben (amtliche Behandlung in 4.5 bleibt separat).
+
 ## 2026-07-20 — Phänologischer Anker live (v1.17.0)
 
 Baustein **C** der Generator-Zerlegung: beobachtete Zeigerpflanzen-Blüte statt fixem Offset. Nach adversarialem 5-Lupen-Review der Spec (22 bestätigte Findings, 2 Blocker) v2-überarbeitet; subagent-getrieben umgesetzt (DB selbst, 4 Buckets, per-Bucket-Review) — der Generator-Review (Fable 5) fing einen echten Kalibrierungsfehler. Migration J01 auf Prod, 166/166 Tests, live.

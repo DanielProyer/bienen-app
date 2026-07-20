@@ -65,6 +65,8 @@ class _AufgabeFormPageState extends ConsumerState<AufgabeFormPage> {
       quelle: b?.quelle ?? 'manuell',
       regelKey: b?.regelKey,
       saisonJahr: b?.saisonJahr,
+      ereignisId: b?.ereignisId,
+      schrittKey: b?.schrittKey,
     );
     try {
       await ref.read(aufgabenListProvider.notifier).speichern(a);
