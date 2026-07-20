@@ -328,5 +328,42 @@ void main() {
       final ernte = faelligBei('honigernte', DateTime(2026, 7, 1), beob: nurFr);
       expect(auf.isAfter(ernte), isFalse);
     });
+
+    test('Cross-Phasen Gegenrichtung: nur Tracht beobachtet -> honigraum_aufsetzen <= honigernte', () {
+      // Beide sind phase=tracht -> teilen den Tracht-Offset (+40) -> Basis-Ordnung erhalten.
+      final auf = faelligBei('honigraum_aufsetzen', DateTime(2026, 6, 1), beob: trachtBeob);
+      final ernte = faelligBei('honigernte', DateTime(2026, 7, 1), beob: trachtBeob);
+      expect(auf.isAfter(ernte), isFalse);
+    });
+
+    test('Safety: implausible Tracht-Beobachtung wird auf -60 geklemmt (kein Winter-/Vorjahres-Rutsch)', () {
+      // Fat-Finger: Alpenrose 5.2. (DOY 36) -> Roh-Offset 36-125 = -89 -> geklemmt auf -60.
+      // Die ±60-Klemme begrenzt das Grobe; die subtile Fehleingabe fängt der Eingabe-Hinweis (±45, §4.1).
+      final murks = [PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.tracht, indikatorKey: 'alpenrose', bluehAm: DateTime(2026, 2, 5))];
+      // honigernte-Ende Basis 5.6. -60 = 6.4. (geklemmt); OHNE Klemme wäre es -89 = 8.3.
+      final ernteEnde = faelligBei('honigernte', DateTime(2026, 4, 1), beob: murks);
+      expect(ernteEnde, DateTime(2026, 4, 6)); // exakt die -60-Grenze, nicht -89
+      expect(ernteEnde.isAfter(DateTime(2026, 3, 1)), isTrue); // kein Rutsch in Winter/Vorjahr
+      // Kette bleibt konsistent (Behandlung = Ernte-Ende + 12), keine Duration-/Rollover-Anomalie.
+      final beh = faelligBei('sommerbehandlung_1', DateTime(2026, 4, 1), beob: murks);
+      expect(beh, DateTime(ernteEnde.year, ernteEnde.month, ernteEnde.day + 12));
+    });
+
+    test('Katalog-Invariante: ankerRegelKey löst azyklisch auf existierende Regel auf (1E + 2E)', () {
+      for (final r in kSaisonRegeln.where((x) => x.ankerRegelKey != null)) {
+        for (final anz in [1, 2]) {
+          var key = r.ankerRegelKey!;
+          final gesehen = <String>{r.key};
+          for (var i = 0; i < 10; i++) {
+            final aufgeloest = key == '__letzte_ernte' ? (anz == 2 ? 'honigernte_sommer' : 'honigernte') : key;
+            final ziel = regelVon(aufgeloest);
+            expect(ziel, isNotNull, reason: '${r.key}: Anker $aufgeloest existiert nicht');
+            expect(gesehen.add(aufgeloest), isTrue, reason: '${r.key}: Zyklus bei $aufgeloest');
+            if (ziel!.ankerRegelKey == null) break;
+            key = ziel.ankerRegelKey!;
+          }
+        }
+      }
+    });
   });
 }

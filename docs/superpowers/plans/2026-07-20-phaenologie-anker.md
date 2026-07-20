@@ -138,7 +138,7 @@ void main() {
   test('doyVon: DST-immun, Schaltjahr-tolerant', () {
     expect(doyVon(DateTime(2026, 1, 1)), 1);
     expect(doyVon(DateTime(2026, 3, 15)), 74);   // Nicht-Schaltjahr: salweide-Referenz
-    expect(doyVon(DateTime(2026, 6, 9)), 160);   // alpenrose-Referenz
+    expect(doyVon(DateTime(2026, 6, 9)), 160);   // 9.6. = DOY 160 (reine DOY-Rechnung)
     expect(doyVon(DateTime(2024, 2, 29)), 60);   // Schaltjahr kein Crash
     expect(doyVon(DateTime(2024, 3, 15)), 75);   // Schaltjahr: +1 nach 29.2.
   });
@@ -678,7 +678,7 @@ git commit -m "feat(generator): SaisonRegel +phase/ankerRegelKey/versatz + effek
 
 ```dart
   group('Phänologie: Ketten-Anker', () {
-    // Alpenrose 14.6. (DOY 165), referenzDoy 160 -> honigernte-Offset +5
+    // Alpenrose 14.6. (DOY 165), referenzDoy 125 -> honigernte-Offset +40 (Ernte ~15.7.)
     final trachtBeob = [PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.tracht, indikatorKey: 'alpenrose', bluehAm: DateTime(2026, 6, 14))];
 
     List<AufgabenVorschlag> lauf({List<PhaenoBeobachtung> beob = const [], BetriebsEinstellungen? e, DateTime? stichtag}) =>
@@ -1195,4 +1195,4 @@ App-Memory: neuen Gotcha ergänzen (Ketten-Anker `__letzte_ernte`, ±60-Klemme, 
 
 **3. Typ-Konsistenz:** `effektiverOffset`/`_effektivesFenster`/`trachtFensterFuer`/`doyVon`/`honigreinheitHinweis`/`PhaenoBeobachtung`/`PhaenoAnker`/`kMaxOffsetTage` konsistent über Tasks 2/3/6/7/10. `phaenologieProvider`/`speichern` konsistent Task 5/8/9. `HonigreinheitHinweis`-Enum Task 2/10. ✓
 
-**Offene Plan-Punkte (bewusst, Fachstellen-Check bei Feinjustierung):** Versatz-Tageswerte + referenzDoy(alpenrose=160)/robinie sind Richtwerte; bei realer Saison 2027 nachjustierbar (reine Konstanten, kein Struktureingriff).
+**Offene Plan-Punkte (bewusst, Fachstellen-Check bei Feinjustierung):** Versatz-Tageswerte + referenzDoy (Hochlagen-Zeiger alpenrose=125/bergwiesen=125/weidenroeschen=148 als Kalibrier-Werte) sind Richtwerte; bei realer Saison 2027 nachjustierbar (reine Konstanten, kein Struktureingriff).

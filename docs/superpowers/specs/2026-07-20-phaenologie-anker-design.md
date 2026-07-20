@@ -52,7 +52,7 @@ const kDefaultIndikator = {PhaenoAnker.fruehjahr: 'loewenzahn', PhaenoAnker.trac
 Indikatorpflanze? indikatorVon(String? key) { /* Lookup, null-tolerant */ }
 ```
 
-**Warum Alpenrose als Default-Tracht-Zeiger:** Der Arosa-Trachtkalender (`../imkerei/02_Recherche/02_Jahresablauf_Imker_Arosa_1570m.md:33-48, :231-233`) weist die **Alpenrose (Blüte ab Mitte Juni) als Haupttracht-Marker** aus — der einzige in 1570 m real beobachtbare Tracht-Zeiger. Die Tal-Zeiger (Linde/Edelkastanie) bleiben für tiefer gelegene Mandanten im Katalog (Mandantenfähigkeit). `referenzDoy(alpenrose)=160` ist so kalibriert, dass die **normale Arosa-Blüte (~Mitte Juni) einen Offset nahe dem Frühjahrs-Offset ergibt** (Ernte Mitte Juli) — Feinwert unter Fachstellen-Check.
+**Warum Alpenrose als Default-Tracht-Zeiger:** Der Arosa-Trachtkalender (`../imkerei/02_Recherche/02_Jahresablauf_Imker_Arosa_1570m.md:33-48, :231-233`) weist die **Alpenrose (Blüte ab Mitte Juni) als Haupttracht-Marker** aus — der einzige in 1570 m real beobachtbare Tracht-Zeiger. Die Tal-Zeiger (Linde/Edelkastanie) bleiben für tiefer gelegene Mandanten im Katalog (Mandantenfähigkeit). `referenzDoy(alpenrose)=125` ist so kalibriert, dass die **normale Arosa-Blüte (~Mitte Juni, DOY ~167) einen Offset nahe dem Frühjahrs-Offset (~+42) ergibt** (Ernte Mitte/Ende Juli, Behandlung per Kette Ende Juli) — Feinwert unter Fachstellen-Check.
 
 **Offset-Klemme:** Der aus einer Beobachtung abgeleitete Offset wird **auf ±60 Tage geklemmt** (§3.3) — Defense-in-Depth gegen Fehleingaben.
 
@@ -207,7 +207,7 @@ lib/features/fuetterung/presentation/pages/fuetterung_form_page.dart (Modify: Ho
 
 ## 6. Tests
 - **`effektiverOffset`:** Beobachtung → `(_doy−referenzDoy)` geklemmt ±60; anker-Mismatch (key≠phase) → Fallback; fehlt → `flatOffset`/0; phase=null → A+B.
-- **Offset-Klemme / Fehleingabe (KRITISCH, Safety):** implausibles `blueh_am` (z. B. Alpenrose 5.2.) → Offset geklemmt; `sommerbehandlung_1` bleibt im Behandlungsfenster (Sommer), rutscht **nicht** in März.
+- **Offset-Klemme / Fehleingabe (KRITISCH, Safety):** grober Fat-Finger (z. B. Alpenrose 5.2., Roh-Offset −89) wird auf **±60 geklemmt** → die Tracht-Kette rutscht **nicht** in Winter/Vorjahr (bounded); die *subtilere* Fehleingabe fängt der **±45-Plausibilitätshinweis bei der Eingabe (§4.1)** — zweischichtiges Netz. Test prüft die exakte −60-Grenze + Ketten-Konsistenz. Zusätzlich: Cross-Phasen-Ordnung in **beiden** Teil-Beobachtungs-Richtungen.
 - **Rückwärtskompatibilität (KRITISCH):** `beobachtungen: const []` → Generator liefert identische Vorschläge wie v1.16.0; 149 Bestandstests bleiben grün.
 - **Ketten-Anker:** mit Tracht-Beobachtung (Alpenrose Mitte Juni) landet `honigernte` ~Mitte Juli und `sommerbehandlung_1` ~Ende Juli (nicht 15.8.); `honigernte_sommer ≤ sommerbehandlung_1` (2 Ernten); dynamischer `__letzte_ernte`-Anker: 1 Ernte → honigernte, 2 Ernten → honigernte_sommer.
 - **Ordnungs-Invariante:** `honigernte(_sommer) ≤ gemuelldiagnose_sommer ≤ sommerbehandlung_1` (geteilter Kettenanker, steigender Versatz).

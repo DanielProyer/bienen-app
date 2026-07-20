@@ -18,7 +18,7 @@ void main() {
   test('doyVon: DST-immun, Schaltjahr-tolerant', () {
     expect(doyVon(DateTime(2026, 1, 1)), 1);
     expect(doyVon(DateTime(2026, 3, 15)), 74);   // Nicht-Schaltjahr: salweide-Referenz
-    expect(doyVon(DateTime(2026, 6, 9)), 160);   // alpenrose-Referenz
+    expect(doyVon(DateTime(2026, 6, 9)), 160);   // 9.6. = DOY 160 (reine DOY-Rechnung)
     expect(doyVon(DateTime(2024, 2, 29)), 60);   // Schaltjahr kein Crash
     expect(doyVon(DateTime(2024, 3, 15)), 75);   // Schaltjahr: +1 nach 29.2.
   });
