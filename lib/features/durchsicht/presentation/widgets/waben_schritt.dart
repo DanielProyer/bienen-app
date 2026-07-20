@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
 import 'package:bienen_app/features/durchsicht/domain/wabe.dart';
+import 'package:bienen_app/features/wissen/domain/durchsicht_wissen.dart';
+import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
 
 /// Controlled Waben-Erfassung: die Wahrheit (Liste) hält die Wizard-Page,
 /// dieses Widget rendert die aktive Wabe + meldet Änderungen via [onChanged].
@@ -84,17 +86,29 @@ class _WabenSchrittState extends State<WabenSchritt> {
       if (!w.schied) ...[
         Wrap(spacing: 8, runSpacing: 8, children: [
           for (final e in _inhaltLabel.entries)
-            FilterChip(label: Text(e.value), selected: w.inhalte.contains(e.key),
-                onSelected: (_) => _toggleInhalt(e.key)),
+            Row(mainAxisSize: MainAxisSize.min, children: [
+              FilterChip(label: Text(e.value), selected: w.inhalte.contains(e.key),
+                  onSelected: (_) => _toggleInhalt(e.key)),
+              if (kDurchsichtWissen.containsKey(e.key)) WissenInfoButton(wissenKey: kDurchsichtWissen[e.key]!),
+            ]),
         ]),
         const SizedBox(height: 10),
         Wrap(spacing: 8, children: [
-          FilterChip(avatar: const Icon(Icons.star, size: 18), label: const Text('Königin'), selected: w.koenigin,
-              onSelected: (s) => _ersetze(WabeBeobachtung(inhalte: w.inhalte, koenigin: s, weiselzelle: w.weiselzelle, stifte: w.stifte))),
-          FilterChip(label: const Text('Weiselzelle'), selected: w.weiselzelle,
-              onSelected: (s) => _ersetze(WabeBeobachtung(inhalte: w.inhalte, koenigin: w.koenigin, weiselzelle: s, stifte: w.stifte))),
-          FilterChip(label: const Text('Stifte'), selected: w.stifte,
-              onSelected: (s) => _ersetze(WabeBeobachtung(inhalte: w.inhalte, koenigin: w.koenigin, weiselzelle: w.weiselzelle, stifte: s))),
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            FilterChip(avatar: const Icon(Icons.star, size: 18), label: const Text('Königin'), selected: w.koenigin,
+                onSelected: (s) => _ersetze(WabeBeobachtung(inhalte: w.inhalte, koenigin: s, weiselzelle: w.weiselzelle, stifte: w.stifte))),
+            WissenInfoButton(wissenKey: kDurchsichtWissen['flag_koenigin']!),
+          ]),
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            FilterChip(label: const Text('Weiselzelle'), selected: w.weiselzelle,
+                onSelected: (s) => _ersetze(WabeBeobachtung(inhalte: w.inhalte, koenigin: w.koenigin, weiselzelle: s, stifte: w.stifte))),
+            WissenInfoButton(wissenKey: kDurchsichtWissen['flag_weiselzelle']!),
+          ]),
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            FilterChip(label: const Text('Stifte'), selected: w.stifte,
+                onSelected: (s) => _ersetze(WabeBeobachtung(inhalte: w.inhalte, koenigin: w.koenigin, weiselzelle: w.weiselzelle, stifte: s))),
+            WissenInfoButton(wissenKey: kDurchsichtWissen['flag_stifte']!),
+          ]),
         ]),
       ],
       const SizedBox(height: 8),
