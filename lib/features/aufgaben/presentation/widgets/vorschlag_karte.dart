@@ -67,7 +67,7 @@ class VorschlagKarte extends ConsumerWidget {
               Text('bis $bis', style: const TextStyle(fontSize: 12, color: AppColors.brown300)),
             ]),
             const SizedBox(height: 6),
-            Text(r.beschreibung, style: const TextStyle(fontSize: 13, color: AppColors.brown600)),
+            Text(vorschlag.beschreibung, style: const TextStyle(fontSize: 13, color: AppColors.brown600)),
             const SizedBox(height: 8),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               TextButton(

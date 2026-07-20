@@ -97,4 +97,18 @@ void main() {
     await c.read(aufgabenListProvider.future);
     expect(c.read(aufgabenFuerVolkProvider('v1')).single.titel, 'a');
   });
+
+  test('vorschlagAnnehmen persistiert aufgelöste beschreibung (Methode biotechnisch)', () async {
+    final gw = FakeAufgabenGateway();
+    final c = ProviderContainer(overrides: [aufgabenGatewayProvider.overrideWithValue(gw)]);
+    addTearDown(c.dispose);
+    await c.read(aufgabenListProvider.future);
+    final r = kSaisonRegeln.firstWhere((x) => x.key == 'sommerbehandlung_1');
+    final v = AufgabenVorschlag(regel: r, fensterStart: DateTime(2026, 7, 20),
+        fensterEnde: DateTime(2026, 8, 15), faelligAm: DateTime(2026, 8, 15), saisonJahr: 2026,
+        beschreibung: 'BIOTECH-TEXT');
+    await c.read(aufgabenListProvider.notifier).vorschlagAnnehmen(v, volkIds: ['volk1']);
+    final rows = await gw.alle();
+    expect(rows.single.beschreibung, 'BIOTECH-TEXT');
+  });
 }
