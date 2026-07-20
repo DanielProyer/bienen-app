@@ -4,6 +4,13 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — bienen.ch Quick-Wins (Teil-Umsetzung, v1.15.3)
+
+Nach Code-Prüfung des „Quick-Win-Bündels 4.6/4.5/4.4" zeigte sich: die Findings (von Agenten ohne Schema-Zugriff erstellt) trafen die Realität nur teilweise. Umgesetzt wurde der **sichere, fachlich abgesegnete Teil**, der Rest bewusst zu einer Spec gebündelt.
+
+- **D-43 · Nur den verifiziert-sicheren Teil umgesetzt, Rest → Spec.** Der ehrliche Abgleich (Code statt Findings-Annahme): `futterart` **existiert bereits** (`zuckersirup/zuckerwasser/futterteig/futterwaben/honig/sonstige`) — die „fehlt"-Annahme war falsch; es gibt **keine Settings-UI** für `winterfutter_ziel_kg` (20-kg-Warnschwelle hat keinen Ort); der 4.4-Timing-Bug ist mit Offset-Strategie + fehlender 2. Ernte verhakt (kein isolierter Fix). → Umgesetzt: **4.5 Puderzucker-Ampel monatsabhängig** (bienen.ch 1.5.2: Jul>1 %/Aug>2 %/Sep>3 %; vorher flach <1/≤3) + **4.4 `maeuseschutz_ansetzen`-Text** (Flugloch max. 6 mm). Beides rein Dart, keine Migration. Der Rest (4.6 Konzentrations-Enum + Honigreinheit-Warnung, 4.4 Offset-Strategie/2. Ernte) ist als **phänologische Generator-Spec (D-41)** vorgemerkt.
+- **D-44 · Varroa-Behandlungsschwellen sind fachlich-sensibel → nur mit Freigabe geändert.** Die Puderzucker-Schwellen betreffen echte Behandlungsentscheide; Werte vor der Änderung mit Daniel abgestimmt (Variante „Puderzucker monatsabhängig, Gemüll unverändert"). Gemüll-Ampel (aus Recherche 15) bewusst NICHT angefasst — bienen.ch hat dort mehrere Referenzwerte (Standard-Konzept vs. befallsorientiert), das braucht eine bewusste fachliche Abwägung. `ampelPuderzucker`-Signatur um `monat` erweitert (rot = über Monatsschwelle, gelb ab halber Schwelle, ausserhalb Jul–Sep strengster Sommerwert 1 %).
+
 ## 2026-07-19 — bienen.ch/BGD-Wissenserschliessung + Bibliothek (v1.15.2)
 
 Autonomer Auftrag: bienen.ch komplett ausgewertet (96 Merkblätter), Wissen in Imkerei-Schiene (Recherchen 21–29) integriert, App-Bibliothek erweitert, Verbesserungs-Findings dokumentiert.

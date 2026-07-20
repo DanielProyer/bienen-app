@@ -84,7 +84,7 @@ const kSaisonRegeln = <SaisonRegel>[
       kategorie: 'durchsicht', ebene: RegelEbene.volk,
       startMonat: 9, startTag: 20, endMonat: 10, endTag: 10, aktionRoute: 'durchsicht'),
   SaisonRegel(key: 'maeuseschutz_ansetzen', titel: 'Mäusegitter/Fluglochkeil ansetzen',
-      beschreibung: 'Vor dem ersten Frost Mäusegitter montieren — Mäuse zerstören im Winter ganze Völker.',
+      beschreibung: 'Vor dem ersten Frost Mäusegitter montieren + Flugloch auf max. 6 mm Höhe verkleinern (BGD 4.3) — Mäuse zerstören im Winter ganze Völker.',
       kategorie: 'schutz', ebene: RegelEbene.betrieb,
       startMonat: 10, startTag: 1, endMonat: 10, endTag: 31),
   SaisonRegel(key: 'winterfest_machen', titel: 'Winterfest: Windsicherung, Beschwerung, Schnee-Zugang',
