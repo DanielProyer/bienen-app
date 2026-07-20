@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <rect x="60" y="24" width="120" height="80" rx="6" fill="#C9A66B" stroke="#633806" stroke-width="2"/>
+  <path d="M96 44 q40 6 44 34 q-4 12 -18 12 q-8 -34 -30 -34 q0 -8 4 -12 z" fill="#EBD9A8" stroke="#8a6a2e" stroke-width="1.5"/>
+  <path d="M96 44 q10 -8 20 -4" stroke="#8a6a2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <g fill="#633806" font-family="sans-serif" font-size="12" text-anchor="middle"><text x="120" y="130">sackförmige Larve, Köpfchen hoch · KEIN Faden</text></g>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <g stroke="#633806" stroke-width="1.5">
+    <rect x="20" y="26" width="120" height="86" rx="4" fill="#C9A66B"/>
+    <g fill="#6b4a24"><ellipse cx="46" cy="50" rx="12" ry="9"/><ellipse cx="80" cy="66" rx="12" ry="9"/><ellipse cx="112" cy="48" rx="12" ry="9"/><ellipse cx="62" cy="90" rx="12" ry="9"/><ellipse cx="108" cy="86" rx="12" ry="9"/></g>
+    <g fill="#3d2a14"><circle cx="46" cy="50" r="3"/><circle cx="80" cy="66" r="3"/><circle cx="112" cy="48" r="3"/></g>
+  </g>
+  <line x1="168" y1="30" x2="182" y2="96" stroke="#c9a66b" stroke-width="5" stroke-linecap="round"/>
+  <path d="M182 96 q6 12 2 24" stroke="#7a4a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <g fill="#633806" font-family="sans-serif" font-size="12" text-anchor="middle"><text x="120" y="132">eingesunkene Deckel · Fadenzug (Streichholz)</text></g>
+</svg>

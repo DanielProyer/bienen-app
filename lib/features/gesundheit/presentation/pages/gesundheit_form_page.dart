@@ -8,6 +8,8 @@ import 'package:bienen_app/features/gesundheit/domain/gesundheitsereignis.dart';
 import 'package:bienen_app/features/gesundheit/domain/krankheit.dart';
 import 'package:bienen_app/features/gesundheit/presentation/providers/gesundheit_provider.dart';
 import 'package:bienen_app/features/gesundheit/presentation/widgets/meldepflicht_banner.dart';
+import 'package:bienen_app/features/wissen/domain/gesundheit_wissen.dart';
+import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
 
 class GesundheitFormPage extends ConsumerStatefulWidget {
   final String volkId;
@@ -92,20 +94,25 @@ class _GesundheitFormPageState extends ConsumerState<GesundheitFormPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Diagnose erfassen')),
       body: ListView(padding: const EdgeInsets.all(16), children: [
-        DropdownButtonFormField<String>(
-          initialValue: _krankheit,
-          decoration: const InputDecoration(labelText: 'Krankheit / Schädling'),
-          items: [
-            for (final r in [Rechtskategorie.zuBekaempfen, Rechtskategorie.zuUeberwachen,
-                             Rechtskategorie.neobiotaMeldung, Rechtskategorie.nichtMeldepflichtig])
-              if (gruppen[r] != null) ...[
-                DropdownMenuItem<String>(enabled: false, child: Text(gruppenLabel[r]!,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.grey))),
-                for (final e in gruppen[r]!) DropdownMenuItem(value: e.key, child: Text('   ${e.label}')),
+        Row(children: [
+          Expanded(
+            child: DropdownButtonFormField<String>(
+              initialValue: _krankheit,
+              decoration: const InputDecoration(labelText: 'Krankheit / Schädling'),
+              items: [
+                for (final r in [Rechtskategorie.zuBekaempfen, Rechtskategorie.zuUeberwachen,
+                                 Rechtskategorie.neobiotaMeldung, Rechtskategorie.nichtMeldepflichtig])
+                  if (gruppen[r] != null) ...[
+                    DropdownMenuItem<String>(enabled: false, child: Text(gruppenLabel[r]!,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.grey))),
+                    for (final e in gruppen[r]!) DropdownMenuItem(value: e.key, child: Text('   ${e.label}')),
+                  ],
               ],
-          ],
-          onChanged: (v) => setState(() => _krankheit = v!),
-        ),
+              onChanged: (v) => setState(() => _krankheit = v!),
+            ),
+          ),
+          WissenInfoButton(wissenKey: kKrankheitWissen[_krankheit] ?? ''),
+        ]),
         MeldepflichtBanner(krankheitKey: _krankheit),
         if (k != null && !istMeldepflichtig(_krankheit)) Padding(
           padding: const EdgeInsets.symmetric(vertical: 6),

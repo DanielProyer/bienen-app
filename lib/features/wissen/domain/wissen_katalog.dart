@@ -3,6 +3,7 @@ import 'package:bienen_app/features/wissen/domain/wissen_eintrag.dart';
 const kWissensKategorien = <WissensKategorie>[
   WissensKategorie(key: 'durchsicht', titel: 'Durchsicht', icon: 'eye'),
   WissensKategorie(key: 'varroa', titel: 'Varroa', icon: 'bug'),
+  WissensKategorie(key: 'krankheit', titel: 'Krankheiten', icon: 'health'),
 ];
 
 const kWissensKatalog = <WissensEintrag>[
@@ -91,7 +92,8 @@ const kWissensKatalog = <WissensEintrag>[
     kurzinfo: 'Rotbraun, ~1,6 mm breit / 1,1 mm lang (als Punkt mit blossem Auge sichtbar). Sitzt phoretisch zwischen den Bauchsegmenten '
         'der Biene oder — geschützt — in der verdeckelten Brut (Drohnenbrut wird 8–10× bevorzugt). Der eigentliche '
         'Schaden sind übertragene Viren (v. a. DWV → verkrüppelte Flügel), die geschädigte Winterbienen erzeugen — '
-        'daran stirbt das Volk.',
+        'daran stirbt das Volk. Hinweis: nicht alle Bienenviren sind varroagekoppelt — die Chronische '
+        'Bienenparalyse (CBPV: zitternde, haarlose schwarze Bienen) entsteht durch Stress/Dichte.',
     skizze: 'assets/wissen/varroa_milbe.svg',
     mehr: [
       WissensLink(label: 'Varroa-Konzept (alpin)', rechercheAsset: 'assets/recherche/15_Varroa_Bekaempfungskonzept_alpin.md'),
@@ -168,6 +170,92 @@ const kWissensKatalog = <WissensEintrag>[
     mehr: [WissensLink(label: 'Varroa-Konzept (alpin)', rechercheAsset: 'assets/recherche/15_Varroa_Bekaempfungskonzept_alpin.md')],
     verwandte: ['ameisensaeure'],
     stichworte: ['thymol', 'thymovar', 'apilife', 'aetherisches oel'],
+  ),
+  WissensEintrag(
+    key: 'afb', titel: 'Amerikanische Faulbrut (AFB)', kategorie: 'krankheit',
+    kurzinfo: 'Meldepflichtig schon bei Verdacht. Erkennen: eingesunkene, durchlöcherte, feuchte Zelldeckel in der '
+        'VERDECKELTEN Brut; ein Streichholz zieht aus der Zelle einen braunen, fadenziehenden Schleim '
+        '(Streichholzprobe); modriger Geruch; lückiges Brutbild. Volk geschlossen halten, NICHTS umhängen — der '
+        'Bieneninspektor nimmt die amtliche Probe — keine Eigenprobe einsenden (Details siehe Melde-Banner im Formular).',
+    skizze: 'assets/wissen/afb.svg',
+    mehr: [
+      WissensLink(label: 'Bienengesundheit (CH)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md'),
+      WissensLink(label: 'Krankheiten/Schädlinge (BGD)', rechercheAsset: 'assets/recherche/23_Krankheiten_Schaedlinge_BGD.md'),
+    ],
+    verwandte: ['sackbrut', 'efb'],
+    stichworte: ['afb', 'faulbrut', 'amerikanisch', 'streichholzprobe', 'brut'],
+  ),
+  WissensEintrag(
+    key: 'efb', titel: 'Europäische Sauerbrut (EFB)', kategorie: 'krankheit',
+    kurzinfo: 'Meldepflichtig schon bei Verdacht. Erkennen: verkrümmte, vergilbte, in der Zelle verrutschte OFFENE '
+        'Larven (vor der Verdeckelung — Unterschied zur AFB in der verdeckelten Brut); lückiges Brutbild; '
+        'säuerlicher Geruch. Volk geschlossen halten, Inspektor melden (siehe Melde-Banner).',
+    skizze: 'assets/wissen/efb.svg',
+    mehr: [
+      WissensLink(label: 'Bienengesundheit (CH)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md'),
+      WissensLink(label: 'Krankheiten/Schädlinge (BGD)', rechercheAsset: 'assets/recherche/23_Krankheiten_Schaedlinge_BGD.md'),
+    ],
+    verwandte: ['afb', 'sackbrut'],
+    stichworte: ['efb', 'sauerbrut', 'europaeisch', 'offene brut'],
+  ),
+  WissensEintrag(
+    key: 'kalkbrut', titel: 'Kalkbrut', kategorie: 'krankheit',
+    kurzinfo: 'Nicht meldepflichtig, meist beherrschbar. Erkennen: mumifizierte, kreideweiße bis graue, HARTE Larven '
+        '(„Kalkstücke") in den Zellen und vor der Beute; oft ein „Klappern" der losen Mumien auf dem Bodenbrett. '
+        'Begünstigt durch feucht-kühlen Stand + schwaches Volk. Gegensteuern: Volk stärken, junge Königin, '
+        'Wabenerneuerung, trockener/warmer Standort. NICHT mit Steinbrut verwechseln (grün-gelbliche, '
+        'humanpathogene Mumien → FFP-Maske!).',
+    skizze: 'assets/wissen/kalkbrut.svg',
+    mehr: [WissensLink(label: 'Bienengesundheit (CH)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md')],
+    verwandte: ['sackbrut', 'steinbrut'],
+    stichworte: ['kalkbrut', 'mumie', 'pilz', 'ascosphaera', 'kreideweiss'],
+  ),
+  WissensEintrag(
+    key: 'steinbrut', titel: 'Steinbrut (Aspergillus)', kategorie: 'krankheit',
+    kurzinfo: 'ACHTUNG humanpathogen (Atemwege). Erkennen: harte Mumien wie bei Kalkbrut, aber grün-gelblich '
+        'bepudert/verpilzt (Aspergillus-Sporen). Selten. ARBEITSSCHUTZ: nur mit Handschuhen + FFP2/FFP3-Maske '
+        'anfassen, Sporen NICHT einatmen, befallene Waben entsorgen. Verwechslung mit der harmlosen Kalkbrut '
+        '(kreideweiße Mumien) — im Zweifel Schutz tragen.',
+    skizze: 'assets/wissen/steinbrut.svg',
+    mehr: [WissensLink(label: 'Bienengesundheit (CH)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md')],
+    verwandte: ['kalkbrut'],
+    stichworte: ['steinbrut', 'aspergillus', 'schimmel', 'ffp', 'arbeitsschutz', 'mumie'],
+  ),
+  WissensEintrag(
+    key: 'sackbrut', titel: 'Sackbrut', kategorie: 'krankheit',
+    kurzinfo: 'Nicht meldepflichtig — aber AFB-VERWECHSLUNGSGEFAHR. Erkennen: einzelne gestreckte, sackförmige '
+        '(flüssigkeitsgefüllte) Larven mit hochgezogenem Köpfchen. Abgrenzung: die Fadenzugprobe zieht bei Sackbrut '
+        'KEINEN Faden (bei AFB schon). Bei Unsicherheit wie AFB behandeln = melden. Sonst: Volk stärken.',
+    skizze: 'assets/wissen/sackbrut.svg',
+    mehr: [WissensLink(label: 'Bienengesundheit (CH)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md')],
+    verwandte: ['afb', 'kalkbrut'],
+    stichworte: ['sackbrut', 'sackfoermig', 'verwechslung', 'fadenzugprobe'],
+  ),
+  WissensEintrag(
+    key: 'ruhr_nosema', titel: 'Ruhr & Nosema (Kotspritzer)', kategorie: 'krankheit',
+    kurzinfo: 'Erkennen: braune Kotspritzer an Flugloch, Beute und Waben = Durchfall. Ursachen: schlechtes, schwer '
+        'verdauliches Winterfutter (hoher Waldhonig-/Melezitose-Anteil), langer Flugunterbruch, oder Nosema '
+        '(Darmparasit, sicher nur mikroskopisch '
+        'nachweisbar). Gegensteuern: Futterqualität prüfen, Reinigungsflug abwarten, Wabenhygiene, starke Völker; '
+        'bei Verdacht Nosema-Probe an BGD/Agroscope.',
+    skizze: 'assets/wissen/ruhr_nosema.svg',
+    mehr: [WissensLink(label: 'Bienengesundheit (CH)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md')],
+    verwandte: [],
+    stichworte: ['ruhr', 'durchfall', 'nosema', 'nosemose', 'kotspritzer'],
+  ),
+  WissensEintrag(
+    key: 'vespa_velutina', titel: 'Asiatische Hornisse', kategorie: 'krankheit',
+    kurzinfo: 'Meldepflichtige invasive Art. Erkennen: dunkler Körper mit gelben Beinenden und oranger Kopfvorderseite; '
+        'rüttelt jagend vor dem Flugloch („Hawking"), um heimkehrende Bienen zu greifen; Nest oft hoch in Bäumen. '
+        'Nicht mit der helleren einheimischen Hornisse verwechseln. Nester NICHT selbst entfernen (Spezialisten). '
+        'Fund mit Foto + Standort über asiatischehornisse.ch melden.',
+    skizze: 'assets/wissen/vespa_velutina.svg',
+    mehr: [
+      WissensLink(label: 'Asiatische Hornisse', rechercheAsset: 'assets/recherche/24_Asiatische_Hornisse_Vespa_velutina.md'),
+      WissensLink(label: 'Meldeportal asiatischehornisse.ch', url: 'https://www.asiatischehornisse.ch'),
+    ],
+    verwandte: [],
+    stichworte: ['vespa', 'velutina', 'asiatische hornisse', 'neobiota', 'raeuber'],
   ),
 ];
 
