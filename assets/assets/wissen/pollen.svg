@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <g stroke="#633806" stroke-width="1.5">
+    <circle cx="120" cy="66" r="18" fill="#C9A66B"/>
+    <circle cx="120" cy="30" r="9" fill="#E8A33D"/><circle cx="150" cy="42" r="9" fill="#9BB43A"/>
+    <circle cx="162" cy="72" r="9" fill="#E86A3D"/><circle cx="150" cy="100" r="9" fill="#E8C43D"/>
+    <circle cx="120" cy="106" r="9" fill="#9BB43A"/><circle cx="90" cy="100" r="9" fill="#E86A3D"/>
+    <circle cx="78" cy="72" r="9" fill="#E8A33D"/><circle cx="90" cy="42" r="9" fill="#E8C43D"/>
+  </g>
+  <g fill="#633806" font-family="sans-serif" font-size="14" text-anchor="middle">
+    <text x="120" y="70">Brut</text><text x="120" y="140">Pollenkranz um das Brutnest</text>
+  </g>
+</svg>
