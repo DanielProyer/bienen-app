@@ -4,6 +4,16 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Phänologischer Anker live (v1.17.0)
+
+Baustein **C** der Generator-Zerlegung: beobachtete Zeigerpflanzen-Blüte statt fixem Offset. Nach adversarialem 5-Lupen-Review der Spec (22 bestätigte Findings, 2 Blocker) v2-überarbeitet; subagent-getrieben umgesetzt (DB selbst, 4 Buckets, per-Bucket-Review) — der Generator-Review (Fable 5) fing einen echten Kalibrierungsfehler. Migration J01 auf Prod, 166/166 Tests, live.
+
+- **D-49 · Tracht-Anker als Ketten-Verankerung statt geteiltem Offset.** Die alpine Sommer-Stauchung (Ernte ~+42, Behandlung ~Ende Juli) ist mit EINEM Tracht-Offset nicht treffbar. Lösung: `honigernte` hängt phänologisch (Alpenrose), die Sommerkette (`sommerbehandlung_1`/`gemuelldiagnose_sommer`/`honigernte_sommer`) hängt RELATIV an der letzten Ernte (`ankerRegelKey`, Sentinel `__letzte_ernte` → honigernte_sommer bei 2 Ernten, sonst honigernte). Modelliert „nach der Ernte behandeln" 1:1, Ordnung strukturell garantiert. Greift NUR bei Tracht-Beobachtung; ohne = exakt v1.16.0 (149 Bestandstests grün).
+- **D-50 · Alpenrose als Hochlagen-Tracht-Zeiger + referenzDoy als Kalibrier-Wert.** Tal-Zeiger (Linde/Edelkastanie) wachsen nicht auf 1570 m → Arosa kann sie nicht beobachten (Review-Blocker B1). Alpenrose (Haupttracht-Marker Arosa) + Bergwiesen/Weidenröschen ergänzt. Für alpine-only-Zeiger ist `referenzDoy` KEIN Mittelland-Blüh-DOY, sondern ein Kalibrier-Wert (normale Arosa-Blüte − Ziel-Offset): alpenrose/bergwiesen 125, weidenroeschen 148, Tal-Zeiger unverändert (176/182). **Der Generator-Review fing hier meinen Fehler** (initial 160 → Offset +5 → Behandlung Ende Juni statt Ende Juli).
+- **D-51 · Zweischichtiges Sicherheitsnetz gegen Fehleingaben (Review-Blocker B2).** Grober Fat-Finger → phänologischer Offset auf **±60 geklemmt** (kein Winter-/Vorjahres-Rutsch der Pflicht-Behandlung); subtilere Fehleingabe → **±45-Plausibilitätshinweis** bei der Eingabe. `phaenologie_beobachtungen`-CHECK immutable + jahr-gebunden (`make_date`) verhindert Zukunfts-/Jahr-Drift; Betriebs-Ebene (kein `standort_id`).
+- **4.20-Vermerk:** Betriebs-Ebene ist v1-ausreichend; Per-Standort-Promotion ist NICHT rein additiv (Unique-Rework `+standort_id` + NULL-Distinct-/Fallback-Semantik) — bekannte spätere Migration.
+- **Gotcha (App):** (1) Kalibrier-`referenzDoy` alpine-only sind KEINE echten Blüh-DOY → immer als „normale Standort-Blüte − Ziel-Offset" rechnen, sonst invertiert die Timing-Wirkung. (2) Ketten-Anker-Tests sind date-fragil (`kVorlaufTage`=14): je Regel Stichtag im eigenen Sichtfenster wählen; bei Kalibrier-Änderung nachziehen — besser kalibrierungs-unabhängige Assertions (`beh == ErnteEnde + versatz`). (3) `AppColors` hat keine grey-Konstante → `Colors.grey.shade600` (TextStyle dann nicht `const`).
+
 ## 2026-07-20 — Betriebsprofil & Generator-Ausbau live (v1.16.0)
 
 Erste Sub-Spec (A+B) des grossen bienen.ch-Hebels: Generator konfigurierbar + gehärtet, F4-Settings-Seite. Nach adversarialem 5-Lupen-Review (26 Findings) v2-überarbeitet. 149/149 Tests, live.

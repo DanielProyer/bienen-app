@@ -1,11 +1,21 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.16.0+37 (live)
-**Aktueller Fokus:** ✅ **Cockpit & IA-Umbau LIVE** (v1.15.0) — 4 Betriebs-Tabs (Cockpit · Völker · Aufgaben · Projekt), Dashboard ist jetzt Betriebszentrale, Projekt-Sammelseite mit aktualisiertem Fortschritt. Davor am selben Tag: ✅ **Modul 4.4 „Aufgaben & Kalender" LIVE** (v1.14.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. 4.22 Kosten-Dashboard — nach Absprache.
+**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.17.0+38 (live)
+**Aktueller Fokus:** ✅ **Phänologischer Anker (Baustein C) LIVE** (v1.17.0) — Zeigerpflanzen-Blüte statt fixem Offset: phänologischer Offset (Frühjahr) + Ketten-Verankerung der Sommer-Behandlung an der beobachteten Ernte (löst die alpine Sommer-Stauchung), Honigreinheit-Hinweis. Davor: ✅ Betriebsprofil & Generator-Ausbau (A+B, v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **D Ableger/Zucht-Event-Ketten (4.16/4.17)** oder 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-20 (Phänologischer Anker, Baustein C, v1.17.0)
+
+- [x] ✓ **Phänologischer Anker LIVE** (v1.17.0+38). Baustein C der Generator-Zerlegung: der Generator leitet Termine aus beobachteter Zeigerpflanzen-Blüte ab. Brainstorming (Design-Abschnitte 1–4) → Spec → **adversarialer 5-Lupen-Review (22 bestätigte Findings, 2 Blocker)** → v2-Spec → Plan (11 Tasks) → **subagent-getrieben** (Migration J01 selbst, Buckets B/D/C/E je mit Review; Generator-Review von Fable 5). **166/166 Tests, analyze sauber**, live.
+  - **DB (Produktion, J01):** `phaenologie_beobachtungen` (je Betrieb/Jahr/Anker eine Blühbeobachtung, normale CRUD, RLS Mitglied/kann_schreiben). CHECK **immutable + jahr-gebunden** (`make_date`) → keine Zukunfts-/Jahr-Drift. Betriebs-Ebene (4.20-Keimzelle). 0 neue Advisor-Findings.
+  - **Generator (`saison_regeln.dart`):** `effektiverOffset` (phänologischer Offset = beobachtete Blüte − Kalibrier-referenzDoy, **±60 geklemmt**) für Frühjahr/Honigernte; **Ketten-Anker** (`ankerRegelKey`/`__letzte_ernte`) — die Sommerkette (`sommerbehandlung_1`/`gemuelldiagnose_sommer`/`honigernte_sommer`) folgt RELATIV der letzten Ernte → Behandlung Ende Juli (löst die alpine Stauchung). Override-Modell: ohne Beobachtung exakt v1.16.0 (149 Bestandstests grün). `honigraum_aufsetzen`→phase=tracht (behebt Frühjahr↔Tracht-Inversion).
+  - **App:** neues Feature `lib/features/phaenologie/` (Katalog `phaenologie.dart` mit 8 Zeigerpflanzen inkl. **Alpenrose** als Hochlagen-Default, Gateway-Trio, `phaenologieProvider`). **Einstellungen-Sektion** (`/einstellungen`) zur Blüherfassung (eigener Inline-Save, ±45-Plausibilitätshinweis). **Honigreinheit-Hinweis** im Fütterungs-Formular (nur bei Tracht-Beobachtung; Ableger-Schutz; weicher Notfütterungs-Hinweis).
+  - **Review fing echte Fehler:** (Spec-Review) Tal-Zeiger auf 1570 m nicht beobachtbar → Alpenrose + Ketten-Anker (Blocker B1); fehlende Offset-Klemme (Blocker B2). (Generator-Review, Fable 5) `referenzDoy(alpenrose)=160` ergab Offset +5 statt +42 → Behandlung Ende Juni statt Juli — auf Kalibrier-Werte 125/148 korrigiert; fehlender Safety-Test der Tracht-Kette ergänzt.
+  - Docs: `docs/superpowers/specs/2026-07-20-phaenologie-anker-design.md` (v2), `…/plans/2026-07-20-phaenologie-anker.md`.
+  - **🔴 OFFEN (Folge):** **D Ableger/Zucht-Event-Ketten** (4.16/4.17) · referenzDoy/Versatz-Feinwerte bei realer Saison 2027 nachjustieren (reine Konstanten) · Phänologie live mit echten Daten testen (Alpenrose-Blüte 2027 eintragen).
 
 ## ✅ Erledigt — Session 2026-07-20 (Betriebsprofil & Generator-Ausbau, v1.16.0)
 
@@ -14,7 +24,7 @@
   - **App:** neue **F4-Settings-Seite** (`/einstellungen`, Projekt-Kachel): Saison-Offset, Winterfutter-Ziel (+20-kg-BGD-Warnung als weicher Hinweis), 3 Strategie-Weichen; Rollen-Guard; `.eq(betrieb_id)`-Update. **Generator** (`saison_regeln.dart`): konfigurierbar (Gating `nurBeiVermehrung`/`nurBeiAnzahlErnten`), Methoden-Text via `beschreibungFuer`, **Timing-Härtung** (`gemuelldiagnose_sommer`→offset 6.6.–20.6.; `sommerbehandlung_1` bewusst unverändert Arosa-getunt; Herbst-Regeln + 2. Ernte kalenderfix), **11 neue Regeln** (Notbehandlung, 2. Ernte, Jungvölker/Königinnen [gated], Serbelvölker Frühjahr/Herbst, Trachtlücke, Fluglochbeobachtung, Wabenerneuerung, Umweiselung, Winterbehandlungs-Erfolgskontrolle). Ordnungs-Invarianten (1+2 Ernten, Offset 0/42) getestet.
   - **Review fing echte Fehler:** v1 hatte Herbst-Regeln fälschlich offset=ja (Blocker, alpin fatal); der `sommerbehandlung_1`-Offset-Umbau hätte Arosa verschlechtert + den 2-Ernten-Pfad kaputt gemacht — beides in v2 korrigiert. Quality-Review fand den Formular-Default-Absturz (`futterart='zuckersirup'`) + fehlende Generator-Verdrahtung.
   - Docs: `docs/superpowers/specs/2026-07-20-betriebsprofil-generator-ausbau-design.md` (v2), `…/plans/2026-07-20-betriebsprofil-generator-ausbau.md`.
-  - **🔴 OFFEN (Folge-Specs):** **C Phänologie** (Indikatorpflanzen-Anker statt fixem Offset — löst die alpine Sommer-Präzision exakt) · **D Ableger/Zucht-Event-Ketten** (4.16/4.17) · Honigreinheit-Warnung (braucht Tracht-Signal aus C).
+  - ~~OFFEN: C Phänologie · Honigreinheit-Warnung~~ → ✅ **erledigt v1.17.0** (siehe Block oben). Verbleibt: **D Ableger/Zucht-Event-Ketten** (4.16/4.17).
 
 ## ✅ Erledigt — Session 2026-07-20 (bienen.ch Quick-Wins, Teil-Umsetzung)
 
