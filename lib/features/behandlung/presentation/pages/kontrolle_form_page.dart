@@ -5,6 +5,8 @@ import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/behandlung/domain/ampel_schwellen.dart';
 import 'package:bienen_app/features/behandlung/domain/varroa_kontrolle.dart';
 import 'package:bienen_app/features/behandlung/presentation/providers/behandlung_provider.dart';
+import 'package:bienen_app/features/wissen/domain/behandlung_wissen.dart';
+import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
 
 class KontrolleFormPage extends ConsumerStatefulWidget {
   final String volkId;
@@ -51,13 +53,18 @@ class _KontrolleFormPageState extends ConsumerState<KontrolleFormPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Milbendiagnose')),
       body: ListView(padding: const EdgeInsets.all(16), children: [
-        Wrap(spacing: 8, children: [
-          for (final m in const ['gemuell', 'puderzucker', 'auswaschung'])
-            ChoiceChip(
-              label: Text(switch (m) { 'gemuell' => 'Gemüll', 'puderzucker' => 'Puderzucker', _ => 'Auswaschung' }),
-              selected: _methode == m,
-              onSelected: (_) => setState(() => _methode = m),
-            ),
+        Row(children: [
+          Expanded(
+            child: Wrap(spacing: 8, children: [
+              for (final m in const ['gemuell', 'puderzucker', 'auswaschung'])
+                ChoiceChip(
+                  label: Text(switch (m) { 'gemuell' => 'Gemüll', 'puderzucker' => 'Puderzucker', _ => 'Auswaschung' }),
+                  selected: _methode == m,
+                  onSelected: (_) => setState(() => _methode = m),
+                ),
+            ]),
+          ),
+          WissenInfoButton(wissenKey: kVarroaMethodeWissen[_methode] ?? ''),
         ]),
         const SizedBox(height: 12),
         ListTile(
