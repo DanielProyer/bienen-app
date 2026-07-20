@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <rect x="30" y="22" width="130" height="74" rx="4" fill="#C9A66B" stroke="#633806" stroke-width="1.5"/>
+  <g fill="#FBFBF7" stroke="#b8b8ae" stroke-width="1"><ellipse cx="56" cy="44" rx="11" ry="8"/><ellipse cx="90" cy="58" rx="11" ry="8"/><ellipse cx="124" cy="44" rx="11" ry="8"/><ellipse cx="78" cy="80" rx="11" ry="8"/><ellipse cx="120" cy="76" rx="11" ry="8"/></g>
+  <g fill="#EDEDE6" stroke="#b8b8ae" stroke-width="1"><ellipse cx="150" cy="116" rx="10" ry="6"/><ellipse cx="176" cy="120" rx="10" ry="6"/><ellipse cx="120" cy="120" rx="10" ry="6"/></g>
+  <line x1="40" y1="104" x2="210" y2="104" stroke="#633806" stroke-width="2"/>
+  <g fill="#633806" font-family="sans-serif" font-size="12" text-anchor="middle"><text x="120" y="144">weiße harte Mumien · „Klappern" am Boden</text></g>
+</svg>
