@@ -11,8 +11,8 @@ Aufgabe _regelAufgabe(String key, int jahr, DateTime faellig,
     );
 
 void main() {
-  // 19.07. ohne Offset: gemuelldiagnose_sommer (bis 15.7.) vorbei; startfuetterung (15.–31.7.)
-  // und sommerbehandlung_1 (20.7.–15.8.) aktiv; hauptfuetterung (ab 1.8.) im 14-Tage-Vorlauf.
+  // 19.07. ohne Offset: gemuelldiagnose_sommer (neu 6.6.–20.6.) längst vorbei; startfuetterung
+  // (15.–31.7.) und sommerbehandlung_1 (20.7.–15.8.) aktiv; hauptfuetterung (ab 1.8.) im Vorlauf.
   test('Fenster ohne Offset: aktive + Vorlauf-Regeln am 19.07.', () {
     final v = anstehendeVorschlaege(
       stichtag: DateTime(2026, 7, 19), saisonOffsetTage: 0,
@@ -22,7 +22,7 @@ void main() {
     expect(keys.contains('startfuetterung'), isTrue);
     expect(keys.contains('sommerbehandlung_1'), isTrue);
     expect(keys.contains('hauptfuetterung'), isTrue); // 1.8. liegt <= 14 Tage voraus
-    expect(keys.contains('gemuelldiagnose_sommer'), isFalse); // Fenster vorbei
+    expect(keys.contains('gemuelldiagnose_sommer'), isFalse); // neues Fenster 6.6.–20.6. vorbei
     expect(keys.contains('oxalsaeure_winter'), isFalse);
   });
 
@@ -174,5 +174,67 @@ void main() {
     final v = anstehendeVorschlaege(stichtag: DateTime(2026, 6, 1), saisonOffsetTage: 0,
         regelAufgaben: const [], anzahlAktiveVoelker: 1);
     expect(v, isNotEmpty);
+  });
+
+  test('Gating: jungvoelker_bilden nur bei vermehrung_aktiv', () {
+    const ohne = BetriebsEinstellungen.leer(); // vermehrung=false
+    const mit = BetriebsEinstellungen(vermehrungAktiv: true);
+    final vOhne = anstehendeVorschlaege(stichtag: DateTime(2026, 6, 1), saisonOffsetTage: 0,
+        regelAufgaben: const [], anzahlAktiveVoelker: 1, einstellungen: ohne);
+    final vMit = anstehendeVorschlaege(stichtag: DateTime(2026, 6, 1), saisonOffsetTage: 0,
+        regelAufgaben: const [], anzahlAktiveVoelker: 1, einstellungen: mit);
+    expect(vOhne.map((x) => x.regel.key), isNot(contains('jungvoelker_bilden')));
+    expect(vMit.map((x) => x.regel.key), contains('jungvoelker_bilden'));
+  });
+
+  test('Gating: honigernte_sommer nur bei anzahl_ernten=2', () {
+    const eins = BetriebsEinstellungen.leer(); // anzahl_ernten=1
+    const zwei = BetriebsEinstellungen(anzahlErnten: 2);
+    final v1 = anstehendeVorschlaege(stichtag: DateTime(2026, 7, 5), saisonOffsetTage: 0,
+        regelAufgaben: const [], anzahlAktiveVoelker: 1, einstellungen: eins);
+    final v2 = anstehendeVorschlaege(stichtag: DateTime(2026, 7, 5), saisonOffsetTage: 0,
+        regelAufgaben: const [], anzahlAktiveVoelker: 1, einstellungen: zwei);
+    expect(v1.map((x) => x.regel.key), isNot(contains('honigernte_sommer')));
+    expect(v2.map((x) => x.regel.key), contains('honigernte_sommer'));
+  });
+
+  // Helfer: Fällig-Default (Fensterende) einer Regel bei gegebenem Offset ableiten
+  DateTime faelligVon(String key, int offset, {BetriebsEinstellungen? e}) {
+    // ganzes Jahr durchsuchen: erzeuge Vorschläge zu jedem Monat, nimm den ersten Match
+    for (var m = 1; m <= 12; m++) {
+      final vv = anstehendeVorschlaege(stichtag: DateTime(2026, m, 1), saisonOffsetTage: offset,
+          regelAufgaben: const [], anzahlAktiveVoelker: 1,
+          einstellungen: e ?? const BetriebsEinstellungen.leer());
+      final hit = vv.where((x) => x.regel.key == key);
+      if (hit.isNotEmpty) return hit.first.faelligAm;
+    }
+    throw StateError('Regel $key nie sichtbar (offset $offset)');
+  }
+
+  for (final off in [0, 42]) {
+    test('Ordnungs-Invariante 1-Ernte (offset $off): Ernte <= Diagnose <= Behandlung', () {
+      final ernte = faelligVon('honigernte', off);
+      final diag = faelligVon('gemuelldiagnose_sommer', off);
+      final beh = faelligVon('sommerbehandlung_1', off);
+      expect(!ernte.isAfter(diag), isTrue, reason: 'Ernte $ernte > Diagnose $diag');
+      expect(!diag.isAfter(beh), isTrue, reason: 'Diagnose $diag > Behandlung $beh');
+    });
+    test('Ordnungs-Invariante 2-Ernten (offset $off): 2.Ernte <= Behandlung', () {
+      final e2 = BetriebsEinstellungen(anzahlErnten: 2);
+      final sommer = faelligVon('honigernte_sommer', off, e: e2);
+      final beh = faelligVon('sommerbehandlung_1', off, e: e2);
+      expect(!sommer.isAfter(beh), isTrue, reason: '2.Ernte $sommer > Behandlung $beh');
+    });
+  }
+
+  test('Herbst-Regeln offset=nein: bei offset 42 nicht nach Okt/Nov', () {
+    for (final key in ['umweiselung_pruefen', 'serbelvoelker_herbst', 'wabenerneuerung_herbst']) {
+      final r = kSaisonRegeln.firstWhere((x) => x.key == key);
+      expect(r.offsetAnwenden, isFalse, reason: '$key muss kalenderfix sein');
+    }
+  });
+
+  test('Notbehandlungs-Regel varroakontrolle_fruehsommer existiert', () {
+    expect(kSaisonRegeln.map((r) => r.key), contains('varroakontrolle_fruehsommer'));
   });
 }
