@@ -54,6 +54,12 @@ class AufgabenNotifier extends AsyncNotifier<List<Aufgabe>> {
     await _gw.speichernBatch([_ausVorschlag(v, status: 'uebersprungen')]);
     ref.invalidateSelf();
   }
+
+  /// Materialisiert einen angenommenen/übersprungenen Ketten-Schritt als Aufgabe (quelle='ereignis').
+  Future<void> kettenMaterialisieren(Aufgabe a) async {
+    await _gw.speichernBatch([a]);
+    ref.invalidateSelf();
+  }
 }
 
 /// Offene Aufgaben eines Volks (reine Ableitung — kein eigener Fetch, D-18/D-23-sicher).
