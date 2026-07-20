@@ -42,7 +42,7 @@
 | 4.15 | Volk-Ausfall & Desinfektion | ⬜ |
 | 4.18 | Karten-Basis (Stände-Ansicht) | ⬜ |
 | 4.19 | Wetter-Basis (Anzeige + Frost/Sturm-Warnung) | ⬜ |
-| 4.21 | Wissensdatenbank DB-gestützt (iterativ) | 🔨 statisch → DB (v1.15.1: 20 Eigen-Recherchen; v1.15.2: + 8 offizielle BGD-Merkblatt-Recherchen aus der bienen.ch-Auswertung). BGD-Findings für Folgemodule: `docs/bienen-ch-findings.md` |
+| 4.21 | Wissensdatenbank DB-gestützt (iterativ) | 🔨 **Zyklus 1 LIVE (v1.21.0):** schnelle Häppchen-Schicht (const-Katalog `wissen_katalog.dart`, 7 Durchsicht-Zeichen mit SVG-Skizzen) + generischer `key`-Deep-Link (ⓘ-Andock, v1 Durchsicht) + eigene Fotos je Betrieb (`wissen_fotos`/M01, Bucket `wissen-photos`). Statisch davor: v1.15.1 20 Eigen-Recherchen, v1.15.2 +8 BGD-Merkblätter. Folge: weitere Kategorien (Varroa/Fütterung/…) + Andock weiterer Module. BGD-Findings: `docs/bienen-ch-findings.md` |
 | 4.22 | Kosten-Dashboard (Quick-Win aus Material-Käufen) | ⬜ |
 | 4.23 | **Recht & Rückverfolgbarkeit** — Compliance-Checkliste, Bestandeskontrolle, Journal-Export (Pflicht) | ⬜ |
 | 4.24 | Kontakt-/Notfall-Hub | ⬜ |
