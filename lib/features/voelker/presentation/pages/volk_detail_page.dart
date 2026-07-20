@@ -12,6 +12,7 @@ import 'package:bienen_app/features/voelker/presentation/providers/voelker_provi
 import 'package:bienen_app/features/voelker/presentation/widgets/koenigin_section.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/standort_section.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/volk_form.dart';
+import 'package:bienen_app/features/zucht/presentation/widgets/bewertung_sektion.dart';
 
 class VolkDetailPage extends ConsumerWidget {
   final String volkId;
@@ -80,6 +81,8 @@ class VolkDetailPage extends ConsumerWidget {
               GesundheitSection(volkId: volk.id),
               const SizedBox(height: 8),
               VermehrungSektion(volkId: volk.id),
+              const SizedBox(height: 8),
+              BewertungSektion(volkId: volk.id),
             ],
           ),
         );
