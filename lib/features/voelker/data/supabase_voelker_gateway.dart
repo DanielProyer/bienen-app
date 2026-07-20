@@ -56,6 +56,11 @@ class SupabaseVoelkerGateway implements VoelkerGateway {
   }
 
   @override
+  Future<void> einstellungenSpeichern(String betriebId, BetriebsEinstellungen e) async {
+    await _c.from('betriebs_einstellungen').update(e.toUpdateJson()).eq('betrieb_id', betriebId);
+  }
+
+  @override
   Future<void> volkSpeichern(Volk volk) async {
     try {
       final json = volk.toInsertJson();

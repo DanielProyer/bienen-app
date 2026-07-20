@@ -32,6 +32,10 @@ class FakeVoelkerGateway implements VoelkerGateway {
   Future<List<Koenigin>> koeniginnen() async => _koeniginnen.values.toList();
   @override
   Future<BetriebsEinstellungen?> einstellungen() async => einstellungenWert;
+  @override
+  Future<void> einstellungenSpeichern(String betriebId, BetriebsEinstellungen e) async {
+    einstellungenWert = e;
+  }
 
   @override
   Future<void> volkSpeichern(Volk volk) async {
