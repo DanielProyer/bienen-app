@@ -4,6 +4,14 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Volk-Bewertung live (v1.19.0)
+
+Baustein **D2a** (Modul 4.17): schlanke BGD-Volk-Bewertung je Volk. Nach adversarialem 5-Lupen-Review (25 bestätigte Findings) v2-überarbeitet; subagent-getrieben (L01 selbst, 2 Buckets). Migration L01 auf Prod, 187/187 Tests, live.
+
+- **D-55 · Volk-Bewertung als 6-Achsen-BGD-Bewertung je Volk, KEIN Ranking in v1.** Achsen: Sanftmut, Wabensitz, Schwarmträgheit, Brutbild, Volksstärke, Gesundheit (Skala 1–4 mit Verhaltensankern). Saison-Aggregat je Volk: Ø je Achse, **Minimum für Schwarmträgheit** (ein Schwarm zählt, BGD-Methode), Gesamtnote = Ø der 6. `volk_bewertungen`/L01 (kein `saison_jahr`-Spalte → aus `bewertet_am` abgeleitet). Nur auf der Volk-Detailseite (Erfassen/Sektion), kein Projekt-/Völker-Badge.
+- **D-56 · Auslese-Ranking bewusst aus v1 (Review-getrieben).** Das volk-übergreifende Drittel-Ranking greift erst ab 3 bewerteten Völkern (Betrieb hat 1, real ~2028), vermischt Wirtschafts-/Jungvölker (die das `voelker`-Modell gar nicht unterscheidet), braucht Vorjahresdaten für seinen Zweck (Zuchtmutter-Wahl), und war Quelle fast aller Ranking-Korrektheits-Nits (Rundung/Tie-Break/Min-Anzahl). → Folge-Zyklus, wenn ≥3 Völker. **Gesundheit + Volksstärke getrennt** (statt einer `vitalitaet`-Achse), damit ein varroa-krankes starkes Volk seine Gesundheit nicht maskiert; **Honig raus** (kommt via 4.7 Ernte als kg). BLUP/Herdebuch/Leistungsprüfung bleiben out (Buckfast + Hobby + nicht-Erwerb).
+- **Gotcha (App):** (1) `saison_jahr` NICHT als Spalte — Single Source of Truth `bewertet_am` (keine Kohärenz-Drift). (2) `firstOrNull` braucht `package:collection` → Inline-for-Helper (sonst `depend_on_referenced_packages`-Lint). (3) Schwarmträgheit-Minimum hart in `aggregiereSaison` verdrahtet (kein generischer Achsen-Flag). (4) koenigin_id = Zuordnungs-Referenz (SET NULL), Snapshot aus `volk.koeniginId` beim Speichern.
+
 ## 2026-07-20 — Vermehrungs-Event-Ketten live (v1.18.0)
 
 Baustein **D1** (Modul 4.16): Ableger/Schwarm als **Event-Ketten** — der Imker erfasst ein Startereignis, ein Ketten-Katalog leitet datierte Aufgaben mit relativen Fristen ab. Nach adversarialem 5-Lupen-Review (29 bestätigte Findings, 2 Blocker) v2-überarbeitet; subagent-getrieben (K01 selbst, 4 Buckets, Generator-Review Fable 5). Migration K01 auf Prod, 181/181 Tests, live.

@@ -18,6 +18,7 @@ import 'package:bienen_app/features/monitoring/presentation/providers/monitoring
 import 'package:bienen_app/features/phaenologie/presentation/providers/phaenologie_provider.dart';
 import 'package:bienen_app/features/vermehrung/presentation/providers/vermehrung_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/features/zucht/presentation/providers/bewertung_provider.dart';
 
 final authGatewayProvider =
     Provider<AuthGateway>((ref) => SupabaseAuthGateway(SupabaseConfig.client));
@@ -95,6 +96,7 @@ class AuthController extends Notifier<AuthState> {
     ref.invalidate(aufgabenListProvider);
     ref.invalidate(phaenologieProvider);
     ref.invalidate(vermehrungListProvider);
+    ref.invalidate(bewertungenProvider);
   }
 }
 

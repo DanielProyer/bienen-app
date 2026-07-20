@@ -54,7 +54,7 @@ Ernte & Honig (4.7) · Verkauf & Vertrieb (4.8) · **Schwarmkontrolle + Ableger 
 
 ## Phase 3 — bis 2028 (4 Völker, Nachzucht)
 
-Volle Zucht/Königinnen (4.17: Umlarv-Kalender, Belegstelle, Pedigree, Leistungsprüfung) · Schwarm-Einfang-Log · Gesundheit voll (Melde-Assistent, Sperrbezirk) · Phänologie-Tracking/Trachtlücken · 2. Stand / 2. Funkstation · Sammelaktionen (Bulk) prominenter.
+Volle Zucht/Königinnen (4.17): **✅ Basis LIVE — Volk-Bewertung (D2a, v1.19.0)** — 6-Achsen-BGD-Bewertung + Saison-Aggregat je Volk (`volk_bewertungen`/L01); offen: Auslese-Ranking (ab ≥3 Völkern), Umlarv-Kalender (D2b), Belegstelle/Pedigree/Leistungsprüfung (bewusst nicht Hobby-Scope) · Schwarm-Einfang-Log · Gesundheit voll (Melde-Assistent, Sperrbezirk) · Phänologie-Tracking/Trachtlücken · 2. Stand / 2. Funkstation · Sammelaktionen (Bulk) prominenter.
 
 ## Phase 4 — bis 2030 (max 8 Völker, evtl. Skalierung 32/64)
 
