@@ -37,6 +37,7 @@ import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_for
 import 'package:bienen_app/features/fuetterung/presentation/pages/fuetterung_form_page.dart';
 import 'package:bienen_app/features/gesundheit/presentation/pages/gesundheit_form_page.dart';
 import 'package:bienen_app/features/vermehrung/presentation/pages/vermehrung_form_page.dart';
+import 'package:bienen_app/features/zucht/presentation/pages/bewertung_form_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/voelker_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/volk_detail_page.dart';
 import 'package:bienen_app/shared/widgets/app_shell.dart';
@@ -436,6 +437,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 GoRoute(
                   path: 'vermehrung',
                   builder: (c, s) => VermehrungFormPage(volkId: s.pathParameters['id']!),
+                ),
+                GoRoute(
+                  path: 'bewertung',
+                  builder: (c, s) => BewertungFormPage(
+                    volkId: s.pathParameters['id']!,
+                    bewertungId: s.uri.queryParameters['b'],
+                  ),
                 ),
               ],
             ),
