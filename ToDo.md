@@ -1,11 +1,21 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.18.0+39 (live)
-**Aktueller Fokus:** ✅ **Vermehrungs-Event-Ketten (Baustein D1, Modul 4.16) LIVE** (v1.18.0) — Ableger/Schwarm als Event-Ketten: Ereignis erfassen (4 Methoden) → datierte Aufgaben mit relativen Fristen im Aufgaben-Tab. Davor am selben Tag: ✅ Phänologischer Anker (C, v1.17.0), ✅ Betriebsprofil & Generator-Ausbau (A+B, v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **D2 (Zucht/Umlarv 4.17)** oder 4.22 Kosten-Dashboard — nach Absprache.
+**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.19.0+40 (live)
+**Aktueller Fokus:** ✅ **Volk-Bewertung (Baustein D2a, Modul 4.17) LIVE** (v1.19.0) — 6-Achsen-BGD-Bewertung + Saison-Aggregat/Gesamtnote je Volk auf der Volk-Detailseite (kein Ranking in v1). Davor am selben Tag: ✅ D1 Vermehrungs-Event-Ketten (v1.18.0), ✅ C Phänologie (v1.17.0), ✅ A+B Betriebsprofil (v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **D2b Umlarv-Kalender** oder 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-20 (Volk-Bewertung, Baustein D2a, v1.19.0)
+
+- [x] ✓ **Volk-Bewertung LIVE** (v1.19.0+40, Modul 4.17). Baustein D2a: schlanke BGD-Bewertung je Volk als Auslese-Grundlage. Brainstorming (Scope D2a/D2b) → Spec → **adversarialer 5-Lupen-Review (25 bestätigte Findings)** → v2-Spec → Plan (7 Tasks) → **subagent-getrieben** (L01 selbst, Buckets B/C). **187/187 Tests, analyze sauber**, live.
+  - **DB (Produktion, L01):** `volk_bewertungen` (6 Achsen `smallint` 1–4, `volk_id`-FK CASCADE, `koenigin_id`-Referenz SET NULL, kein `saison_jahr` [aus `bewertet_am` abgeleitet], RLS Mitglied/kann_schreiben). 0 neue Advisor-Findings.
+  - **Domain (`bewertung.dart`):** 6-Achsen-Katalog (Sanftmut/Wabensitz/Schwarmträgheit/Brutbild/Volksstärke/Gesundheit) mit BGD-Verhaltensankern; `aggregiereSaison` (pure): Ø je Achse, **Minimum für Schwarmträgheit**, Gesamtnote = Ø der 6 rohen Aggregate.
+  - **App:** neues Feature `lib/features/zucht/` (Gateway-Trio, Provider). **Bewerten vom Volk aus** (`/voelker/:id/bewertung`, 6 Regler mit Anker-Text, Edit-Modus `?b=`, Inaktiv-Guard) + **Bewertungs-Sektion** auf der Volk-Detailseite (Gesamtnote + Achsen-Balken + Liste, Edit/Delete).
+  - **Review-getriebener Scope-Cut:** Das volk-übergreifende **Auslese-Ranking aus v1 genommen** (greift erst ab 3 Völkern, vermischt Wirtschafts-/Jungvölker ohne Typ-Feld, braucht Vorjahresdaten) → Folge-Zyklus. `vitalitaet` in **Volksstärke + Gesundheit** getrennt (Maskierung vermeiden), **Brutbild** ergänzt, **Honig raus** (kommt via 4.7).
+  - Docs: `docs/superpowers/specs/2026-07-20-koenigin-bewertung-design.md` (v2), `…/plans/2026-07-20-volk-bewertung.md`.
+  - **🔴 OFFEN (Folge):** **Auslese-Ranking** (Drittel bestes/schwächstes, ab ≥3 Völkern + Wirtschafts-/Jungvolk-Feld + Vorjahres-Saisonwahl) · **D2b Umlarv-/Nachzucht-Kalender** (Event-Kette, reuse D1-Engine) · live testen (Bewertung Volk 1).
 
 ## ✅ Erledigt — Session 2026-07-20 (Vermehrungs-Event-Ketten, Baustein D1, v1.18.0)
 
