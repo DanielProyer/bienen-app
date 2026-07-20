@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <g stroke="#633806" stroke-width="1.5">
+    <rect x="16" y="30" width="60" height="60" rx="4" fill="#C9A66B"/>
+    <rect x="90" y="30" width="60" height="60" rx="4" fill="#C9A66B"/>
+    <g fill="#7a5a2e"><circle cx="112" cy="46" r="3"/><circle cx="132" cy="60" r="3"/><circle cx="106" cy="74" r="3"/></g>
+    <rect x="164" y="30" width="60" height="60" rx="4" fill="#C9A66B"/>
+    <g fill="#FAC775"><circle cx="180" cy="46" r="6"/><circle cx="200" cy="58" r="6"/><circle cx="188" cy="74" r="6"/></g>
+  </g>
+  <g fill="#633806" font-family="sans-serif" font-size="13" text-anchor="middle">
+    <text x="46" y="108">gesund</text><text x="120" y="108">löchrig</text><text x="194" y="108">buckelbrut</text>
+    <text x="120" y="134" font-size="13">flach-lückenlos vs. Störung vs. weisellos</text>
+  </g>
+</svg>

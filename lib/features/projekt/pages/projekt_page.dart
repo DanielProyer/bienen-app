@@ -10,6 +10,7 @@ class ProjektPage extends StatelessWidget {
     (icon: Icons.shopping_cart, titel: 'Material & Lager', sub: 'Bestand · Einkäufe', route: '/material'),
     (icon: Icons.construction, titel: 'Bau', sub: 'Bienenstand · Honigraum', route: '/construction'),
     (icon: Icons.menu_book, titel: 'Recherche', sub: 'Fachthemen', route: '/recherche'),
+    (icon: Icons.lightbulb_outline, titel: 'Wissen', sub: 'Schnelle Infos & Skizzen', route: '/wissen'),
     (icon: Icons.checklist, titel: 'Entscheidungen', sub: 'Chronik', route: '/entscheidungen'),
     (icon: Icons.monitor_weight, titel: 'Monitoring', sub: 'Waagen-Verwaltung', route: '/monitoring'),
     (icon: Icons.tune, titel: 'Betriebs-Einstellungen', sub: 'Saison-Offset · Ernten · Strategie', route: '/einstellungen'),
