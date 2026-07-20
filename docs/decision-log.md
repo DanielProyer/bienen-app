@@ -4,6 +4,14 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Wissensdatenbank Zyklus 3: Krankheiten live (v1.23.0)
+
+Kategorie **Krankheiten** (7 Einträge) + Andock an das Gesundheits-Modul (4.14). Keine DB-Änderung. 215/215 Tests, live.
+
+- **D-63 · Bei bereits reichem Domain-Katalog: Wissensschicht ergänzt statt dupliziert (Anwendung D-59).** `krankheit.dart` ist die **Single Source** für Leitsymptome/Sofortmaßnahme/Melderecht/Rechtskategorie (kanton-neutral, im Formular inline gezeigt). Die Wissens-Kurzinfos kodieren **keine Meldepflicht autoritativ** und widersprechen `krankheit.dart` nicht — sie steuern nur bei, was fehlt: **SVG-Skizze (Bild-Erkennung), Verwechslungs-Fokus, Recherche-Deeplink, Durchstöbern**. Andock: ein dynamisches ⓘ am Krankheits-Dropdown (`kKrankheitWissen`-Map in `gesundheit_wissen.dart`); `varroa`/`viren` **reusen** den Varroa-Eintrag `varroa_milbe` (kein neuer Eintrag). Nicht gemappte Keys → kein ⓘ.
+- **D-64 · Fachreview-getriebene Sicherheits-/Fach-Korrekturen.** (a) **Eigener `steinbrut`-Eintrag** statt nur Kalkbrut: Aspergillus ist humanpathogen und sieht der harmlosen Kalkbrut ähnlich → die Erkennungsschicht darf nicht „harte Mumien = harmlos" lehren; Eintrag mit FFP2/FFP3-Arbeitsschutz + Verwechslungshinweis, Kalkbrut cross-verlinkt. (b) Ruhr-Ursache korrigiert auf „schwer verdauliches Winterfutter (Waldhonig/Melezitose)" (Quelle) statt „wasserreich". (c) CBPV-Hinweis in `varroa_milbe` (nicht alle Viren varroagekoppelt). AFB/EFB-Melderecht + AFB↔Sackbrut-Fadenzugprobe vom Review als korrekt bestätigt.
+- **Gotcha:** `WissensEintrag.kurzinfo` wird als **Plain-Text** gerendert (kein Markdown) → keine `**`/`_`-Auszeichnung in Kurzinfos (sonst literal sichtbar).
+
 ## 2026-07-20 — Wissensdatenbank Zyklus 2: Varroa live (v1.22.0)
 
 Erster Folgezyklus des Wissensdatenbank-Ausbaus (autonom, Fachreview als Gate): Kategorie **Varroa** (7 Einträge) + Andock an das Behandlungs-/Diagnose-Modul. Keine DB-Änderung — reine const-Katalog-Erweiterung. 213/213 Tests, live.
