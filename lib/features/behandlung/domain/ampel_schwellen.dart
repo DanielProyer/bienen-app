@@ -31,12 +31,17 @@ Ampel ampelGemuell(double? milbenProTag, int monat) {
   return Ampel.rot;
 }
 
-/// Ampel für Befall-% (Puderzucker/Auswaschung). Richtwert Recherche 15: ~1 % Schwelle, >3 % klar behandeln.
-Ampel ampelPuderzucker(double? befallProzent) {
+/// Ampel für Befall-% (Puderzucker/Auswaschung), **monatsabhängig** nach bienen.ch-Merkblatt
+/// 1.5.2 / BGD-Varroakonzept (Recherche 22): Behandlung ab **Juli >1 %, August >2 %, September >3 %**.
+/// rot = über der Behandlungsschwelle des Monats, gelb = Warnband ab halber Schwelle. Ausserhalb
+/// Jul–Sep gilt der strengste Sommerwert (1 %). Universell/mandantenfähig (F4 macht sie konfigurierbar).
+Ampel ampelPuderzucker(double? befallProzent, int monat) {
   if (befallProzent == null) return Ampel.keinRichtwert;
-  if (befallProzent < 1) return Ampel.gruen;
-  if (befallProzent <= 3) return Ampel.gelb;
-  return Ampel.rot;
+  const behandelnAb = <int, double>{7: 1, 8: 2, 9: 3};
+  final rot = behandelnAb[monat] ?? 1.0;
+  if (befallProzent > rot) return Ampel.rot;
+  if (befallProzent > rot / 2) return Ampel.gelb;
+  return Ampel.gruen;
 }
 
 /// Wählt die methodengerechte Ampel für eine Kontrolle (Gemüll → Milben/Tag, sonst → Befall-%).
@@ -48,5 +53,5 @@ Ampel ampelFuerKontrolle({
   required int monat,
 }) {
   if (methode == 'gemuell') return ampelGemuell(milbenProTag(milbenGesamt, messdauerTage), monat);
-  return ampelPuderzucker(befallProzent(milbenGesamt, bienenProbe));
+  return ampelPuderzucker(befallProzent(milbenGesamt, bienenProbe), monat);
 }

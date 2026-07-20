@@ -20,6 +20,8 @@ Die App ist **fachlich auf dem richtigen Weg** — Architektur (mandantenfähig,
 
 ## 2. Verbesserungen an bestehenden Modulen (priorisiert)
 
+> **Umsetzungs-Status (2026-07-20, v1.15.3):** Nach Code-Prüfung waren mehrere „Quick Wins" bereits vorhanden oder brauchen Infrastruktur/Migration. **Umgesetzt:** 4.5 Puderzucker-Ampel monatsabhängig (Jul>1 %/Aug>2 %/Sep>3 %); 4.4 Fluglochhöhe-6 mm-Text. **Als Spec vorgemerkt** (nicht „quick"): 4.6 futterart-Konzentrations-Enum (existiert bereits als `zuckersirup/zuckerwasser/…` → Konzentrations-Split = DB-Migration) + Honigreinheit-Warnung (braucht Tracht-Kalender); 20-kg-Warnschwelle (keine Settings-UI); 4.4 gemuelldiagnose-Timing (verhakt mit Offset-Strategie + 2. Ernte). Diese gehören zur phänologischen Generator-Spec (D-41).
+
 ### 🟢 Quick Wins (klein, hoher Nutzen)
 1. **4.6 Fütterung — `futterart`-Enum ergänzen.** Heute nur `menge_pro_volk_kg`. Enum {`zuckerwasser_1_1`, `zuckerwasser_3_2`, `invertsirup_72`, `futterteig`, `eigener_honig`} macht den **Bio-Nachweis belastbar** und erlaubt die **Honigreinheit-Warnung** (kein Zuckerwasser im Trachtfenster). Optional kg↔Liter-Helfer (1:1≈1,7; 3:2≈1,4; Invert≈1,2).
 2. **4.6 Fütterung — 20 kg als BGD-Warnschwelle.** UI-Hinweis „unter BGD-Minimum", wenn ein Mandant `winterfutter_ziel_kg` < 20 setzt. Wertebereich-Hint 20–25.

@@ -29,11 +29,22 @@ void main() {
     }
     expect(ampelGemuell(null, 8), Ampel.keinRichtwert);
   });
-  test('ampelPuderzucker (%-Bänder)', () {
-    expect(ampelPuderzucker(0.5), Ampel.gruen);
-    expect(ampelPuderzucker(2), Ampel.gelb);
-    expect(ampelPuderzucker(4), Ampel.rot);
-    expect(ampelPuderzucker(null), Ampel.keinRichtwert);
+  test('ampelPuderzucker monatsabhängig (bienen.ch 1.5.2: Jul>1%/Aug>2%/Sep>3%)', () {
+    // Juli: Behandlung ab >1 %
+    expect(ampelPuderzucker(0.4, 7), Ampel.gruen);
+    expect(ampelPuderzucker(0.8, 7), Ampel.gelb);
+    expect(ampelPuderzucker(1.5, 7), Ampel.rot);
+    // August: ab >2 %
+    expect(ampelPuderzucker(0.9, 8), Ampel.gruen);
+    expect(ampelPuderzucker(2, 8), Ampel.gelb); // an der Schwelle = noch nicht behandeln
+    expect(ampelPuderzucker(2.5, 8), Ampel.rot);
+    // September: ab >3 %
+    expect(ampelPuderzucker(1.4, 9), Ampel.gruen);
+    expect(ampelPuderzucker(3, 9), Ampel.gelb);
+    expect(ampelPuderzucker(3.5, 9), Ampel.rot);
+    // Ausserhalb Jul–Sep: strengster Sommerwert (1 %)
+    expect(ampelPuderzucker(1.5, 5), Ampel.rot);
+    expect(ampelPuderzucker(null, 8), Ampel.keinRichtwert);
   });
   test('ampelFuerKontrolle wählt die Skala nach Methode', () {
     expect(ampelFuerKontrolle(methode: 'gemuell', milbenGesamt: 44, messdauerTage: 4, monat: 8), Ampel.gelb); // 11/Tag

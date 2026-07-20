@@ -1,11 +1,18 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-19 · **Phase:** P1-Fachmodule · **App-Version:** 1.15.2+35 (live)
+**Stand:** 2026-07-20 · **Phase:** P1-Fachmodule · **App-Version:** 1.15.3+36 (live)
 **Aktueller Fokus:** ✅ **Cockpit & IA-Umbau LIVE** (v1.15.0) — 4 Betriebs-Tabs (Cockpit · Völker · Aufgaben · Projekt), Dashboard ist jetzt Betriebszentrale, Projekt-Sammelseite mit aktualisiertem Fortschritt. Davor am selben Tag: ✅ **Modul 4.4 „Aufgaben & Kalender" LIVE** (v1.14.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-20 (bienen.ch Quick-Wins, Teil-Umsetzung)
+
+- [x] ✓ **bienen.ch Quick-Wins — sicherer Teil umgesetzt** (v1.15.3+36). Nach Code-Prüfung: mehrere Findings trafen die Realität nicht (futterart existiert; keine Settings-UI für 20-kg-Schwelle; 4.4-Timing verhakt). Umgesetzt (rein Dart, 133/133 Tests):
+  - **4.5 Puderzucker-Ampel monatsabhängig** (`ampel_schwellen.dart`): bienen.ch 1.5.2 — Jul >1 %, Aug >2 %, Sep >3 % (vorher flach <1/≤3); `ampelPuderzucker` um `monat` erweitert, Cockpit-Marker + interne Weiche + Test angepasst. Gemüll-Ampel bewusst unverändert (mehrere BGD-Referenzwerte → fachliche Abwägung).
+  - **4.4 `maeuseschutz_ansetzen`-Text** (`saison_regeln.dart`): „Flugloch auf max. 6 mm Höhe verkleinern (BGD 4.3)".
+  - **Vorgemerkt als eigene Spec** (phänologischer Generator, D-41): 4.6 Konzentrations-Enum (Migration) + Honigreinheit-Warnung + 20-kg-Warnschwelle (nach F4-Settings) + 4.4 Offset-Strategie/2. Ernte/gemuelldiagnose-Kopplung.
 
 ## ✅ Erledigt — Session 2026-07-19 (bienen.ch/BGD-Wissenserschliessung)
 

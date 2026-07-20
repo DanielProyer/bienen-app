@@ -93,7 +93,7 @@ class VarroaCockpit extends StatelessWidget {
           child: Wrap(spacing: 6, runSpacing: 4, children: [
             for (final k in proben.take(6))
               Builder(builder: (_) {
-                final a = ampelPuderzucker(befallProzent(k.milbenGesamt, k.bienenProbe));
+                final a = ampelPuderzucker(befallProzent(k.milbenGesamt, k.bienenProbe), k.durchgefuehrtAm.month);
                 final p = befallProzent(k.milbenGesamt, k.bienenProbe);
                 return Chip(
                   backgroundColor: _ampelColor(a).withAlpha(30),
