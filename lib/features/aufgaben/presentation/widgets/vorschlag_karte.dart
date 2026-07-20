@@ -52,6 +52,7 @@ class VorschlagKarte extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final r = vorschlag.regel;
+    final von = DateFormat('dd.MM.').format(vorschlag.fensterStart);
     final bis = DateFormat('dd.MM.').format(vorschlag.faelligAm);
     return Card(
       color: AppColors.honey.withAlpha(18),
@@ -64,7 +65,7 @@ class VorschlagKarte extends ConsumerWidget {
               const Icon(Icons.auto_awesome, size: 18, color: AppColors.honeyDark),
               const SizedBox(width: 8),
               Expanded(child: Text(r.titel, style: const TextStyle(fontWeight: FontWeight.w600))),
-              Text('bis $bis', style: const TextStyle(fontSize: 12, color: AppColors.brown300)),
+              Text('$von – $bis', style: const TextStyle(fontSize: 12, color: AppColors.brown300)),
             ]),
             const SizedBox(height: 6),
             Text(vorschlag.beschreibung, style: const TextStyle(fontSize: 13, color: AppColors.brown600)),
