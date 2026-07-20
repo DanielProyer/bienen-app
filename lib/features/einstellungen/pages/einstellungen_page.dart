@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/einstellungen/domain/winterfutter_warnung.dart';
+import 'package:bienen_app/features/phaenologie/presentation/widgets/phaenologie_sektion.dart';
 import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 
@@ -169,6 +170,8 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
               value: _vermehrung,
               onChanged: (on) => setState(() => _vermehrung = on),
             ),
+            const Divider(height: 32),
+            const PhaenologieSektion(),
             const SizedBox(height: 24),
             FilledButton(onPressed: _speichern, child: const Text('Speichern')),
           ],
