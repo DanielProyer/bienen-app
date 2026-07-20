@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:bienen_app/features/aufgaben/domain/saison_regeln.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/fuetterung/domain/futterart.dart';
 import 'package:bienen_app/features/fuetterung/presentation/providers/fuetterung_provider.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
+import 'package:bienen_app/features/phaenologie/domain/phaenologie.dart';
+import 'package:bienen_app/features/phaenologie/presentation/providers/phaenologie_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 
 class FuetterungFormPage extends ConsumerStatefulWidget {
@@ -39,6 +42,8 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
       await Future.wait([
         ref.read(materialListProvider.future),
         ref.read(voelkerListProvider.future),
+        ref.read(phaenologieProvider.future),
+        ref.read(betriebsEinstellungenProvider.future),
       ]);
     } catch (_) {/* Dropdowns bleiben ggf. leer; Speichern zeigt Fehler */}
     if (mounted) setState(() => _geladen = true);
@@ -64,6 +69,18 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
 
     final selektierte = voelker.where((v) => _volkIds.contains(v.id)).toList();
     final zeigeBioBanner = !_bio && selektierte.any((v) => v.bioStatus != 'konventionell');
+
+    final einst = ref.watch(betriebsEinstellungenProvider).valueOrNull;
+    final beob = ref.watch(phaenologieProvider).valueOrNull ?? const [];
+    final fenster = einst == null
+        ? null
+        : trachtFensterFuer(
+            jahr: _datum.year,
+            flatOffset: einst.saisonOffsetDefaultTage,
+            beobachtungen: beob,
+            einstellungen: einst);
+    final honigHinweis = honigreinheitHinweis(
+        futterart: _futterart, zweck: _zweck, datum: _datum, trachtFenster: fenster);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Fütterung erfassen')),
@@ -135,6 +152,22 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
                     Expanded(child: Text(
                       'Nicht bio-zertifiziertes Futter auf: ${selektierte.where((v) => v.bioStatus != 'konventionell').map((v) => v.name).join(', ')}',
                     )),
+                  ]),
+                ),
+              if (honigHinweis != HonigreinheitHinweis.keiner)
+                Container(
+                  margin: const EdgeInsets.only(top: 12),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      color: Colors.amber.withAlpha(38), borderRadius: BorderRadius.circular(8)),
+                  child: Row(children: [
+                    const Icon(Icons.info_outline, color: Colors.amber),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(honigHinweis == HonigreinheitHinweis.notfuetterung
+                          ? 'Notfütterung: Honig aus dieser Periode nicht als reinen Honig ernten (BGD 4.2).'
+                          : 'Zuckerfütterung während der Tracht kann den Honig verfälschen (BGD 4.2).'),
+                    ),
                   ]),
                 ),
               const SizedBox(height: 16),

@@ -4,6 +4,7 @@ import 'package:bienen_app/features/aufgaben/data/supabase_aufgaben_gateway.dart
 import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
 import 'package:bienen_app/features/aufgaben/domain/aufgaben_gateway.dart';
 import 'package:bienen_app/features/aufgaben/domain/saison_regeln.dart';
+import 'package:bienen_app/features/phaenologie/presentation/providers/phaenologie_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 
 final aufgabenGatewayProvider =
@@ -77,11 +78,13 @@ final vorschlaegeProvider = Provider<List<AufgabenVorschlag>>((ref) {
   final einst = ref.watch(betriebsEinstellungenProvider).valueOrNull;
   if (aufgaben == null || einst == null) return const [];
   final aktive = ref.watch(aktiveVoelkerProvider);
+  final beob = ref.watch(phaenologieProvider).valueOrNull ?? const [];
   return anstehendeVorschlaege(
     stichtag: DateTime.now(),
     saisonOffsetTage: einst.saisonOffsetDefaultTage,
     regelAufgaben: aufgaben.where((a) => a.quelle == 'regel').toList(),
     anzahlAktiveVoelker: aktive.length,
     einstellungen: einst,
+    beobachtungen: beob,
   );
 });

@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
 import 'package:bienen_app/features/aufgaben/domain/saison_regeln.dart';
 import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
+import 'package:bienen_app/features/phaenologie/domain/phaenologie.dart';
+import 'package:bienen_app/features/phaenologie/domain/beobachtung.dart';
 
 Aufgabe _regelAufgabe(String key, int jahr, DateTime faellig,
         {String status = 'offen', String? volkId = 'v1'}) =>
@@ -236,5 +238,132 @@ void main() {
 
   test('Notbehandlungs-Regel varroakontrolle_fruehsommer existiert', () {
     expect(kSaisonRegeln.map((r) => r.key), contains('varroakontrolle_fruehsommer'));
+  });
+
+  group('Phänologie: effektiverOffset', () {
+    final loewenzahn = kSaisonRegeln.firstWhere((r) => r.key == 'fruehjahrsdurchsicht'); // phase=fruehjahr (nach Task 7)
+    test('Beobachtung -> DOY-Differenz, geklemmt auf ±60', () {
+      // Löwenzahn referenzDoy 115; Blüte 6.6. (DOY 157) -> +42
+      final b = PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.fruehjahr, indikatorKey: 'loewenzahn', bluehAm: DateTime(2026, 6, 6));
+      expect(effektiverOffset(regel: loewenzahn, saisonJahr: 2026, beobachtungen: [b], flatOffset: 0), 42);
+      // Fehleingabe 5.2. (DOY 36) -> -79 -> geklemmt auf -60
+      final falsch = PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.fruehjahr, indikatorKey: 'loewenzahn', bluehAm: DateTime(2026, 2, 5));
+      expect(effektiverOffset(regel: loewenzahn, saisonJahr: 2026, beobachtungen: [falsch], flatOffset: 0), -60);
+    });
+    test('keine passende Beobachtung -> flatOffset (offsetAnwenden) bzw. 0', () {
+      expect(effektiverOffset(regel: loewenzahn, saisonJahr: 2026, beobachtungen: const [], flatOffset: 42), 42);
+      final kalenderfix = kSaisonRegeln.firstWhere((r) => r.key == 'sommerbehandlung_2');
+      expect(effektiverOffset(regel: kalenderfix, saisonJahr: 2026, beobachtungen: const [], flatOffset: 42), 0);
+    });
+    test('anker-Mismatch (tracht-Key auf fruehjahr-Regel) -> Fallback', () {
+      final b = PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.fruehjahr, indikatorKey: 'alpenrose', bluehAm: DateTime(2026, 6, 14));
+      // indikatorVon('alpenrose').anker == tracht != fruehjahr -> Fallback flatOffset
+      expect(effektiverOffset(regel: loewenzahn, saisonJahr: 2026, beobachtungen: [b], flatOffset: 42), 42);
+    });
+  });
+
+  group('Phänologie: Ketten-Anker', () {
+    // Alpenrose 14.6. (DOY 165), referenzDoy 125 -> honigernte-Offset +40 (Ernte ~15.7., Arosa-nah).
+    final trachtBeob = [PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.tracht, indikatorKey: 'alpenrose', bluehAm: DateTime(2026, 6, 14))];
+
+    List<AufgabenVorschlag> lauf({List<PhaenoBeobachtung> beob = const [], BetriebsEinstellungen? e, DateTime? stichtag}) =>
+        anstehendeVorschlaege(
+          stichtag: stichtag ?? DateTime(2026, 7, 1),
+          saisonOffsetTage: 42,
+          regelAufgaben: const [],
+          anzahlAktiveVoelker: 1,
+          einstellungen: e ?? const BetriebsEinstellungen.leer(),
+          beobachtungen: beob,
+        );
+
+    DateTime faellig(List<AufgabenVorschlag> v, String key) =>
+        v.firstWhere((x) => x.regel.key == key).faelligAm;
+
+    // Robuste Stichtag-Wahl: je Regel im eigenen Sichtfenster ([start-14 .. ende]) abgreifen.
+    DateTime faelligBei(String key, DateTime stichtag, {List<PhaenoBeobachtung> beob = const [], BetriebsEinstellungen? e}) =>
+        faellig(lauf(beob: beob, e: e, stichtag: stichtag), key);
+
+    test('Rückwärtskompatibilität: ohne Beobachtung sommerbehandlung_1 kalenderfix 15.8.', () {
+      // Stichtag 10.7. liegt im 14-Tage-Vorlauf des Basisfensters (sichtbar ab 6.7.).
+      final v = lauf(stichtag: DateTime(2026, 7, 10));
+      expect(faellig(v, 'sommerbehandlung_1'), DateTime(2026, 8, 15));
+    });
+
+    test('Mit Tracht-Beobachtung: sommerbehandlung_1 folgt der Ernte (ErnteEnde+12) und trifft Ende Juli', () {
+      // Ernte-Ende bei Stichtag 1.7. (honigernte-Fenster ~29.6.-15.7. sichtbar), Behandlung bei 10.7.
+      final ernteEnde = faelligBei('honigernte', DateTime(2026, 7, 1), beob: trachtBeob);
+      final beh = faelligBei('sommerbehandlung_1', DateTime(2026, 7, 10), beob: trachtBeob);
+      expect(beh, isNot(DateTime(2026, 8, 15))); // nicht mehr kalenderfix
+      // Ketten-Anker exakt: Behandlungs-Ende = Ernte-Ende + ankerVersatzEndeTage (12).
+      expect(beh, DateTime(ernteEnde.year, ernteEnde.month, ernteEnde.day + 12));
+      // Spec-Ziel erreicht: Behandlung Ende Juli (nach der Alpenrose-kalibrierten Ernte Mitte Juli).
+      expect(beh.month, 7);
+      expect(beh.isBefore(DateTime(2026, 8, 1)), isTrue);
+    });
+
+    test('Ordnung mit Beobachtung: honigernte <= gemuelldiagnose_sommer <= sommerbehandlung_1', () {
+      // 10.7. liegt im gemeinsamen Sichtfenster aller drei (honigernte ~29.6.-15.7.,
+      // gemuelldiagnose ~15.-18.7. ab Vorlauf 1.7., sommerbehandlung_1 ~20.-27.7. ab Vorlauf 6.7.).
+      final v = lauf(beob: trachtBeob, stichtag: DateTime(2026, 7, 10));
+      final e = faellig(v, 'honigernte');
+      final d = faellig(v, 'gemuelldiagnose_sommer');
+      final b = faellig(v, 'sommerbehandlung_1');
+      expect(e.isAfter(d), isFalse);
+      expect(d.isAfter(b), isFalse);
+    });
+
+    test('2-Ernten: __letzte_ernte -> honigernte_sommer; Behandlung nach der 2. Ernte', () {
+      final e2 = const BetriebsEinstellungen(anzahlErnten: 2);
+      // 2. Ernte hängt an der 1. (+35..45): honigernte_sommer ~19.-29.8.; sommerbehandlung_1 danach.
+      final sommer = faelligBei('honigernte_sommer', DateTime(2026, 8, 25), beob: trachtBeob, e: e2);
+      final beh = faelligBei('sommerbehandlung_1', DateTime(2026, 9, 1), beob: trachtBeob, e: e2);
+      expect(beh.isBefore(sommer), isFalse);
+    });
+
+    test('Cross-Phasen bei Teil-Beobachtung: nur Frühjahr -> honigraum_aufsetzen <= honigernte', () {
+      final nurFr = [PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.fruehjahr, indikatorKey: 'loewenzahn', bluehAm: DateTime(2026, 6, 10))];
+      // Ohne Tracht-Beobachtung fallen honigraum_aufsetzen + honigernte auf den flachen Offset +42
+      // zurück (22.5.-11.6. bzw. 1.7.-17.7.) — je im eigenen Sichtfenster abgreifen.
+      final auf = faelligBei('honigraum_aufsetzen', DateTime(2026, 6, 1), beob: nurFr);
+      final ernte = faelligBei('honigernte', DateTime(2026, 7, 1), beob: nurFr);
+      expect(auf.isAfter(ernte), isFalse);
+    });
+
+    test('Cross-Phasen Gegenrichtung: nur Tracht beobachtet -> honigraum_aufsetzen <= honigernte', () {
+      // Beide sind phase=tracht -> teilen den Tracht-Offset (+40) -> Basis-Ordnung erhalten.
+      final auf = faelligBei('honigraum_aufsetzen', DateTime(2026, 6, 1), beob: trachtBeob);
+      final ernte = faelligBei('honigernte', DateTime(2026, 7, 1), beob: trachtBeob);
+      expect(auf.isAfter(ernte), isFalse);
+    });
+
+    test('Safety: implausible Tracht-Beobachtung wird auf -60 geklemmt (kein Winter-/Vorjahres-Rutsch)', () {
+      // Fat-Finger: Alpenrose 5.2. (DOY 36) -> Roh-Offset 36-125 = -89 -> geklemmt auf -60.
+      // Die ±60-Klemme begrenzt das Grobe; die subtile Fehleingabe fängt der Eingabe-Hinweis (±45, §4.1).
+      final murks = [PhaenoBeobachtung(jahr: 2026, anker: PhaenoAnker.tracht, indikatorKey: 'alpenrose', bluehAm: DateTime(2026, 2, 5))];
+      // honigernte-Ende Basis 5.6. -60 = 6.4. (geklemmt); OHNE Klemme wäre es -89 = 8.3.
+      final ernteEnde = faelligBei('honigernte', DateTime(2026, 4, 1), beob: murks);
+      expect(ernteEnde, DateTime(2026, 4, 6)); // exakt die -60-Grenze, nicht -89
+      expect(ernteEnde.isAfter(DateTime(2026, 3, 1)), isTrue); // kein Rutsch in Winter/Vorjahr
+      // Kette bleibt konsistent (Behandlung = Ernte-Ende + 12), keine Duration-/Rollover-Anomalie.
+      final beh = faelligBei('sommerbehandlung_1', DateTime(2026, 4, 1), beob: murks);
+      expect(beh, DateTime(ernteEnde.year, ernteEnde.month, ernteEnde.day + 12));
+    });
+
+    test('Katalog-Invariante: ankerRegelKey löst azyklisch auf existierende Regel auf (1E + 2E)', () {
+      for (final r in kSaisonRegeln.where((x) => x.ankerRegelKey != null)) {
+        for (final anz in [1, 2]) {
+          var key = r.ankerRegelKey!;
+          final gesehen = <String>{r.key};
+          for (var i = 0; i < 10; i++) {
+            final aufgeloest = key == '__letzte_ernte' ? (anz == 2 ? 'honigernte_sommer' : 'honigernte') : key;
+            final ziel = regelVon(aufgeloest);
+            expect(ziel, isNotNull, reason: '${r.key}: Anker $aufgeloest existiert nicht');
+            expect(gesehen.add(aufgeloest), isTrue, reason: '${r.key}: Zyklus bei $aufgeloest');
+            if (ziel!.ankerRegelKey == null) break;
+            key = ziel.ankerRegelKey!;
+          }
+        }
+      }
+    });
   });
 }

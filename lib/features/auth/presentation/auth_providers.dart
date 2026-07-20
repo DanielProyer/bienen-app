@@ -15,6 +15,7 @@ import 'package:bienen_app/features/fuetterung/presentation/providers/fuetterung
 import 'package:bienen_app/features/gesundheit/presentation/providers/gesundheit_provider.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/monitoring/presentation/providers/monitoring_provider.dart';
+import 'package:bienen_app/features/phaenologie/presentation/providers/phaenologie_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 
 final authGatewayProvider =
@@ -91,6 +92,7 @@ class AuthController extends Notifier<AuthState> {
     ref.invalidate(fuetterungenFuerVolkProvider);
     ref.invalidate(gesundheitFuerVolkProvider);
     ref.invalidate(aufgabenListProvider);
+    ref.invalidate(phaenologieProvider);
   }
 }
 
