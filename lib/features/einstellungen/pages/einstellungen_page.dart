@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bienen_app/core/theme/app_theme.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/einstellungen/domain/winterfutter_warnung.dart';
 import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
@@ -120,13 +121,19 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
               decoration: InputDecoration(
                 labelText: 'Winterfutter-Ziel',
                 suffixText: 'kg',
-                helperText: unterMinimum ? null : 'BGD-Minimum: 20 kg (Mittelland).',
-                errorText: unterMinimum ? 'unter BGD-Minimum 20 kg' : null,
+                // Weiche Warnung (Speichern bleibt erlaubt) — kein errorText.
+                helperText: unterMinimum
+                    ? 'unter BGD-Minimum 20 kg'
+                    : 'BGD-Minimum: 20 kg (Mittelland).',
+                helperStyle: unterMinimum
+                    ? const TextStyle(color: AppColors.amber800, fontWeight: FontWeight.w600)
+                    : null,
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
               onChanged: (_) => setState(() {}),
               validator: (v) {
+                // Nur >0 erzwingen; Werte < 20 kg sind erlaubt (weiche Warnung).
                 final n = num.tryParse((v ?? '').trim().replaceAll(',', '.'));
                 if (n == null || n <= 0) return 'Positive Zahl angeben';
                 return null;
