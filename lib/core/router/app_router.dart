@@ -32,6 +32,7 @@ import 'package:bienen_app/features/monitoring/presentation/pages/scale_settings
 import 'package:bienen_app/features/projekt/pages/projekt_page.dart';
 import 'package:bienen_app/features/construction/presentation/pages/construction_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_detail_page.dart';
+import 'package:bienen_app/features/einstellungen/pages/einstellungen_page.dart';
 import 'package:bienen_app/features/durchsicht/presentation/pages/durchsicht_form_page.dart';
 import 'package:bienen_app/features/fuetterung/presentation/pages/fuetterung_form_page.dart';
 import 'package:bienen_app/features/gesundheit/presentation/pages/gesundheit_form_page.dart';
@@ -436,6 +437,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ],
         ),
         GoRoute(path: '/projekt', builder: (context, state) => const ProjektPage()),
+        GoRoute(path: '/einstellungen', builder: (c, s) => const EinstellungenPage()),
         GoRoute(path: '/mehr', redirect: (context, state) => '/projekt'),
         GoRoute(
           path: '/konto',
