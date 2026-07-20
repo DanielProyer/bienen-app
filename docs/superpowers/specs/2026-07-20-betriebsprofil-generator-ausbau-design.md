@@ -87,7 +87,7 @@ Basis = Mittelland; `offsetAnwenden` wie angegeben. Alle mit Merkblatt-Beleg in 
 | `trachtluecke_notfuetterung` | Trachtlücke prüfen — bei Bedarf Notfütterung (Futterteig) | fuetterung | volk | 25.5.–5.7. | ja | — | immer | fuetterung |
 | `jungvoelker_bilden` | Jungvölker/Ableger bilden (Zeitfenster)³ | durchsicht | volk | 20.5.–30.6. | ja | — | **Vermehrung** | — |
 | `koeniginnen_vermehren` | Königinnen vermehren (Nachschaffung)³ | durchsicht | volk | 20.5.–30.6. | ja | — | **Vermehrung** | — |
-| `honigernte_sommer` | 2. Honigernte (Sommer) — Reife prüfen | sonstiges | volk | 1.7.–20.7. | ja | — | **Anzahl Ernten=2** | — |
+| `honigernte_sommer` | 2. Honigernte (Sommer) — Reife prüfen | sonstiges | volk | 1.7.–20.7. | **nein**⁶ | — | **Anzahl Ernten=2** | — |
 | `umweiselung_pruefen` | Alte Königin ersetzen prüfen (>2-jährig) | durchsicht | volk | 1.8.–31.8. | **nein**⁴ | — | immer | — |
 | `wabenerneuerung_herbst` | Alte Brutwaben entnehmen (Ziel 1/3 pro Jahr) | durchsicht | volk | 15.8.–30.9. | **nein**⁴ | — | immer | — |
 | `serbelvoelker_herbst` | Serbelvölker auflösen/abschwefeln | durchsicht | volk | 1.9.–30.9. | **nein**⁴ | — | immer | — |
@@ -99,6 +99,7 @@ Basis = Mittelland; `offsetAnwenden` wie angegeben. Alle mit Merkblatt-Beleg in 
 ³ **Flat-Offset-Grenze (→ C):** für alpine Betriebe schiebt +42 das Ableger-Fenster in die riskante Juli/August-Zone (25_Vermehrung:277 „frühe Ableger Juni vorzuziehen"). Für Arosa unkritisch (Vermehrung Default aus); als bekannte Grenze dokumentiert, exakt via Phänologie (C).
 ⁴ **offset=nein (Review-BLOCKER korrigiert):** alpine Vorwinterarbeit liegt FRÜHER, nicht später — ein positiver Offset (+42) würde Umweiselung/Serbelvölker/Wabenerneuerung fatal in Okt/Nov schieben (keine begatteten Königinnen mehr; Wintertraube → Vereinigung unmöglich). Basisfenster Aug/Sep sind für beide Lagen tragbar (Mittelland kann bis Okt, Arosa MUSS bis spätestens Sep). Analog zu den bestehenden Herbst-Regeln.
 ⁵ Als eigenständige Januar-Regel `1.1.–20.1.` (kalenderfix) modelliert — NICHT über den Jahreswechsel (Gotcha 11 + Katalog-Test bleiben intakt); der Bezug „2 Wochen nach Oxalsäure (Nov/Dez)" ist fachlich robust.
+⁶ **offset=nein (beim Plan-Schreiben erkannt):** wäre `honigernte_sommer` offset-basiert, fiele sie bei Offset 42 (fällig 31.8.) NACH der kalenderfixen `sommerbehandlung_1` (fällig 15.8.) → Behandlung vor 2. Ernte, Invariante bräche. **2 Ernten = Mittelland-Konzept** (niedriger Offset); das fixe Früh-Juli-Fenster ist Mittelland-korrekt und garantiert `honigernte_sommer.fällig (20.7.) ≤ sommerbehandlung_1.fällig (15.8.)` für **alle** Offsets. (Ein unrealistischer alpin-Betrieb mit 2 Ernten wäre ohnehin über `anzahl_ernten` konfigurierbar; die Kombi 2-Ernten+grosser-Offset ist praktisch ausgeschlossen.)
 
 `wabenhygiene` (bestehend): `beschreibung` um „Ziel: 1/3 der Brutwaben pro Jahr erneuern (3-Jahres-Zyklus)" ergänzen.
 
