@@ -7,6 +7,7 @@
 library;
 
 import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
+import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
 
 enum RegelEbene { volk, betrieb }
 
@@ -20,6 +21,8 @@ class SaisonRegel {
   final bool offsetAnwenden;
   final int? intervallTage;
   final String? aktionRoute; // 'durchsicht'|'behandlung'|'fuetterung'|'varroa'|null
+  final bool nurBeiVermehrung;
+  final int? nurBeiAnzahlErnten;
 
   const SaisonRegel({
     required this.key,
@@ -34,6 +37,8 @@ class SaisonRegel {
     this.offsetAnwenden = false,
     this.intervallTage,
     this.aktionRoute,
+    this.nurBeiVermehrung = false,
+    this.nurBeiAnzahlErnten,
   });
 }
 
@@ -152,6 +157,21 @@ SaisonRegel? regelVon(String? key) {
   return null;
 }
 
+/// Auflösung des Aufgabentexts je Betriebsstrategie (heute nur sommerbehandlung_1 nach Methode).
+String beschreibungFuer(SaisonRegel r, BetriebsEinstellungen e) {
+  if (r.key == 'sommerbehandlung_1') {
+    switch (e.sommerbehandlungMethode) {
+      case 'biotechnisch':
+        return '1. Sommerbehandlung biotechnisch (Brutstopp/Bannwabe/komplette Brutentnahme) — Vorbereitung ab 1. Juli-Hälfte.';
+      case 'beide':
+        return '1. Sommerbehandlung: Ameisensäure ODER biotechnisch (Brutstopp/Bannwabe) — nach der Ernte, vor Ende Juli.';
+      default: // ameisensaeure
+        return '1. Sommerbehandlung mit Ameisensäure starten (vor Ende Juli, Temperaturfenster beachten).';
+    }
+  }
+  return r.beschreibung;
+}
+
 // --- Generator ---
 
 /// Vorlauf, mit dem Fenster-Regeln vor Fensterbeginn erscheinen.
@@ -166,12 +186,14 @@ class AufgabenVorschlag {
   final DateTime fensterEnde;
   final DateTime faelligAm;
   final int saisonJahr;
+  final String beschreibung;
   const AufgabenVorschlag({
     required this.regel,
     required this.fensterStart,
     required this.fensterEnde,
     required this.faelligAm,
     required this.saisonJahr,
+    required this.beschreibung,
   });
 }
 
@@ -186,11 +208,14 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
   required int saisonOffsetTage,
   required List<Aufgabe> regelAufgaben,
   required int anzahlAktiveVoelker,
+  BetriebsEinstellungen einstellungen = const BetriebsEinstellungen.leer(),
 }) {
   final heute = _tag(stichtag);
   final out = <AufgabenVorschlag>[];
   for (final r in kSaisonRegeln) {
     if (r.ebene == RegelEbene.volk && anzahlAktiveVoelker == 0) continue;
+    if (r.nurBeiVermehrung && !einstellungen.vermehrungAktiv) continue;
+    if (r.nurBeiAnzahlErnten != null && einstellungen.anzahlErnten != r.nurBeiAnzahlErnten) continue;
     // DST-sicher: Tages-Arithmetik ausschliesslich über Kalenderkomponenten
     // (Dart normalisiert Überlauf auf lokale Mitternacht) — NIE Duration addieren,
     // sonst kippt das Datum bei Offsets über die Zeitumstellung (Europe/Zurich).
@@ -207,7 +232,8 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
         if (vorhanden.isNotEmpty) continue;
         if (heute.isBefore(DateTime(start.year, start.month, start.day - kVorlaufTage))) continue;
         out.add(AufgabenVorschlag(
-            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: ende, saisonJahr: jahr));
+            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: ende, saisonJahr: jahr,
+            beschreibung: beschreibungFuer(r, einstellungen)));
       } else {
         DateTime faellig;
         if (vorhanden.isEmpty) {
@@ -223,7 +249,8 @@ List<AufgabenVorschlag> anstehendeVorschlaege({
         }
         if (faellig.isAfter(ende)) continue;
         out.add(AufgabenVorschlag(
-            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: faellig, saisonJahr: jahr));
+            regel: r, fensterStart: start, fensterEnde: ende, faelligAm: faellig, saisonJahr: jahr,
+            beschreibung: beschreibungFuer(r, einstellungen)));
       }
     }
   }

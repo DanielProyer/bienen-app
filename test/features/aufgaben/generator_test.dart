@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
 import 'package:bienen_app/features/aufgaben/domain/saison_regeln.dart';
+import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
 
 Aufgabe _regelAufgabe(String key, int jahr, DateTime faellig,
         {String status = 'offen', String? volkId = 'v1'}) =>
@@ -148,5 +149,30 @@ void main() {
     for (var i = 1; i < v.length; i++) {
       expect(v[i - 1].faelligAm.isAfter(v[i].faelligAm), isFalse);
     }
+  });
+
+  test('beschreibungFuer: sommerbehandlung_1 je Methode', () {
+    final r = kSaisonRegeln.firstWhere((x) => x.key == 'sommerbehandlung_1');
+    expect(beschreibungFuer(r, const BetriebsEinstellungen(sommerbehandlungMethode: 'ameisensaeure')),
+        contains('Ameisensäure'));
+    expect(beschreibungFuer(r, const BetriebsEinstellungen(sommerbehandlungMethode: 'biotechnisch')),
+        contains('biotechnisch'));
+    // andere Regel: unverändert
+    final d = kSaisonRegeln.firstWhere((x) => x.key == 'drohnenschnitt');
+    expect(beschreibungFuer(d, const BetriebsEinstellungen.leer()), d.beschreibung);
+  });
+
+  test('AufgabenVorschlag trägt aufgelöste beschreibung', () {
+    final v = anstehendeVorschlaege(stichtag: DateTime(2026, 7, 25), saisonOffsetTage: 0,
+        regelAufgaben: const [], anzahlAktiveVoelker: 1,
+        einstellungen: const BetriebsEinstellungen(sommerbehandlungMethode: 'biotechnisch'));
+    final sb = v.firstWhere((x) => x.regel.key == 'sommerbehandlung_1');
+    expect(sb.beschreibung, contains('biotechnisch'));
+  });
+
+  test('Default-Parameter hält Alt-Aufrufe kompilierbar (ohne einstellungen)', () {
+    final v = anstehendeVorschlaege(stichtag: DateTime(2026, 6, 1), saisonOffsetTage: 0,
+        regelAufgaben: const [], anzahlAktiveVoelker: 1);
+    expect(v, isNotEmpty);
   });
 }

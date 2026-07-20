@@ -34,7 +34,7 @@ void main() {
     final regel = kSaisonRegeln.firstWhere((r) => r.key == 'startfuetterung');
     final v = AufgabenVorschlag(
       regel: regel, fensterStart: DateTime(2026, 7, 15), fensterEnde: DateTime(2026, 7, 31),
-      faelligAm: DateTime(2026, 7, 31), saisonJahr: 2026,
+      faelligAm: DateTime(2026, 7, 31), saisonJahr: 2026, beschreibung: regel.beschreibung,
     );
     await c.read(aufgabenListProvider.notifier).vorschlagAnnehmen(v, volkIds: ['v1', 'v2']);
     final rows = await gw.alle();
@@ -51,7 +51,7 @@ void main() {
     final regel = kSaisonRegeln.firstWhere((r) => r.key == 'maeuseschutz_ansetzen');
     final v = AufgabenVorschlag(
       regel: regel, fensterStart: DateTime(2026, 10, 1), fensterEnde: DateTime(2026, 10, 31),
-      faelligAm: DateTime(2026, 10, 31), saisonJahr: 2026,
+      faelligAm: DateTime(2026, 10, 31), saisonJahr: 2026, beschreibung: regel.beschreibung,
     );
     await c.read(aufgabenListProvider.notifier).vorschlagAnnehmen(v, volkIds: ['v1', 'v2']);
     final rows = await gw.alle();
@@ -68,7 +68,7 @@ void main() {
     final regel = kSaisonRegeln.firstWhere((r) => r.key == 'sommerbehandlung_1');
     final v = AufgabenVorschlag(
       regel: regel, fensterStart: DateTime(2026, 7, 20), fensterEnde: DateTime(2026, 8, 15),
-      faelligAm: DateTime(2026, 8, 15), saisonJahr: 2026,
+      faelligAm: DateTime(2026, 8, 15), saisonJahr: 2026, beschreibung: regel.beschreibung,
     );
     await c.read(aufgabenListProvider.notifier).vorschlagUeberspringen(v);
     final rows = await gw.alle();
