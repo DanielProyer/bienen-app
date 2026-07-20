@@ -42,9 +42,9 @@ const kIndikatorpflanzen = <Indikatorpflanze>[
   Indikatorpflanze(key: 'loewenzahn',   name: 'Löwenzahn',    anker: PhaenoAnker.fruehjahr, referenzDoy: 115), // ~25.4. (Default)
   // Tracht — treibt die Honigernte + (per Kette) die Varroa-Sommerbehandlung.
   // Hochlagen-Zeiger zuerst (in Arosa real beobachtbar), dann Tal-Zeiger für tiefere Mandanten.
-  Indikatorpflanze(key: 'alpenrose',     name: 'Alpenrose',            anker: PhaenoAnker.tracht, referenzDoy: 160), // Hochlagen-Haupttracht-Marker (Default)
-  Indikatorpflanze(key: 'bergwiesen',    name: 'Bergwiesen-Vollblüte', anker: PhaenoAnker.tracht, referenzDoy: 160),
-  Indikatorpflanze(key: 'weidenroeschen',name: 'Weidenröschen',        anker: PhaenoAnker.tracht, referenzDoy: 175),
+  Indikatorpflanze(key: 'alpenrose',     name: 'Alpenrose',            anker: PhaenoAnker.tracht, referenzDoy: 125), // Kalibrier-DOY: Arosa-Blüte ~Mitte Juni − ~+42 (Default)
+  Indikatorpflanze(key: 'bergwiesen',    name: 'Bergwiesen-Vollblüte', anker: PhaenoAnker.tracht, referenzDoy: 125),
+  Indikatorpflanze(key: 'weidenroeschen',name: 'Weidenröschen',        anker: PhaenoAnker.tracht, referenzDoy: 148),
   Indikatorpflanze(key: 'linde',         name: 'Linde',                anker: PhaenoAnker.tracht, referenzDoy: 176), // Tal (~25.6.)
   Indikatorpflanze(key: 'edelkastanie',  name: 'Edelkastanie',         anker: PhaenoAnker.tracht, referenzDoy: 182), // Tal (~1.7.)
 ];
