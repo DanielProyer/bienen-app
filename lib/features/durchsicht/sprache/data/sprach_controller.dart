@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bienen_app/features/durchsicht/sprache/domain/sprache_erkenner.dart';
-import 'package:bienen_app/features/durchsicht/sprache/data/web_sprache_erkenner.dart';
+// Bedingter Import: Web bekommt die dart:js_interop-Kapsel, VM/Tests einen No-op-Stub
+// (js_interop baut nur auf dem Web-Ziel). Öffentliche Schnittstelle bleibt SpracheErkenner.
+import 'package:bienen_app/features/durchsicht/sprache/data/erkenner_plattform_stub.dart'
+    if (dart.library.js_interop) 'package:bienen_app/features/durchsicht/sprache/data/erkenner_plattform_web.dart';
 
 final spracheErkennerProvider = Provider<SpracheErkenner>((ref) {
-  final e = WebSpracheErkenner();
+  final e = spracheErkennerErstellen();
   ref.onDispose(e.dispose);
   return e;
 });
