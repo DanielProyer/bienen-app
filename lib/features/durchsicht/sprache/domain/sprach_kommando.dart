@@ -1,3 +1,5 @@
+import 'package:bienen_app/features/durchsicht/domain/wabe.dart';
+
 /// Deutsche Zahl aus einem bereits normalisierten Token: Ziffern ODER Zahlwörter 0-99. null = keine Zahl.
 num? deutscheZahl(String s) {
   final t = s.trim();
@@ -149,4 +151,82 @@ SprachKommando? parseKommando(String transkript, SprachKontext kontext) {
     }
   }
   return null;
+}
+
+// ===== v2: Waben-Durchgang =====
+sealed class WabenAktion { const WabenAktion(); }
+class InhaltAktion extends WabenAktion { final String key; final bool an; const InhaltAktion(this.key, this.an); }
+class FlagAktion extends WabenAktion { final String flag; final bool an; const FlagAktion(this.flag, this.an); }
+class SchiedAktion extends WabenAktion { const SchiedAktion(); }
+class NaechsteAktion extends WabenAktion { const NaechsteAktion(); }
+class ZurueckAktion extends WabenAktion { const ZurueckAktion(); }
+
+// Alias-Keys sind NORMALISIERT (umlaut-gefoldet), weil normalisiere() zuerst läuft.
+const _wabenInhaltAlias = <String, String>{
+  'brut': 'brut', 'bruet': 'brut',
+  'pollen': 'pollen', 'bluetenstaub': 'pollen',
+  'futter': 'futter', 'honig': 'honig',
+  'mittelwand': 'mittelwand', 'leer': 'leer', 'leere': 'leer',
+  'baurahmen': 'baurahmen', 'bauraehmchen': 'baurahmen', 'drohnenrahmen': 'baurahmen',
+};
+const _wabenFlagAlias = <String, String>{
+  'koenigin': 'koenigin', 'chuengin': 'koenigin', 'wysle': 'koenigin', 'weisel': 'koenigin', 'majestaet': 'koenigin',
+  'weiselzelle': 'weiselzelle', 'weiselnaepfchen': 'weiselzelle', 'schwarmzelle': 'weiselzelle',
+  'stifte': 'stifte', 'stift': 'stifte', 'eier': 'stifte',
+};
+const _wabenNaechste = {'naechste', 'weiter', 'vor', 'wyter', 'noechschti', 'nechschti'};
+const _wabenZurueck = {'zurueck', 'zrugg', 'rueckwaerts'};
+const _wabenSchied = {'schied', 'trennschied', 'trenner'};
+const _wabenNegation = {'kein', 'keine', 'ohne', 'nicht', 'nein'};
+
+/// Zerlegt einen Satz in Waben-Aktionen. Negation wirkt auf das nächste bekannte Inhalt/Flag-Token.
+List<WabenAktion> parseWabenKommandos(String transkript) {
+  final out = <WabenAktion>[];
+  var neg = false;
+  for (final tok in normalisiere(transkript).split(' ')) {
+    if (tok.isEmpty) continue;
+    if (_wabenNegation.contains(tok)) { neg = true; continue; }
+    if (_wabenInhaltAlias.containsKey(tok)) { out.add(InhaltAktion(_wabenInhaltAlias[tok]!, !neg)); neg = false; continue; }
+    if (_wabenFlagAlias.containsKey(tok)) { out.add(FlagAktion(_wabenFlagAlias[tok]!, !neg)); neg = false; continue; }
+    if (_wabenSchied.contains(tok)) { out.add(const SchiedAktion()); neg = false; continue; }
+    if (_wabenNaechste.contains(tok)) { out.add(const NaechsteAktion()); neg = false; continue; }
+    if (_wabenZurueck.contains(tok)) { out.add(const ZurueckAktion()); neg = false; continue; }
+    // unbekannt: Negation bleibt fürs nächste bekannte Token bestehen (kurze Sätze)
+  }
+  return out;
+}
+
+/// Wendet Aktionen auf (liste, aktiv) an → (neue Liste, neuer Index). REIN. „nächste" am Ende hängt eine leere Wabe an.
+(List<WabeBeobachtung>, int) wendeWabenAktionen(List<WabeBeobachtung> liste, int aktiv, List<WabenAktion> aktionen) {
+  var ws = [...liste];
+  var a = aktiv;
+  for (final akt in aktionen) {
+    if (ws.isEmpty) break;
+    a = a.clamp(0, ws.length - 1);
+    final w = ws[a];
+    switch (akt) {
+      case InhaltAktion(:final key, :final an):
+        if (!w.schied) {
+          final set = {...w.inhalte};
+          an ? set.add(key) : set.remove(key);
+          ws[a] = WabeBeobachtung(inhalte: set, koenigin: w.koenigin, weiselzelle: w.weiselzelle, stifte: w.stifte);
+        }
+      case FlagAktion(:final flag, :final an):
+        if (!w.schied) {
+          ws[a] = WabeBeobachtung(inhalte: w.inhalte,
+              koenigin: flag == 'koenigin' ? an : w.koenigin,
+              weiselzelle: flag == 'weiselzelle' ? an : w.weiselzelle,
+              stifte: flag == 'stifte' ? an : w.stifte);
+        }
+      case SchiedAktion():
+        ws = ws.sublist(0, a + 1);
+        ws[a] = const WabeBeobachtung(schied: true);
+      case NaechsteAktion():
+        if (a >= ws.length - 1) ws.add(const WabeBeobachtung());
+        a++;
+      case ZurueckAktion():
+        if (a > 0) a--;
+    }
+  }
+  return (ws, a.clamp(0, ws.isEmpty ? 0 : ws.length - 1));
 }
