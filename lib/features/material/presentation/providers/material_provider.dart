@@ -50,80 +50,17 @@ final archivItemsProvider = Provider<List<MaterialItem>>((ref) =>
 /// der AKTIVEN Völker (aktiveVoelkerProvider ist synchron, liefert die Liste
 /// direkt).
 final kostenDashboardProvider = Provider<KostenDashboard>((ref) {
-  final items = ref.watch(materialListProvider).valueOrNull ?? const <MaterialItem>[];
+  final items =
+      ref.watch(materialListProvider).valueOrNull ?? const <MaterialItem>[];
   final purchases =
       ref.watch(materialPurchasesProvider).valueOrNull ?? const <MaterialPurchase>[];
   final anzahl = ref.watch(aktiveVoelkerProvider).length;
   return berechneKostenDashboard(items, purchases, anzahl);
 });
 
-final selectedCategoryProvider = StateProvider<String?>((ref) => null);
-final selectedPhaseProvider = StateProvider<int?>((ref) => null);
-final selectedBereichProvider = StateProvider<String?>((ref) => null);
-
-final filteredMaterialProvider = Provider<List<MaterialItem>>((ref) {
-  final itemsAsync = ref.watch(materialListProvider);
-  final items = itemsAsync.valueOrNull ?? [];
-  final category = ref.watch(selectedCategoryProvider);
-  final phase = ref.watch(selectedPhaseProvider);
-
-  var filtered = items;
-  if (category != null) {
-    filtered = filtered.where((i) => i.category == category).toList();
-  }
-  if (phase != null) {
-    filtered = filtered.where((i) => i.phase == phase).toList();
-  }
-  return filtered;
-});
-
-final categoryTotalsProvider = Provider<Map<String, double>>((ref) {
-  final itemsAsync = ref.watch(materialListProvider);
-  final items = itemsAsync.valueOrNull ?? [];
-  final totals = <String, double>{};
-  for (final item in items) {
-    totals[item.category] = (totals[item.category] ?? 0) + item.totalPrice;
-  }
-  return totals;
-});
-
-final grandTotalProvider = Provider<double>((ref) {
-  final itemsAsync = ref.watch(materialListProvider);
-  final items = itemsAsync.valueOrNull ?? [];
-  return items.fold(0.0, (sum, item) => sum + item.totalPrice);
-});
-
-/// Items für den Umschalter „Einkaufen": Status geplant/bestellt,
-/// gefiltert nach Bereich (null = alle) und Phase (null = alle).
-final einkaufenItemsProvider = Provider<List<MaterialItem>>((ref) {
-  final items = ref.watch(materialListProvider).valueOrNull ?? [];
-  final bereich = ref.watch(selectedBereichProvider);
-  final phase = ref.watch(selectedPhaseProvider);
-  return items.where((i) {
-    if (i.archiviert) return false; // Archivierte nie in aktiven Ansichten
-    if (i.status != 'geplant' && i.status != 'bestellt') return false;
-    if (bereich != null && i.bereich != bereich) return false;
-    if (phase != null && i.phase != phase) return false;
-    return true;
-  }).toList();
-});
-
-/// Items für den Umschalter „Bestand": Status gekauft,
-/// gefiltert nach Bereich (null = alle).
-final bestandItemsProvider = Provider<List<MaterialItem>>((ref) {
-  final items = ref.watch(materialListProvider).valueOrNull ?? [];
-  final bereich = ref.watch(selectedBereichProvider);
-  return items.where((i) {
-    if (i.archiviert) return false; // Archivierte nie in aktiven Ansichten
-    if (i.status != 'gekauft') return false;
-    if (bereich != null && i.bereich != bereich) return false;
-    return true;
-  }).toList();
-});
-
 /// Verbrauchsmaterial im Bestand (gekauft), das unter den Mindestbestand
 /// gefallen ist – die eigentliche Nachkauf-Warnung. Noch nie gekaufte
-/// (geplante) Verbrauchsartikel stehen in „Einkaufen", nicht hier.
+/// (geplante) Verbrauchsartikel stehen auf der Einkaufsliste, nicht hier.
 final nachkaufenItemsProvider = Provider<List<MaterialItem>>((ref) {
   final items = ref.watch(materialListProvider).valueOrNull ?? [];
   return items.where(istNachzukaufen).toList();
@@ -137,7 +74,8 @@ final materialPurchasesProvider =
     AsyncNotifierProvider<MaterialPurchasesNotifier, List<MaterialPurchase>>(
         MaterialPurchasesNotifier.new);
 
-/// Käufe gruppiert nach materialId.
+/// Käufe gruppiert nach materialId (neueste zuerst, da der Fetch nach
+/// gekauft_am absteigend sortiert).
 final purchasesByMaterialProvider =
     Provider<Map<String, List<MaterialPurchase>>>((ref) {
   final purchases = ref.watch(materialPurchasesProvider).valueOrNull ?? [];
@@ -146,74 +84,6 @@ final purchasesByMaterialProvider =
     (map[p.materialId] ??= []).add(p);
   }
   return map;
-});
-
-/// Aggregierte Ausgaben-Übersicht für den Ausgaben-Tab (global, ohne
-/// Bereich-Filter).
-class AusgabenUebersicht {
-  final double bisher;
-  final double geplant;
-  final Map<String, double> bereichBisher;
-  final Map<String, double> bereichGeplant;
-  final Map<String, double> proZahlungsart;
-
-  const AusgabenUebersicht({
-    required this.bisher,
-    required this.geplant,
-    required this.bereichBisher,
-    required this.bereichGeplant,
-    required this.proZahlungsart,
-  });
-
-  double get gesamt => bisher + geplant;
-}
-
-final ausgabenUebersichtProvider = Provider<AusgabenUebersicht>((ref) {
-  final items = ref.watch(materialListProvider).valueOrNull ?? [];
-  final purchases = ref.watch(materialPurchasesProvider).valueOrNull ?? [];
-
-  // id -> bereich für die Zuordnung Kauf -> Material.
-  final idToBereich = <String, String>{
-    for (final i in items) i.id: i.bereich,
-  };
-
-  var bisher = 0.0;
-  final bereichBisher = <String, double>{};
-  final proZahlungsart = <String, double>{};
-  for (final p in purchases) {
-    final amount = p.gesamtpreis ??
-        ((p.menge != null && p.stueckpreis != null)
-            ? p.menge! * p.stueckpreis!
-            : 0.0);
-    bisher += amount;
-
-    final bereich = idToBereich[p.materialId];
-    if (bereich != null) {
-      bereichBisher[bereich] = (bereichBisher[bereich] ?? 0) + amount;
-    }
-
-    final za = (p.zahlungsart == null || p.zahlungsart!.trim().isEmpty)
-        ? 'Unbekannt'
-        : p.zahlungsart!;
-    proZahlungsart[za] = (proZahlungsart[za] ?? 0) + amount;
-  }
-
-  var geplant = 0.0;
-  final bereichGeplant = <String, double>{};
-  for (final i in items) {
-    if (i.status != 'geplant' && i.status != 'bestellt') continue;
-    final amount = (i.priceCHF ?? 0) * i.quantity;
-    geplant += amount;
-    bereichGeplant[i.bereich] = (bereichGeplant[i.bereich] ?? 0) + amount;
-  }
-
-  return AusgabenUebersicht(
-    bisher: bisher,
-    geplant: geplant,
-    bereichBisher: bereichBisher,
-    bereichGeplant: bereichGeplant,
-    proZahlungsart: proZahlungsart,
-  );
 });
 
 class MaterialPurchasesNotifier extends AsyncNotifier<List<MaterialPurchase>> {
