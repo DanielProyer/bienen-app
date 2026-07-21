@@ -4,6 +4,13 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Wissensdatenbank: kuratierte Fotos (Ebene C) live (v1.26.0)
+
+Dritte Bild-Ebene je Wissens-Eintrag: mitgelieferte, lizenzsaubere Fotos neben der SVG-Skizze (A) und den eigenen Betriebs-Fotos (B). 222/222 Tests, live.
+
+- **D-65 · Bild-Lizenz-Policy für mitgelieferte Assets: nur CC0 / Public Domain / CC BY (kein SA, kein NC/ND).** Grund: die App soll vermarktbar bleiben — Share-alike (viral) und Non-Commercial sind für ein kommerzielles Produkt ausgeschlossen. Quelle Wikimedia Commons; jede Lizenz **einzeln verifiziert** (Commons-API `extmetadata.LicenseShortName` + File-Seite gegengeprüft) und jedes Bild **visuell auf Motiv/Qualität** geprüft, bevor es ins Bundle kommt. Attribution ist bei CC-BY Pflicht → Panel zeigt „Foto: Autor · Lizenz" als Link auf die Commons-Seite. Ein **`WissensBildquelle`-Modell** (autor/lizenz/url) trägt die Attribution; ein **Lizenz-Guard-Test** (jede lizenz enthält CC0/Public Domain/CC BY und NICHT SA/NC) verhindert, dass je ein unzulässig lizenziertes Foto durchrutscht. 7 der 10 Ziel-Einträge bekamen ein Foto; 3 (afb/brut_offen_verdeckelt/stifte) übersprungen, weil auf Commons nur CC-BY-SA verfügbar — lieber kein Foto als ein rechtlich heikles.
+- **Muster für die Bild-Recherche:** Sourcing per Subagent (Commons-API-Suche + Download + visuelle Read-Prüfung + Attributions-Manifest), aber **Lizenz-Verifikation + Bildinhalt final vom Controller gegengeprüft** (Stichproben-WebFetch der File-Seiten, Read aller Bilder) — nichts Ungesehenes/Unverifiziertes ins kommerzielle Bundle.
+
 ## 2026-07-20 — Wissensdatenbank Zyklus 5: Zucht live (v1.25.0)
 
 Kategorie **Zucht & Auslese** (6 Einträge) + Andock an die Volk-Bewertung (4.17, 6 BGD-Achsen). Keine DB. 221/221 Tests, live. Damit sind **alle Modul-Andocke der Wissensdatenbank fertig** (5 Kategorien / 35 Einträge: Durchsicht, Behandlung/Diagnose, Gesundheit, Fütterung, Bewertung). Andock-Muster D-62 pro Achse (ⓘ in der Achsen-Schleife, `bewertung_wissen.dart`-Map). Reuse `brutbild → brut_offen_verdeckelt` (gleiche Beobachtung). Fachreview (Fable 5): Schwarmträgheit=Minimum stimmt mit `aggregiereSaison`; zwei Korrekturen eingearbeitet — **Serbelvolk-Abgrenzung** (schwaches, aber gesundes Kleinvolk wird vereinigt statt getötet — Anfängersicherheit) und **eigener `zucht_gesundheit`-Eintrag** statt Reuse auf `varroa_milbe` (Gesundheit als Zuchtmerkmal = Varroatoleranz + Hygieneverhalten/Bruthygiene + Vitalität, nicht nur Varroa). Damit gilt die Reuse-Regel (D-63): reusen nur, wenn der Zieleintrag das Merkmal wirklich vollständig abbildet — sonst eigener Eintrag.
