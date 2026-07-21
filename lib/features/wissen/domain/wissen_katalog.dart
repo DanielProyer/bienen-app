@@ -24,6 +24,9 @@ const kWissensKatalog = <WissensEintrag>[
         'Buckelbrut (einzeln hochgewölbte Deckel auf Arbeiterzellen, verstreut, mehrere Eier pro Zelle) = '
         'drohnenbrütig/weisellos → rasch handeln. Gewollte Drohnen-Buckelzellen stehen dagegen im Baurahmen.',
     skizze: 'assets/wissen/brutbild.svg',
+    foto: 'assets/wissen/fotos/brut_offen_verdeckelt.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'Einebillion', lizenz: 'CC BY 4.0',
+        url: 'https://commons.wikimedia.org/wiki/File:A_slice_of_the_brood_nest.jpg'),
     mehr: [
       WissensLink(label: 'Bienenvolk & Brut', rechercheAsset: 'assets/recherche/10_Bienenbiologie_Das_Bienenvolk.md'),
       WissensLink(label: 'Völkervermehrung (Weisellosigkeit)', rechercheAsset: 'assets/recherche/13_Voelkervermehrung.md'),
@@ -49,6 +52,9 @@ const kWissensKatalog = <WissensEintrag>[
     kurzinfo: 'Offener Nektar ist glänzend und flüssig, oben in der Wabe. Reifer Honig ist weiß verdeckelt. '
         'Die Menge grob = Anzahl gefüllter Waben.',
     skizze: 'assets/wissen/futter.svg',
+    foto: 'assets/wissen/fotos/futter_nektar.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'Axel Hindemith', lizenz: 'Public Domain',
+        url: 'https://commons.wikimedia.org/wiki/File:Honigwabe_verdeckelt.jpg'),
     mehr: [
       WissensLink(label: 'Bienenvolk & Vorräte', rechercheAsset: 'assets/recherche/10_Bienenbiologie_Das_Bienenvolk.md'),
       WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
@@ -126,6 +132,9 @@ const kWissensKatalog = <WissensEintrag>[
         'Milben/Tag = sofort behandeln). Bienenschonender Dauer-Trend — auf 1570 m die Kalenderzeilen ~4–6 Wochen '
         'später lesen (immer messen, nicht nach Datum gehen).',
     skizze: 'assets/wissen/gemuelldiagnose.svg',
+    foto: 'assets/wissen/fotos/gemuelldiagnose.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'Waugsberg', lizenz: 'CC BY 2.5',
+        url: 'https://commons.wikimedia.org/wiki/File:Bienenvolk-Gemuell.jpg'),
     mehr: [WissensLink(label: 'Varroa-Konzept (alpin)', rechercheAsset: 'assets/recherche/15_Varroa_Bekaempfungskonzept_alpin.md')],
     verwandte: ['varroa_milbe', 'puderzucker_auswaschung'],
     stichworte: ['windel', 'gemuell', 'totenfall', 'milbenfall', 'monitoring', 'diagnose'],
