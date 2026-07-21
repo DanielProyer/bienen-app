@@ -5,7 +5,7 @@ import 'package:bienen_app/features/wissen/domain/wissen_eintrag.dart';
 import 'package:bienen_app/features/wissen/domain/wissen_katalog.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_panel.dart';
 
-const _katIcons = <String, IconData>{'eye': Icons.visibility, 'bug': Icons.pest_control, 'droplet': Icons.water_drop, 'health': Icons.healing};
+const _katIcons = <String, IconData>{'eye': Icons.visibility, 'bug': Icons.pest_control, 'droplet': Icons.water_drop, 'health': Icons.healing, 'zucht': Icons.workspace_premium};
 
 class WissenOverviewPage extends StatefulWidget {
   const WissenOverviewPage({super.key});

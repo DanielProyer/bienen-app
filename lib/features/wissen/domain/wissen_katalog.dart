@@ -5,6 +5,7 @@ const kWissensKategorien = <WissensKategorie>[
   WissensKategorie(key: 'varroa', titel: 'Varroa', icon: 'bug'),
   WissensKategorie(key: 'krankheit', titel: 'Krankheiten', icon: 'health'),
   WissensKategorie(key: 'fuetterung', titel: 'Fütterung', icon: 'droplet'),
+  WissensKategorie(key: 'zucht', titel: 'Zucht & Auslese', icon: 'zucht'),
 ];
 
 const kWissensKatalog = <WissensEintrag>[
@@ -351,6 +352,80 @@ const kWissensKatalog = <WissensEintrag>[
     ],
     verwandte: ['futterwaben', 'afb'],
     stichworte: ['honig', 'fremdhonig', 'afb', 'sporen', 'faulbrut'],
+  ),
+  WissensEintrag(
+    key: 'zucht_beurteilung', titel: 'Völkerbeurteilung & Auslese', kategorie: 'zucht',
+    kurzinfo: 'Die BGD-Völkerbeurteilung bewertet jedes Volk über die Saison auf 6 Merkmalen (Skala 1–4, höher = '
+        'besser): Sanftmut, Wabensitz, Schwarmträgheit, Brutbild, Volksstärke, Gesundheit. Zweck: aus den besten '
+        'Völkern nachziehen (Zuchtmutter), die schwächsten umweiseln. Immer mehrmals pro Saison und möglichst alle '
+        'Völker am selben Tag vergleichen (Tagesform/Wetter beeinflussen die Noten).',
+    skizze: 'assets/wissen/zucht_beurteilung.svg',
+    mehr: [
+      WissensLink(label: 'Zucht & Völkerbeurteilung (BGD)', rechercheAsset: 'assets/recherche/26_Zucht_Voelkerbeurteilung_BGD.md'),
+      WissensLink(label: 'Königinnenzucht', rechercheAsset: 'assets/recherche/12_Koeniginnenzucht.md'),
+    ],
+    verwandte: ['zucht_sanftmut', 'zucht_schwarmtraegheit', 'zucht_volksstaerke'],
+    stichworte: ['beurteilung', 'auslese', 'zuchtwert', 'koerung', 'zuchtmutter', 'selektion'],
+  ),
+  WissensEintrag(
+    key: 'zucht_sanftmut', titel: 'Sanftmut bewerten', kategorie: 'zucht',
+    kurzinfo: 'Wie ruhig bleibt das Volk beim Öffnen und Arbeiten? Skala von stechlustig (1) über nervös (2) und '
+        'sanft (3) bis sehr sanft (4). Bei mildem, trockenem Wetter und ohne Rauch-Überdosis beurteilen (Kälte, '
+        'Gewitterstimmung und viel Rauch verfälschen). Sanftmut ist ein zentrales Zuchtziel — aber tagesform-/'
+        'wetterabhängig, daher mehrfach über die Saison beurteilen.',
+    skizze: 'assets/wissen/zucht_sanftmut.svg',
+    mehr: [WissensLink(label: 'Zucht & Völkerbeurteilung (BGD)', rechercheAsset: 'assets/recherche/26_Zucht_Voelkerbeurteilung_BGD.md')],
+    verwandte: ['zucht_wabensitz', 'zucht_beurteilung'],
+    stichworte: ['sanftmut', 'stechlust', 'temperament', 'wesen'],
+  ),
+  WissensEintrag(
+    key: 'zucht_wabensitz', titel: 'Wabensitz bewerten', kategorie: 'zucht',
+    kurzinfo: 'Wie sitzen die Bienen, wenn du die Wabe herausnimmst? Von flüchtig/abtropfend (1) über laufend (2) '
+        'und ruhig (3) bis fest sitzend (4). Ruhiges, festes Sitzen erleichtert Durchsicht und Königinnensuche und '
+        'gilt als erwünschtes Zuchtmerkmal. Bei ruhiger Wabenführung beurteilen (hektisches Ziehen treibt die '
+        'Bienen auf).',
+    skizze: 'assets/wissen/zucht_wabensitz.svg',
+    mehr: [WissensLink(label: 'Zucht & Völkerbeurteilung (BGD)', rechercheAsset: 'assets/recherche/26_Zucht_Voelkerbeurteilung_BGD.md')],
+    verwandte: ['zucht_sanftmut', 'koenigin_finden'],
+    stichworte: ['wabensitz', 'sitzverhalten', 'abtropfen', 'laufen'],
+  ),
+  WissensEintrag(
+    key: 'zucht_schwarmtraegheit', titel: 'Schwarmträgheit bewerten', kategorie: 'zucht',
+    kurzinfo: 'Wie stark neigt das Volk zum Schwärmen? Von geschwärmt/starker Trieb (1) bis kein Schwarmtrieb (4). '
+        'Zeichen: angelegte Weiselzellen, verbautes/verhonigtes Brutnest, „Schwarmstimmung". Fürs Saison-Aggregat '
+        'zählt das MINIMUM (ein einziger Schwarm setzt die Note) — Schwarmträgheit ist arbeits- und '
+        'ertragsentscheidend und stark züchterisch beeinflussbar.',
+    skizze: 'assets/wissen/zucht_schwarmtraegheit.svg',
+    mehr: [
+      WissensLink(label: 'Zucht & Völkerbeurteilung (BGD)', rechercheAsset: 'assets/recherche/26_Zucht_Voelkerbeurteilung_BGD.md'),
+      WissensLink(label: 'Völkervermehrung & Schwarm', rechercheAsset: 'assets/recherche/13_Voelkervermehrung.md'),
+    ],
+    verwandte: ['weiselzelle', 'zucht_beurteilung'],
+    stichworte: ['schwarmtraegheit', 'schwarmtrieb', 'schwarm', 'weiselzelle'],
+  ),
+  WissensEintrag(
+    key: 'zucht_volksstaerke', titel: 'Volksstärke bewerten', kategorie: 'zucht',
+    kurzinfo: 'Wie viele Bienen bzw. besetzte Wabengassen hat das Volk — immer im Vergleich zu den anderen Völkern '
+        'am selben Tag und passend zur Jahreszeit. Von sehr schwach/Serbel (1) bis stark (4). Wichtig: schwach ≠ '
+        'ausmerzen — ein kleines, aber GESUNDES Volk (geschlossenes Brutnest, offenes Futter, erkennbare '
+        'Entwicklung) wird VEREINIGT, nicht getötet. Nur ein echtes Serbelvolk (lückenhaftes Brutnest, '
+        'Futtermangel, keine Entwicklung) ist Auslese-Kandidat. Immer relativ und zur gleichen Zeit vergleichen.',
+    skizze: 'assets/wissen/zucht_volksstaerke.svg',
+    mehr: [WissensLink(label: 'Zucht & Völkerbeurteilung (BGD)', rechercheAsset: 'assets/recherche/26_Zucht_Voelkerbeurteilung_BGD.md')],
+    verwandte: ['zucht_beurteilung'],
+    stichworte: ['volksstaerke', 'serbel', 'bienenmasse', 'staerke'],
+  ),
+  WissensEintrag(
+    key: 'zucht_gesundheit', titel: 'Gesundheit bewerten', kategorie: 'zucht',
+    kurzinfo: 'Wie gesund und widerstandsfähig ist das Volk? Von stark belastet/Symptome (1) bis keine '
+        'Auffälligkeiten (4). Als Zuchtmerkmal zählt mehr als nur Varroa: geringer Varroabefall/Varroatoleranz, '
+        'gutes Hygieneverhalten (Bruthygiene — kranke Brut wird ausgeräumt), Krankheitsfreiheit (keine '
+        'löchrige/kranke Brut) und Vitalität/gute Überwinterung. Varroa ist das dominierende Thema — aber ein '
+        'sonst kränkelndes, schlecht überwinterndes Volk gehört ebenso zur Auslese.',
+    skizze: 'assets/wissen/zucht_gesundheit.svg',
+    mehr: [WissensLink(label: 'Zucht & Völkerbeurteilung (BGD)', rechercheAsset: 'assets/recherche/26_Zucht_Voelkerbeurteilung_BGD.md')],
+    verwandte: ['varroa_milbe', 'gemuelldiagnose', 'brut_offen_verdeckelt'],
+    stichworte: ['gesundheit', 'varroatoleranz', 'hygieneverhalten', 'vitalitaet', 'bruthygiene'],
   ),
 ];
 
