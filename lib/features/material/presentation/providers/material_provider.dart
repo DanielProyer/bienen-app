@@ -2,10 +2,60 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bienen_app/core/supabase/supabase_config.dart';
 import 'package:bienen_app/features/material/data/models/material_item.dart';
 import 'package:bienen_app/features/material/data/models/material_purchase.dart';
+import 'package:bienen_app/features/material/domain/kosten_dashboard.dart';
+import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 
 final materialListProvider =
     AsyncNotifierProvider<MaterialListNotifier, List<MaterialItem>>(
         MaterialListNotifier.new);
+
+// ── Reine Prädikate (testbar ohne ProviderContainer) ──────────────────────────
+
+bool istArchiviert(MaterialItem i) => i.archiviert;
+bool istVerbrauch(MaterialItem i) => !i.archiviert && i.isConsumable;
+bool istAnlage(MaterialItem i) => !i.archiviert && !i.isConsumable;
+
+/// Nachkauf-Warnung: nur aktives Verbrauchsmaterial im Bestand (gekauft),
+/// mit gesetztem Mindestbestand, das darunter gefallen ist.
+bool istNachzukaufen(MaterialItem i) =>
+    !i.archiviert &&
+    i.isConsumable &&
+    i.status == 'gekauft' &&
+    i.minQty > 0 &&
+    i.stockQty < i.minQty;
+
+// ── Abgeleitete Listen-Provider ───────────────────────────────────────────────
+
+final aktiveMaterialienProvider = Provider<List<MaterialItem>>((ref) =>
+    (ref.watch(materialListProvider).valueOrNull ?? const [])
+        .where((i) => !i.archiviert)
+        .toList());
+
+final verbrauchItemsProvider = Provider<List<MaterialItem>>((ref) =>
+    (ref.watch(materialListProvider).valueOrNull ?? const [])
+        .where(istVerbrauch)
+        .toList());
+
+final anlageItemsProvider = Provider<List<MaterialItem>>((ref) =>
+    (ref.watch(materialListProvider).valueOrNull ?? const [])
+        .where(istAnlage)
+        .toList());
+
+final archivItemsProvider = Provider<List<MaterialItem>>((ref) =>
+    (ref.watch(materialListProvider).valueOrNull ?? const [])
+        .where(istArchiviert)
+        .toList());
+
+/// Kosten-Dashboard über alle Materialien + Käufe; Kosten je Volk auf Basis
+/// der AKTIVEN Völker (aktiveVoelkerProvider ist synchron, liefert die Liste
+/// direkt).
+final kostenDashboardProvider = Provider<KostenDashboard>((ref) {
+  final items = ref.watch(materialListProvider).valueOrNull ?? const <MaterialItem>[];
+  final purchases =
+      ref.watch(materialPurchasesProvider).valueOrNull ?? const <MaterialPurchase>[];
+  final anzahl = ref.watch(aktiveVoelkerProvider).length;
+  return berechneKostenDashboard(items, purchases, anzahl);
+});
 
 final selectedCategoryProvider = StateProvider<String?>((ref) => null);
 final selectedPhaseProvider = StateProvider<int?>((ref) => null);
@@ -50,6 +100,7 @@ final einkaufenItemsProvider = Provider<List<MaterialItem>>((ref) {
   final bereich = ref.watch(selectedBereichProvider);
   final phase = ref.watch(selectedPhaseProvider);
   return items.where((i) {
+    if (i.archiviert) return false; // Archivierte nie in aktiven Ansichten
     if (i.status != 'geplant' && i.status != 'bestellt') return false;
     if (bereich != null && i.bereich != bereich) return false;
     if (phase != null && i.phase != phase) return false;
@@ -63,6 +114,7 @@ final bestandItemsProvider = Provider<List<MaterialItem>>((ref) {
   final items = ref.watch(materialListProvider).valueOrNull ?? [];
   final bereich = ref.watch(selectedBereichProvider);
   return items.where((i) {
+    if (i.archiviert) return false; // Archivierte nie in aktiven Ansichten
     if (i.status != 'gekauft') return false;
     if (bereich != null && i.bereich != bereich) return false;
     return true;
@@ -74,10 +126,7 @@ final bestandItemsProvider = Provider<List<MaterialItem>>((ref) {
 /// (geplante) Verbrauchsartikel stehen in „Einkaufen", nicht hier.
 final nachkaufenItemsProvider = Provider<List<MaterialItem>>((ref) {
   final items = ref.watch(materialListProvider).valueOrNull ?? [];
-  return items
-      .where((i) =>
-          i.isConsumable && i.status == 'gekauft' && i.stockQty < i.minQty)
-      .toList();
+  return items.where(istNachzukaufen).toList();
 });
 
 final nachkaufenCountProvider = Provider<int>((ref) {
@@ -188,6 +237,8 @@ class MaterialPurchasesNotifier extends AsyncNotifier<List<MaterialPurchase>> {
     json.remove('id'); // let Supabase generate the UUID
     await SupabaseConfig.client.from('material_purchases').insert(json);
     ref.invalidateSelf();
+    // DB-Trigger hat stock_qty serverseitig angepasst -> Liste neu laden.
+    ref.invalidate(materialListProvider);
   }
 
   Future<void> deletePurchase(String id) async {
@@ -196,6 +247,8 @@ class MaterialPurchasesNotifier extends AsyncNotifier<List<MaterialPurchase>> {
         .delete()
         .eq('id', id);
     ref.invalidateSelf();
+    // DB-Trigger hat stock_qty serverseitig angepasst -> Liste neu laden.
+    ref.invalidate(materialListProvider);
   }
 
   Future<void> refresh() async {
@@ -255,6 +308,22 @@ class MaterialListNotifier extends AsyncNotifier<List<MaterialItem>> {
       await SupabaseConfig.client
           .from('materials')
           .update({'stock_qty': qty}).eq('id', id);
+    } catch (_) {
+      state = AsyncData(current);
+      rethrow;
+    }
+  }
+
+  Future<void> setArchiviert(String id, bool wert) async {
+    final current = state.valueOrNull ?? [];
+    state = AsyncData([
+      for (final item in current)
+        if (item.id == id) item.copyWith(archiviert: wert) else item,
+    ]);
+    try {
+      await SupabaseConfig.client
+          .from('materials')
+          .update({'archiviert': wert}).eq('id', id);
     } catch (_) {
       state = AsyncData(current);
       rethrow;
