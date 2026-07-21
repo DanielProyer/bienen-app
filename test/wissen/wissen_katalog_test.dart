@@ -32,6 +32,29 @@ void main() {
       expect(covered, isTrue, reason: 'nicht in pubspec: ${e.skizze}');
     }
   });
+  test('kuratierte Fotos: Foto → Quelle, Datei existiert + pubspec, Lizenz-Guard, https', () {
+    final pubspec = File('pubspec.yaml').readAsStringSync();
+    final declared = RegExp(r'-\s+(assets/\S+)').allMatches(pubspec).map((m) => m.group(1)!).toList();
+    for (final e in kWissensKatalog) {
+      if (e.foto == null) continue;
+      // Foto → Quelle vorhanden
+      expect(e.fotoQuelle, isNotNull, reason: '${e.key}: Foto ohne fotoQuelle');
+      // Datei existiert
+      expect(File(e.foto!).existsSync(), isTrue, reason: 'Datei fehlt: ${e.foto}');
+      // von pubspec-Deklaration abgedeckt, Präfix assets/wissen/fotos/
+      expect(e.foto!.startsWith('assets/wissen/fotos/'), isTrue, reason: 'falscher Präfix: ${e.foto}');
+      final covered = declared.any((d) => d == e.foto || (d.endsWith('/') && e.foto!.startsWith(d)));
+      expect(covered, isTrue, reason: 'nicht in pubspec: ${e.foto}');
+      // Lizenz-Guard (kommerzielle Sicherheit)
+      final lizenz = e.fotoQuelle!.lizenz.toUpperCase();
+      expect(lizenz.contains('CC0') || lizenz.contains('PUBLIC DOMAIN') || lizenz.contains('CC BY'), isTrue,
+          reason: '${e.key}: Lizenz ohne CC0/Public Domain/CC BY: ${e.fotoQuelle!.lizenz}');
+      expect(lizenz.contains('SA'), isFalse, reason: '${e.key}: Share-alike-Lizenz: ${e.fotoQuelle!.lizenz}');
+      expect(lizenz.contains('NC'), isFalse, reason: '${e.key}: NC-Lizenz: ${e.fotoQuelle!.lizenz}');
+      // url beginnt mit https://
+      expect(e.fotoQuelle!.url.startsWith('https://'), isTrue, reason: '${e.key}: url nicht https: ${e.fotoQuelle!.url}');
+    }
+  });
   test('rechercheAsset existiert', () {
     for (final e in kWissensKatalog) {
       for (final l in e.mehr) {

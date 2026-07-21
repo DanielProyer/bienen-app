@@ -37,6 +37,9 @@ const kWissensKatalog = <WissensEintrag>[
     kurzinfo: 'Bunte, matt-glänzende, fest eingestampfte Zellen — meist im Kranz rund um das Brutnest. '
         'Zeichen für Sammeltätigkeit und gute Ernährung.',
     skizze: 'assets/wissen/pollen.svg',
+    foto: 'assets/wissen/fotos/pollen.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'Conall', lizenz: 'CC BY 2.0',
+        url: 'https://commons.wikimedia.org/wiki/File:Honey_bee_on_Viburnum_davidii.jpg'),
     mehr: [WissensLink(label: 'Bienenvolk & Ernährung', rechercheAsset: 'assets/recherche/10_Bienenbiologie_Das_Bienenvolk.md')],
     verwandte: ['futter_nektar'],
     stichworte: ['bienenbrot', 'perga', 'pollenkranz'],
@@ -58,6 +61,9 @@ const kWissensKatalog = <WissensEintrag>[
     kurzinfo: 'Schwarmzellen hängen am Wabenrand/-unterkante, oft mehrere → Schwarmstimmung. '
         'Nachschaffungszellen sitzen in der Wabenfläche → das Volk zieht eine Ersatz-Königin (Weisellosigkeit).',
     skizze: 'assets/wissen/weiselzelle.svg',
+    foto: 'assets/wissen/fotos/weiselzelle.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'Maja Dumat', lizenz: 'CC BY 2.0',
+        url: 'https://commons.wikimedia.org/wiki/File:Unverdeckelte_Weiselzelle_003.jpg'),
     mehr: [
       WissensLink(label: 'Völkervermehrung & Schwarm', rechercheAsset: 'assets/recherche/13_Voelkervermehrung.md'),
       WissensLink(label: 'Vermehrung/Jungvolk (BGD)', rechercheAsset: 'assets/recherche/25_Vermehrung_Jungvolkbildung_BGD.md'),
@@ -70,6 +76,9 @@ const kWissensKatalog = <WissensEintrag>[
     kurzinfo: 'Länger, glänzender Hinterleib, ruhige Bewegung — meist im Bienenpulk auf offener Brut. '
         'Systematisch Wabe für Wabe suchen, dort, wo Stifte und junge Brut sind.',
     skizze: 'assets/wissen/koenigin.svg',
+    foto: 'assets/wissen/fotos/koenigin_finden.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'USGS (M. Lubeck)', lizenz: 'CC0 / Public Domain',
+        url: 'https://commons.wikimedia.org/wiki/File:Queen_Bee_(16545241268).jpg'),
     mehr: [
       WissensLink(label: 'Bienenvolk & Königin', rechercheAsset: 'assets/recherche/10_Bienenbiologie_Das_Bienenvolk.md'),
       WissensLink(label: 'Königinnenzucht', rechercheAsset: 'assets/recherche/12_Koeniginnenzucht.md'),
@@ -82,6 +91,9 @@ const kWissensKatalog = <WissensEintrag>[
     kurzinfo: 'Im Baurahmen bauen die Bienen Drohnenzellen (hochgewölbte Buckelzellen). '
         'Verdeckelte Drohnenbrut ausschneiden = biotechnische Varroa-Reduktion (die Milbe bevorzugt Drohnenbrut).',
     skizze: 'assets/wissen/baurahmen.svg',
+    foto: 'assets/wissen/fotos/baurahmen_drohnen.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'Nick Pitsas (CSIRO)', lizenz: 'CC BY 3.0',
+        url: 'https://commons.wikimedia.org/wiki/File:CSIRO_ScienceImage_6961_Worker_honey_bees_removing_excess_drone_brood_from_the_hive.jpg'),
     mehr: [
       WissensLink(label: 'Varroa-Konzept (alpin)', rechercheAsset: 'assets/recherche/15_Varroa_Bekaempfungskonzept_alpin.md'),
       WissensLink(label: 'Varroa-Behandlung (BGD)', rechercheAsset: 'assets/recherche/22_Varroa_Behandlungskonzept_BGD.md'),
@@ -97,6 +109,9 @@ const kWissensKatalog = <WissensEintrag>[
         'daran stirbt das Volk. Hinweis: nicht alle Bienenviren sind varroagekoppelt — die Chronische '
         'Bienenparalyse (CBPV: zitternde, haarlose schwarze Bienen) entsteht durch Stress/Dichte.',
     skizze: 'assets/wissen/varroa_milbe.svg',
+    foto: 'assets/wissen/fotos/varroa_milbe.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'Denis Anderson (CSIRO)', lizenz: 'CC BY 3.0',
+        url: 'https://commons.wikimedia.org/wiki/File:CSIRO_ScienceImage_7306_A_European_honey_bee_prepupa_with_varroa_mites.jpg'),
     mehr: [
       WissensLink(label: 'Varroa-Konzept (alpin)', rechercheAsset: 'assets/recherche/15_Varroa_Bekaempfungskonzept_alpin.md'),
       WissensLink(label: 'Varroa-Behandlung (BGD)', rechercheAsset: 'assets/recherche/22_Varroa_Behandlungskonzept_BGD.md'),
@@ -208,6 +223,9 @@ const kWissensKatalog = <WissensEintrag>[
         'Wabenerneuerung, trockener/warmer Standort. NICHT mit Steinbrut verwechseln (grün-gelbliche, '
         'humanpathogene Mumien → FFP-Maske!).',
     skizze: 'assets/wissen/kalkbrut.svg',
+    foto: 'assets/wissen/fotos/kalkbrut.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'Jeff Pettis', lizenz: 'CC BY 3.0 US',
+        url: 'https://commons.wikimedia.org/wiki/File:Ascosphaera_apis_(Maasen_ex_Claussen)_L.S._Olive_%26_Spiltoir_1324048.jpg'),
     mehr: [WissensLink(label: 'Bienengesundheit (CH)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md')],
     verwandte: ['sackbrut', 'steinbrut'],
     stichworte: ['kalkbrut', 'mumie', 'pilz', 'ascosphaera', 'kreideweiss'],
@@ -252,6 +270,9 @@ const kWissensKatalog = <WissensEintrag>[
         'Nicht mit der helleren einheimischen Hornisse verwechseln. Nester NICHT selbst entfernen (Spezialisten). '
         'Fund mit Foto + Standort über asiatischehornisse.ch melden.',
     skizze: 'assets/wissen/vespa_velutina.svg',
+    foto: 'assets/wissen/fotos/vespa_velutina.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'Vespa-Watch', lizenz: 'CC0',
+        url: 'https://commons.wikimedia.org/wiki/File:Vespa_velutina_165382529.jpg'),
     mehr: [
       WissensLink(label: 'Asiatische Hornisse', rechercheAsset: 'assets/recherche/24_Asiatische_Hornisse_Vespa_velutina.md'),
       WissensLink(label: 'Meldeportal asiatischehornisse.ch', url: 'https://www.asiatischehornisse.ch'),
