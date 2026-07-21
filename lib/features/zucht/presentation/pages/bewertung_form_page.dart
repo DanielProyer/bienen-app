@@ -6,6 +6,8 @@ import 'package:bienen_app/core/theme/app_theme.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/voelker/domain/volk.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/features/wissen/domain/bewertung_wissen.dart';
+import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
 import 'package:bienen_app/features/zucht/domain/bewertung.dart';
 import 'package:bienen_app/features/zucht/presentation/providers/bewertung_provider.dart';
 
@@ -102,7 +104,10 @@ class _BewertungFormPageState extends ConsumerState<BewertungFormPage> {
         ),
         const SizedBox(height: 8),
         for (final a in kBewertungsAchsen) ...[
-          Text(a.label, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            Text(a.label, style: const TextStyle(fontWeight: FontWeight.w600)),
+            WissenInfoButton(wissenKey: kBewertungAchseWissen[a.key] ?? ''),
+          ]),
           const SizedBox(height: 4),
           SegmentedButton<int>(
             segments: [for (var i = 1; i <= 4; i++) ButtonSegment(value: i, label: Text('$i'))],
