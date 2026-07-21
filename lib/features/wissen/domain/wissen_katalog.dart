@@ -4,6 +4,7 @@ const kWissensKategorien = <WissensKategorie>[
   WissensKategorie(key: 'durchsicht', titel: 'Durchsicht', icon: 'eye'),
   WissensKategorie(key: 'varroa', titel: 'Varroa', icon: 'bug'),
   WissensKategorie(key: 'krankheit', titel: 'Krankheiten', icon: 'health'),
+  WissensKategorie(key: 'fuetterung', titel: 'Fütterung', icon: 'droplet'),
 ];
 
 const kWissensKatalog = <WissensEintrag>[
@@ -256,6 +257,100 @@ const kWissensKatalog = <WissensEintrag>[
     ],
     verwandte: [],
     stichworte: ['vespa', 'velutina', 'asiatische hornisse', 'neobiota', 'raeuber'],
+  ),
+  WissensEintrag(
+    key: 'auffuetterung', titel: 'Auffütterung (Winterfutter)', kategorie: 'fuetterung',
+    kurzinfo: 'Baut den Wintervorrat auf — NUR dieser Zweck zählt fürs Winterfutter-Ziel (~20–25 kg/Volk, alpin '
+        'eher am oberen Ende). Dickes Futter (Zuckerwasser 3:2 oder Invertsirup) in zügigen, größeren Gaben nach '
+        'der letzten Ernte geben, damit die Bienen es einlagern und verdeckeln, BEVOR die Winterbienen-Aufzucht '
+        'endet. Auf 1570 m früher dran (kurze Saison). Immer ABENDS und geschlossen füttern — offenes/tags Füttern '
+        'löst Räuberei aus und überträgt so Faulbrut.',
+    skizze: 'assets/wissen/auffuetterung.svg',
+    mehr: [
+      WissensLink(label: 'Jahresablauf (alpin)', rechercheAsset: 'assets/recherche/02_Jahresablauf_Imker_Arosa_1570m.md'),
+      WissensLink(label: 'Bio-Imkerei (Knospe)', rechercheAsset: 'assets/recherche/18_Bio_Imkerei_Knospe_Schweiz.md'),
+    ],
+    verwandte: ['zuckerwasser', 'invertsirup', 'futterwaben'],
+    stichworte: ['auffuettern', 'winterfutter', 'wintervorrat', 'einwintern', 'einfuettern'],
+  ),
+  WissensEintrag(
+    key: 'reizfuetterung', titel: 'Reizfütterung', kategorie: 'fuetterung',
+    kurzinfo: 'Kleine Gaben dünnen Zuckerwassers (1:1) im Vorfrühling regen die Königin zur Bruttätigkeit an — es '
+        'geht ums Signal „Tracht", NICHT um Vorrat. Sparsam und nur bei Bedarf: kann Räuberei auslösen und, sobald '
+        'Tracht einsetzt oder der Honigraum aufliegt, in den Honig gelangen (Honigreinheit!). Bei ohnehin starken '
+        'Völkern meist unnötig.',
+    skizze: 'assets/wissen/reizfuetterung.svg',
+    mehr: [WissensLink(label: 'Jahresablauf (alpin)', rechercheAsset: 'assets/recherche/02_Jahresablauf_Imker_Arosa_1570m.md')],
+    verwandte: ['notfuetterung', 'zuckerwasser'],
+    stichworte: ['reizfuettern', 'anregen', 'brut', 'fruehjahr', 'reizen'],
+  ),
+  WissensEintrag(
+    key: 'notfuetterung', titel: 'Notfütterung', kategorie: 'fuetterung',
+    kurzinfo: 'Akute Futterknappheit — das Volk droht zu verhungern: die Beute ist beim Anheben auffällig leicht, '
+        'keine Vorräte in den Randwaben, teilnahmslose Bienen, im Extremfall tote Bienen kopfüber in leeren Zellen. '
+        'SOFORT Futter geben: bei Kälte Futterteig oder Futterwaben direkt an die Wintertraube, sonst Sirup. Nie mit '
+        'aufgesetztem Honigraum.',
+    skizze: 'assets/wissen/notfuetterung.svg',
+    mehr: [WissensLink(label: 'Jahresablauf (alpin)', rechercheAsset: 'assets/recherche/02_Jahresablauf_Imker_Arosa_1570m.md')],
+    verwandte: ['futterteig', 'reizfuetterung'],
+    stichworte: ['notfuettern', 'verhungern', 'hunger', 'futterknappheit', 'futterabriss'],
+  ),
+  WissensEintrag(
+    key: 'zuckerwasser', titel: 'Zuckerwasser (1:1 & 3:2)', kategorie: 'fuetterung',
+    kurzinfo: 'Selbst angesetzt aus weißem Kristallzucker + Wasser. 1:1 (dünn, 1 Teil Zucker : 1 Teil Wasser) = '
+        'Reizfütterung/Anfüttern im Frühjahr. 3:2 (dick, 3 Teile Zucker : 2 Teile Wasser nach Gewicht) = '
+        'Winterfutter — je dicker, desto weniger müssen die Bienen eindicken. Nur weißen Haushaltszucker, KEINEN '
+        'Roh-/Braunzucker (unverdaulicher Ballast → Ruhr). Bio: nur biozertifizierter Zucker.',
+    skizze: 'assets/wissen/zuckerwasser.svg',
+    mehr: [WissensLink(label: 'Jahresablauf (alpin)', rechercheAsset: 'assets/recherche/02_Jahresablauf_Imker_Arosa_1570m.md')],
+    verwandte: ['invertsirup', 'auffuetterung'],
+    stichworte: ['zuckerwasser', 'zuckersirup', '1:1', '3:2', 'kristallzucker', 'sirup'],
+  ),
+  WissensEintrag(
+    key: 'invertsirup', titel: 'Invertsirup (Apiinvert)', kategorie: 'fuetterung',
+    kurzinfo: 'Gebrauchsfertiger, bereits invertierter Sirup (z. B. Apiinvert, Ambrosia). Vorteil: kein Ansetzen, '
+        'bienenschonend, gut lagerbar, geringes Risiko unverdaulichen Ballasts. Ideal für die zügige '
+        'Winter-Auffütterung. Etwas teurer als Haushaltszucker; kühl/sauber lagern. Bio: nur biozertifizierter Sirup.',
+    skizze: 'assets/wissen/invertsirup.svg',
+    mehr: [WissensLink(label: 'Jahresablauf (alpin)', rechercheAsset: 'assets/recherche/02_Jahresablauf_Imker_Arosa_1570m.md')],
+    verwandte: ['zuckerwasser', 'auffuetterung'],
+    stichworte: ['invertsirup', 'apiinvert', 'ambrosia', 'fertigfutter', 'sirup'],
+  ),
+  WissensEintrag(
+    key: 'futterteig', titel: 'Futterteig (Fondant)', kategorie: 'fuetterung',
+    kurzinfo: 'Fester Zucker-/Fondantteig, oben auf die Rähmchen bzw. ans Futterloch gelegt. Ideal für Not- und '
+        'Spätwinter-/Vorfrühlings-Fütterung bei Kälte: die Bienen holen sich die nötige Feuchtigkeit selbst, ohne '
+        'dass Flüssigfutter auskühlt. NICHT für den schnellen Aufbau großer Wintervorräte (dafür Sirup).',
+    skizze: 'assets/wissen/futterteig.svg',
+    mehr: [WissensLink(label: 'Jahresablauf (alpin)', rechercheAsset: 'assets/recherche/02_Jahresablauf_Imker_Arosa_1570m.md')],
+    verwandte: ['notfuetterung'],
+    stichworte: ['futterteig', 'fondant', 'teig', 'winter', 'notfutter'],
+  ),
+  WissensEintrag(
+    key: 'futterwaben', titel: 'Futterwaben', kategorie: 'fuetterung',
+    kurzinfo: 'Eingelagerte, verdeckelte Futterwaben aus dem eigenen GESUNDEN Bestand — die natürlichste, '
+        'bienengerechteste Winterfütterung: kein Ansetzen, direkt neben die Wintertraube gehängt. Voraussetzung: '
+        'rückstandsarme Waben aus varroa-kontrollierten, gesunden Völkern; höchstens bis ~4 Wochen vor der '
+        'Haupttracht einsetzen (Honigreinheit). Seuchenhygiene beachten — KEINE Waben aus Völkern mit '
+        'Faulbrut-Verdacht verschieben.',
+    skizze: 'assets/wissen/futterwaben.svg',
+    mehr: [WissensLink(label: 'Jahresablauf (alpin)', rechercheAsset: 'assets/recherche/02_Jahresablauf_Imker_Arosa_1570m.md')],
+    verwandte: ['auffuetterung', 'afb'],
+    stichworte: ['futterwaben', 'vorratswaben', 'verdeckelt', 'futterkranz'],
+  ),
+  WissensEintrag(
+    key: 'honig_fuettern', titel: 'Honig füttern', kategorie: 'fuetterung',
+    kurzinfo: 'Nur EIGENER, gesunder Honig ist ein natürliches Futter. ACHTUNG: FREMDHONIG (auch Imkerhonig aus dem '
+        'Handel) kann Faulbrut-Sporen (AFB) enthalten → strikt vermeiden, er kann den ganzen Stand verseuchen. '
+        'Wald-/Honigtauhonig und stark kristallisierender Honig sind als Winterfutter ungeeignet (Kristallisation → '
+        'Verhungern trotz Vorrat; hoher Ballast → Ruhr). Für Bio ist eigener Honig zulässig.',
+    skizze: 'assets/wissen/honig_fuettern.svg',
+    mehr: [
+      WissensLink(label: 'Bio-Imkerei (Knospe)', rechercheAsset: 'assets/recherche/18_Bio_Imkerei_Knospe_Schweiz.md'),
+      WissensLink(label: 'Bienengesundheit (AFB-Risiko)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md'),
+    ],
+    verwandte: ['futterwaben', 'afb'],
+    stichworte: ['honig', 'fremdhonig', 'afb', 'sporen', 'faulbrut'],
   ),
 ];
 

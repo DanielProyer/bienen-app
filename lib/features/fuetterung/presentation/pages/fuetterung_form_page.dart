@@ -10,6 +10,8 @@ import 'package:bienen_app/features/material/presentation/providers/material_pro
 import 'package:bienen_app/features/phaenologie/domain/phaenologie.dart';
 import 'package:bienen_app/features/phaenologie/presentation/providers/phaenologie_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/features/wissen/domain/fuetterung_wissen.dart';
+import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
 
 class FuetterungFormPage extends ConsumerStatefulWidget {
   final String volkId;
@@ -109,20 +111,30 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
               ),
               const SizedBox(height: 8),
               const Text('Zweck'),
-              Wrap(spacing: 8, children: [
-                for (final z in Zweck.werte)
-                  ChoiceChip(
-                    label: Text(Zweck.labels[z]!),
-                    selected: _zweck == z,
-                    onSelected: (_) => setState(() => _zweck = z),
-                  ),
+              Row(children: [
+                Expanded(
+                  child: Wrap(spacing: 8, children: [
+                    for (final z in Zweck.werte)
+                      ChoiceChip(
+                        label: Text(Zweck.labels[z]!),
+                        selected: _zweck == z,
+                        onSelected: (_) => setState(() => _zweck = z),
+                      ),
+                  ]),
+                ),
+                WissenInfoButton(wissenKey: kFuetterungZweckWissen[_zweck] ?? ''),
               ]),
-              DropdownButtonFormField<String>(
-                initialValue: _futterart,
-                decoration: const InputDecoration(labelText: 'Futterart'),
-                items: [for (final f in Futterart.werte) DropdownMenuItem(value: f, child: Text(Futterart.labels[f]!))],
-                onChanged: (v) => setState(() => _futterart = v!),
-              ),
+              Row(children: [
+                Expanded(
+                  child: DropdownButtonFormField<String>(
+                    initialValue: _futterart,
+                    decoration: const InputDecoration(labelText: 'Futterart'),
+                    items: [for (final f in Futterart.werte) DropdownMenuItem(value: f, child: Text(Futterart.labels[f]!))],
+                    onChanged: (v) => setState(() => _futterart = v!),
+                  ),
+                ),
+                WissenInfoButton(wissenKey: kFuetterungFutterartWissen[_futterart] ?? ''),
+              ]),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Bio-zertifiziert'),

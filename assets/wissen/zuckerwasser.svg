@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <path d="M46 40 h44 l-6 66 a4 4 0 0 1 -4 4 h-20 a4 4 0 0 1 -4 -4 z" fill="#EAF2F8" stroke="#633806" stroke-width="2"/>
+  <path d="M50 78 h36 l-4 28 a4 4 0 0 1 -4 4 h-20 a4 4 0 0 1 -4 -4 z" fill="#9fcbe6"/>
+  <path d="M150 40 h44 l-6 66 a4 4 0 0 1 -4 4 h-20 a4 4 0 0 1 -4 -4 z" fill="#EAF2F8" stroke="#633806" stroke-width="2"/>
+  <path d="M152 54 h40 l-5 52 a4 4 0 0 1 -4 4 h-22 a4 4 0 0 1 -4 -4 z" fill="#3d8ac0"/>
+  <g fill="#633806" font-family="sans-serif" font-size="13" text-anchor="middle"><text x="68" y="132">1:1 dünn</text><text x="172" y="132">3:2 dick</text></g>
+</svg>
