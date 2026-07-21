@@ -17,7 +17,9 @@ class WissenSkizzePage extends StatelessWidget {
           maxScale: 5,
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: SvgPicture.asset(assetPfad, fit: BoxFit.contain),
+            child: assetPfad.toLowerCase().endsWith('.svg')
+                ? SvgPicture.asset(assetPfad, fit: BoxFit.contain)
+                : Image.asset(assetPfad, fit: BoxFit.contain),
           ),
         ),
       ),

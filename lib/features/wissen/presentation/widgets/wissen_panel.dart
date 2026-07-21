@@ -44,6 +44,26 @@ class _WissenPanelState extends State<_WissenPanel> {
       Text(e.titel, style: Theme.of(context).textTheme.titleLarge),
       const SizedBox(height: 8),
       Text(e.kurzinfo, style: Theme.of(context).textTheme.bodyMedium),
+      if (e.foto != null) ...[
+        const SizedBox(height: 16),
+        GestureDetector(
+          onTap: () => root.push(MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (_) => WissenSkizzePage(assetPfad: e.foto!, titel: e.titel))),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(e.foto!, height: 180, width: double.infinity, fit: BoxFit.cover),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: GestureDetector(
+            onTap: () => launchUrl(Uri.parse(e.fotoQuelle!.url), mode: LaunchMode.externalApplication),
+            child: Text(e.fotoQuelle!.zeile,
+                style: const TextStyle(fontSize: 11, color: Colors.black54, decoration: TextDecoration.underline)),
+          ),
+        ),
+      ],
       if (e.skizze != null) ...[
         const SizedBox(height: 16),
         GestureDetector(
