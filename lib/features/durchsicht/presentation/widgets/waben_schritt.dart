@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
 import 'package:bienen_app/features/durchsicht/domain/wabe.dart';
+import 'package:bienen_app/features/durchsicht/sprache/domain/sprach_kommando.dart';
+import 'package:bienen_app/features/durchsicht/sprache/presentation/sprach_mikro.dart';
 import 'package:bienen_app/features/wissen/domain/durchsicht_wissen.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
 
@@ -61,6 +63,25 @@ class _WabenSchrittState extends State<WabenSchritt> {
     setState(() {});
   }
 
+  void _wendeSprachAktionAn(List<WabenAktion> aktionen) {
+    if (aktionen.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('nicht erkannt'), duration: Duration(milliseconds: 900)));
+      return;
+    }
+    final (liste, aktiv) = wendeWabenAktionen(_ws, _aktiv, aktionen);
+    widget.onChanged(liste);
+    setState(() => _aktiv = aktiv);
+    final w = liste[aktiv];
+    final teile = <String>[
+      ...w.inhalte.map((k) => _inhaltLabel[k] ?? k),
+      if (w.koenigin) 'Königin', if (w.weiselzelle) 'Weiselzelle', if (w.stifte) 'Stifte',
+      if (w.schied) 'Schied',
+    ];
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Wabe ${aktiv + 1}: ${teile.isEmpty ? '—' : teile.join(', ')}'),
+        duration: const Duration(milliseconds: 1100)));
+  }
+
   @override
   Widget build(BuildContext context) {
     // Aktive Position gegen (evtl. von aussen geschrumpfte) Liste absichern.
@@ -68,6 +89,9 @@ class _WabenSchrittState extends State<WabenSchritt> {
     if (_ws.isEmpty) return const SizedBox.shrink();
     final w = _w;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      SprachMikro(mikroId: 'kmd-waben', label: 'Waben-Kommando sprechen',
+          onEndText: (t) => _wendeSprachAktionAn(parseWabenKommandos(t))),
+      const SizedBox(height: 8),
       // Waben-Streifen
       Row(children: [
         for (var i = 0; i < _ws.length; i++)
