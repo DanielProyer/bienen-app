@@ -4,6 +4,12 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Spracheingabe v2: sprachgeführter Waben-Durchgang live (v1.28.0)
+
+Zweite (letzte) Ausbaustufe: hands-free Wabe-für-Wabe-Erfassung. Reuse der v1-Engine. 246/246 Tests, live.
+
+- **D-68 · Sprach-Anwendung als reine Funktion, Widget als dünner Adapter.** `parseWabenKommandos` (Transkript → Mehr-Token-Aktionsliste, Negation wirkt aufs nächste Token, „setzen statt toggeln") UND `wendeWabenAktionen((liste, aktiv), aktionen) → (liste, aktiv)` sind beide **reine, offline getestete** Funktionen; der `WabenSchritt` ruft sie nur und meldet via `onChanged`. `wendeWabenAktionen` repliziert die Bestands-Semantik (Schied trunkiert wie `_setSchied`, Inhalte auf Schied-Wabe ignoriert, „nächste" am Ende hängt eine leere Wabe an — hands-free ohne „+"-Tippen). Damit ist der Waben-Durchgang genauso testbar wie der Feld-Parser (v1), ohne Browser. `SprachMikro` (ConsumerWidget) läuft im Tree, ohne `WabenSchritt` zum ConsumerWidget zu machen.
+
 ## 2026-07-20 — Durchsicht-Spracheingabe v1 live (v1.27.0)
 
 Modul 4.3 Zyklus 2: hands-free Erfassung im Durchsicht-Wizard per Spracherkennung. Gestaffelt (v1 Diktat + Feld-Kommandos; v2 Waben-Durchgang folgt). Subagent-getrieben, 236/236 Tests, live.
