@@ -4,6 +4,10 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Wissensdatenbank Zyklus 4: Fütterung live (v1.24.0)
+
+Kategorie **Fütterung** (8 Einträge: 3 Zweck + 5 Futterart) + Andock ans Fütterungs-Modul (4.6). Keine DB. 219/219 Tests, live. Anwendung des Andock-Musters D-62 (dynamisches ⓘ je Feld: Zweck-ChoiceChip + Futterart-Dropdown via `fuetterung_wissen.dart`-Maps; `zuckerwasser_1_1`+`_3_2` → ein Eintrag). Fachreview (Fable 5) freigegeben nach Einarbeitung: **Räuberei-/Abendfütterungs-Hinweis** beim Auffüttern (Räuberei überträgt AFB/EFB), Winterfutter-Spanne 20–25 kg (alpin oberes Ende), „varroa-kontrolliert" statt „varroafrei", Kristallisation→Verhungern / Ballast→Ruhr, Bio-Zucker-Hinweis. **Fremdhonig/AFB-Warnung** vom Review als korrekt und ausreichend deutlich bestätigt. Damit **4 Wissens-Kategorien / 29 Einträge**, angedockt an Durchsicht, Behandlung/Diagnose, Gesundheit und Fütterung.
+
 ## 2026-07-20 — Wissensdatenbank Zyklus 3: Krankheiten live (v1.23.0)
 
 Kategorie **Krankheiten** (7 Einträge) + Andock an das Gesundheits-Modul (4.14). Keine DB-Änderung. 215/215 Tests, live.
