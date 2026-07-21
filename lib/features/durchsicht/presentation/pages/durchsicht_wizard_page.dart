@@ -8,6 +8,8 @@ import 'package:bienen_app/features/durchsicht/domain/durchsicht_gateway.dart';
 import 'package:bienen_app/features/durchsicht/domain/wabe.dart';
 import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht_provider.dart';
 import 'package:bienen_app/features/durchsicht/presentation/widgets/waben_schritt.dart';
+import 'package:bienen_app/features/durchsicht/sprache/domain/sprach_kommando.dart';
+import 'package:bienen_app/features/durchsicht/sprache/presentation/sprach_mikro.dart';
 
 /// Geführte Durchsicht als 3-Schritt-Wizard: Kontext → optional Waben → Kennzahlen.
 /// [bestehend] != null -> Bearbeiten. Deckt ALLE Felder des alten Formulars ab.
@@ -202,6 +204,41 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
     }
   }
 
+  void _wendeKommandoAn(SprachKommando? k) {
+    if (k == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('nicht erkannt'), duration: Duration(milliseconds: 900)));
+      return;
+    }
+    String quittung = '';
+    setState(() {
+      switch (k) {
+        case ZahlKommando(:final feld, :final wert):
+          switch (feld) {
+            case 'temperatur': _temp = wert; case 'dauer': _dauer = wert;
+            case 'wz_anzahl': _wzAnzahl = wert; case 'brutwaben': _brutWaben = wert;
+            case 'staerke': _staerke = wert; case 'futter': _futter = wert;
+            case 'sanftmut': _sanftmut = wert.toInt().clamp(0, 4);
+            case 'wabensitz': _wabensitz = wert.toInt().clamp(0, 4);
+          }
+          quittung = '$feld → $wert';
+        case EnumKommando(:final feld, :final wert):
+          switch (feld) {
+            case 'weiselzustand': _weiselzustand = wert; case 'weiselzellen': _weiselzellen = wert;
+            case 'brutbild': _brutbild = wert; case 'pollen': _pollen = wert; case 'platz': _platz = wert;
+          }
+          quittung = '$feld → $wert';
+        case BoolKommando(:final feld, :final wert):
+          if (feld == 'koenigin') _koeniginGesehen = wert;
+          if (feld == 'stifte') _stifteGesehen = wert;
+          quittung = '$feld → ${wert ? 'ja' : 'nein'}';
+        case AuffaelligkeitKommando(:final key, :final an):
+          an ? _auffaelligkeiten.add(key) : _auffaelligkeiten.remove(key);
+          quittung = 'Auffälligkeit $key';
+      }
+    });
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(quittung), duration: const Duration(milliseconds: 900)));
+  }
+
   Widget _chips(String label, List<String> optionen, String? wert, ValueChanged<String?> onSel) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -236,12 +273,18 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
       );
 
   Widget _seiteKontext() => ListView(padding: const EdgeInsets.all(16), children: [
+        SprachMikro(mikroId: 'kmd-kontext', label: 'Kommando sprechen',
+            onEndText: (t) => _wendeKommandoAn(parseKommando(t, SprachKontext.kontext))),
+        const Divider(),
         _datumTile('Datum', _datum, onTap: () async {
           final d = await showDatePicker(context: context, initialDate: _datum, firstDate: DateTime(2020), lastDate: DateTime(2100));
           if (d != null) setState(() => _datum = d);
         }),
         const Padding(padding: EdgeInsets.only(top: 12, bottom: 4), child: Text('Kontext', style: TextStyle(fontWeight: FontWeight.w600))),
-        TextField(controller: _wetter, decoration: const InputDecoration(labelText: 'Wetter')),
+        Row(children: [
+          Expanded(child: TextField(controller: _wetter, decoration: const InputDecoration(labelText: 'Wetter'))),
+          SprachMikro(mikroId: 'dik-wetter', kompakt: true, onEndText: (t) => setState(() => _wetter.text = '${_wetter.text} $t'.trim())),
+        ]),
         _TapStepper(label: 'Temperatur (°C)', wert: _temp, min: -30, onCh: (v) => setState(() => _temp = v)),
         _TapStepper(label: 'Dauer (min)', wert: _dauer, schritt: 5, onCh: (v) => setState(() => _dauer = v)),
         _chips('Weiselzustand', const ['weiselrichtig', 'weisellos', 'drohnenbruetig', 'unsicher'], _weiselzustand, (v) => setState(() => _weiselzustand = v)),
@@ -270,6 +313,9 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
     final schaetzung = bienenSchaetzung(_staerke);
     final futterHinweis = _wabenModus && _waben.isNotEmpty ? '≈ ${futterKgHinweisAus(_waben)} kg aus Waben' : null;
     return ListView(padding: const EdgeInsets.all(16), children: [
+      SprachMikro(mikroId: 'kmd-kennzahlen', label: 'Kommando sprechen',
+          onEndText: (t) => _wendeKommandoAn(parseKommando(t, SprachKontext.kennzahlen))),
+      const Divider(),
       SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Königin gesehen'), value: _koeniginGesehen, onChanged: (v) => setState(() => _koeniginGesehen = v)),
       SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Stifte gesehen'), value: _stifteGesehen, onChanged: (v) => setState(() => _stifteGesehen = v)),
       if (_stifteGesehen) const Padding(padding: EdgeInsets.only(bottom: 4), child: Text('Frische Stifte sprechen für weiselrichtig.', style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey))),
@@ -289,8 +335,14 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
           FilterChip(label: Text(f), selected: _auffaelligkeiten.contains(f),
               onSelected: (s) => setState(() => s ? _auffaelligkeiten.add(f) : _auffaelligkeiten.remove(f))),
       ]),
-      TextField(controller: _massnahmen, maxLines: 2, decoration: const InputDecoration(labelText: 'Massnahmen')),
-      TextField(controller: _notiz, maxLines: 2, decoration: const InputDecoration(labelText: 'Notiz')),
+      Row(children: [
+        Expanded(child: TextField(controller: _massnahmen, maxLines: 2, decoration: const InputDecoration(labelText: 'Massnahmen'))),
+        SprachMikro(mikroId: 'dik-massnahmen', kompakt: true, onEndText: (t) => setState(() => _massnahmen.text = '${_massnahmen.text} $t'.trim())),
+      ]),
+      Row(children: [
+        Expanded(child: TextField(controller: _notiz, maxLines: 2, decoration: const InputDecoration(labelText: 'Notiz'))),
+        SprachMikro(mikroId: 'dik-notiz', kompakt: true, onEndText: (t) => setState(() => _notiz.text = '${_notiz.text} $t'.trim())),
+      ]),
       _datumTile('Nächste Durchsicht (Empfehlung)', _naechste,
           icon: Icons.event,
           onClear: () => setState(() => _naechste = null),
