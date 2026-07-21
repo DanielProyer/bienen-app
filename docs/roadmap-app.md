@@ -34,7 +34,7 @@
 | — | **Einstellungen/Settings (F4)** — Betriebsprofil editierbar | ✅ **Basis LIVE** (v1.16.0) — `/einstellungen`: Saison-Offset, Winterfutter-Ziel (+20-kg-BGD-Warnung), 3 Strategie-Weichen (Anzahl Ernten, Sommerbehandlung-Methode, Vermehrung aktiv). Onboarding-Assistent (F5), weitere Defaults später |
 | 4.6 | **Fütterung** (Winterfutter-Ziel, Bio-Nachweis) | ✅ **LIVE** (v1.12.0; v1.16.0 futterart-Konzentration 1:1/3:2/Invertsirup) — `fuetterungen` (Bio-Nachweis, volk-FK RESTRICT/Soft-Delete), RPC `fuetterung_erfassen`, Winterfutter-Balken (Saison-Σ), `betriebs_einstellungen.winterfutter_ziel_kg`, Material-Kopplung |
 | 4.9 | Monitoring/Waage (HiveWatch, Brutraumtemp, Alerts, Datenqualität) | 🔨 Demo → ausbauen |
-| 4.10 | Material & Lager (Verbrauch↔Behandlung/Fütterung koppeln) | ✅ bestehend → verzahnen |
+| 4.10 | Material & Lager (Verbrauch↔Behandlung/Fütterung koppeln) | ✅ **Rework LIVE** (v1.29.0) — Typ-Trennung Verbrauch/Anlage/Archiv, `archiviert`-Flag, Kauf→Bestand-Trigger (N01, Nachkauf-Fehlalarm gefixt), Segmente Verbrauch/Anlagen/Ausgaben |
 | 4.11 | Wachskreislauf-Basis (Wabenalter/Zukauf-Doku) | ⬜ |
 | 4.12 | Geräte/Kalibrierung — **Refraktometer** (wg. Wassergehalt) | ⬜ |
 | 4.13 | Bau (Bienenstand + Honigverarbeitungsraum) | ✅ bestehend |
@@ -43,7 +43,7 @@
 | 4.18 | Karten-Basis (Stände-Ansicht) | ⬜ |
 | 4.19 | Wetter-Basis (Anzeige + Frost/Sturm-Warnung) | ⬜ |
 | 4.21 | Wissensdatenbank DB-gestützt (iterativ) | 🔨 **Zyklus 1 LIVE (v1.21.0):** schnelle Häppchen-Schicht (const-Katalog `wissen_katalog.dart`, 7 Durchsicht-Zeichen mit SVG-Skizzen) + generischer `key`-Deep-Link + eigene Fotos je Betrieb (`wissen_fotos`/M01, Bucket `wissen-photos`). **Zyklus 2 (v1.22.0):** Varroa (7 Einträge), ⓘ in Milbendiagnose + Behandlungs-Journal. **Zyklus 3 (v1.23.0):** Krankheiten (7, inkl. Steinbrut-Arbeitsschutz), ⓘ am Krankheits-Dropdown. **Zyklus 4 (v1.24.0):** Fütterung (8), ⓘ an Zweck + Futterart. **Zyklus 5 (v1.25.0):** Zucht (6), ⓘ je Bewertungs-Achse. → **5 Kategorien / 35 Einträge — alle Modul-Andocke fertig** (Durchsicht, Behandlung/Diagnose, Gesundheit, Fütterung, Bewertung). **Fotos (v1.26.0):** 7 lizenzsaubere Fotos (CC0/CC-BY, Ebene C) neben den Skizzen. Statisch davor: v1.15.1 20 Eigen-Recherchen, v1.15.2 +8 BGD-Merkblätter. Folge: Honig-Ernte/Recht (Stöber, kein Modul); Polish (Foto→key, HEIC). BGD-Findings: `docs/bienen-ch-findings.md` |
-| 4.22 | Kosten-Dashboard (Quick-Win aus Material-Käufen) | ⬜ |
+| 4.22 | Kosten-Dashboard (Quick-Win aus Material-Käufen) | ✅ **LIVE** (v1.29.0) — reine `berechneKostenDashboard` (Investition vs. laufend, Budget Soll/Ist, Kategorie/Jahr/Zahlungsart, Kosten je Volk, Archiv separat); Ausgaben-Segment im Material-Tab. Offen: Abschreibung, Mehrjahres-Trend, Kosten/kg Honig, CSV/PDF-Export |
 | 4.23 | **Recht & Rückverfolgbarkeit** — Compliance-Checkliste, Bestandeskontrolle, Journal-Export (Pflicht) | ⬜ |
 | 4.24 | Kontakt-/Notfall-Hub | ⬜ |
 | 4.25 | Medien-Basis (Kompression + EXIF) | ⬜ |

@@ -35,7 +35,58 @@ class MaterialDetailPage extends ConsumerWidget {
     final alternatives = materialAlternatives[current.name];
 
     return Scaffold(
-      appBar: AppBar(title: Text(current.name)),
+      appBar: AppBar(
+        title: Text(current.name),
+        actions: [
+          PopupMenuButton<String>(
+            tooltip: 'Aktionen',
+            onSelected: (value) async {
+              if (value == 'archiv') {
+                final neu = !current.archiviert;
+                try {
+                  await ref
+                      .read(materialListProvider.notifier)
+                      .setArchiviert(current.id, neu);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(neu
+                            ? '${current.name} archiviert'
+                            : '${current.name} reaktiviert'),
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Fehlgeschlagen: $e')),
+                    );
+                  }
+                }
+              }
+            },
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                value: 'archiv',
+                child: Row(
+                  children: [
+                    Icon(
+                      current.archiviert
+                          ? Icons.unarchive_outlined
+                          : Icons.archive_outlined,
+                      size: 20,
+                      color: AppColors.brown600,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(current.archiviert ? 'Reaktivieren' : 'Archivieren'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -43,6 +94,10 @@ class MaterialDetailPage extends ConsumerWidget {
           children: [
             // Main product card
             _buildMainProductCard(context, current),
+            const SizedBox(height: 16),
+
+            // Typ-Umschalter Verbrauchsmaterial / Anlagegut
+            _TypeSection(item: current),
             const SizedBox(height: 16),
 
             // Bilder & Anleitungen (Fotos + PDF-Manuals)
@@ -392,6 +447,77 @@ class MaterialDetailPage extends ConsumerWidget {
 
   void _openUrl(String url) {
     launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Typ-Umschalter: Verbrauchsmaterial <-> Anlagegut. Steuert u.a., ob der
+// Bestand-Abschnitt (nur Verbrauch) sichtbar ist.
+// ---------------------------------------------------------------------------
+class _TypeSection extends ConsumerWidget {
+  final MaterialItem item;
+  const _TypeSection({required this.item});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Materialtyp',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.brown800,
+              ),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              'Verbrauch wird regelmäßig nachgekauft; Anlagegut einmalig '
+              '(Beute, Werkzeug…).',
+              style: TextStyle(fontSize: 12, color: AppColors.brown600),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: SegmentedButton<bool>(
+                segments: const [
+                  ButtonSegment(
+                    value: true,
+                    label: Text('Verbrauch'),
+                    icon: Icon(Icons.inventory_2_outlined, size: 18),
+                  ),
+                  ButtonSegment(
+                    value: false,
+                    label: Text('Anlagegut'),
+                    icon: Icon(Icons.build_outlined, size: 18),
+                  ),
+                ],
+                selected: {item.isConsumable},
+                onSelectionChanged: (sel) async {
+                  final wert = sel.first;
+                  if (wert == item.isConsumable) return;
+                  try {
+                    await ref
+                        .read(materialListProvider.notifier)
+                        .updateIsConsumable(item.id, wert);
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Umstellen fehlgeschlagen: $e')),
+                      );
+                    }
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

@@ -14,6 +14,7 @@ class MaterialItem {
   final int sortOrder;
   final String bereich; // 'imkerei', 'standbau', 'honigverarbeitung'
   final bool isConsumable;
+  final bool archiviert; // ausgemustert/verkauft — nicht in aktiven Ansichten
   final double stockQty;
   final double minQty;
   final List<String> photoUrls; // Produktfotos (max 4, App-seitig begrenzt)
@@ -36,6 +37,7 @@ class MaterialItem {
     this.sortOrder = 0,
     this.bereich = 'imkerei',
     this.isConsumable = false,
+    this.archiviert = false,
     this.stockQty = 0,
     this.minQty = 0,
     this.photoUrls = const [],
@@ -59,6 +61,7 @@ class MaterialItem {
     int? sortOrder,
     String? bereich,
     bool? isConsumable,
+    bool? archiviert,
     double? stockQty,
     double? minQty,
     List<String>? photoUrls,
@@ -81,6 +84,7 @@ class MaterialItem {
       sortOrder: sortOrder ?? this.sortOrder,
       bereich: bereich ?? this.bereich,
       isConsumable: isConsumable ?? this.isConsumable,
+      archiviert: archiviert ?? this.archiviert,
       stockQty: stockQty ?? this.stockQty,
       minQty: minQty ?? this.minQty,
       photoUrls: photoUrls ?? this.photoUrls,
@@ -109,6 +113,7 @@ class MaterialItem {
       sortOrder: json['sort_order'] as int? ?? 0,
       bereich: json['bereich'] as String? ?? 'imkerei',
       isConsumable: json['is_consumable'] as bool? ?? false,
+      archiviert: json['archiviert'] as bool? ?? false,
       stockQty: (json['stock_qty'] as num?)?.toDouble() ?? 0,
       minQty: (json['min_qty'] as num?)?.toDouble() ?? 0,
       photoUrls: _strList(json['photo_urls']),
@@ -134,6 +139,7 @@ class MaterialItem {
       'sort_order': sortOrder,
       'bereich': bereich,
       'is_consumable': isConsumable,
+      'archiviert': archiviert,
       'stock_qty': stockQty,
       'min_qty': minQty,
       'photo_urls': photoUrls,
