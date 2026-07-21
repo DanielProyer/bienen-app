@@ -330,6 +330,22 @@ class MaterialListNotifier extends AsyncNotifier<List<MaterialItem>> {
     }
   }
 
+  Future<void> updateIsConsumable(String id, bool wert) async {
+    final current = state.valueOrNull ?? [];
+    state = AsyncData([
+      for (final item in current)
+        if (item.id == id) item.copyWith(isConsumable: wert) else item,
+    ]);
+    try {
+      await SupabaseConfig.client
+          .from('materials')
+          .update({'is_consumable': wert}).eq('id', id);
+    } catch (_) {
+      state = AsyncData(current);
+      rethrow;
+    }
+  }
+
   Future<void> updateMinQty(String id, double qty) async {
     final current = state.valueOrNull ?? [];
     state = AsyncData([
