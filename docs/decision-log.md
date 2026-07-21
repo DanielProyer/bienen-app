@@ -4,6 +4,15 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-20 — Durchsicht-Spracheingabe v1 live (v1.27.0)
+
+Modul 4.3 Zyklus 2: hands-free Erfassung im Durchsicht-Wizard per Spracherkennung. Gestaffelt (v1 Diktat + Feld-Kommandos; v2 Waben-Durchgang folgt). Subagent-getrieben, 236/236 Tests, live.
+
+- **D-66 · Sprache über eine austauschbare Erkenner-Kapsel + einen reinen Parser — Sprache ist rein additiv.** Der `SpracheErkenner` kapselt die Web Speech API (dünne `dart:js_interop`-Schicht, Fake fürs Testen) hinter einem Dart-Interface; der **`parseKommando`-Parser** (Grammatik + Alias-Tabelle + `deutscheZahl`) ist eine **reine, offline getestete** Funktion → das Risiko (Grammatik-Robustheit) hängt nicht am Browser. `SprachController` garantiert genau ein aktives Mikro. Spracheingabe blockiert nie: kein Web Speech (Firefox/Safari) → Mikros aus; kein Netz → pausiert; Tippen geht immer.
+- **D-67 · Bilingual = `de-CH` zuverlässig + Mundart best-effort (Alias-Tabelle), keine Dialekt-Garantie.** Cloud-ASR erkennt Schweizerdeutsch-Mundart nicht zuverlässig (technische Grenze, keine App-Grenze). Lösung: Erkennung auf Schweizer Hochdeutsch (`de-CH`, deckt Lorena), der Parser mappt via Alias-Tabelle Hochdeutsch **und** häufige Mundartvarianten auf denselben Wert. Web Speech braucht Internet — am Zielstand laut Betreiber vorhanden (sonst wäre die Feature-Basis weg).
+- **Gotcha (Web/js_interop):** (1) `dart:js_interop`-Code **bricht die VM-Test-Kompilierung** (`toJS`/`JSObject` invalid auf VM) → web-only Erkenner via **conditional import** `import '…stub.dart' if (dart.library.js_interop) '…web.dart'` (No-op-Stub `verfuegbar=false` für Tests/VM). (2) `callAsConstructor`/`getProperty` liegen im aktuellen SDK in **`dart:js_interop_unsafe`** (zusätzlicher Import). (3) **Ganzwortiges Matching** (`' $q '.contains(' $t ')`) im Parser statt Substring — sonst matcht „weisel" (Dialekt=Königin) fälschlich in „weiselzellen", „brut" in „brutwaben".
+- **Abweichung von Spec §9:** haptische Vibration aus v1 zurückgestellt (zweite js_interop-Fläche, nur Android) — sichtbare Quittung reicht; Nachtrag nach Feldtest.
+
 ## 2026-07-20 — Wissensdatenbank: kuratierte Fotos (Ebene C) live (v1.26.0)
 
 Dritte Bild-Ebene je Wissens-Eintrag: mitgelieferte, lizenzsaubere Fotos neben der SVG-Skizze (A) und den eigenen Betriebs-Fotos (B). 222/222 Tests, live.
