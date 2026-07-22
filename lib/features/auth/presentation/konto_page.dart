@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/auth/domain/auth_gateway.dart';
 import 'package:bienen_app/features/auth/domain/rolle.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/app_list_tile.dart';
+import 'package:bienen_app/shared/widgets/confirm_sheet.dart';
+import 'package:bienen_app/shared/widgets/status_pill.dart';
 
 class KontoPage extends ConsumerWidget {
   const KontoPage({super.key});
@@ -19,58 +25,73 @@ class KontoPage extends ConsumerWidget {
       body: session == null
           ? const Center(child: CircularProgressIndicator())
           : ListView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(BeeTokens.lg),
               children: [
-                Card(
+                AppCard(
+                  padding: EdgeInsets.zero,
                   child: Column(
                     children: [
-                      ListTile(
-                        leading: const Icon(Icons.person_outline),
-                        title: const Text('Angemeldet als'),
-                        subtitle: Text(session.email),
+                      AppListTile(
+                        leading: const Icon(Icons.person_outline, color: BeeTokens.textSekundaer),
+                        titel: 'Angemeldet als',
+                        untertitel: session.email,
                       ),
-                      ListTile(
-                        leading: const Icon(Icons.badge_outlined),
-                        title: const Text('Rolle'),
-                        subtitle: Text(session.rolle.anzeige),
+                      AppListTile(
+                        leading: const Icon(Icons.badge_outlined, color: BeeTokens.textSekundaer),
+                        titel: 'Rolle',
+                        trailing: StatusPill(label: session.rolle.anzeige, signal: BeeSignal.info),
                       ),
                     ],
                   ),
                 ),
                 if (session.rolle.istOwner) ...[
-                  const SizedBox(height: 16),
-                  Card(
+                  const SizedBox(height: BeeTokens.lg),
+                  AppCard(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const ListTile(
-                          leading: Icon(Icons.group_add_outlined),
-                          title: Text('Team'),
-                          subtitle: Text(
-                              'Lade jemanden per Code ein. Der Code ist nur einmal sichtbar.'),
+                        Row(
+                          children: [
+                            const Icon(Icons.group_add_outlined, color: BeeTokens.textSekundaer),
+                            const SizedBox(width: BeeTokens.md),
+                            const Expanded(child: Text('Team', style: BeeTokens.abschnitt)),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FilledButton.tonalIcon(
-                              key: const Key('konto_einladen'),
-                              icon: const Icon(Icons.person_add_alt),
-                              label: const Text('Mitglied einladen'),
-                              onPressed: () => _einladenDialog(context, ref),
-                            ),
+                        const SizedBox(height: BeeTokens.xs),
+                        const Text(
+                          'Lade jemanden per Code ein. Der Code ist nur einmal sichtbar.',
+                          style: BeeTokens.gedaempft,
+                        ),
+                        const SizedBox(height: BeeTokens.md),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: AppButton(
+                            key: const Key('konto_einladen'),
+                            label: 'Mitglied einladen',
+                            icon: Icons.person_add_alt,
+                            kind: AppButtonKind.sekundaer,
+                            onPressed: () => _einladenDialog(context, ref),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ],
-                const SizedBox(height: 24),
-                OutlinedButton.icon(
+                const SizedBox(height: BeeTokens.xl),
+                AppButton(
                   key: const Key('konto_logout'),
-                  icon: const Icon(Icons.logout),
-                  label: const Text('Abmelden'),
-                  onPressed: () =>
-                      ref.read(authControllerProvider.notifier).signOut(),
+                  label: 'Abmelden',
+                  icon: Icons.logout,
+                  kind: AppButtonKind.sekundaer,
+                  onPressed: () async {
+                    final ok = await confirmSheet(
+                      context,
+                      titel: 'Abmelden?',
+                      text: 'Du wirst von diesem Gerät abgemeldet.',
+                      bestaetigenLabel: 'Abmelden',
+                    );
+                    if (ok) ref.read(authControllerProvider.notifier).signOut();
+                  },
                 ),
               ],
             ),
