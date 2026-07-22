@@ -84,7 +84,7 @@ class AppShell extends StatelessWidget {
                 NavigationRailDestination(
                   icon: Icon(Icons.hive_outlined),
                   selectedIcon: Icon(Icons.hive),
-                  label: Text('Voelker'),
+                  label: Text('Völker'),
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.task_alt_outlined),
@@ -118,7 +118,7 @@ class AppShell extends StatelessWidget {
           NavigationDestination(
             icon: Icon(Icons.hive_outlined),
             selectedIcon: Icon(Icons.hive),
-            label: 'Voelker',
+            label: 'Völker',
           ),
           NavigationDestination(
             icon: Icon(Icons.task_alt_outlined),
