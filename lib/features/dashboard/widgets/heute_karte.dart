@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
 import 'package:bienen_app/features/aufgaben/domain/aufgaben_gruppierung.dart';
 import 'package:bienen_app/features/aufgaben/presentation/providers/aufgaben_provider.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
+import 'package:bienen_app/features/voelker/domain/volk.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/app_list_tile.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
+import 'package:bienen_app/shared/widgets/status_pill.dart';
 
 /// Cockpit-Karte „Heute & demnächst": die nächsten 3 offenen Aufgaben, direkt abhakbar.
 class HeuteKarte extends ConsumerWidget {
@@ -40,6 +46,14 @@ class HeuteKarte extends ConsumerWidget {
     }
   }
 
+  String? _volkName(List<Volk> voelker, Aufgabe a) {
+    if (a.volkId == null) return null;
+    for (final v in voelker) {
+      if (v.id == a.volkId) return '🐝 ${v.name}';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final alle = ref.watch(aufgabenListProvider).valueOrNull ?? const <Aufgabe>[];
@@ -50,60 +64,41 @@ class HeuteKarte extends ConsumerWidget {
     final darfSchreiben = ref.watch(darfSchreibenProvider);
     final voelker = ref.watch(voelkerListProvider).valueOrNull ?? const [];
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(children: [
-              const Icon(Icons.task_alt, size: 20, color: AppColors.honeyDark),
-              const SizedBox(width: 8),
-              const Expanded(
-                  child: Text('Heute & demnächst', style: TextStyle(fontWeight: FontWeight.bold))),
-              TextButton(onPressed: () => context.go('/aufgaben'), child: const Text('alle →')),
-            ]),
-            if (naechste.isEmpty)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Text('Keine offenen Aufgaben. 🐝', style: TextStyle(color: AppColors.brown300)),
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SectionHeader(
+            titel: 'Heute & demnächst',
+            action: AppButton(label: 'alle →', kind: AppButtonKind.text, onPressed: () => context.go('/aufgaben')),
+          ),
+          if (naechste.isEmpty)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: BeeTokens.sm),
+              child: Text('Keine offenen Aufgaben. 🐝', style: TextStyle(color: BeeTokens.textGedaempft)),
+            ),
+          for (final a in naechste)
+            AppListTile(
+              leading: darfSchreiben
+                  ? Checkbox(value: false, onChanged: (_) => _abhaken(context, ref, a))
+                  : const Icon(Icons.radio_button_unchecked, size: 20, color: BeeTokens.textGedaempft),
+              titel: a.titel,
+              untertitel: _volkName(voelker, a),
+              trailing: StatusPill(
+                label: DateFormat('dd.MM.').format(a.faelligAm),
+                signal: a.faelligAm.isBefore(h) ? BeeSignal.gefahr : BeeSignal.neutral,
               ),
-            for (final a in naechste)
-              Row(children: [
-                if (darfSchreiben)
-                  Checkbox(value: false, onChanged: (_) => _abhaken(context, ref, a))
-                else
-                  const Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Icon(Icons.radio_button_unchecked, size: 18, color: AppColors.brown300),
-                  ),
-                Expanded(child: Text(a.titel, style: const TextStyle(fontSize: 14), overflow: TextOverflow.ellipsis)),
-                if (a.volkId != null) ...[
-                  for (final v in voelker)
-                    if (v.id == a.volkId)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Text('🐝 ${v.name}',
-                            style: const TextStyle(fontSize: 11, color: AppColors.honeyDark)),
-                      ),
-                ],
-                Text(DateFormat('dd.MM.').format(a.faelligAm),
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: a.faelligAm.isBefore(h) ? Colors.red.shade700 : AppColors.brown300,
-                        fontWeight: a.faelligAm.isBefore(h) ? FontWeight.w600 : FontWeight.w400)),
-              ]),
-            if (vorschlaege > 0)
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: InkWell(
-                  onTap: () => context.go('/aufgaben'),
-                  child: Text('✨ $vorschlaege Saisonvorschläge warten',
-                      style: const TextStyle(fontSize: 12, color: AppColors.brown300)),
-                ),
+            ),
+          if (vorschlaege > 0)
+            Padding(
+              padding: const EdgeInsets.only(top: BeeTokens.xs),
+              child: InkWell(
+                onTap: () => context.go('/aufgaben'),
+                child: Text('✨ $vorschlaege Saisonvorschläge warten',
+                    style: const TextStyle(fontSize: 12, color: BeeTokens.textGedaempft)),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
