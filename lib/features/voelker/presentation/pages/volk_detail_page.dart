@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/aufgaben/presentation/widgets/aufgaben_section.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/behandlung/presentation/widgets/behandlung_section.dart';
@@ -13,6 +14,10 @@ import 'package:bienen_app/features/voelker/presentation/widgets/koenigin_sectio
 import 'package:bienen_app/features/voelker/presentation/widgets/standort_section.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/volk_form.dart';
 import 'package:bienen_app/features/zucht/presentation/widgets/bewertung_sektion.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/app_list_tile.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/status_pill.dart';
 
 class VolkDetailPage extends ConsumerWidget {
   final String volkId;
@@ -30,13 +35,15 @@ class VolkDetailPage extends ConsumerWidget {
 
     return async.when(
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (e, _) => Scaffold(body: Center(child: Text('Fehler: $e'))),
+      error: (e, _) => Scaffold(
+        body: EmptyState(icon: Icons.error_outline, titel: 'Fehler beim Laden', text: '$e'),
+      ),
       data: (list) {
         final idx = list.indexWhere((v) => v.id == volkId);
         if (idx < 0) {
           return Scaffold(
             appBar: AppBar(),
-            body: const Center(child: Text('Volk nicht gefunden.')),
+            body: const EmptyState(icon: Icons.search_off, titel: 'Volk nicht gefunden'),
           );
         }
         final volk = list[idx];
@@ -52,26 +59,26 @@ class VolkDetailPage extends ConsumerWidget {
             ],
           ),
           body: ListView(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(BeeTokens.md),
             children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Text('Stammdaten', style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text('Status: ${volk.status}'),
-                    Text('Beute: ${volk.beutentyp ?? '—'} · Zargen: ${volk.zargen ?? '—'} · Brutwaben: ${volk.brutwaben ?? '—'}'),
-                    Text('Bio: ${volk.bioStatus} · Gesundheit: ${volk.gesundheitsstatus}'),
-                  ]),
-                ),
+              AppCard(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text('Stammdaten', style: BeeTokens.abschnitt),
+                  const SizedBox(height: BeeTokens.sm),
+                  Align(alignment: Alignment.centerLeft, child: StatusPill(label: volk.status)),
+                  const SizedBox(height: BeeTokens.sm),
+                  Text('Beute: ${volk.beutentyp ?? '—'} · Zargen: ${volk.zargen ?? '—'} · Brutwaben: ${volk.brutwaben ?? '—'}'),
+                  Text('Bio: ${volk.bioStatus} · Gesundheit: ${volk.gesundheitsstatus}'),
+                ]),
               ),
               KoeniginSection(volk: volk),
               StandortSection(volk: volk),
               AufgabenSection(volkId: volk.id),
-              Card(
-                child: ListTile(
-                  leading: const Icon(Icons.monitor_weight_outlined),
-                  title: Text(scale == null ? 'Keine Waage verknuepft' : 'Waage: ${scale.hiveName}'),
+              AppCard(
+                padding: EdgeInsets.zero,
+                child: AppListTile(
+                  leading: const Icon(Icons.monitor_weight_outlined, color: BeeTokens.textGedaempft),
+                  titel: scale == null ? 'Keine Waage verknuepft' : 'Waage: ${scale.hiveName}',
                   onTap: scale == null ? null : () => context.go('/monitoring'),
                 ),
               ),
@@ -79,9 +86,9 @@ class VolkDetailPage extends ConsumerWidget {
               BehandlungSection(volkId: volk.id),
               FuetterungSection(volkId: volk.id),
               GesundheitSection(volkId: volk.id),
-              const SizedBox(height: 8),
+              const SizedBox(height: BeeTokens.sm),
               VermehrungSektion(volkId: volk.id),
-              const SizedBox(height: 8),
+              const SizedBox(height: BeeTokens.sm),
               BewertungSektion(volkId: volk.id),
             ],
           ),
