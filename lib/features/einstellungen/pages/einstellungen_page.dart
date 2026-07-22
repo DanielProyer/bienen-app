@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/einstellungen/domain/winterfutter_warnung.dart';
 import 'package:bienen_app/features/phaenologie/presentation/widgets/phaenologie_sektion.dart';
 import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
 
 /// Betriebsprofil (F4): editierbare Strategie-Weichen + Saison-Offset + Winterfutter-Ziel.
 /// Amtliche Felder (Ident-Nummer/Kanton) sind bewusst NICHT editierbar (Column-Grant I01).
@@ -75,7 +78,7 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
     if (!ref.watch(darfSchreibenProvider)) {
       return Scaffold(
         appBar: AppBar(title: const Text('Betriebs-Einstellungen')),
-        body: const Center(child: Text('Nur mit Schreibrechten verfügbar.')),
+        body: const EmptyState(icon: Icons.lock_outline, titel: 'Nur mit Schreibrechten verfügbar.'),
       );
     }
     // Erst rendern, wenn die Einstellungen geladen sind.
@@ -94,12 +97,13 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
     final zielRaw = num.tryParse(_winterfutter.text.trim().replaceAll(',', '.'));
     final unterMinimum = zielRaw != null && unterBgdMinimum(zielRaw);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Betriebs-Einstellungen')),
-      body: Form(
+    return FormScaffold(
+      titel: 'Betriebs-Einstellungen',
+      bodenleiste: AppButton(label: 'Speichern', full: true, onPressed: _speichern),
+      child: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(BeeTokens.lg),
           children: [
             TextFormField(
               controller: _offset,
@@ -116,7 +120,7 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             TextFormField(
               controller: _winterfutter,
               decoration: InputDecoration(
@@ -127,7 +131,7 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
                     ? 'unter BGD-Minimum 20 kg'
                     : 'BGD-Minimum: 20 kg (Mittelland).',
                 helperStyle: unterMinimum
-                    ? const TextStyle(color: AppColors.amber800, fontWeight: FontWeight.w600)
+                    ? TextStyle(color: BeeSignal.warnung.text, fontWeight: FontWeight.w600)
                     : null,
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -140,9 +144,9 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 20),
-            const Text('Anzahl Honigernten', style: TextStyle(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
+            const SizedBox(height: BeeTokens.xl),
+            const Text('Anzahl Honigernten', style: BeeTokens.abschnitt),
+            const SizedBox(height: BeeTokens.sm),
             SegmentedButton<int>(
               segments: const [
                 ButtonSegment(value: 1, label: Text('1 Ernte')),
@@ -151,9 +155,9 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
               selected: {_anzahlErnten},
               onSelectionChanged: (s) => setState(() => _anzahlErnten = s.first),
             ),
-            const SizedBox(height: 20),
-            const Text('Sommerbehandlung-Methode', style: TextStyle(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
+            const SizedBox(height: BeeTokens.xl),
+            const Text('Sommerbehandlung-Methode', style: BeeTokens.abschnitt),
+            const SizedBox(height: BeeTokens.sm),
             SegmentedButton<String>(
               segments: [
                 for (final e in _methoden.entries)
@@ -162,7 +166,7 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
               selected: {_methode},
               onSelectionChanged: (s) => setState(() => _methode = s.first),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('Vermehrung aktiv'),
@@ -170,10 +174,9 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
               value: _vermehrung,
               onChanged: (on) => setState(() => _vermehrung = on),
             ),
-            const Divider(height: 32),
+            const Divider(height: BeeTokens.xxl),
             const PhaenologieSektion(),
-            const SizedBox(height: 24),
-            FilledButton(onPressed: _speichern, child: const Text('Speichern')),
+            const SizedBox(height: BeeTokens.lg),
           ],
         ),
       ),
