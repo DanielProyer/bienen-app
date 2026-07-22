@@ -6,6 +6,8 @@ import 'package:bienen_app/shared/widgets/section_header.dart';
 import 'package:bienen_app/shared/widgets/status_pill.dart';
 import 'package:bienen_app/shared/widgets/app_list_tile.dart';
 import 'package:bienen_app/shared/widgets/stat_tile.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 
 Widget _host(Widget c) => MaterialApp(home: Scaffold(body: c));
@@ -48,5 +50,19 @@ void main() {
     await t.pumpWidget(_host(const StatTile(label: 'Bisher', wert: 'CHF 640')));
     expect(find.text('Bisher'), findsOneWidget);
     expect(find.text('CHF 640'), findsOneWidget);
+  });
+  testWidgets('FormScaffold zeigt Titel, Inhalt, Bodenleiste', (t) async {
+    await t.pumpWidget(MaterialApp(home: FormScaffold(
+      titel: 'Durchsicht',
+      bodenleiste: AppButton(label: 'Weiter', onPressed: () {}),
+      child: const Text('Inhalt'))));
+    expect(find.text('Durchsicht'), findsOneWidget);
+    expect(find.text('Inhalt'), findsOneWidget);
+    expect(find.text('Weiter'), findsOneWidget);
+  });
+  testWidgets('EmptyState zeigt Titel + Text', (t) async {
+    await t.pumpWidget(_host(const EmptyState(icon: Icons.inbox, titel: 'Leer', text: 'Nichts da')));
+    expect(find.text('Leer'), findsOneWidget);
+    expect(find.text('Nichts da'), findsOneWidget);
   });
 }
