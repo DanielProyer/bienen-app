@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/wissen/domain/wissen_katalog.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_panel.dart';
 
@@ -17,7 +18,7 @@ class WissenInfoButton extends StatelessWidget {
       tooltip: 'Worauf achten?',
       visualDensity: VisualDensity.compact,
       constraints: const BoxConstraints(),
-      padding: const EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: BeeTokens.xs),
       onPressed: () => openWissenPanel(context, wissenKey),
     );
   }
