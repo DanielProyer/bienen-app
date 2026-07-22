@@ -17,6 +17,7 @@ class ProjektPage extends StatelessWidget {
     (icon: Icons.monitor_weight, titel: 'Monitoring', sub: 'Waagen-Verwaltung', route: '/monitoring'),
     (icon: Icons.tune, titel: 'Betriebs-Einstellungen', sub: 'Saison-Offset · Ernten · Strategie', route: '/einstellungen'),
     (icon: Icons.account_circle, titel: 'Konto & Team', sub: 'Mitglieder · Einladungen', route: '/konto'),
+    (icon: Icons.cloud_download, titel: 'Daten & Backup', sub: 'Export · Offsite-Sicherung', route: '/backup'),
   ];
 
   static const _facts = [
