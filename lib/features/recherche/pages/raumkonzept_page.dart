@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/recherche/widgets/info_card.dart';
 import 'package:bienen_app/features/recherche/widgets/section_header.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
 
 class RaumkonzeptPage extends StatelessWidget {
   const RaumkonzeptPage({super.key});
@@ -15,11 +16,11 @@ class RaumkonzeptPage extends StatelessWidget {
         onPressed: () => context.go('/recherche/raumkonzept/detail'),
         icon: const Icon(Icons.article),
         label: const Text('Vollständige Recherche'),
-        backgroundColor: AppColors.honey,
+        backgroundColor: BeeTokens.honig,
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(BeeTokens.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -27,30 +28,33 @@ class RaumkonzeptPage extends StatelessWidget {
               title: 'Raumkonzept Maiensäss',
               subtitle: 'Tannen 85a, Arosa · 4-5 Völker (ab 2036: max. 8)',
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: BeeTokens.xl),
             _buildSavingsBanner(context),
-            const SizedBox(height: 24),
+            const SizedBox(height: BeeTokens.xl),
             const SectionHeader(title: 'Drei Bereiche'),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             const InfoCard(
               title: 'Bienenstand (Bestehender Unterstand)',
-              content: '4-5 Dadant-Blatt-Beuten (Platz für 8 ab 2036)\nOptimale Ausrichtung vorhanden\nFluglöcher Richtung Süd/Südost\nBienentränke 5-20 m seitlich',
+              content:
+                  '4-5 Dadant-Blatt-Beuten (Platz für 8 ab 2036)\nOptimale Ausrichtung vorhanden\nFluglöcher Richtung Süd/Südost\nBienentränke 5-20 m seitlich',
               icon: Icons.hive,
               highlight: true,
             ),
             const InfoCard(
               title: 'Schleuderraum (Stall OG)',
-              content: 'Aktuell leer - 12-15 m² verfügbar\nHonigverarbeitung: Schleuder, Rührwerk, Abfüllung\nGeplant: Logar 20/8 Radial (20 Halbrahmen, Motor)\nCFM 100 kg Rührwerk (doppelwandig)',
+              content:
+                  'Aktuell leer - 12-15 m² verfügbar\nHonigverarbeitung: Schleuder, Rührwerk, Abfüllung\nGeplant: Logar 20/8 Radial (20 Halbrahmen, Motor)\nCFM 100 kg Rührwerk (doppelwandig)',
               icon: Icons.precision_manufacturing,
             ),
             const InfoCard(
               title: 'Lager + Honiglager (Stall EG)',
-              content: 'Bereits in Nutzung als Werkstatt\nZargen, Waben, Werkzeug, Varroa-Mittel\nHoniglager: kühl, dunkel, 2-3 m²',
+              content:
+                  'Bereits in Nutzung als Werkstatt\nZargen, Waben, Werkzeug, Varroa-Mittel\nHoniglager: kühl, dunkel, 2-3 m²',
               icon: Icons.warehouse,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: BeeTokens.xxl),
             const SectionHeader(title: 'Phasenplan & Investitionen'),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             _buildPhaseCard(context, 1, 'Herbst 2026', 'CHF 2\'150', [
               '1 Volk aufstellen',
               'Beutenständer im Unterstand',
@@ -80,11 +84,11 @@ class RaumkonzeptPage extends StatelessWidget {
               'Erweiterung auf max. 8 Völker',
               'Vollausbau Bienenstand',
             ]),
-            const SizedBox(height: 24),
+            const SizedBox(height: BeeTokens.xl),
             _buildTotalCard(context),
-            const SizedBox(height: 32),
+            const SizedBox(height: BeeTokens.xxl),
             const SectionHeader(title: 'Profi-Equipment (Highlights)'),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             _buildEquipmentCard(
               context,
               'Logar 20/8 Radial',
@@ -106,42 +110,41 @@ class RaumkonzeptPage extends StatelessWidget {
   Widget _buildSavingsBanner(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(BeeTokens.lg),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppColors.green50, AppColors.amber50],
-        ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.green400),
+        color: BeeSignal.erfolg.flaeche,
+        borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+        border: Border.all(color: BeeSignal.erfolg.text, width: 0.5),
       ),
       child: Row(
         children: [
-          const Icon(Icons.savings, color: AppColors.green600, size: 36),
-          const SizedBox(width: 16),
+          Icon(Icons.savings, color: BeeSignal.erfolg.text, size: 36),
+          const SizedBox(width: BeeTokens.lg),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Ersparnis durch vorhandene Infrastruktur',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.green800,
-                      ),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: BeeSignal.erfolg.text,
+                  ),
                 ),
-                const SizedBox(height: 4),
-                const Text(
+                const SizedBox(height: BeeTokens.xs),
+                Text(
                   'CHF 20\'000 - 28\'000 gespart!',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.green600,
+                    color: BeeSignal.erfolg.text,
                   ),
                 ),
-                const SizedBox(height: 4),
-                const Text(
+                const SizedBox(height: BeeTokens.xs),
+                Text(
                   'Kein Neubau Unterstand + Stallgebäude vorhanden',
-                  style: TextStyle(color: AppColors.green800, fontSize: 13),
+                  style: TextStyle(color: BeeSignal.erfolg.text, fontSize: 13),
                 ),
               ],
             ),
@@ -153,10 +156,9 @@ class RaumkonzeptPage extends StatelessWidget {
 
   Widget _buildPhaseCard(BuildContext context, int phase, String timing,
       String budget, List<String> items) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: BeeTokens.md),
+      child: AppCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -165,58 +167,59 @@ class RaumkonzeptPage extends StatelessWidget {
                 Container(
                   width: 32,
                   height: 32,
+                  alignment: Alignment.center,
                   decoration: const BoxDecoration(
-                    color: AppColors.honey,
+                    color: BeeTokens.honig,
                     shape: BoxShape.circle,
                   ),
-                  child: Center(
-                    child: Text(
-                      '$phase',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  child: Text(
+                    '$phase',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: BeeTokens.md),
                 Expanded(
                   child: Text(
                     'Phase $phase: $timing',
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 15,
+                      color: BeeTokens.textPrimaer,
                     ),
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: BeeTokens.md, vertical: BeeTokens.xs),
                   decoration: BoxDecoration(
-                    color: AppColors.amber50,
-                    borderRadius: BorderRadius.circular(8),
+                    color: BeeTokens.honigTint,
+                    borderRadius: BorderRadius.circular(BeeTokens.sm),
                   ),
                   child: Text(
                     budget,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.honeyDark,
+                      color: BeeTokens.textSekundaer,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             ...items.map((item) => Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
+                  padding: const EdgeInsets.only(bottom: BeeTokens.xs),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('• ',
-                          style: TextStyle(color: AppColors.brown600)),
+                          style: TextStyle(color: BeeTokens.textGedaempft)),
                       Expanded(
                         child: Text(item,
-                            style: const TextStyle(color: AppColors.brown600)),
+                            style: const TextStyle(
+                                color: BeeTokens.textGedaempft)),
                       ),
                     ],
                   ),
@@ -230,30 +233,34 @@ class RaumkonzeptPage extends StatelessWidget {
   Widget _buildTotalCard(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(BeeTokens.lg),
       decoration: BoxDecoration(
-        color: AppColors.amber50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.amber400),
+        color: BeeTokens.honigTint,
+        borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+        border: Border.all(color: BeeTokens.honig, width: 0.5),
       ),
       child: Column(
         children: [
           const Text(
             'Gesamtinvestition',
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: BeeTokens.textPrimaer),
           ),
-          const SizedBox(height: 8),
-          Text(
+          const SizedBox(height: BeeTokens.sm),
+          const Text(
             'CHF 27\'000 - 36\'000',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.honeyDark,
-                ),
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: BeeTokens.textSekundaer,
+            ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: BeeTokens.xs),
           const Text(
             'über 4-5 Jahre verteilt',
-            style: TextStyle(color: AppColors.brown600),
+            style: TextStyle(color: BeeTokens.textGedaempft),
           ),
         ],
       ),
@@ -262,21 +269,27 @@ class RaumkonzeptPage extends StatelessWidget {
 
   Widget _buildEquipmentCard(
       BuildContext context, String name, String subtitle, String desc) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        leading: const Icon(Icons.star, color: AppColors.honey),
-        title: Text(name, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(subtitle,
-                style: const TextStyle(
-                    color: AppColors.honeyDark, fontWeight: FontWeight.w500)),
-            Text(desc,
-                style:
-                    const TextStyle(color: AppColors.brown300, fontSize: 13)),
-          ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: BeeTokens.md),
+      child: AppCard(
+        padding: EdgeInsets.zero,
+        child: ListTile(
+          leading: const Icon(Icons.star, color: BeeTokens.honig),
+          title: Text(name,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w600, color: BeeTokens.textPrimaer)),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(subtitle,
+                  style: const TextStyle(
+                      color: BeeTokens.textSekundaer,
+                      fontWeight: FontWeight.w500)),
+              Text(desc,
+                  style: const TextStyle(
+                      color: BeeTokens.textGedaempft, fontSize: 13)),
+            ],
+          ),
         ),
       ),
     );

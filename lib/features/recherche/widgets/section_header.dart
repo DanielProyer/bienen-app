@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 
 class SectionHeader extends StatelessWidget {
   final String title;
@@ -16,21 +16,10 @@ class SectionHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppColors.brown800,
-              ),
-        ),
+        Text(title, style: BeeTokens.titel),
         if (subtitle != null) ...[
-          const SizedBox(height: 4),
-          Text(
-            subtitle!,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.brown300,
-                ),
-          ),
+          const SizedBox(height: BeeTokens.xs),
+          Text(subtitle!, style: BeeTokens.gedaempft),
         ],
       ],
     );

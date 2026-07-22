@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 
 class MarkdownViewerPage extends StatefulWidget {
   final String title;
@@ -42,72 +42,75 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: _error != null
-          ? Center(child: Text(_error!, style: const TextStyle(color: Colors.red)))
+          ? Center(
+              child: Text(_error!,
+                  style: const TextStyle(color: BeeTokens.gefahrText)))
           : _content == null
               ? const Center(child: CircularProgressIndicator())
               : Markdown(
                   data: _content!,
                   selectable: true,
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(BeeTokens.xl),
                   onTapLink: (text, href, title) {
                     if (href != null) {
-                      launchUrl(Uri.parse(href), mode: LaunchMode.externalApplication);
+                      launchUrl(Uri.parse(href),
+                          mode: LaunchMode.externalApplication);
                     }
                   },
                   styleSheet: MarkdownStyleSheet(
-                    h1: TextStyle(
+                    h1: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.brown800,
+                      color: BeeTokens.textPrimaer,
                     ),
-                    h2: TextStyle(
+                    h2: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.brown800,
+                      color: BeeTokens.textPrimaer,
                     ),
-                    h3: TextStyle(
+                    h3: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.honeyDark,
+                      color: BeeTokens.textSekundaer,
                     ),
-                    h4: TextStyle(
+                    h4: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.brown600,
+                      color: BeeTokens.textPrimaer,
                     ),
                     p: const TextStyle(fontSize: 14, height: 1.6),
-                    blockquote: TextStyle(
-                      color: AppColors.brown600,
+                    blockquote: const TextStyle(
+                      color: BeeTokens.textGedaempft,
                       fontStyle: FontStyle.italic,
                     ),
-                    blockquoteDecoration: BoxDecoration(
-                      color: AppColors.amber50,
+                    blockquoteDecoration: const BoxDecoration(
+                      color: BeeTokens.honigTint,
                       border: Border(
-                        left: BorderSide(color: AppColors.honey, width: 4),
+                        left: BorderSide(color: BeeTokens.honig, width: 4),
                       ),
                     ),
                     tableHead: const TextStyle(fontWeight: FontWeight.bold),
                     tableBorder: TableBorder.all(
-                      color: AppColors.brown100,
+                      color: BeeTokens.randStark,
                       width: 1,
                     ),
-                    tableCellsPadding: const EdgeInsets.all(8),
-                    code: TextStyle(
-                      backgroundColor: AppColors.brown50,
+                    tableCellsPadding: const EdgeInsets.all(BeeTokens.sm),
+                    code: const TextStyle(
+                      backgroundColor: BeeTokens.honigTint,
                       fontSize: 13,
                     ),
                     codeblockDecoration: BoxDecoration(
-                      color: AppColors.brown50,
-                      borderRadius: BorderRadius.circular(8),
+                      color: BeeTokens.honigTint,
+                      borderRadius: BorderRadius.circular(BeeTokens.sm),
                     ),
-                    a: TextStyle(
-                      color: Colors.blue.shade700,
+                    a: const TextStyle(
+                      color: BeeTokens.infoText,
                       decoration: TextDecoration.underline,
                     ),
                     listBullet: const TextStyle(fontSize: 14),
-                    horizontalRuleDecoration: BoxDecoration(
+                    horizontalRuleDecoration: const BoxDecoration(
                       border: Border(
-                        top: BorderSide(color: AppColors.brown100, width: 1),
+                        top: BorderSide(color: BeeTokens.randStark, width: 1),
                       ),
                     ),
                   ),
