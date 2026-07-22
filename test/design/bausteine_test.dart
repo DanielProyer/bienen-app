@@ -4,6 +4,8 @@ import 'package:bienen_app/shared/widgets/app_button.dart';
 import 'package:bienen_app/shared/widgets/app_card.dart';
 import 'package:bienen_app/shared/widgets/section_header.dart';
 import 'package:bienen_app/shared/widgets/status_pill.dart';
+import 'package:bienen_app/shared/widgets/app_list_tile.dart';
+import 'package:bienen_app/shared/widgets/stat_tile.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 
 Widget _host(Widget c) => MaterialApp(home: Scaffold(body: c));
@@ -33,5 +35,18 @@ void main() {
   testWidgets('StatusPill nutzt Signal-Farbe', (t) async {
     await t.pumpWidget(_host(const StatusPill(label: 'überfällig', signal: BeeSignal.gefahr)));
     expect(find.text('überfällig'), findsOneWidget);
+  });
+  testWidgets('AppListTile: Titel/Untertitel + Tap', (t) async {
+    var tapped = false;
+    await t.pumpWidget(_host(AppListTile(titel: 'Volk 1', untertitel: 'heute gesehen', onTap: () => tapped = true)));
+    expect(find.text('Volk 1'), findsOneWidget);
+    expect(find.text('heute gesehen'), findsOneWidget);
+    await t.tap(find.text('Volk 1'));
+    expect(tapped, isTrue);
+  });
+  testWidgets('StatTile: Label + Wert', (t) async {
+    await t.pumpWidget(_host(const StatTile(label: 'Bisher', wert: 'CHF 640')));
+    expect(find.text('Bisher'), findsOneWidget);
+    expect(find.text('CHF 640'), findsOneWidget);
   });
 }
