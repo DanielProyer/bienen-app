@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bienen_app/shared/widgets/app_button.dart';
 import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
+import 'package:bienen_app/shared/widgets/status_pill.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 
 Widget _host(Widget c) => MaterialApp(home: Scaffold(body: c));
 void main() {
@@ -21,5 +24,14 @@ void main() {
   testWidgets('AppCard rendert Kind', (t) async {
     await t.pumpWidget(_host(const AppCard(child: Text('Inhalt'))));
     expect(find.text('Inhalt'), findsOneWidget);
+  });
+  testWidgets('SectionHeader zeigt Titel + trailing', (t) async {
+    await t.pumpWidget(_host(const SectionHeader(titel: 'Heute', trailingText: '3 Aufgaben')));
+    expect(find.text('Heute'), findsOneWidget);
+    expect(find.text('3 Aufgaben'), findsOneWidget);
+  });
+  testWidgets('StatusPill nutzt Signal-Farbe', (t) async {
+    await t.pumpWidget(_host(const StatusPill(label: 'überfällig', signal: BeeSignal.gefahr)));
+    expect(find.text('überfällig'), findsOneWidget);
   });
 }
