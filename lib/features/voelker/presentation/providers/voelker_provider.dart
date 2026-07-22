@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bienen_app/core/supabase/supabase_config.dart';
+import 'package:bienen_app/features/aufgaben/presentation/providers/aufgaben_provider.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/monitoring/data/models/scale.dart';
 import 'package:bienen_app/features/monitoring/presentation/providers/monitoring_provider.dart';
@@ -51,7 +52,24 @@ class StandorteNotifier extends AsyncNotifier<List<Standort>> {
   VoelkerGateway get _gw => ref.read(voelkerGatewayProvider);
   @override
   Future<List<Standort>> build() => _gw.standorte();
-  Future<void> speichern(Standort s) async { await _gw.standortSpeichern(s); ref.invalidateSelf(); }
+
+  /// Gibt den gespeicherten Standort MIT id zurueck — der Aufrufer braucht sie,
+  /// um ihn direkt einem Volk zuzuordnen.
+  Future<Standort> speichern(Standort s) async {
+    final gespeichert = await _gw.standortSpeichern(s);
+    ref.invalidateSelf();
+    return gespeichert;
+  }
+
+  /// Loeschen: die DB setzt `voelker.standort_id` und `aufgaben.standort_id`
+  /// per ON DELETE SET NULL auf null — Voelker und Aufgaben an diesem Stand
+  /// verlieren ihn also. Deshalb beide Listen neu laden.
+  Future<void> loeschen(String id) async {
+    await _gw.standortLoeschen(id);
+    ref.invalidateSelf();
+    ref.invalidate(voelkerListProvider);
+    ref.invalidate(aufgabenListProvider);
+  }
 }
 
 class KoeniginnenNotifier extends AsyncNotifier<List<Koenigin>> {

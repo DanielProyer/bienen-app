@@ -80,14 +80,25 @@ class SupabaseVoelkerGateway implements VoelkerGateway {
   }
 
   @override
-  Future<void> standortSpeichern(Standort s) async {
+  Future<Standort> standortSpeichern(Standort s) async {
     try {
       final json = s.toInsertJson();
-      if (s.id.isEmpty) {
-        await _c.from('standorte').insert(json);
-      } else {
-        await _c.from('standorte').update(json).eq('id', s.id);
-      }
+      // .select().single() liefert den geschriebenen Datensatz inkl. der von der
+      // DB vergebenen id zurueck — ohne die kann der Aufrufer den neuen Standort
+      // nicht zuordnen.
+      final res = s.id.isEmpty
+          ? await _c.from('standorte').insert(json).select().single()
+          : await _c.from('standorte').update(json).eq('id', s.id).select().single();
+      return Standort.fromJson(res);
+    } catch (e) {
+      _rethrow(e);
+    }
+  }
+
+  @override
+  Future<void> standortLoeschen(String id) async {
+    try {
+      await _c.from('standorte').delete().eq('id', id);
     } catch (e) {
       _rethrow(e);
     }

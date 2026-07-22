@@ -308,10 +308,22 @@ Future<void> showKoeniginForm(
   );
 }
 
-/// Standort anlegen — analog zu [showVolkForm]. Beute wird aus
-/// `betriebsEinstellungenProvider.beutensystemDefault` und die Hoehe aus
-/// `hoeheDefaultM` vorbelegt.
-Future<void> showStandortForm(BuildContext context, WidgetRef ref, {Standort? standort}) async {
+/// Standort anlegen — analog zu [showVolkForm]. Die Hoehe wird aus
+/// `betriebsEinstellungenProvider.hoeheDefaultM` und der Kanton aus `kanton`
+/// vorbelegt.
+///
+/// [zuVolk]: Wird der Standort aus der Standort-Sektion eines Volks heraus neu
+/// angelegt, soll das Volk auch DORT stehen. Ohne das entstuende nur ein
+/// unverknuepfter Stammdaten-Eintrag, den die Volk-Sektion nicht anzeigt —
+/// dieselbe Falle wie frueher bei den Königinnen. Die Zuordnung laeuft ueber
+/// `volkSpeichern` mit `copyWith(standortId: …)`, damit kein Volk-Feld verloren
+/// geht. Bei bestehendem Standort (Bearbeiten) wird nichts zugeordnet.
+Future<void> showStandortForm(
+  BuildContext context,
+  WidgetRef ref, {
+  Standort? standort,
+  Volk? zuVolk,
+}) async {
   await _stammdatenLaden(ref);
   if (!context.mounted) return;
   final einst = ref.read(betriebsEinstellungenProvider).valueOrNull;
@@ -350,8 +362,27 @@ Future<void> showStandortForm(BuildContext context, WidgetRef ref, {Standort? st
               status: standort?.status ?? 'besetzt',
             );
             try {
-              await ref.read(standorteProvider.notifier).speichern(neu);
+              final gespeichert =
+                  await ref.read(standorteProvider.notifier).speichern(neu);
+              // Neu angelegt UND aus einem Volk heraus? Dann sofort zuordnen,
+              // sonst bliebe es ein unsichtbarer Stammdaten-Eintrag.
+              final zuzuordnen = standort == null && zuVolk != null;
+              if (zuzuordnen) {
+                await ref
+                    .read(voelkerListProvider.notifier)
+                    .speichern(zuVolk.copyWith(standortId: gespeichert.id));
+              }
               if (ctx.mounted) Navigator.pop(ctx);
+              // Rueckmeldung auf dem Seiten-Context (ctx ist nach dem Pop weg).
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(zuzuordnen
+                      ? 'Standort gespeichert und dem Volk zugeordnet.'
+                      : standort == null
+                          ? 'Standort gespeichert.'
+                          : 'Standort aktualisiert.'),
+                ));
+              }
             } on VoelkerFehler catch (e) {
               if (ctx.mounted) {
                 ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));

@@ -31,6 +31,11 @@ class VoelkerPage extends ConsumerWidget {
             tooltip: 'Königinnen',
             onPressed: () => context.go('/koeniginnen'),
           ),
+          IconButton(
+            icon: const Icon(Icons.place_outlined),
+            tooltip: 'Standorte',
+            onPressed: () => context.go('/standorte'),
+          ),
         ],
       ),
       floatingActionButton: darfSchreiben

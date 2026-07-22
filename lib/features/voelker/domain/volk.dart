@@ -40,6 +40,59 @@ class Volk {
     this.standort,
   });
 
+  /// Kopie mit geaenderten Feldern (Muster wie `MaterialItem.copyWith`).
+  ///
+  /// Ohne das musste jede Aenderung an EINEM Feld das Volk komplett von Hand
+  /// neu bauen — dabei fielen still Felder wie `einweiselungAm`, `herkunft`,
+  /// `notes` oder `sortOrder` heraus (Datenverlust beim Speichern).
+  ///
+  /// [standortEntfernen] / [koeniginEntfernen] setzen die jeweilige Zuordnung
+  /// explizit auf null. Ein blosses `standortId: null` kann das nicht: das
+  /// `??`-Muster unterscheidet nicht zwischen „nicht angegeben" und „null
+  /// gewuenscht". Genau das braucht aber ON DELETE SET NULL (Standort bzw.
+  /// Koenigin geloescht → Volk verliert die Zuordnung, behaelt alles andere).
+  Volk copyWith({
+    String? id,
+    String? name,
+    String? status,
+    String? standortId,
+    String? koeniginId,
+    String? mutterVolkId,
+    String? beutentyp,
+    int? zargen,
+    int? brutwaben,
+    String? bioStatus,
+    String? gesundheitsstatus,
+    DateTime? einweiselungAm,
+    String? herkunft,
+    String? notes,
+    int? sortOrder,
+    Koenigin? koenigin,
+    Standort? standort,
+    bool standortEntfernen = false,
+    bool koeniginEntfernen = false,
+  }) {
+    return Volk(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      status: status ?? this.status,
+      standortId: standortEntfernen ? null : (standortId ?? this.standortId),
+      koeniginId: koeniginEntfernen ? null : (koeniginId ?? this.koeniginId),
+      mutterVolkId: mutterVolkId ?? this.mutterVolkId,
+      beutentyp: beutentyp ?? this.beutentyp,
+      zargen: zargen ?? this.zargen,
+      brutwaben: brutwaben ?? this.brutwaben,
+      bioStatus: bioStatus ?? this.bioStatus,
+      gesundheitsstatus: gesundheitsstatus ?? this.gesundheitsstatus,
+      einweiselungAm: einweiselungAm ?? this.einweiselungAm,
+      herkunft: herkunft ?? this.herkunft,
+      notes: notes ?? this.notes,
+      sortOrder: sortOrder ?? this.sortOrder,
+      koenigin: koeniginEntfernen ? null : (koenigin ?? this.koenigin),
+      standort: standortEntfernen ? null : (standort ?? this.standort),
+    );
+  }
+
   factory Volk.fromJson(Map<String, dynamic> j) {
     final k = j['koenigin'];
     final s = j['standort'];

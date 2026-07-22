@@ -21,7 +21,14 @@ abstract class VoelkerGateway {
 
   Future<void> volkSpeichern(Volk volk); // insert wenn id leer, sonst update
   Future<void> volkLoeschen(String id);
-  Future<void> standortSpeichern(Standort s);
+  /// Speichert einen Standort und gibt ihn MIT vergebener id zurueck — die
+  /// braucht der Aufrufer, um ihn direkt einem Volk zuzuordnen.
+  Future<Standort> standortSpeichern(Standort s);
+
+  /// Loeschen: die DB setzt `voelker.standort_id` UND `aufgaben.standort_id`
+  /// per ON DELETE SET NULL auf null (siehe `voelker_standort_fk` /
+  /// `aufgaben_standort_fk`).
+  Future<void> standortLoeschen(String id);
 
   /// Speichert eine Koenigin und gibt sie MIT vergebener id zurueck — die
   /// braucht der Aufrufer, um sie direkt einem Volk zuzuordnen (umweiseln).
