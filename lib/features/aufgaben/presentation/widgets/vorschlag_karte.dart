@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/aufgaben/domain/saison_regeln.dart';
 import 'package:bienen_app/features/aufgaben/presentation/providers/aufgaben_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
 
 /// Karte für einen Generator-Vorschlag: Annehmen (ggf. Völker-Auswahl) / Überspringen.
 class VorschlagKarte extends ConsumerWidget {
@@ -54,31 +56,31 @@ class VorschlagKarte extends ConsumerWidget {
     final r = vorschlag.regel;
     final von = DateFormat('dd.MM.').format(vorschlag.fensterStart);
     final bis = DateFormat('dd.MM.').format(vorschlag.faelligAm);
-    return Card(
-      color: AppColors.honey.withAlpha(18),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: BeeTokens.sm),
+      child: AppCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(children: [
-              const Icon(Icons.auto_awesome, size: 18, color: AppColors.honeyDark),
-              const SizedBox(width: 8),
-              Expanded(child: Text(r.titel, style: const TextStyle(fontWeight: FontWeight.w600))),
-              Text('$von – $bis', style: const TextStyle(fontSize: 12, color: AppColors.brown300)),
+              const Icon(Icons.auto_awesome, size: 18, color: BeeTokens.honig),
+              const SizedBox(width: BeeTokens.sm),
+              Expanded(child: Text(r.titel, style: BeeTokens.abschnitt)),
+              Text('$von – $bis', style: BeeTokens.gedaempft),
             ]),
-            const SizedBox(height: 6),
-            Text(vorschlag.beschreibung, style: const TextStyle(fontSize: 13, color: AppColors.brown600)),
-            const SizedBox(height: 8),
+            const SizedBox(height: BeeTokens.xs),
+            Text(vorschlag.beschreibung, style: BeeTokens.text),
+            const SizedBox(height: BeeTokens.md),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(
+              AppButton(
+                label: 'Überspringen',
+                kind: AppButtonKind.text,
                 onPressed: () => _ueberspringen(context, ref),
-                child: const Text('Überspringen'),
               ),
-              const SizedBox(width: 8),
-              FilledButton(
+              const SizedBox(width: BeeTokens.sm),
+              AppButton(
+                label: 'Annehmen',
                 onPressed: () => _annehmen(context, ref),
-                child: const Text('Annehmen'),
               ),
             ]),
           ],

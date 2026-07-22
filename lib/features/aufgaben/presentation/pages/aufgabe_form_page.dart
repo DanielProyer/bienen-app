@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/aufgaben/domain/aufgabe.dart';
 import 'package:bienen_app/features/aufgaben/presentation/providers/aufgaben_provider.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
 
 class AufgabeFormPage extends ConsumerStatefulWidget {
   final String? aufgabeId; // null = neu
@@ -84,7 +88,7 @@ class _AufgabeFormPageState extends ConsumerState<AufgabeFormPage> {
     if (!ref.watch(darfSchreibenProvider)) {
       return Scaffold(
         appBar: AppBar(title: const Text('Aufgabe')),
-        body: const Center(child: Text('Nur mit Schreibrechten verfügbar.')),
+        body: const EmptyState(icon: Icons.lock_outline, titel: 'Nur mit Schreibrechten verfügbar.'),
       );
     }
     // Stammdaten laden (Gotcha 2): erst rendern, wenn Dropdown-Daten da sind.
@@ -110,12 +114,13 @@ class _AufgabeFormPageState extends ConsumerState<AufgabeFormPage> {
     final voelker = voelkerAsync.value!.where((v) => v.status == 'aktiv' || v.id == _volkId).toList();
     final standorte = standorteAsync.value!;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.aufgabeId == null ? 'Neue Aufgabe' : 'Aufgabe bearbeiten')),
-      body: Form(
+    return FormScaffold(
+      titel: widget.aufgabeId == null ? 'Neue Aufgabe' : 'Aufgabe bearbeiten',
+      bodenleiste: AppButton(label: 'Speichern', full: true, onPressed: _speichern),
+      child: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(BeeTokens.lg),
           children: [
             TextFormField(
               controller: _titel,
@@ -128,7 +133,7 @@ class _AufgabeFormPageState extends ConsumerState<AufgabeFormPage> {
               decoration: const InputDecoration(labelText: 'Beschreibung'),
               maxLines: 3,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             DropdownButtonFormField<String>(
               initialValue: _kategorie,
               decoration: const InputDecoration(labelText: 'Kategorie'),
@@ -138,7 +143,7 @@ class _AufgabeFormPageState extends ConsumerState<AufgabeFormPage> {
               ],
               onChanged: (v) => setState(() => _kategorie = v ?? 'sonstiges'),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             InputDecorator(
               decoration: const InputDecoration(labelText: 'Fällig am'),
               child: InkWell(
@@ -154,7 +159,7 @@ class _AufgabeFormPageState extends ConsumerState<AufgabeFormPage> {
                 child: Text(DateFormat('dd.MM.yyyy').format(_faelligAm)),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             DropdownButtonFormField<String>(
               initialValue: _prioritaet,
               decoration: const InputDecoration(labelText: 'Priorität'),
@@ -165,7 +170,7 @@ class _AufgabeFormPageState extends ConsumerState<AufgabeFormPage> {
               ],
               onChanged: (v) => setState(() => _prioritaet = v ?? 'normal'),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             DropdownButtonFormField<String?>(
               initialValue: _volkId,
               decoration: const InputDecoration(labelText: 'Volk (optional)'),
@@ -175,7 +180,7 @@ class _AufgabeFormPageState extends ConsumerState<AufgabeFormPage> {
               ],
               onChanged: (v) => setState(() => _volkId = v),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             DropdownButtonFormField<String?>(
               initialValue: _standortId,
               decoration: const InputDecoration(labelText: 'Standort (optional)'),
@@ -185,8 +190,6 @@ class _AufgabeFormPageState extends ConsumerState<AufgabeFormPage> {
               ],
               onChanged: (v) => setState(() => _standortId = v),
             ),
-            const SizedBox(height: 24),
-            FilledButton(onPressed: _speichern, child: const Text('Speichern')),
           ],
         ),
       ),
