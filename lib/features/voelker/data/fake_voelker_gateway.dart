@@ -70,14 +70,35 @@ class FakeVoelkerGateway implements VoelkerGateway {
   }
 
   @override
-  Future<void> koeniginSpeichern(Koenigin k) async {
+  Future<Koenigin> koeniginSpeichern(Koenigin k) async {
     final id = k.id.isEmpty ? 'k${++_seq}' : k.id;
-    _koeniginnen[id] = Koenigin(
+    final gespeichert = Koenigin(
       id: id, kennung: k.kennung, schlupfjahr: k.schlupfjahr, rasse: k.rasse, linie: k.linie,
       herkunft: k.herkunft, begattungsart: k.begattungsart, status: k.status, volkId: k.volkId,
       zugeordnetAm: k.zugeordnetAm, ersetztAm: k.ersetztAm, mutterKoeniginId: k.mutterKoeniginId,
       notes: k.notes,
     );
+    _koeniginnen[id] = gespeichert;
+    return gespeichert;
+  }
+
+  @override
+  Future<void> koeniginLoeschen(String id) async {
+    _koeniginnen.remove(id);
+    // Volk, das diese Koenigin trug, wird weisellos (wie ON DELETE SET NULL in der DB).
+    // ALLE uebrigen Felder muessen erhalten bleiben — Volk hat kein copyWith.
+    for (final v in _voelker.values.toList()) {
+      if (v.koeniginId == id) {
+        _voelker[v.id] = Volk(
+          id: v.id, name: v.name, status: v.status, standortId: v.standortId,
+          koeniginId: null, mutterVolkId: v.mutterVolkId, beutentyp: v.beutentyp,
+          zargen: v.zargen, brutwaben: v.brutwaben, bioStatus: v.bioStatus,
+          gesundheitsstatus: v.gesundheitsstatus, einweiselungAm: v.einweiselungAm,
+          herkunft: v.herkunft, notes: v.notes, sortOrder: v.sortOrder,
+          koenigin: null, standort: v.standort,
+        );
+      }
+    }
   }
 
   @override

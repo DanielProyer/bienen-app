@@ -94,14 +94,25 @@ class SupabaseVoelkerGateway implements VoelkerGateway {
   }
 
   @override
-  Future<void> koeniginSpeichern(Koenigin k) async {
+  Future<Koenigin> koeniginSpeichern(Koenigin k) async {
     try {
       final json = k.toInsertJson();
-      if (k.id.isEmpty) {
-        await _c.from('koeniginnen').insert(json);
-      } else {
-        await _c.from('koeniginnen').update(json).eq('id', k.id);
-      }
+      // .select().single() liefert den geschriebenen Datensatz inkl. der von der
+      // DB vergebenen id zurueck — ohne die kann der Aufrufer die neue Koenigin
+      // nicht zuordnen.
+      final res = k.id.isEmpty
+          ? await _c.from('koeniginnen').insert(json).select().single()
+          : await _c.from('koeniginnen').update(json).eq('id', k.id).select().single();
+      return Koenigin.fromJson(res);
+    } catch (e) {
+      _rethrow(e);
+    }
+  }
+
+  @override
+  Future<void> koeniginLoeschen(String id) async {
+    try {
+      await _c.from('koeniginnen').delete().eq('id', id);
     } catch (e) {
       _rethrow(e);
     }

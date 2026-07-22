@@ -22,7 +22,11 @@ abstract class VoelkerGateway {
   Future<void> volkSpeichern(Volk volk); // insert wenn id leer, sonst update
   Future<void> volkLoeschen(String id);
   Future<void> standortSpeichern(Standort s);
-  Future<void> koeniginSpeichern(Koenigin k);
+
+  /// Speichert eine Koenigin und gibt sie MIT vergebener id zurueck — die
+  /// braucht der Aufrufer, um sie direkt einem Volk zuzuordnen (umweiseln).
+  Future<Koenigin> koeniginSpeichern(Koenigin k);
+  Future<void> koeniginLoeschen(String id);
 
   /// Atomare Umweiselung. [neueKoeniginId] null = Volk bleibt weisellos.
   Future<void> umweiseln({

@@ -58,7 +58,23 @@ class KoeniginnenNotifier extends AsyncNotifier<List<Koenigin>> {
   VoelkerGateway get _gw => ref.read(voelkerGatewayProvider);
   @override
   Future<List<Koenigin>> build() => _gw.koeniginnen();
-  Future<void> speichern(Koenigin k) async { await _gw.koeniginSpeichern(k); ref.invalidateSelf(); }
+
+  /// Gibt die gespeicherte Koenigin MIT id zurueck — der Aufrufer braucht sie,
+  /// um sie direkt einem Volk zuzuordnen.
+  Future<Koenigin> speichern(Koenigin k) async {
+    final gespeichert = await _gw.koeniginSpeichern(k);
+    ref.invalidateSelf();
+    return gespeichert;
+  }
+
+  /// Loeschen: die DB setzt `voelker.koenigin_id` per ON DELETE SET NULL auf
+  /// null — ein betroffenes Volk wird also weisellos. Deshalb auch die
+  /// Voelker-Liste neu laden.
+  Future<void> loeschen(String id) async {
+    await _gw.koeniginLoeschen(id);
+    ref.invalidateSelf();
+    ref.invalidate(voelkerListProvider);
+  }
 }
 
 class EinstellungenNotifier extends AsyncNotifier<BetriebsEinstellungen> {

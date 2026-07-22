@@ -20,19 +20,22 @@ class KoeniginSection extends ConsumerWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
             const Expanded(
-              child: Text('Koenigin',
+              child: Text('Königin',
                   style: TextStyle(fontWeight: FontWeight.bold),
                   overflow: TextOverflow.ellipsis),
             ),
             if (darf && k == null)
               TextButton(
-                onPressed: () => showKoeniginForm(context, ref),
+                // zuVolkId: die neue Königin gehoert diesem Volk — sonst
+                // entstuende nur ein unsichtbarer Register-Eintrag.
+                onPressed: () => showKoeniginForm(context, ref, zuVolkId: volk.id),
                 child: const Text('Anlegen'),
               ),
             if (darf)
               TextButton(
                 onPressed: () => showUmweiselnDialog(context, ref, volk),
-                child: const Text('Umweiseln'),
+                // Ohne Königin ist es keine Umweiselung, sondern eine Erst-Zuordnung.
+                child: Text(k == null ? 'Zuordnen' : 'Umweiseln'),
               ),
           ]),
           if (k == null) ...[
