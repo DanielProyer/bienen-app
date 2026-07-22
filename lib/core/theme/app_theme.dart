@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 
 class AppColors {
   static const amber50 = Color(0xFFFFF8E1);
@@ -37,40 +38,92 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.honey,
+        seedColor: BeeTokens.honig,
         brightness: Brightness.light,
-        surface: AppColors.surface,
+        surface: BeeTokens.karte,
       ),
-      scaffoldBackgroundColor: AppColors.background,
+      scaffoldBackgroundColor: BeeTokens.oberflaeche,
       textTheme: textTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.brown800,
-        foregroundColor: Colors.white,
+        backgroundColor: BeeTokens.karte,
+        foregroundColor: BeeTokens.textPrimaer,
         elevation: 0,
+        scrolledUnderElevation: 0,
+        shape: const Border(bottom: BorderSide(color: BeeTokens.honig, width: 2)),
         titleTextStyle: GoogleFonts.inter(
           fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
+          fontWeight: FontWeight.w500,
+          color: BeeTokens.textPrimaer,
         ),
       ),
       cardTheme: CardThemeData(
-        color: AppColors.cardBg,
-        elevation: 1,
+        color: BeeTokens.karte,
+        elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+          side: const BorderSide(color: BeeTokens.rand, width: 0.5),
         ),
       ),
-      navigationRailTheme: NavigationRailThemeData(
-        backgroundColor: AppColors.brown800,
-        selectedIconTheme: const IconThemeData(color: AppColors.amber400),
-        unselectedIconTheme: IconThemeData(color: Colors.white.withAlpha(180)),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          minimumSize: const Size(0, BeeTokens.tapMin),
+          backgroundColor: BeeTokens.honig,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(BeeTokens.rControl)),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size(0, BeeTokens.tapMin),
+          foregroundColor: BeeTokens.textPrimaer,
+          side: const BorderSide(color: BeeTokens.randStark),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(BeeTokens.rControl)),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          minimumSize: const Size(0, BeeTokens.tapMin),
+          foregroundColor: BeeTokens.honig,
+        ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: AppColors.amber50,
-        selectedColor: AppColors.amber200,
+        backgroundColor: BeeTokens.karte,
+        selectedColor: BeeTokens.honigTint,
+        side: const BorderSide(color: BeeTokens.rand, width: 0.5),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(BeeTokens.rControl)),
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: BeeTokens.karte,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(BeeTokens.rKarte)),
         ),
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: BeeTokens.karte,
+        indicatorColor: BeeTokens.honigTint,
+        elevation: 0,
+        height: 64,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        iconTheme: WidgetStateProperty.resolveWith((s) => IconThemeData(
+              color: s.contains(WidgetState.selected) ? BeeTokens.honig : BeeTokens.textGedaempft,
+            )),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: BeeTokens.karte,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(BeeTokens.rControl),
+          borderSide: const BorderSide(color: BeeTokens.rand),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(BeeTokens.rControl),
+          borderSide: const BorderSide(color: BeeTokens.rand),
+        ),
+      ),
+      navigationRailTheme: const NavigationRailThemeData(
+        backgroundColor: AppColors.brown800,
+        selectedIconTheme: IconThemeData(color: AppColors.amber400),
+        unselectedIconTheme: IconThemeData(color: Colors.white70),
       ),
     );
   }
