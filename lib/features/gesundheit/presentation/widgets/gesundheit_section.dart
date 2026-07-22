@@ -7,16 +7,19 @@ import 'package:bienen_app/features/gesundheit/domain/gesundheitsereignis.dart';
 import 'package:bienen_app/features/gesundheit/domain/krankheit.dart';
 import 'package:bienen_app/features/gesundheit/presentation/providers/gesundheit_provider.dart';
 import 'package:bienen_app/features/gesundheit/presentation/widgets/meldepflicht_banner.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 class GesundheitSection extends ConsumerWidget {
   final String volkId;
   const GesundheitSection({super.key, required this.volkId});
 
   static Color _katColor(Rechtskategorie? r) => switch (r) {
-        Rechtskategorie.zuBekaempfen => Colors.red,
-        Rechtskategorie.zuUeberwachen => Colors.orange,
-        Rechtskategorie.neobiotaMeldung => Colors.purple,
-        _ => Colors.grey,
+        Rechtskategorie.zuBekaempfen => BeeSignal.gefahr.text,
+        Rechtskategorie.zuUeberwachen => BeeSignal.warnung.text,
+        Rechtskategorie.neobiotaMeldung => BeeSignal.info.text,
+        _ => BeeTokens.textGedaempft,
       };
 
   @override
@@ -26,19 +29,17 @@ class GesundheitSection extends ConsumerWidget {
     final darf = ref.watch(darfSchreibenProvider);
     final letzte = ref.watch(letzteDurchsichtMapProvider)[volkId];
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            const Text('Gesundheit', style: TextStyle(fontWeight: FontWeight.bold)),
-            const Spacer(),
-            if (darf)
-              TextButton.icon(
-                onPressed: () => context.go('/voelker/$volkId/gesundheit'),
-                icon: const Icon(Icons.medical_information_outlined, size: 18),
-                label: const Text('Diagnose erfassen')),
-          ]),
+    return AppCard(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SectionHeader(
+            titel: 'Gesundheit',
+            action: darf
+                ? TextButton.icon(
+                    onPressed: () => context.go('/voelker/$volkId/gesundheit'),
+                    icon: const Icon(Icons.medical_information_outlined, size: 18),
+                    label: const Text('Diagnose erfassen'))
+                : null,
+          ),
           // Meldepflicht-Banner (aktive meldepflichtige Ereignisse; nach Krankheit dedupliziert)
           for (final key in {for (final e in aktivMelde) e.krankheit}) MeldepflichtBanner(krankheitKey: key),
           // 4.3-Nudge: je gesundheitsrelevantem Flag der letzten Durchsicht ohne aktives Ereignis gleicher Krankheit
@@ -46,19 +47,19 @@ class GesundheitSection extends ConsumerWidget {
           if (darf && letzte != null && async.hasValue)
             ..._nudges(context, async.valueOrNull ?? const [], letzte.auffaelligkeiten),
           async.when(
-            loading: () => const Padding(padding: EdgeInsets.all(8), child: LinearProgressIndicator()),
-            error: (e, _) => Padding(padding: const EdgeInsets.all(8), child: Text('Fehler: $e')),
+            loading: () => const Padding(padding: EdgeInsets.all(BeeTokens.sm), child: LinearProgressIndicator()),
+            error: (e, _) => Padding(padding: const EdgeInsets.all(BeeTokens.sm), child: Text('Fehler: $e')),
             data: (list) => list.isEmpty
-                ? const Padding(padding: EdgeInsets.all(8), child: Text('Keine Gesundheitsereignisse.'))
+                ? const Padding(padding: EdgeInsets.all(BeeTokens.sm), child: Text('Keine Gesundheitsereignisse.'))
                 : Column(children: [
                     for (final e in list.take(6))
                       ListTile(
                         dense: true,
                         leading: Icon(Icons.circle, size: 12,
-                            color: e.isStorniert ? Colors.grey : _katColor(rechtskategorieVon(e.krankheit))),
+                            color: e.isStorniert ? BeeTokens.textGedaempft : _katColor(rechtskategorieVon(e.krankheit))),
                         title: Text('${katalogEintrag(e.krankheit)?.label ?? e.krankheit} · ${e.status}',
                             style: e.isStorniert
-                                ? const TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey)
+                                ? const TextStyle(decoration: TextDecoration.lineThrough, color: BeeTokens.textGedaempft)
                                 : null),
                         subtitle: Text('${e.festgestelltAm.day}.${e.festgestelltAm.month}.${e.festgestelltAm.year}'
                             '${e.isStorniert ? ' · storniert: ${e.stornoGrund ?? ''}' : ''}'),
@@ -70,7 +71,6 @@ class GesundheitSection extends ConsumerWidget {
                   ]),
           ),
         ]),
-      ),
     );
   }
 
@@ -84,9 +84,9 @@ class GesundheitSection extends ConsumerWidget {
       if (key == null || aktiveKrankheiten.contains(key) || !gesehen.add(key)) continue;
       final label = katalogEintrag(key)?.label ?? key;
       out.add(Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: BeeTokens.xs),
         child: Row(children: [
-          const Icon(Icons.info_outline, size: 16, color: Colors.blueGrey),
+          Icon(Icons.info_outline, size: 16, color: BeeSignal.info.text),
           const SizedBox(width: 6),
           Expanded(child: Text('Durchsicht meldete: $label', style: const TextStyle(fontSize: 13))),
           TextButton(
