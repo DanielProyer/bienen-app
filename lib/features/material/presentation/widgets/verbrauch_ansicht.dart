@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/material/domain/kosten_dashboard.dart';
 import 'package:bienen_app/features/material/data/models/material_item.dart';
 import 'package:bienen_app/features/material/data/models/material_purchase.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/material/presentation/widgets/material_list_tile.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
+import 'package:bienen_app/shared/widgets/status_pill.dart';
 
 final _chf = NumberFormat('#,##0.00', 'de_CH');
 final _qty = NumberFormat('#,##0.##', 'de_CH');
@@ -35,16 +37,15 @@ class VerbrauchAnsicht extends ConsumerWidget {
         .toList();
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(BeeTokens.lg),
       children: [
         if (nachkaufen.isNotEmpty) ...[
           _NachkaufBanner(items: nachkaufen),
-          const SizedBox(height: 20),
+          const SizedBox(height: BeeTokens.xl),
         ],
 
         // Im Bestand
-        const _SectionHeader('Im Bestand'),
-        const SizedBox(height: 8),
+        const SectionHeader(titel: 'Im Bestand'),
         if (imBestand.isEmpty)
           const _EmptyHint('Noch nichts im Bestand.')
         else
@@ -56,11 +57,10 @@ class VerbrauchAnsicht extends ConsumerWidget {
                 ),
               )),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: BeeTokens.xl),
 
         // Auf der Einkaufsliste
-        const _SectionHeader('Auf der Einkaufsliste'),
-        const SizedBox(height: 8),
+        const SectionHeader(titel: 'Auf der Einkaufsliste'),
         if (einkaufsliste.isEmpty)
           const _EmptyHint('Die Einkaufsliste ist leer – alles vorhanden ✓')
         else
@@ -79,30 +79,29 @@ class _NachkaufBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Card(
-      margin: EdgeInsets.zero,
-      color: AppColors.amber50,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: AppColors.honey, width: 1.5),
+    return Container(
+      decoration: BoxDecoration(
+        color: BeeTokens.warnungFlaeche,
+        borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+        border: Border.all(color: BeeTokens.honig, width: 1.5),
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 12, 8, 8),
+        padding: const EdgeInsets.fromLTRB(14, BeeTokens.md, BeeTokens.sm, BeeTokens.sm),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(Icons.warning_amber,
-                    color: AppColors.amber800, size: 20),
-                const SizedBox(width: 8),
+                Icon(Icons.warning_amber,
+                    color: BeeSignal.warnung.text, size: 20),
+                const SizedBox(width: BeeTokens.sm),
                 Expanded(
                   child: Text(
                     '${items.length} Artikel unter Mindestbestand',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
-                      color: AppColors.brown800,
+                      color: BeeTokens.textPrimaer,
                     ),
                   ),
                 ),
@@ -131,20 +130,20 @@ class _NachkaufBanner extends ConsumerWidget {
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.brown800,
+                    color: BeeTokens.textPrimaer,
                   ),
                 ),
                 Text(
                   'Bestand ${_qty.format(item.stockQty)} / min ${_qty.format(item.minQty)}$unit',
-                  style: TextStyle(fontSize: 11, color: Colors.red.shade700),
+                  style: TextStyle(fontSize: 11, color: BeeSignal.gefahr.text),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: BeeTokens.sm),
           TextButton.icon(
             style: TextButton.styleFrom(
-              foregroundColor: AppColors.honeyDark,
+              foregroundColor: BeeTokens.textSekundaer,
               visualDensity: VisualDensity.compact,
             ),
             icon: const Icon(Icons.add_shopping_cart, size: 16),
@@ -172,8 +171,8 @@ class _BestandExtra extends StatelessWidget {
     final status = bestandStatus(item);
     final hasBar = item.minQty > 0;
     final barColor = status == BestandStatus.nachbestellen
-        ? AppColors.amber600
-        : AppColors.green600;
+        ? BeeSignal.warnung.text
+        : BeeSignal.erfolg.text;
     final unit = item.unit != null ? ' ${item.unit}' : '';
 
     return Padding(
@@ -187,7 +186,7 @@ class _BestandExtra extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: (item.stockQty / item.minQty).clamp(0, 1).toDouble(),
                 minHeight: 6,
-                backgroundColor: AppColors.brown50,
+                backgroundColor: BeeTokens.rand,
                 valueColor: AlwaysStoppedAnimation<Color>(barColor),
               ),
             ),
@@ -201,23 +200,34 @@ class _BestandExtra extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.brown600,
+                    color: BeeTokens.textSekundaer,
                   ),
                 ),
               ),
-              _StatusBadge(status: status),
+              _statusBadge(status),
             ],
           ),
           if (lastPurchase != null) ...[
             const SizedBox(height: 4),
             Text(
               _lastPurchaseLabel(lastPurchase!),
-              style: const TextStyle(fontSize: 11, color: AppColors.brown300),
+              style: const TextStyle(fontSize: 11, color: BeeTokens.textGedaempft),
             ),
           ],
         ],
       ),
     );
+  }
+
+  Widget _statusBadge(BestandStatus status) {
+    switch (status) {
+      case BestandStatus.genug:
+        return const StatusPill(label: 'genug', signal: BeeSignal.erfolg);
+      case BestandStatus.nachbestellen:
+        return const StatusPill(label: 'nachbestellen', signal: BeeSignal.warnung);
+      case BestandStatus.nichtRelevant:
+        return const SizedBox.shrink();
+    }
   }
 
   String _lastPurchaseLabel(MaterialPurchase p) {
@@ -233,68 +243,19 @@ class _BestandExtra extends StatelessWidget {
   }
 }
 
-class _StatusBadge extends StatelessWidget {
-  final BestandStatus status;
-  const _StatusBadge({required this.status});
-
-  @override
-  Widget build(BuildContext context) {
-    final String label;
-    final Color color;
-    switch (status) {
-      case BestandStatus.genug:
-        label = 'genug';
-        color = AppColors.green600;
-      case BestandStatus.nachbestellen:
-        label = 'nachbestellen';
-        color = AppColors.amber800;
-      case BestandStatus.nichtRelevant:
-        return const SizedBox.shrink();
-    }
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withAlpha(25),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withAlpha(100)),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-            fontSize: 11, fontWeight: FontWeight.w600, color: color),
-      ),
-    );
-  }
-}
-
 // ---------------------------------------------------------------------------
 // Gemeinsame kleine Bausteine.
 // ---------------------------------------------------------------------------
-class _SectionHeader extends StatelessWidget {
-  final String title;
-  const _SectionHeader(this.title);
-
-  @override
-  Widget build(BuildContext context) => Text(
-        title,
-        style: const TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.bold,
-          color: AppColors.brown800,
-        ),
-      );
-}
-
 class _EmptyHint extends StatelessWidget {
   final String text;
   const _EmptyHint(this.text);
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(vertical: BeeTokens.md),
         child: Text(
           text,
-          style: const TextStyle(color: AppColors.brown300, fontSize: 13),
+          style: const TextStyle(color: BeeTokens.textGedaempft, fontSize: 13),
         ),
       );
 }

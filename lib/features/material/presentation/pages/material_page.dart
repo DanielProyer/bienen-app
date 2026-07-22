@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/material/presentation/widgets/verbrauch_ansicht.dart';
 import 'package:bienen_app/features/material/presentation/widgets/anlagen_ansicht.dart';
 import 'package:bienen_app/features/material/presentation/widgets/archiv_ansicht.dart';
 import 'package:bienen_app/features/material/presentation/widgets/kosten_dashboard.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
 
 class MaterialPage extends ConsumerWidget {
   const MaterialPage({super.key});
@@ -30,9 +31,9 @@ class MaterialPage extends ConsumerWidget {
             ),
           ],
           bottom: TabBar(
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white70,
-            indicatorColor: AppColors.amber400,
+            labelColor: BeeTokens.textPrimaer,
+            unselectedLabelColor: BeeTokens.textGedaempft,
+            indicatorColor: BeeTokens.honig,
             tabs: [
               // Verbrauch mit Nachkauf-Badge (fällige Nachkäufe).
               Tab(
@@ -46,7 +47,7 @@ class MaterialPage extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: AppColors.amber400,
+                          color: BeeTokens.honig,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -54,7 +55,7 @@ class MaterialPage extends ConsumerWidget {
                           style: const TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.brown800,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -69,7 +70,11 @@ class MaterialPage extends ConsumerWidget {
         ),
         body: materialsAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (e, _) => Center(child: Text('Fehler: $e')),
+          error: (e, _) => EmptyState(
+            icon: Icons.error_outline,
+            titel: 'Fehler beim Laden',
+            text: '$e',
+          ),
           data: (_) => const TabBarView(
             children: [
               VerbrauchAnsicht(),
