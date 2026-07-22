@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/construction/data/models/build_step_content.dart';
 import 'package:bienen_app/features/construction/presentation/pages/bauplan_view.dart';
 import 'package:bienen_app/features/construction/presentation/pages/honigverarbeitung_view.dart';
@@ -132,25 +133,26 @@ class _BauschritteTab extends ConsumerWidget {
       children: [
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          color: AppColors.amber50,
+          padding: const EdgeInsets.all(BeeTokens.md),
+          color: BeeTokens.honigTint,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Fortschritt: ${progress.done}/${progress.total} Schritte erledigt',
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600, color: BeeTokens.textPrimaer),
               ),
               const SizedBox(height: 6),
               ClipRRect(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(BeeTokens.xs),
                 child: LinearProgressIndicator(
                   value: progress.total == 0
                       ? 0
                       : progress.done / progress.total,
                   minHeight: 8,
-                  backgroundColor: AppColors.brown100,
-                  color: AppColors.green600,
+                  backgroundColor: BeeTokens.rand,
+                  color: BeeSignal.erfolg.text,
                 ),
               ),
             ],
@@ -158,7 +160,7 @@ class _BauschritteTab extends ConsumerWidget {
         ),
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 24),
+            padding: const EdgeInsets.only(bottom: BeeTokens.xl),
             itemCount: kBuildSteps.length,
             itemBuilder: (_, i) => BuildStepCard(
               content: kBuildSteps[i],

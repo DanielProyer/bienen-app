@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/gesundheit/domain/krankheit.dart';
 
 /// Roter Meldepflicht-Banner für eine zu_bekaempfen- oder neobiota-Krankheit (mit Rechtsauskunft-Disclaimer).
@@ -13,21 +14,21 @@ class MeldepflichtBanner extends StatelessWidget {
     final k = katalogEintrag(krankheitKey);
     if (k == null) return const SizedBox.shrink();
     final neobiota = k.rechtskategorie == Rechtskategorie.neobiotaMeldung;
-    final color = neobiota ? Colors.purple : Colors.red;
+    final signal = neobiota ? BeeSignal.info : BeeSignal.gefahr;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(vertical: BeeTokens.sm),
+      padding: const EdgeInsets.all(BeeTokens.md),
       decoration: BoxDecoration(
-        color: color.withAlpha(28),
-        border: Border.all(color: color.withAlpha(120)),
-        borderRadius: BorderRadius.circular(8),
+        color: signal.flaeche,
+        border: Border.all(color: signal.text.withAlpha(120)),
+        borderRadius: BorderRadius.circular(BeeTokens.rKarte),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          Icon(neobiota ? Icons.report_gmailerrorred : Icons.warning_amber, color: color),
-          const SizedBox(width: 8),
+          Icon(neobiota ? Icons.report_gmailerrorred : Icons.warning_amber, color: signal.text),
+          const SizedBox(width: BeeTokens.sm),
           Expanded(child: Text(neobiota ? 'Neobiota-Meldung: ${k.label}' : 'Meldepflicht aktiv: ${k.label}',
-              style: TextStyle(fontWeight: FontWeight.bold, color: color))),
+              style: TextStyle(fontWeight: FontWeight.bold, color: signal.text))),
         ]),
         if (k.meldehinweis != null) Padding(
           padding: const EdgeInsets.only(top: 6),
@@ -37,7 +38,7 @@ class MeldepflichtBanner extends StatelessWidget {
           child: Text('Sofort: ${k.sofortmassnahme}', style: const TextStyle(fontWeight: FontWeight.w500))),
         const Padding(padding: EdgeInsets.only(top: 6),
           child: Text('Rechtshinweis ohne Gewähr — verbindlich ist die zuständige Fachstelle / BLV.',
-              style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: Colors.grey))),
+              style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: BeeTokens.textGedaempft))),
       ]),
     );
   }

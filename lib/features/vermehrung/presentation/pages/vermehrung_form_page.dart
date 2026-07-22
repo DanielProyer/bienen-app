@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/vermehrung/domain/vermehrung.dart';
 import 'package:bienen_app/features/vermehrung/domain/vermehrungs_ereignis.dart';
 import 'package:bienen_app/features/vermehrung/domain/vermehrungs_ketten.dart';
 import 'package:bienen_app/features/vermehrung/presentation/providers/vermehrung_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 class VermehrungFormPage extends ConsumerStatefulWidget {
   final String volkId; // Stammvolk-Kontext
@@ -47,7 +51,7 @@ class _VermehrungFormPageState extends ConsumerState<VermehrungFormPage> {
   Widget build(BuildContext context) {
     if (!ref.watch(darfSchreibenProvider)) {
       return Scaffold(appBar: AppBar(title: const Text('Vermehrung')),
-          body: const Center(child: Text('Nur mit Schreibrechten verfügbar.')));
+          body: const EmptyState(icon: Icons.lock_outline, titel: 'Nur mit Schreibrechten verfügbar.'));
     }
     final voelker = ref.watch(voelkerListProvider).valueOrNull ?? const [];
     final andere = voelker.where((v) => v.id != widget.volkId).toList();
@@ -57,20 +61,23 @@ class _VermehrungFormPageState extends ConsumerState<VermehrungFormPage> {
     final langeHer = _erstelltAm.isBefore(heute.subtract(const Duration(days: 60)));
     final vorschau = kettenVorschauFuer(_methode, _erstelltAm);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Ableger/Vermehrung erfassen')),
-      body: ListView(padding: const EdgeInsets.all(16), children: [
+    return FormScaffold(
+      titel: 'Ableger/Vermehrung erfassen',
+      busy: _speichert,
+      bodenleiste: AppButton(
+          label: 'Vermehrung speichern', full: true, busy: _speichert, onPressed: _speichern),
+      child: ListView(padding: const EdgeInsets.all(BeeTokens.lg), children: [
         DropdownButtonFormField<String>(
           initialValue: _methode,
           decoration: const InputDecoration(labelText: 'Methode'),
           items: [for (final m in kVermehrungsMethoden.values) DropdownMenuItem(value: m.key, child: Text(m.label))],
           onChanged: (v) => setState(() => _methode = v!),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: BeeTokens.md),
         InputDecorator(
           decoration: InputDecoration(labelText: 'Erstellt am',
               helperText: inZukunft ? 'Datum liegt in der Zukunft' : (langeHer ? 'Über 60 Tage her — Kette evtl. schon abgelaufen' : null),
-              helperStyle: (inZukunft || langeHer) ? const TextStyle(color: AppColors.amber800, fontWeight: FontWeight.w600) : null),
+              helperStyle: (inZukunft || langeHer) ? const TextStyle(color: BeeTokens.warnungText, fontWeight: FontWeight.w600) : null),
           child: InkWell(
             onTap: () async {
               final d = await showDatePicker(context: context, initialDate: _erstelltAm,
@@ -85,7 +92,7 @@ class _VermehrungFormPageState extends ConsumerState<VermehrungFormPage> {
               title: const Text('Oxalsäure bei Erstellung'),
               subtitle: const Text('Brutfreies Jungvolk direkt behandelt (Notiz).'),
               value: _os, onChanged: (on) => setState(() => _os = on)),
-        const SizedBox(height: 8),
+        const SizedBox(height: BeeTokens.sm),
         DropdownButtonFormField<String?>(
           initialValue: _jungvolkId,
           decoration: const InputDecoration(labelText: 'Jungvolk (optional, später verknüpfbar)'),
@@ -96,22 +103,18 @@ class _VermehrungFormPageState extends ConsumerState<VermehrungFormPage> {
           onChanged: (v) => setState(() => _jungvolkId = v),
         ),
         TextField(controller: _notiz, decoration: const InputDecoration(labelText: 'Notiz'), maxLines: 2),
-        const SizedBox(height: 16),
-        const Text('Ketten-Vorschau', style: TextStyle(fontWeight: FontWeight.w600)),
-        const SizedBox(height: 4),
+        const SizedBox(height: BeeTokens.lg),
+        const SectionHeader(titel: 'Ketten-Vorschau'),
         for (final s in vorschau)
           Padding(padding: const EdgeInsets.symmetric(vertical: 2),
             child: Text('Tag ${s.schritt.tagVon}${s.schritt.tagBis != s.schritt.tagVon ? '–${s.schritt.tagBis}' : ''} · '
                 '${DateFormat('dd.MM.').format(s.von)}: ${s.schritt.titel} · '
                 '${s.schritt.ziel == KettenZiel.stammvolk ? 'Stammvolk' : 'Jungvolk'}',
-                style: const TextStyle(fontSize: 12, color: AppColors.brown600))),
+                style: BeeTokens.gedaempft)),
         if (_methode == 'flugling')
-          const Padding(padding: EdgeInsets.only(top: 6),
+          Padding(padding: const EdgeInsets.only(top: BeeTokens.xs),
             child: Text('Hinweis: Flugling bei regem Flug 11–15 Uhr bilden.',
-                style: TextStyle(fontSize: 12, color: AppColors.amber800))),
-        const SizedBox(height: 20),
-        FilledButton(onPressed: _speichert ? null : _speichern,
-            child: Text(_speichert ? 'Speichert…' : 'Vermehrung speichern')),
+                style: BeeTokens.gedaempft.copyWith(color: BeeTokens.warnungText))),
       ]),
     );
   }

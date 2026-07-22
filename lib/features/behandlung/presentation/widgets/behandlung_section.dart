@@ -5,6 +5,9 @@ import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/behandlung/domain/wirkstoff.dart';
 import 'package:bienen_app/features/behandlung/presentation/providers/behandlung_provider.dart';
 import 'package:bienen_app/features/behandlung/presentation/widgets/varroa_cockpit.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 class BehandlungSection extends ConsumerWidget {
   final String volkId;
@@ -16,44 +19,43 @@ class BehandlungSection extends ConsumerWidget {
     final behandlungen = ref.watch(behandlungenFuerVolkProvider(volkId));
     final darf = ref.watch(darfSchreibenProvider);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            const Text('Varroa & Behandlung', style: TextStyle(fontWeight: FontWeight.bold)),
-            const Spacer(),
-            if (darf) ...[
-              TextButton.icon(
-                onPressed: () => context.go('/voelker/$volkId/varroa'),
-                icon: const Icon(Icons.biotech, size: 18), label: const Text('Milbendiagnose')),
-              TextButton.icon(
-                onPressed: () => context.go('/voelker/$volkId/behandlung'),
-                icon: const Icon(Icons.medical_services, size: 18), label: const Text('Behandlung')),
-            ],
-          ]),
+    return AppCard(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SectionHeader(
+            titel: 'Varroa & Behandlung',
+            action: darf
+                ? Row(mainAxisSize: MainAxisSize.min, children: [
+                    TextButton.icon(
+                      onPressed: () => context.go('/voelker/$volkId/varroa'),
+                      icon: const Icon(Icons.biotech, size: 18), label: const Text('Milbendiagnose')),
+                    TextButton.icon(
+                      onPressed: () => context.go('/voelker/$volkId/behandlung'),
+                      icon: const Icon(Icons.medical_services, size: 18), label: const Text('Behandlung')),
+                  ])
+                : null,
+          ),
           // Cockpit
           switch ((kontrollen, behandlungen)) {
             (AsyncData(value: final ks), AsyncData(value: final bs)) =>
               VarroaCockpit(kontrollen: ks, behandlungen: bs),
             (AsyncError(error: final e), _) || (_, AsyncError(error: final e)) =>
-              Padding(padding: const EdgeInsets.all(8), child: Text('Fehler: $e')),
-            _ => const Padding(padding: EdgeInsets.all(8), child: LinearProgressIndicator()),
+              Padding(padding: const EdgeInsets.all(BeeTokens.sm), child: Text('Fehler: $e')),
+            _ => const Padding(padding: EdgeInsets.all(BeeTokens.sm), child: LinearProgressIndicator()),
           },
           const Divider(),
           // Kompakte Behandlungs-Liste
           behandlungen.maybeWhen(
             data: (bs) => bs.isEmpty
-                ? const Padding(padding: EdgeInsets.all(8), child: Text('Noch keine Behandlung.'))
+                ? const Padding(padding: EdgeInsets.all(BeeTokens.sm), child: Text('Noch keine Behandlung.'))
                 : Column(children: [
                     for (final b in bs.take(5))
                       ListTile(
                         dense: true,
                         leading: Icon(b.isStorniert ? Icons.cancel : Icons.medical_services,
-                            color: b.isStorniert ? Colors.grey : null),
+                            color: b.isStorniert ? BeeTokens.textGedaempft : null),
                         title: Text(
                           '${Wirkstoff.labels[b.wirkstoff] ?? b.wirkstoff} · ${b.praeparat ?? Anwendungsart.labels[b.anwendungsart] ?? ''}',
-                          style: b.isStorniert ? const TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey) : null,
+                          style: b.isStorniert ? const TextStyle(decoration: TextDecoration.lineThrough, color: BeeTokens.textGedaempft) : null,
                         ),
                         subtitle: Text('${b.datumBeginn.day}.${b.datumBeginn.month}.${b.datumBeginn.year}'
                             '${b.isStorniert ? ' · storniert: ${b.stornoGrund ?? ''}' : ''}'),
@@ -69,7 +71,6 @@ class BehandlungSection extends ConsumerWidget {
             orElse: () => const SizedBox.shrink(),
           ),
         ]),
-      ),
     );
   }
 

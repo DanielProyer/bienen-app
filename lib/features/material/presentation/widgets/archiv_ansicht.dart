@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/material/presentation/widgets/material_list_tile.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
 
 // ---------------------------------------------------------------------------
 // Eigene Seite: archiviertes Material (ausgemustert/Standbau) + reaktivieren.
@@ -17,24 +19,22 @@ class ArchivAnsicht extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Archiv')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(BeeTokens.lg),
         children: [
           const Padding(
-            padding: EdgeInsets.only(bottom: 12),
+            padding: EdgeInsets.only(bottom: BeeTokens.md),
             child: Text(
               'Archiviertes Material zählt nicht zum aktiven Betrieb '
               '(z.B. Standbau, alte Ausrüstung).',
-              style: TextStyle(fontSize: 13, color: AppColors.brown600),
+              style: TextStyle(fontSize: 13, color: BeeTokens.textSekundaer),
             ),
           ),
           if (archiv.isEmpty)
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 32),
-              child: Center(
-                child: Text(
-                  'Archiv ist leer.',
-                  style: TextStyle(color: AppColors.brown300),
-                ),
+              padding: EdgeInsets.only(top: BeeTokens.xl),
+              child: EmptyState(
+                icon: Icons.archive_outlined,
+                titel: 'Archiv ist leer.',
               ),
             )
           else
@@ -42,17 +42,13 @@ class ArchivAnsicht extends ConsumerWidget {
               (item) => MaterialListTile(
                 item: item,
                 extraInfo: Padding(
-                  padding: const EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.only(top: BeeTokens.sm),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.honeyDark,
-                        side: const BorderSide(color: AppColors.honey),
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      icon: const Icon(Icons.unarchive_outlined, size: 16),
-                      label: const Text('reaktivieren'),
+                    child: AppButton(
+                      label: 'reaktivieren',
+                      icon: Icons.unarchive_outlined,
+                      kind: AppButtonKind.sekundaer,
                       onPressed: () async {
                         await ref
                             .read(materialListProvider.notifier)

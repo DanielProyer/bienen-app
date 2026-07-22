@@ -10,6 +10,10 @@ import 'package:bienen_app/features/gesundheit/presentation/providers/gesundheit
 import 'package:bienen_app/features/gesundheit/presentation/widgets/meldepflicht_banner.dart';
 import 'package:bienen_app/features/wissen/domain/gesundheit_wissen.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
 
 class GesundheitFormPage extends ConsumerStatefulWidget {
   final String volkId;
@@ -76,7 +80,10 @@ class _GesundheitFormPageState extends ConsumerState<GesundheitFormPage> {
   @override
   Widget build(BuildContext context) {
     if (!ref.watch(darfSchreibenProvider)) {
-      return Scaffold(appBar: AppBar(title: const Text('Diagnose')), body: const Center(child: Text('Nur Lesezugriff.')));
+      return Scaffold(
+        appBar: AppBar(title: const Text('Diagnose')),
+        body: const EmptyState(icon: Icons.lock_outline, titel: 'Nur Lesezugriff.'),
+      );
     }
     // Katalog gruppiert nach Rechtskategorie
     final gruppen = <Rechtskategorie, List<Krankheit>>{};
@@ -91,9 +98,16 @@ class _GesundheitFormPageState extends ConsumerState<GesundheitFormPage> {
     };
     final k = katalogEintrag(_krankheit);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Diagnose erfassen')),
-      body: ListView(padding: const EdgeInsets.all(16), children: [
+    return FormScaffold(
+      titel: 'Diagnose erfassen',
+      bodenleiste: AppButton(
+        label: 'Diagnose speichern',
+        icon: Icons.save,
+        busy: _busy,
+        full: true,
+        onPressed: _speichern,
+      ),
+      child: ListView(padding: const EdgeInsets.all(BeeTokens.lg), children: [
         Row(children: [
           Expanded(
             child: DropdownButtonFormField<String>(
@@ -117,7 +131,7 @@ class _GesundheitFormPageState extends ConsumerState<GesundheitFormPage> {
         if (k != null && !istMeldepflichtig(_krankheit)) Padding(
           padding: const EdgeInsets.symmetric(vertical: 6),
           child: Text('${k.leitsymptome}\nMaßnahme: ${k.sofortmassnahme}',
-              style: const TextStyle(fontSize: 12, color: Colors.grey)),
+              style: BeeTokens.gedaempft),
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -165,19 +179,17 @@ class _GesundheitFormPageState extends ConsumerState<GesundheitFormPage> {
         TextField(controller: _massnahme, decoration: const InputDecoration(labelText: 'Maßnahme')),
         TextField(controller: _person, decoration: const InputDecoration(labelText: 'Verantwortliche Person')),
         TextField(controller: _notiz, decoration: const InputDecoration(labelText: 'Notiz')),
-        const SizedBox(height: 12),
+        const SizedBox(height: BeeTokens.md),
         Row(children: [
-          OutlinedButton.icon(onPressed: _busy ? null : _fotoAufnehmen,
-              icon: const Icon(Icons.add_a_photo), label: const Text('Foto')),
-          const SizedBox(width: 12),
+          AppButton(
+            label: 'Foto',
+            icon: Icons.add_a_photo,
+            kind: AppButtonKind.sekundaer,
+            onPressed: _busy ? null : _fotoAufnehmen,
+          ),
+          const SizedBox(width: BeeTokens.md),
           Text('${_fotoPfade.length} Foto(s)'),
         ]),
-        const SizedBox(height: 16),
-        FilledButton.icon(
-          onPressed: _busy ? null : _speichern,
-          icon: const Icon(Icons.save),
-          label: Text(_busy ? 'Speichert…' : 'Diagnose speichern'),
-        ),
       ]),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/recherche/widgets/section_header.dart';
 
 class ImkereiAppsPage extends StatelessWidget {
@@ -15,11 +15,11 @@ class ImkereiAppsPage extends StatelessWidget {
         onPressed: () => context.go('/recherche/imkerei-apps/detail'),
         icon: const Icon(Icons.article),
         label: const Text('Vollständige Recherche'),
-        backgroundColor: AppColors.honey,
+        backgroundColor: BeeTokens.honig,
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(BeeTokens.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -27,18 +27,19 @@ class ImkereiAppsPage extends StatelessWidget {
               title: 'Digitale Tools für Imker',
               subtitle: 'Apps, Plattformen & Online-Tools für die Schweiz',
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: BeeTokens.xl),
             _buildMustHaveSection(context),
-            const SizedBox(height: 24),
+            const SizedBox(height: BeeTokens.xl),
             const SectionHeader(title: 'Empfohlene Apps'),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             _buildAppCard(
               context,
               name: 'BeeSmart',
               category: 'Völkerverwaltung',
               price: 'Gratis / CHF 5.-/Mt',
               platforms: 'iOS, Android',
-              description: 'Einzige App spezifisch für die Schweiz. Behandlungsjournal nach CH-Gesetz, dreisprachig, KI-Schwarmvorhersage (BeePhone).',
+              description:
+                  'Einzige App spezifisch für die Schweiz. Behandlungsjournal nach CH-Gesetz, dreisprachig, KI-Schwarmvorhersage (BeePhone).',
               isRecommended: true,
               url: 'https://beesmart.ch',
             ),
@@ -48,7 +49,8 @@ class ImkereiAppsPage extends StatelessWidget {
               category: 'Wandermeldung',
               price: 'Gratis',
               platforms: 'iOS, Android, Web',
-              description: 'Offizielle App von BienenSchweiz/Identitas für gesetzlich vorgeschriebene Wandermeldung bei Völkertransport.',
+              description:
+                  'Offizielle App von BienenSchweiz/Identitas für gesetzlich vorgeschriebene Wandermeldung bei Völkertransport.',
               isRecommended: true,
               url: 'https://www.beetraffic.ch',
             ),
@@ -58,7 +60,8 @@ class ImkereiAppsPage extends StatelessWidget {
               category: 'Gesundheit',
               price: 'Gratis',
               platforms: 'iOS, Android',
-              description: 'Wissenschaftlich fundiertes Varroa-Management. Berechnet optimale Behandlungszeitpunkte, Nachbar-Warnsystem bei hohem Befall.',
+              description:
+                  'Wissenschaftlich fundiertes Varroa-Management. Berechnet optimale Behandlungszeitpunkte, Nachbar-Warnsystem bei hohem Befall.',
               isRecommended: true,
               url: null,
             ),
@@ -68,20 +71,22 @@ class ImkereiAppsPage extends StatelessWidget {
               category: 'Trachtbeobachtung',
               price: 'Gratis',
               platforms: 'Web',
-              description: 'Interaktive Schweiz-Karte mit Echtzeit-Gewichtsdaten von Referenzvölkern. Zeigt Trachtbeginn/-ende in deiner Region.',
+              description:
+                  'Interaktive Schweiz-Karte mit Echtzeit-Gewichtsdaten von Referenzvölkern. Zeigt Trachtbeginn/-ende in deiner Region.',
               isRecommended: true,
               url: 'https://www.bienen.ch',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             const SectionHeader(title: 'Weitere nützliche Apps'),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             _buildAppCard(
               context,
               name: 'Apiary Book',
               category: 'Völkerverwaltung',
               price: 'Gratis / Pro EUR 30.-/Jahr',
               platforms: 'iOS, Android, Web',
-              description: 'Detaillierte Inspektionsformulare, Königinnen-Stammbaum, Honigernte-Tracking, Web-Zugang.',
+              description:
+                  'Detaillierte Inspektionsformulare, Königinnen-Stammbaum, Honigernte-Tracking, Web-Zugang.',
               url: null,
             ),
             _buildAppCard(
@@ -90,7 +95,8 @@ class ImkereiAppsPage extends StatelessWidget {
               category: 'Lern-App',
               price: 'Gratis',
               platforms: 'iOS, Android, Web',
-              description: 'KI-Coach für Anfänger, Inspektionsassistent, Lernmodule. Ideal für den Einstieg.',
+              description:
+                  'KI-Coach für Anfänger, Inspektionsassistent, Lernmodule. Ideal für den Einstieg.',
               url: 'https://imkado.de',
             ),
             _buildAppCard(
@@ -99,7 +105,8 @@ class ImkereiAppsPage extends StatelessWidget {
               category: 'Stockwaage',
               price: 'Inkl. bei Hardware',
               platforms: 'iOS, Android, Web',
-              description: 'Kommt mit unserer Stockwaage. Echtzeit-Gewicht, Temperatur, Alerts.',
+              description:
+                  'Kommt mit unserer Stockwaage. Echtzeit-Gewicht, Temperatur, Alerts.',
               url: 'https://hivewatch.ch',
             ),
             _buildAppCard(
@@ -108,12 +115,13 @@ class ImkereiAppsPage extends StatelessWidget {
               category: 'Wetter',
               price: 'Gratis',
               platforms: 'iOS, Android',
-              description: 'Offizielle CH-Wetterdaten, lokale Prognosen für Arosa, Pollenflug-Info.',
+              description:
+                  'Offizielle CH-Wetterdaten, lokale Prognosen für Arosa, Pollenflug-Info.',
               url: null,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: BeeTokens.xl),
             const SectionHeader(title: 'Gesetzliche Pflichten (CH)'),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             _buildLegalCard(context),
             const SizedBox(height: 80),
           ],
@@ -125,21 +133,21 @@ class ImkereiAppsPage extends StatelessWidget {
   Widget _buildMustHaveSection(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(BeeTokens.lg),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: [AppColors.amber50, AppColors.green50]),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.amber400),
+        color: BeeTokens.honigTint,
+        borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+        border: Border.all(color: BeeTokens.honig, width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
-            const Icon(Icons.phone_android, color: AppColors.honey, size: 28),
-            const SizedBox(width: 12),
-            Text('Must-Have Apps', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+            const Icon(Icons.phone_android, color: BeeTokens.honig, size: 28),
+            const SizedBox(width: BeeTokens.md),
+            Text('Must-Have Apps', style: BeeTokens.abschnitt),
           ]),
-          const SizedBox(height: 12),
+          const SizedBox(height: BeeTokens.md),
           _buildMustRow('1.', 'BeeSmart', 'Völker & Behandlungsjournal (CH-Pflicht)'),
           _buildMustRow('2.', 'BeeTraffic', 'Wandermeldung (gesetzlich vorgeschrieben)'),
           _buildMustRow('3.', 'Varroa-App', 'Optimale Behandlungszeitpunkte'),
@@ -154,82 +162,129 @@ class ImkereiAppsPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(children: [
-        SizedBox(width: 24, child: Text(num, style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.honeyDark))),
-        SizedBox(width: 100, child: Text(name, style: const TextStyle(fontWeight: FontWeight.w600))),
-        Expanded(child: Text(desc, style: const TextStyle(fontSize: 13, color: AppColors.brown600))),
+        SizedBox(
+            width: 24,
+            child: Text(num,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: BeeTokens.textSekundaer))),
+        SizedBox(
+            width: 100,
+            child: Text(name,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: BeeTokens.textPrimaer))),
+        Expanded(
+            child: Text(desc,
+                style: const TextStyle(
+                    fontSize: 13, color: BeeTokens.textGedaempft))),
       ]),
     );
   }
 
-  Widget _buildAppCard(BuildContext context, {
-    required String name, required String category, required String price,
-    required String platforms, required String description,
-    bool isRecommended = false, String? url,
+  Widget _buildAppCard(
+    BuildContext context, {
+    required String name,
+    required String category,
+    required String price,
+    required String platforms,
+    required String description,
+    bool isRecommended = false,
+    String? url,
   }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      color: isRecommended ? AppColors.amber50 : null,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: isRecommended ? const BorderSide(color: AppColors.honey, width: 1.5) : BorderSide(color: AppColors.brown100),
+    return Container(
+      margin: const EdgeInsets.only(bottom: BeeTokens.md),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: isRecommended ? BeeTokens.honigTint : BeeTokens.karte,
+        borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+        border: Border.all(
+          color: isRecommended ? BeeTokens.honig : BeeTokens.rand,
+          width: isRecommended ? 1.5 : 0.5,
+        ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            Expanded(child: Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15))),
-            if (isRecommended) Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(color: AppColors.honey, borderRadius: BorderRadius.circular(12)),
-              child: const Text('PFLICHT', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [
+          Expanded(
+              child: Text(name,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: BeeTokens.textPrimaer))),
+          if (isRecommended)
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: BeeTokens.sm, vertical: 3),
+              decoration: BoxDecoration(
+                  color: BeeTokens.honig,
+                  borderRadius: BorderRadius.circular(BeeTokens.md)),
+              child: const Text('PFLICHT',
+                  style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
             ),
-          ]),
-          const SizedBox(height: 6),
-          Wrap(spacing: 8, children: [
-            _tag(category, AppColors.honeyDark),
-            _tag(price, AppColors.green600),
-            _tag(platforms, AppColors.brown600),
-          ]),
-          const SizedBox(height: 8),
-          Text(description, style: const TextStyle(fontSize: 13)),
-          if (url != null) ...[
-            const SizedBox(height: 8),
-            GestureDetector(
-              onTap: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
-              child: Text(url, style: TextStyle(fontSize: 12, color: Colors.blue.shade700, decoration: TextDecoration.underline)),
-            ),
-          ],
         ]),
-      ),
+        const SizedBox(height: 6),
+        Wrap(spacing: BeeTokens.sm, children: [
+          _tag(category, BeeTokens.textSekundaer),
+          _tag(price, BeeSignal.erfolg.text),
+          _tag(platforms, BeeTokens.textGedaempft),
+        ]),
+        const SizedBox(height: BeeTokens.sm),
+        Text(description,
+            style: const TextStyle(fontSize: 13, color: BeeTokens.textPrimaer)),
+        if (url != null) ...[
+          const SizedBox(height: BeeTokens.sm),
+          GestureDetector(
+            onTap: () =>
+                launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
+            child: Text(url,
+                style: const TextStyle(
+                    fontSize: 12,
+                    color: BeeTokens.infoText,
+                    decoration: TextDecoration.underline)),
+          ),
+        ],
+      ]),
     );
   }
 
   Widget _tag(String text, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(color: color.withAlpha(20), borderRadius: BorderRadius.circular(4)),
-      child: Text(text, style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w500)),
+      decoration: BoxDecoration(
+          color: color.withAlpha(20),
+          borderRadius: BorderRadius.circular(BeeTokens.xs)),
+      child: Text(text,
+          style: TextStyle(
+              fontSize: 11, color: color, fontWeight: FontWeight.w500)),
     );
   }
 
   Widget _buildLegalCard(BuildContext context) {
-    return Card(
-      color: Colors.red.shade50,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            Icon(Icons.gavel, color: Colors.red.shade700, size: 20),
-            const SizedBox(width: 8),
-            Text('Gesetzliche Pflichten', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red.shade700)),
-          ]),
-          const SizedBox(height: 12),
-          _legalRow('Behandlungsjournal', 'Seit 2023 Pflicht → BeeSmart nutzen'),
-          _legalRow('Wandermeldung', 'Bei Völkertransport → BeeTraffic'),
-          _legalRow('Tierseuchenmeldung', 'Faulbrut/Sauerbrut → Bieneninspektor GR'),
-          _legalRow('BienenSchweiz', 'Mitgliedschaft empfohlen (Versicherung!)'),
-        ]),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(BeeTokens.lg),
+      decoration: BoxDecoration(
+        color: BeeSignal.gefahr.flaeche,
+        borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+        border: Border.all(color: BeeSignal.gefahr.text, width: 0.5),
       ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [
+          Icon(Icons.gavel, color: BeeSignal.gefahr.text, size: 20),
+          const SizedBox(width: BeeTokens.sm),
+          Text('Gesetzliche Pflichten',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: BeeSignal.gefahr.text)),
+        ]),
+        const SizedBox(height: BeeTokens.md),
+        _legalRow('Behandlungsjournal', 'Seit 2023 Pflicht → BeeSmart nutzen'),
+        _legalRow('Wandermeldung', 'Bei Völkertransport → BeeTraffic'),
+        _legalRow('Tierseuchenmeldung', 'Faulbrut/Sauerbrut → Bieneninspektor GR'),
+        _legalRow('BienenSchweiz', 'Mitgliedschaft empfohlen (Versicherung!)'),
+      ]),
     );
   }
 
@@ -237,10 +292,19 @@ class ImkereiAppsPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Icon(Icons.arrow_right, size: 18, color: AppColors.brown600),
-        const SizedBox(width: 4),
-        SizedBox(width: 130, child: Text(title, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13))),
-        Expanded(child: Text(desc, style: const TextStyle(fontSize: 13))),
+        const Icon(Icons.arrow_right, size: 18, color: BeeTokens.textGedaempft),
+        const SizedBox(width: BeeTokens.xs),
+        SizedBox(
+            width: 130,
+            child: Text(title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13,
+                    color: BeeTokens.textPrimaer))),
+        Expanded(
+            child: Text(desc,
+                style: const TextStyle(
+                    fontSize: 13, color: BeeTokens.textPrimaer))),
       ]),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
 
 class RechercheOverviewPage extends StatelessWidget {
   const RechercheOverviewPage({super.key});
@@ -10,31 +11,23 @@ class RechercheOverviewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Recherche')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(BeeTokens.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Recherche-Übersicht',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 8),
+            Text('Recherche-Übersicht', style: BeeTokens.titel),
+            const SizedBox(height: BeeTokens.sm),
             Text(
               'Alle Recherchen zum Projekt, aufbereitet und strukturiert.',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.brown600,
-                  ),
+              style: BeeTokens.text.copyWith(color: BeeTokens.textGedaempft),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: BeeTokens.xl),
             _buildTopicCard(
               context,
               title: 'Imkerei Schweiz',
               subtitle: 'Grundlagen, Verbände, Gesetze, Bienenrassen',
               icon: Icons.flag,
               route: '/recherche/imkerei-schweiz',
-              color: AppColors.amber600,
             ),
             _buildTopicCard(
               context,
@@ -42,7 +35,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Monatskalender für Arosa (1570 m), Trachtpflanzen',
               icon: Icons.calendar_month,
               route: '/recherche/jahresablauf',
-              color: AppColors.green600,
             ),
             _buildTopicCard(
               context,
@@ -50,7 +42,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Specs, Vergleich, Entscheidung Holz',
               icon: Icons.grid_view,
               route: '/recherche/beutensystem',
-              color: AppColors.brown600,
             ),
             _buildTopicCard(
               context,
@@ -58,7 +49,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Buckfast vs. Dunkle Biene vs. Carnica -- Entscheidung',
               icon: Icons.pets,
               route: '/recherche/bienenrassen',
-              color: AppColors.green600,
             ),
             _buildTopicCard(
               context,
@@ -66,24 +56,16 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Bienenstand, Schleuderraum, Lager, Phasenplan',
               icon: Icons.house,
               route: '/recherche/raumkonzept',
-              color: AppColors.honeyDark,
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Weitere Dokumente',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.brown600,
-                  ),
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.xl),
+            _buildGroupHeader('Weitere Dokumente'),
+            const SizedBox(height: BeeTokens.md),
             _buildTopicCard(
               context,
               title: 'Bienenstand & Unterstand',
               subtitle: 'Detaillierte Recherche zum Unterstand-Bau',
               icon: Icons.roofing,
               route: '/recherche/bienenstand',
-              color: AppColors.green800,
             ),
             _buildTopicCard(
               context,
@@ -91,7 +73,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Schleuderraum, Hygiene, Einrichtung',
               icon: Icons.precision_manufacturing,
               route: '/recherche/schleuderraum',
-              color: AppColors.amber800,
             ),
             _buildTopicCard(
               context,
@@ -99,7 +80,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Digitale Stockwaagen, Liveübertragung, Systemvergleich',
               icon: Icons.monitor_weight,
               route: '/recherche/stockwaagen',
-              color: AppColors.honeyDark,
             ),
             _buildTopicCard(
               context,
@@ -107,7 +87,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Motorisierte Radialschleudern für Dadant Blatt',
               icon: Icons.rotate_right,
               route: '/recherche/honigschleudern',
-              color: AppColors.amber800,
             ),
             _buildTopicCard(
               context,
@@ -115,7 +94,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'BeeSmart, BeeTraffic, Varroa-App, Waagvölker',
               icon: Icons.phone_android,
               route: '/recherche/imkerei-apps',
-              color: AppColors.green600,
             ),
             _buildTopicCard(
               context,
@@ -123,24 +101,16 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Komplette Einkaufsliste mit Preisen und Lieferanten',
               icon: Icons.receipt_long,
               route: '/recherche/einkaufsliste',
-              color: AppColors.brown600,
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Fachwissen-Bibliothek',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.brown600,
-                  ),
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.xl),
+            _buildGroupHeader('Fachwissen-Bibliothek'),
+            const SizedBox(height: BeeTokens.md),
             _buildTopicCard(
               context,
               title: 'Bienenbiologie: Das Bienenvolk',
               subtitle: 'Kasten, Entwicklung, Kommunikation, Volksdynamik',
               icon: Icons.emoji_nature,
               route: '/recherche/bienenbiologie',
-              color: AppColors.amber600,
             ),
             _buildTopicCard(
               context,
@@ -148,7 +118,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Imkerliches Handwerk, Betriebsweisen im Vergleich',
               icon: Icons.school,
               route: '/recherche/betriebsweisen',
-              color: AppColors.brown600,
             ),
             _buildTopicCard(
               context,
@@ -156,7 +125,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Umlarven, Belegstellen, Zuchtplanung',
               icon: Icons.workspace_premium,
               route: '/recherche/koeniginnenzucht',
-              color: AppColors.honeyDark,
             ),
             _buildTopicCard(
               context,
@@ -164,7 +132,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Ableger, Kunstschwärme, TBE, Zeitfenster alpin',
               icon: Icons.call_split,
               route: '/recherche/voelkervermehrung',
-              color: AppColors.green600,
             ),
             _buildTopicCard(
               context,
@@ -172,7 +139,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Krankheitsbilder, Meldepflicht, Seuchenrecht',
               icon: Icons.health_and_safety,
               route: '/recherche/bienengesundheit',
-              color: AppColors.green800,
             ),
             _buildTopicCard(
               context,
@@ -180,7 +146,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Schweizer Varroakonzept, angepasst auf 1570 m',
               icon: Icons.pest_control,
               route: '/recherche/varroa-konzept',
-              color: AppColors.amber800,
             ),
             _buildTopicCard(
               context,
@@ -188,7 +153,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Reife, Schleudern, Qualität, Deklaration, Verkauf',
               icon: Icons.water_drop,
               route: '/recherche/honig',
-              color: AppColors.honeyDark,
             ),
             _buildTopicCard(
               context,
@@ -196,7 +160,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Wachskreislauf, Wabenhygiene, Mittelwände',
               icon: Icons.hexagon,
               route: '/recherche/wachs',
-              color: AppColors.amber600,
             ),
             _buildTopicCard(
               context,
@@ -204,7 +167,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Bio-Suisse-Richtlinien, Umstellung, Nachweise',
               icon: Icons.eco,
               route: '/recherche/bio-knospe',
-              color: AppColors.green600,
             ),
             _buildTopicCard(
               context,
@@ -212,7 +174,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Tierverkehr, Meldewesen, Journal-Pflichten',
               icon: Icons.gavel,
               route: '/recherche/recht',
-              color: AppColors.brown600,
             ),
             _buildTopicCard(
               context,
@@ -220,38 +181,31 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Kosten, Ertrag, Steuern, Hobby vs. Nebenerwerb',
               icon: Icons.payments,
               route: '/recherche/wirtschaftlichkeit',
-              color: AppColors.green800,
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Offizielle BGD-Merkblätter (BienenSchweiz)',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.brown600,
-                  ),
-            ),
-            const SizedBox(height: 4),
+            const SizedBox(height: BeeTokens.xl),
+            _buildGroupHeader('Offizielle BGD-Merkblätter (BienenSchweiz)'),
+            const SizedBox(height: BeeTokens.xs),
             Text(
               'Aufbereitetes Fachwissen aus 96 offiziellen Merkblättern des '
               'Bienengesundheitsdienstes — dieselbe Grundlage wie in Lorenas Kurs.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.brown300),
+              style: BeeTokens.gedaempft,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             _buildTopicCard(
               context,
               title: 'Betriebskonzept & Jahresplanung',
-              subtitle: 'Phänologischer Jahresplan (Indikatorpflanzen), Merkblatt-Systematik',
+              subtitle:
+                  'Phänologischer Jahresplan (Indikatorpflanzen), Merkblatt-Systematik',
               icon: Icons.calendar_view_month,
               route: '/recherche/bgd-betriebskonzept',
-              color: AppColors.honeyDark,
             ),
             _buildTopicCard(
               context,
               title: 'Varroa-Behandlungskonzept',
-              subtitle: 'Schwellen, Diagnose, AS-/Oxalsäure-/biotechnische Methoden',
+              subtitle:
+                  'Schwellen, Diagnose, AS-/Oxalsäure-/biotechnische Methoden',
               icon: Icons.pest_control,
               route: '/recherche/bgd-varroa',
-              color: AppColors.amber800,
             ),
             _buildTopicCard(
               context,
@@ -259,7 +213,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Krankheitsbilder, Diagnose, Rechtsstatus/Meldepflicht',
               icon: Icons.coronavirus,
               route: '/recherche/bgd-krankheiten',
-              color: AppColors.green800,
             ),
             _buildTopicCard(
               context,
@@ -267,7 +220,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Identifikation, Schutz am Stand, Melde- & Nestsuche',
               icon: Icons.warning_amber,
               route: '/recherche/bgd-vespa',
-              color: AppColors.amber600,
             ),
             _buildTopicCard(
               context,
@@ -275,7 +227,6 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Ableger/Kunstschwarm/Flügling, Fristen, Varroa-Nutzen',
               icon: Icons.call_split,
               route: '/recherche/bgd-vermehrung',
-              color: AppColors.green600,
             ),
             _buildTopicCard(
               context,
@@ -283,36 +234,37 @@ class RechercheOverviewPage extends StatelessWidget {
               subtitle: 'Leistungsprüfung, Zuchtwert, Königin finden/zusetzen',
               icon: Icons.workspace_premium,
               route: '/recherche/bgd-zucht',
-              color: AppColors.honeyDark,
             ),
             _buildTopicCard(
               context,
               title: 'Gute imkerliche Praxis',
-              subtitle: 'Hygiene, Fütterung, Überwinterung, Wabenpflege, Diagnose',
+              subtitle:
+                  'Hygiene, Fütterung, Überwinterung, Wabenpflege, Diagnose',
               icon: Icons.verified,
               route: '/recherche/bgd-praxis',
-              color: AppColors.brown600,
             ),
             _buildTopicCard(
               context,
               title: 'Honig-Qualität & Recht/Pflichten',
-              subtitle: 'Grenzwerte, Etiketten-Pflichtangaben, Melde-/Aufzeichnungspflichten',
+              subtitle:
+                  'Grenzwerte, Etiketten-Pflichtangaben, Melde-/Aufzeichnungspflichten',
               icon: Icons.gavel,
               route: '/recherche/bgd-honig-recht',
-              color: AppColors.amber800,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: BeeTokens.xs),
             Text(
               'Quellen: eigene Imkerei-Recherche + offizielle BGD-Merkblätter (BienenSchweiz), '
               'Stand Juli 2026. Zahlen und Rechtliches sind Richtwerte — verbindlich ist die Fachstelle.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.brown300,
-                  ),
+              style: BeeTokens.gedaempft,
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildGroupHeader(String title) {
+    return Text(title, style: BeeTokens.abschnitt);
   }
 
   Widget _buildTopicCard(
@@ -321,50 +273,36 @@ class RechercheOverviewPage extends StatelessWidget {
     required String subtitle,
     required IconData icon,
     required String route,
-    required Color color,
   }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: InkWell(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: BeeTokens.md),
+      child: AppCard(
         onTap: () => context.go(route),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: color.withAlpha(30),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: color, size: 28),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: BeeTokens.honigTint,
+                borderRadius: BorderRadius.circular(BeeTokens.rKarte),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.brown300,
-                          ),
-                    ),
-                  ],
-                ),
+              child: Icon(icon, color: BeeTokens.honig, size: 24),
+            ),
+            const SizedBox(width: BeeTokens.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: BeeTokens.abschnitt),
+                  const SizedBox(height: BeeTokens.xs),
+                  Text(subtitle, style: BeeTokens.gedaempft),
+                ],
               ),
-              const Icon(Icons.chevron_right, color: AppColors.brown300),
-            ],
-          ),
+            ),
+            const Icon(Icons.chevron_right, color: BeeTokens.chevron),
+          ],
         ),
       ),
     );

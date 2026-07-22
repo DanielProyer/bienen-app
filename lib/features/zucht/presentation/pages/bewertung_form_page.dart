@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/voelker/domain/volk.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
@@ -10,6 +10,9 @@ import 'package:bienen_app/features/wissen/domain/bewertung_wissen.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
 import 'package:bienen_app/features/zucht/domain/bewertung.dart';
 import 'package:bienen_app/features/zucht/presentation/providers/bewertung_provider.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
 
 /// Katalog-Lookup ohne package:collection (Muster regelVon in saison_regeln.dart).
 Volk? _findeVolk(List<Volk> vs, String id) {
@@ -69,7 +72,7 @@ class _BewertungFormPageState extends ConsumerState<BewertungFormPage> {
   Widget build(BuildContext context) {
     if (!ref.watch(darfSchreibenProvider)) {
       return Scaffold(appBar: AppBar(title: const Text('Bewertung')),
-          body: const Center(child: Text('Nur mit Schreibrechten verfügbar.')));
+          body: const EmptyState(icon: Icons.lock_outline, titel: 'Nur mit Schreibrechten verfügbar.'));
     }
     final voelker = ref.watch(voelkerListProvider).valueOrNull;
     if (voelker == null) {
@@ -86,13 +89,20 @@ class _BewertungFormPageState extends ConsumerState<BewertungFormPage> {
     _initialisiert = true;
     final inaktiv = volk != null && volk.status != 'aktiv';
 
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.bewertungId == null ? 'Volk bewerten' : 'Bewertung bearbeiten')),
-      body: ListView(padding: const EdgeInsets.all(16), children: [
+    return FormScaffold(
+      titel: widget.bewertungId == null ? 'Volk bewerten' : 'Bewertung bearbeiten',
+      busy: _speichert,
+      bodenleiste: AppButton(
+        label: 'Bewertung speichern',
+        full: true,
+        busy: _speichert,
+        onPressed: () => _speichern(volk?.koeniginId),
+      ),
+      child: ListView(padding: const EdgeInsets.all(BeeTokens.lg), children: [
         if (inaktiv)
-          const Padding(padding: EdgeInsets.only(bottom: 8),
+          Padding(padding: const EdgeInsets.only(bottom: BeeTokens.sm),
             child: Text('Volk inaktiv — Bewertung wird trotzdem gespeichert.',
-                style: TextStyle(color: AppColors.amber800, fontWeight: FontWeight.w600))),
+                style: TextStyle(color: BeeSignal.warnung.text, fontWeight: FontWeight.w600))),
         ListTile(contentPadding: EdgeInsets.zero,
           title: Text('Datum: ${DateFormat('dd.MM.yyyy').format(_datum)}'),
           trailing: const Icon(Icons.calendar_today),
@@ -102,25 +112,22 @@ class _BewertungFormPageState extends ConsumerState<BewertungFormPage> {
             if (d != null) setState(() => _datum = d);
           },
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: BeeTokens.sm),
         for (final a in kBewertungsAchsen) ...[
           Row(mainAxisSize: MainAxisSize.min, children: [
-            Text(a.label, style: const TextStyle(fontWeight: FontWeight.w600)),
+            Text(a.label, style: const TextStyle(fontWeight: FontWeight.w600, color: BeeTokens.textPrimaer)),
             WissenInfoButton(wissenKey: kBewertungAchseWissen[a.key] ?? ''),
           ]),
-          const SizedBox(height: 4),
+          const SizedBox(height: BeeTokens.xs),
           SegmentedButton<int>(
             segments: [for (var i = 1; i <= 4; i++) ButtonSegment(value: i, label: Text('$i'))],
             selected: {_werte[a.key]!},
             onSelectionChanged: (s) => setState(() => _werte[a.key] = s.first),
           ),
-          Text(a.anker[_werte[a.key]! - 1], style: const TextStyle(fontSize: 12, color: AppColors.brown300)),
-          const SizedBox(height: 12),
+          Text(a.anker[_werte[a.key]! - 1], style: const TextStyle(fontSize: 12, color: BeeTokens.textGedaempft)),
+          const SizedBox(height: BeeTokens.md),
         ],
         TextField(controller: _notiz, decoration: const InputDecoration(labelText: 'Notiz'), maxLines: 2),
-        const SizedBox(height: 20),
-        FilledButton(onPressed: _speichert ? null : () => _speichern(volk?.koeniginId),
-            child: Text(_speichert ? 'Speichert…' : 'Bewertung speichern')),
       ]),
     );
   }

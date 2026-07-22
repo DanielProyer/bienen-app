@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/recherche/widgets/section_header.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
 
 class JahresablaufPage extends StatelessWidget {
   const JahresablaufPage({super.key});
@@ -14,11 +15,11 @@ class JahresablaufPage extends StatelessWidget {
         onPressed: () => context.go('/recherche/jahresablauf/detail'),
         icon: const Icon(Icons.article),
         label: const Text('Vollständige Recherche'),
-        backgroundColor: AppColors.honey,
+        backgroundColor: BeeTokens.honig,
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(BeeTokens.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,15 +27,15 @@ class JahresablaufPage extends StatelessWidget {
               title: 'Jahresablauf Imkerei',
               subtitle: 'Arosa 1570 m ü.M. · 40-45 Tage Verschiebung vs. Tallagen',
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: BeeTokens.xl),
             _buildSeasonOverview(context),
-            const SizedBox(height: 32),
+            const SizedBox(height: BeeTokens.xxl),
             const SectionHeader(title: 'Trachtkalender'),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             _buildTrachtkalender(context),
-            const SizedBox(height: 32),
+            const SizedBox(height: BeeTokens.xxl),
             const SectionHeader(title: 'Monatsübersicht'),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             _buildMonthCard(context, 'Januar - März',
                 'Tiefster Winter / Spätwinter', Icons.ac_unit, [
               'Absolute Winterruhe - keine Eingriffe',
@@ -101,57 +102,59 @@ class JahresablaufPage extends StatelessWidget {
 
   Widget _buildSeasonOverview(BuildContext context) {
     final seasons = [
-      _Season('Nov - Mär', 'Winterruhe', AppColors.brown100, Icons.ac_unit),
-      _Season('Mär - Apr', 'Auswinterung', AppColors.green100, Icons.wb_sunny),
-      _Season('Apr - Mai', 'Aufbau', AppColors.green400, Icons.nature),
-      _Season(
-          'Jun - Jul', 'Hauptsaison', AppColors.amber400, Icons.local_florist),
-      _Season('Jul - Sep', 'Spätsommer', AppColors.amber200, Icons.grain),
-      _Season('Sep - Okt', 'Einwinterung', AppColors.brown300, Icons.cloud),
+      _Season('Nov - Mär', 'Winterruhe', BeeTokens.randStark, Icons.ac_unit),
+      _Season('Mär - Apr', 'Auswinterung', BeeSignal.erfolg.flaeche,
+          Icons.wb_sunny),
+      _Season('Apr - Mai', 'Aufbau', BeeSignal.erfolg.text, Icons.nature),
+      _Season('Jun - Jul', 'Hauptsaison', BeeTokens.honig, Icons.local_florist),
+      _Season('Jul - Sep', 'Spätsommer', BeeTokens.honigTint, Icons.grain),
+      _Season('Sep - Okt', 'Einwinterung', BeeTokens.textGedaempft, Icons.cloud),
     ];
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Phasen-Übersicht',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-            ),
-            const SizedBox(height: 12),
-            ...seasons.map((s) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: s.color,
-                          shape: BoxShape.circle,
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Phasen-Übersicht',
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: BeeTokens.textPrimaer),
+          ),
+          const SizedBox(height: BeeTokens.md),
+          ...seasons.map((s) => Padding(
+                padding: const EdgeInsets.only(bottom: BeeTokens.sm),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: s.color,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: BeeTokens.md),
+                    SizedBox(
+                      width: 100,
+                      child: Text(
+                        s.period,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: BeeTokens.textPrimaer,
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      SizedBox(
-                        width: 100,
-                        child: Text(
-                          s.period,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                      Icon(s.icon, size: 18, color: AppColors.brown600),
-                      const SizedBox(width: 8),
-                      Text(s.name),
-                    ],
-                  ),
-                )),
-          ],
-        ),
+                    ),
+                    Icon(s.icon, size: 18, color: BeeTokens.textGedaempft),
+                    const SizedBox(width: BeeTokens.sm),
+                    Text(s.name,
+                        style: const TextStyle(color: BeeTokens.textPrimaer)),
+                  ],
+                ),
+              )),
+        ],
       ),
     );
   }
@@ -166,90 +169,98 @@ class JahresablaufPage extends StatelessWidget {
       _Tracht('Aug - Sep', 'Heidekraut, letzte Bergblüher', 'Läppertracht'),
     ];
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            ...tracht.map((t) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 130,
-                        child: Text(
-                          t.period,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13,
-                          ),
+    return AppCard(
+      child: Column(
+        children: [
+          ...tracht.map((t) => Padding(
+                padding: const EdgeInsets.only(bottom: BeeTokens.md),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 130,
+                      child: Text(
+                        t.period,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: BeeTokens.textPrimaer,
                         ),
                       ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(t.plants,
-                                style: const TextStyle(fontSize: 13)),
-                            Text(
-                              t.meaning,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: t.meaning == 'HAUPTTRACHT'
-                                    ? AppColors.honey
-                                    : AppColors.brown300,
-                                fontWeight: t.meaning == 'HAUPTTRACHT'
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(t.plants,
+                              style: const TextStyle(
+                                  fontSize: 13,
+                                  color: BeeTokens.textPrimaer)),
+                          Text(
+                            t.meaning,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: t.meaning == 'HAUPTTRACHT'
+                                  ? BeeTokens.honig
+                                  : BeeTokens.textGedaempft,
+                              fontWeight: t.meaning == 'HAUPTTRACHT'
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                )),
-          ],
-        ),
+                    ),
+                  ],
+                ),
+              )),
+        ],
       ),
     );
   }
 
   Widget _buildMonthCard(BuildContext context, String month, String phase,
       IconData icon, List<String> tasks) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ExpansionTile(
-        leading: Icon(icon, color: AppColors.honey),
-        title: Text(month, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(phase,
-            style: const TextStyle(color: AppColors.brown300, fontSize: 13)),
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: tasks
-                  .map((t) => Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('• ',
-                                style: TextStyle(color: AppColors.brown600)),
-                            Expanded(
-                              child: Text(t,
-                                  style: const TextStyle(
-                                      color: AppColors.brown600)),
-                            ),
-                          ],
-                        ),
-                      ))
-                  .toList(),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: BeeTokens.md),
+      child: AppCard(
+        padding: EdgeInsets.zero,
+        child: ExpansionTile(
+          leading: Icon(icon, color: BeeTokens.honig),
+          title: Text(month,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w600, color: BeeTokens.textPrimaer)),
+          subtitle: Text(phase,
+              style: const TextStyle(
+                  color: BeeTokens.textGedaempft, fontSize: 13)),
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  BeeTokens.lg, 0, BeeTokens.lg, BeeTokens.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: tasks
+                    .map((t) => Padding(
+                          padding: const EdgeInsets.only(bottom: BeeTokens.xs),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('• ',
+                                  style: TextStyle(
+                                      color: BeeTokens.textGedaempft)),
+                              Expanded(
+                                child: Text(t,
+                                    style: const TextStyle(
+                                        color: BeeTokens.textGedaempft)),
+                              ),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

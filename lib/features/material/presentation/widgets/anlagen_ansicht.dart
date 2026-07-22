@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/material/data/models/material_item.dart';
 import 'package:bienen_app/features/material/data/models/material_purchase.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/material/presentation/widgets/material_list_tile.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 final _chf = NumberFormat('#,##0.00', 'de_CH');
 
@@ -32,10 +33,9 @@ class AnlagenAnsicht extends ConsumerWidget {
         .toList();
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(BeeTokens.lg),
       children: [
-        const _SectionHeader('Vorhanden'),
-        const SizedBox(height: 8),
+        const SectionHeader(titel: 'Vorhanden'),
         if (vorhanden.isEmpty)
           const _EmptyHint('Noch keine Anlagegüter vorhanden.')
         else
@@ -47,10 +47,9 @@ class AnlagenAnsicht extends ConsumerWidget {
                 ),
               )),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: BeeTokens.xl),
 
-        const _SectionHeader('Geplant'),
-        const SizedBox(height: 8),
+        const SectionHeader(titel: 'Geplant'),
         if (geplant.isEmpty)
           const _EmptyHint('Nichts geplant.')
         else
@@ -75,7 +74,7 @@ class _AnlageExtra extends StatelessWidget {
     final jahr = lastPurchase?.gekauftAm?.year;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: BeeTokens.sm),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -84,14 +83,14 @@ class _AnlageExtra extends StatelessWidget {
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: AppColors.brown600,
+              color: BeeTokens.textSekundaer,
             ),
           ),
           if (jahr != null) ...[
             const SizedBox(height: 3),
             Text(
               'Angeschafft $jahr',
-              style: const TextStyle(fontSize: 11, color: AppColors.brown300),
+              style: const TextStyle(fontSize: 11, color: BeeTokens.textGedaempft),
             ),
           ],
         ],
@@ -100,31 +99,16 @@ class _AnlageExtra extends StatelessWidget {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  final String title;
-  const _SectionHeader(this.title);
-
-  @override
-  Widget build(BuildContext context) => Text(
-        title,
-        style: const TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.bold,
-          color: AppColors.brown800,
-        ),
-      );
-}
-
 class _EmptyHint extends StatelessWidget {
   final String text;
   const _EmptyHint(this.text);
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(vertical: BeeTokens.md),
         child: Text(
           text,
-          style: const TextStyle(color: AppColors.brown300, fontSize: 13),
+          style: const TextStyle(color: BeeTokens.textGedaempft, fontSize: 13),
         ),
       );
 }

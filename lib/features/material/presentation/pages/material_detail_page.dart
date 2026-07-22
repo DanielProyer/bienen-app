@@ -6,12 +6,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bienen_app/core/supabase/supabase_config.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/material/data/models/material_item.dart';
 import 'package:bienen_app/features/material/data/models/material_alternatives.dart';
 import 'package:bienen_app/features/material/data/models/material_purchase.dart';
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/status_pill.dart';
 import 'package:intl/intl.dart';
 
 final _chf = NumberFormat('#,##0.00', 'de_CH');
@@ -76,7 +79,7 @@ class MaterialDetailPage extends ConsumerWidget {
                           ? Icons.unarchive_outlined
                           : Icons.archive_outlined,
                       size: 20,
-                      color: AppColors.brown600,
+                      color: BeeTokens.textSekundaer,
                     ),
                     const SizedBox(width: 8),
                     Text(current.archiviert ? 'Reaktivieren' : 'Archivieren'),
@@ -121,7 +124,7 @@ class MaterialDetailPage extends ConsumerWidget {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.brown800,
+                  color: BeeTokens.textPrimaer,
                 ),
               ),
               const SizedBox(height: 12),
@@ -136,42 +139,27 @@ class MaterialDetailPage extends ConsumerWidget {
   Widget _buildMainProductCard(BuildContext context, MaterialItem item) {
     final productInfo = materialProductInfo[item.name];
 
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
             // Header with status
             Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: _statusColor(item.status).withAlpha(30),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: _statusColor(item.status)),
-                  ),
-                  child: Text(
-                    item.status.toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: _statusColor(item.status),
-                    ),
-                  ),
+                StatusPill(
+                  label: item.status.toUpperCase(),
+                  signal: _statusSignal(item.status),
                 ),
                 const SizedBox(width: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.brown50,
+                    color: BeeTokens.rand,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     'Phase ${item.phase}',
-                    style: const TextStyle(fontSize: 11, color: AppColors.brown600),
+                    style: const TextStyle(fontSize: 11, color: BeeTokens.textSekundaer),
                   ),
                 ),
                 const Spacer(),
@@ -179,7 +167,7 @@ class MaterialDetailPage extends ConsumerWidget {
                   item.category,
                   style: const TextStyle(
                     fontSize: 13,
-                    color: AppColors.honeyDark,
+                    color: BeeTokens.textSekundaer,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -193,14 +181,14 @@ class MaterialDetailPage extends ConsumerWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppColors.brown800,
+                color: BeeTokens.textPrimaer,
               ),
             ),
             if (item.description != null) ...[
               const SizedBox(height: 4),
               Text(
                 item.description!,
-                style: const TextStyle(fontSize: 14, color: AppColors.brown600),
+                style: const TextStyle(fontSize: 14, color: BeeTokens.textSekundaer),
               ),
             ],
 
@@ -223,7 +211,7 @@ class MaterialDetailPage extends ConsumerWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Menge', style: TextStyle(fontSize: 11, color: AppColors.brown300)),
+                    const Text('Menge', style: TextStyle(fontSize: 11, color: BeeTokens.textGedaempft)),
                     Text(
                       '${item.quantity}${item.unit != null ? ' ${item.unit}' : ''}',
                       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
@@ -235,7 +223,7 @@ class MaterialDetailPage extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Stückpreis', style: TextStyle(fontSize: 11, color: AppColors.brown300)),
+                      const Text('Stückpreis', style: TextStyle(fontSize: 11, color: BeeTokens.textGedaempft)),
                       Text(
                         'CHF ${_chf.format(item.priceCHF)}',
                         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
@@ -246,13 +234,13 @@ class MaterialDetailPage extends ConsumerWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Text('Total', style: TextStyle(fontSize: 11, color: AppColors.brown300)),
+                    const Text('Total', style: TextStyle(fontSize: 11, color: BeeTokens.textGedaempft)),
                     Text(
                       'CHF ${_chf.format(item.totalPrice)}',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.honeyDark,
+                        color: BeeTokens.textSekundaer,
                       ),
                     ),
                   ],
@@ -265,35 +253,30 @@ class MaterialDetailPage extends ConsumerWidget {
               const SizedBox(height: 16),
               const Divider(),
               const SizedBox(height: 12),
-              const Text('Lieferant', style: TextStyle(fontSize: 11, color: AppColors.brown300)),
+              const Text('Lieferant', style: TextStyle(fontSize: 11, color: BeeTokens.textGedaempft)),
               const SizedBox(height: 4),
               Row(
                 children: [
-                  const Icon(Icons.store, size: 16, color: AppColors.honeyDark),
+                  const Icon(Icons.store, size: 16, color: BeeTokens.textSekundaer),
                   const SizedBox(width: 6),
                   Text(
                     item.supplier!,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.brown800,
+                      color: BeeTokens.textPrimaer,
                     ),
                   ),
                 ],
               ),
               if (item.supplierUrl != null) ...[
                 const SizedBox(height: 8),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    icon: const Icon(Icons.open_in_new, size: 16),
-                    label: const Text('Im Shop öffnen'),
-                    onPressed: () => _openUrl(item.supplierUrl!),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.honeyDark,
-                      side: const BorderSide(color: AppColors.honey),
-                    ),
-                  ),
+                AppButton(
+                  label: 'Im Shop öffnen',
+                  icon: Icons.open_in_new,
+                  kind: AppButtonKind.sekundaer,
+                  full: true,
+                  onPressed: () => _openUrl(item.supplierUrl!),
                 ),
               ],
             ],
@@ -303,26 +286,27 @@ class MaterialDetailPage extends ConsumerWidget {
               const SizedBox(height: 16),
               const Divider(),
               const SizedBox(height: 12),
-              const Text('Notizen', style: TextStyle(fontSize: 11, color: AppColors.brown300)),
+              const Text('Notizen', style: TextStyle(fontSize: 11, color: BeeTokens.textGedaempft)),
               const SizedBox(height: 4),
               Text(item.notes!, style: const TextStyle(fontSize: 13)),
             ],
-          ],
-        ),
+        ],
       ),
     );
   }
 
   Widget _buildAlternativeCard(BuildContext context, ProductAlternative alt) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      color: alt.isRecommended ? AppColors.amber50 : null,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: alt.isRecommended
-            ? const BorderSide(color: AppColors.honey, width: 2)
-            : const BorderSide(color: AppColors.brown100),
+      decoration: BoxDecoration(
+        color: alt.isRecommended ? BeeTokens.honigTint : BeeTokens.karte,
+        borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+        border: Border.all(
+          color: alt.isRecommended ? BeeTokens.honig : BeeTokens.rand,
+          width: alt.isRecommended ? 2 : 0.5,
+        ),
       ),
+      clipBehavior: Clip.antiAlias,
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -341,7 +325,7 @@ class MaterialDetailPage extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color: AppColors.honey,
+                      color: BeeTokens.honig,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Text(
@@ -358,7 +342,7 @@ class MaterialDetailPage extends ConsumerWidget {
               children: [
                 Text(
                   alt.supplier,
-                  style: const TextStyle(fontSize: 12, color: AppColors.brown600),
+                  style: const TextStyle(fontSize: 12, color: BeeTokens.textSekundaer),
                 ),
                 const Spacer(),
                 Text(
@@ -366,7 +350,7 @@ class MaterialDetailPage extends ConsumerWidget {
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.honeyDark,
+                    color: BeeTokens.textSekundaer,
                   ),
                 ),
               ],
@@ -380,7 +364,7 @@ class MaterialDetailPage extends ConsumerWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.add_circle, size: 14, color: AppColors.green600),
+                        Icon(Icons.add_circle, size: 14, color: BeeSignal.erfolg.text),
                         const SizedBox(width: 6),
                         Expanded(child: Text(pro, style: const TextStyle(fontSize: 12))),
                       ],
@@ -396,7 +380,7 @@ class MaterialDetailPage extends ConsumerWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.remove_circle, size: 14, color: Colors.red.shade400),
+                        Icon(Icons.remove_circle, size: 14, color: BeeSignal.gefahr.text),
                         const SizedBox(width: 6),
                         Expanded(child: Text(con, style: const TextStyle(fontSize: 12))),
                       ],
@@ -411,14 +395,14 @@ class MaterialDetailPage extends ConsumerWidget {
                 onTap: () => _openUrl(alt.url!),
                 child: Row(
                   children: [
-                    Icon(Icons.open_in_new, size: 14, color: Colors.blue.shade700),
+                    Icon(Icons.open_in_new, size: 14, color: BeeSignal.info.text),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
                         alt.url!,
                         style: TextStyle(
                           fontSize: 11,
-                          color: Colors.blue.shade700,
+                          color: BeeSignal.info.text,
                           decoration: TextDecoration.underline,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -434,14 +418,14 @@ class MaterialDetailPage extends ConsumerWidget {
     );
   }
 
-  Color _statusColor(String status) {
+  BeeSignal _statusSignal(String status) {
     switch (status) {
       case 'bestellt':
-        return AppColors.amber600;
+        return BeeSignal.warnung;
       case 'gekauft':
-        return AppColors.green600;
+        return BeeSignal.erfolg;
       default:
-        return AppColors.brown300;
+        return BeeSignal.neutral;
     }
   }
 
@@ -460,25 +444,23 @@ class _TypeSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
             const Text(
               'Materialtyp',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: AppColors.brown800,
+                color: BeeTokens.textPrimaer,
               ),
             ),
             const SizedBox(height: 4),
             const Text(
               'Verbrauch wird regelmäßig nachgekauft; Anlagegut einmalig '
               '(Beute, Werkzeug…).',
-              style: TextStyle(fontSize: 12, color: AppColors.brown600),
+              style: TextStyle(fontSize: 12, color: BeeTokens.textSekundaer),
             ),
             const SizedBox(height: 12),
             SizedBox(
@@ -516,7 +498,6 @@ class _TypeSection extends ConsumerWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
@@ -715,23 +696,21 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
     final photos = item.photoUrls;
     final pdfs = item.pdfUrls;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
             Row(
               children: [
                 const Icon(Icons.perm_media_outlined,
-                    size: 18, color: AppColors.honeyDark),
+                    size: 18, color: BeeTokens.textSekundaer),
                 const SizedBox(width: 6),
                 const Text(
                   'Bilder & Anleitungen',
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.brown800),
+                      color: BeeTokens.textPrimaer),
                 ),
                 const Spacer(),
                 if (_busy)
@@ -746,7 +725,7 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
 
             // Fotos
             const Text('Fotos',
-                style: TextStyle(fontSize: 12, color: AppColors.brown300)),
+                style: TextStyle(fontSize: 12, color: BeeTokens.textGedaempft)),
             const SizedBox(height: 6),
             Wrap(
               spacing: 8,
@@ -762,26 +741,26 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
 
             // PDFs
             const Text('Anleitungen (PDF)',
-                style: TextStyle(fontSize: 12, color: AppColors.brown300)),
+                style: TextStyle(fontSize: 12, color: BeeTokens.textGedaempft)),
             const SizedBox(height: 6),
             if (pdfs.isEmpty)
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 2),
                 child: Text('Keine Anleitung hinterlegt.',
-                    style: TextStyle(fontSize: 12, color: AppColors.brown300)),
+                    style: TextStyle(fontSize: 12, color: BeeTokens.textGedaempft)),
               ),
             for (int i = 0; i < pdfs.length; i++) _pdfRow(i, pdfs[i]),
             if (pdfs.length < _maxPdfs) ...[
               const SizedBox(height: 6),
-              OutlinedButton.icon(
+              AppButton(
+                label: 'PDF hinzufügen',
+                icon: Icons.picture_as_pdf_outlined,
+                kind: AppButtonKind.sekundaer,
                 onPressed: _busy ? null : _addPdf,
-                icon: const Icon(Icons.picture_as_pdf_outlined, size: 18),
-                label: const Text('PDF hinzufügen'),
               ),
             ],
           ],
         ),
-      ),
     );
   }
 
@@ -803,9 +782,9 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
                 errorBuilder: (_, _, _) => Container(
                   width: 76,
                   height: 76,
-                  color: AppColors.brown50,
+                  color: BeeTokens.rand,
                   child: const Icon(Icons.broken_image,
-                      color: AppColors.brown300),
+                      color: BeeTokens.textGedaempft),
                 ),
               ),
             ),
@@ -838,17 +817,17 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
         height: 76,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.honey),
-          color: AppColors.amber50,
+          border: Border.all(color: BeeTokens.honig),
+          color: BeeTokens.honigTint,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: AppColors.honeyDark, size: 22),
+            Icon(icon, color: BeeTokens.textSekundaer, size: 22),
             const SizedBox(height: 2),
             Text(label,
                 style:
-                    const TextStyle(fontSize: 11, color: AppColors.honeyDark)),
+                    const TextStyle(fontSize: 11, color: BeeTokens.textSekundaer)),
           ],
         ),
       ),
@@ -864,7 +843,7 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
       padding: const EdgeInsets.only(bottom: 4),
       child: Row(
         children: [
-          const Icon(Icons.picture_as_pdf, color: Colors.red, size: 20),
+          Icon(Icons.picture_as_pdf, color: BeeSignal.gefahr.text, size: 20),
           const SizedBox(width: 8),
           Expanded(
             child: Text(name,
@@ -873,13 +852,13 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
           ),
           IconButton(
             icon: const Icon(Icons.open_in_new, size: 18),
-            color: AppColors.honeyDark,
+            color: BeeTokens.textSekundaer,
             tooltip: 'Öffnen',
             onPressed: () =>
                 launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
           ),
           IconButton(
-            icon: Icon(Icons.delete_outline, size: 18, color: Colors.red.shade400),
+            icon: Icon(Icons.delete_outline, size: 18, color: BeeSignal.gefahr.text),
             tooltip: 'Entfernen',
             onPressed: _busy ? null : () => _removePdf(i),
           ),
@@ -956,29 +935,27 @@ class _StockSection extends ConsumerWidget {
     Future<void> setStock(double v) =>
         notifier.updateStock(item.id, v < 0 ? 0 : v);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
             const Text(
               'Bestand',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: AppColors.brown800,
+                color: BeeTokens.textPrimaer,
               ),
             ),
             const SizedBox(height: 12),
             Row(
               children: [
                 const Text('Aktueller Bestand',
-                    style: TextStyle(fontSize: 13, color: AppColors.brown600)),
+                    style: TextStyle(fontSize: 13, color: BeeTokens.textSekundaer)),
                 const Spacer(),
                 IconButton(
                   icon: const Icon(Icons.remove_circle_outline),
-                  color: AppColors.honeyDark,
+                  color: BeeTokens.textSekundaer,
                   onPressed: () => setStock(item.stockQty - 1),
                 ),
                 InkWell(
@@ -998,14 +975,14 @@ class _StockSection extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: low ? Colors.red.shade700 : AppColors.brown800,
+                        color: low ? BeeSignal.gefahr.text : BeeTokens.textPrimaer,
                       ),
                     ),
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.add_circle_outline),
-                  color: AppColors.honeyDark,
+                  color: BeeTokens.textSekundaer,
                   onPressed: () => setStock(item.stockQty + 1),
                 ),
               ],
@@ -1014,7 +991,7 @@ class _StockSection extends ConsumerWidget {
             Row(
               children: [
                 const Text('Mindestbestand',
-                    style: TextStyle(fontSize: 13, color: AppColors.brown600)),
+                    style: TextStyle(fontSize: 13, color: BeeTokens.textSekundaer)),
                 const Spacer(),
                 InkWell(
                   onTap: () => _editValue(
@@ -1037,7 +1014,7 @@ class _StockSection extends ConsumerWidget {
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(width: 6),
-                        const Icon(Icons.edit, size: 14, color: AppColors.brown300),
+                        const Icon(Icons.edit, size: 14, color: BeeTokens.textGedaempft),
                       ],
                     ),
                   ),
@@ -1048,18 +1025,17 @@ class _StockSection extends ConsumerWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(Icons.warning_amber, size: 15, color: Colors.red.shade600),
+                  Icon(Icons.warning_amber, size: 15, color: BeeSignal.gefahr.text),
                   const SizedBox(width: 6),
                   Text(
                     'Unter Mindestbestand – nachkaufen',
-                    style: TextStyle(fontSize: 12, color: Colors.red.shade600),
+                    style: TextStyle(fontSize: 12, color: BeeSignal.gefahr.text),
                   ),
                 ],
               ),
             ],
           ],
         ),
-      ),
     );
   }
 }
@@ -1085,17 +1061,13 @@ class _PurchaseHistorySection extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppColors.brown800,
+                color: BeeTokens.textPrimaer,
               ),
             ),
             const Spacer(),
-            FilledButton.icon(
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.honey,
-                foregroundColor: Colors.white,
-              ),
-              icon: const Icon(Icons.add, size: 18),
-              label: const Text('Kauf erfassen'),
+            AppButton(
+              label: 'Kauf erfassen',
+              icon: Icons.add,
               onPressed: () => showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,
@@ -1110,7 +1082,7 @@ class _PurchaseHistorySection extends ConsumerWidget {
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
               'Noch keine Käufe erfasst.',
-              style: TextStyle(color: AppColors.brown300),
+              style: TextStyle(color: BeeTokens.textGedaempft),
             ),
           )
         else
@@ -1150,10 +1122,10 @@ class _PurchaseTile extends ConsumerWidget {
       subtitleParts.add('à CHF ${_chf.format(p.stueckpreis)}');
     }
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: BeeTokens.sm),
+      child: AppCard(
+        padding: const EdgeInsets.all(BeeTokens.md),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1192,7 +1164,7 @@ class _PurchaseTile extends ConsumerWidget {
                           'CHF ${_chf.format(p.gesamtpreis)}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppColors.honeyDark,
+                            color: BeeTokens.textSekundaer,
                           ),
                         ),
                     ],
@@ -1201,18 +1173,18 @@ class _PurchaseTile extends ConsumerWidget {
                     const SizedBox(height: 2),
                     Text(subtitleParts.join(' · '),
                         style: const TextStyle(
-                            fontSize: 12, color: AppColors.brown600)),
+                            fontSize: 12, color: BeeTokens.textSekundaer)),
                   ],
                   if (p.shop != null && p.shop!.isNotEmpty) ...[
                     const SizedBox(height: 2),
                     Row(
                       children: [
                         const Icon(Icons.store,
-                            size: 13, color: AppColors.brown300),
+                            size: 13, color: BeeTokens.textGedaempft),
                         const SizedBox(width: 4),
                         Text(p.shop!,
                             style: const TextStyle(
-                                fontSize: 12, color: AppColors.brown600)),
+                                fontSize: 12, color: BeeTokens.textSekundaer)),
                       ],
                     ),
                   ],
@@ -1221,29 +1193,29 @@ class _PurchaseTile extends ConsumerWidget {
                     Row(
                       children: [
                         const Icon(Icons.payments_outlined,
-                            size: 13, color: AppColors.brown300),
+                            size: 13, color: BeeTokens.textGedaempft),
                         const SizedBox(width: 4),
                         Text(p.zahlungsart!,
                             style: const TextStyle(
-                                fontSize: 12, color: AppColors.brown600)),
+                                fontSize: 12, color: BeeTokens.textSekundaer)),
                       ],
                     ),
                   ],
                   if (p.belegNr != null && p.belegNr!.isNotEmpty)
                     Text('Beleg-Nr: ${p.belegNr}',
                         style: const TextStyle(
-                            fontSize: 11, color: AppColors.brown300)),
+                            fontSize: 11, color: BeeTokens.textGedaempft)),
                   if (p.notiz != null && p.notiz!.isNotEmpty)
                     Text(p.notiz!,
                         style: const TextStyle(
                             fontSize: 12,
                             fontStyle: FontStyle.italic,
-                            color: AppColors.brown600)),
+                            color: BeeTokens.textSekundaer)),
                 ],
               ),
             ),
             IconButton(
-              icon: Icon(Icons.delete_outline, color: Colors.red.shade400),
+              icon: Icon(Icons.delete_outline, color: BeeSignal.gefahr.text),
               tooltip: 'Kauf löschen',
               onPressed: () async {
                 try {
@@ -1454,12 +1426,12 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppColors.brown800,
+                color: BeeTokens.textPrimaer,
               ),
             ),
             const SizedBox(height: 4),
             Text(widget.item.name,
-                style: const TextStyle(fontSize: 13, color: AppColors.brown600)),
+                style: const TextStyle(fontSize: 13, color: BeeTokens.textSekundaer)),
             const SizedBox(height: 16),
 
             // Datum
@@ -1512,7 +1484,7 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
                 'Gesamt: CHF ${_chf.format(_gesamt)}',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.honeyDark,
+                  color: BeeTokens.textSekundaer,
                 ),
               ),
             ),
@@ -1555,15 +1527,13 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
             // Beleg-Foto
             Row(
               children: [
-                OutlinedButton.icon(
+                AppButton(
+                  label: _photoBytes == null ? 'Beleg-Foto' : 'Ersetzen',
+                  icon: _photoBytes == null
+                      ? Icons.add_a_photo_outlined
+                      : Icons.cameraswitch_outlined,
+                  kind: AppButtonKind.sekundaer,
                   onPressed: _pickPhoto,
-                  icon: Icon(
-                    _photoBytes == null
-                        ? Icons.add_a_photo_outlined
-                        : Icons.cameraswitch_outlined,
-                    size: 18,
-                  ),
-                  label: Text(_photoBytes == null ? 'Beleg-Foto' : 'Ersetzen'),
                 ),
                 const Spacer(),
                 if (_photoBytes != null)
@@ -1591,24 +1561,11 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
             ),
             const SizedBox(height: 16),
 
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.honey,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                ),
-                onPressed: _saving ? null : _save,
-                child: _saving
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
-                      )
-                    : const Text('Speichern'),
-              ),
+            AppButton(
+              label: 'Speichern',
+              full: true,
+              busy: _saving,
+              onPressed: _save,
             ),
           ],
         ),

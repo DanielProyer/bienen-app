@@ -4,9 +4,11 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/construction/data/models/build_step_content.dart';
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
 import 'package:bienen_app/features/construction/presentation/widgets/build_step_card.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
 
 /// Honigverarbeitung/Schleuderraum: zwei Ansichten – „Info" (Bau & Ausstattung
 /// als Markdown) und „Bauschritte" (geführte, abhakbare Schritte, Supabase-
@@ -87,49 +89,51 @@ class _HvInfoViewState extends State<_HvInfoView>
     super.build(context);
     if (_error != null) {
       return Center(
-        child: Text(_error!, style: const TextStyle(color: Colors.red)),
+        child:
+            Text(_error!, style: const TextStyle(color: BeeTokens.gefahrText)),
       );
     }
     if (_content == null) {
       return const Center(child: CircularProgressIndicator());
     }
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(BeeTokens.lg),
       children: [
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(BeeTokens.md),
           decoration: BoxDecoration(
-            color: AppColors.amber50,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.amber200),
+            color: BeeTokens.honigTint,
+            borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+            border: Border.all(color: BeeTokens.honig, width: 0.5),
           ),
-          child: Row(
-            children: const [
-              Icon(Icons.info_outline, color: AppColors.honeyDark, size: 20),
-              SizedBox(width: 8),
+          child: const Row(
+            children: [
+              Icon(Icons.info_outline, color: BeeTokens.honig, size: 20),
+              SizedBox(width: BeeTokens.sm),
               Expanded(
                 child: Text(
                   'Bau & Ausstattung des Schleuderraums (aus Recherche). '
                   'Preise/Masse sind Richtwerte – konkrete Angaben folgen.',
-                  style: TextStyle(fontSize: 13, color: AppColors.brown800),
+                  style: TextStyle(fontSize: 13, color: BeeTokens.textPrimaer),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: BeeTokens.md),
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: BeeTokens.sm,
+          runSpacing: BeeTokens.sm,
           children: [
-            OutlinedButton.icon(
+            AppButton(
+              label: 'Zur Materialliste',
+              icon: Icons.shopping_cart,
+              kind: AppButtonKind.sekundaer,
               onPressed: () => context.go('/material'),
-              icon: const Icon(Icons.shopping_cart),
-              label: const Text('Zur Materialliste'),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: BeeTokens.sm),
         MarkdownBody(
           data: _content!,
           selectable: true,
@@ -137,18 +141,18 @@ class _HvInfoViewState extends State<_HvInfoView>
             h1: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppColors.brown800),
+                color: BeeTokens.textPrimaer),
             h2: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppColors.brown800),
+                color: BeeTokens.textPrimaer),
             h3: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: AppColors.honeyDark),
+                color: BeeTokens.textSekundaer),
             p: const TextStyle(fontSize: 14, height: 1.6),
             tableHead: const TextStyle(fontWeight: FontWeight.bold),
-            tableBorder: TableBorder.all(color: AppColors.brown100, width: 1),
+            tableBorder: TableBorder.all(color: BeeTokens.randStark, width: 1),
             tableCellsPadding: const EdgeInsets.all(6),
             listBullet: const TextStyle(fontSize: 14),
           ),
@@ -171,39 +175,41 @@ class _HvBauschritteView extends ConsumerWidget {
       children: [
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          color: AppColors.amber50,
+          padding: const EdgeInsets.all(BeeTokens.md),
+          color: BeeTokens.honigTint,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Fortschritt: ${progress.done}/${progress.total} Schritte erledigt',
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: BeeTokens.textPrimaer),
               ),
               const SizedBox(height: 6),
               ClipRRect(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(BeeTokens.xs),
                 child: LinearProgressIndicator(
                   value: progress.total == 0
                       ? 0
                       : progress.done / progress.total,
                   minHeight: 8,
-                  backgroundColor: AppColors.brown100,
-                  color: AppColors.green600,
+                  backgroundColor: BeeTokens.rand,
+                  color: BeeSignal.erfolg.text,
                 ),
               ),
               const SizedBox(height: 6),
               const Text(
                 'Ablauf aus der Recherche – konkrete Masse/Produkte folgen, '
                 'wenn der Schleuderraum feststeht.',
-                style: TextStyle(fontSize: 11, color: AppColors.brown600),
+                style: TextStyle(fontSize: 11, color: BeeTokens.textGedaempft),
               ),
             ],
           ),
         ),
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 24),
+            padding: const EdgeInsets.only(bottom: BeeTokens.xl),
             itemCount: kHonigverarbeitungSteps.length,
             itemBuilder: (_, i) => BuildStepCard(
               content: kHonigverarbeitungSteps[i],

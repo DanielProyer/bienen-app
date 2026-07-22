@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 
 /// Vollbild-Zoom einer SVG-Skizze. Wird per Navigator.push geöffnet (KEINE Route → kein extra-Problem).
 class WissenSkizzePage extends StatelessWidget {
@@ -16,7 +17,7 @@ class WissenSkizzePage extends StatelessWidget {
           minScale: 1,
           maxScale: 5,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(BeeTokens.lg),
             child: assetPfad.toLowerCase().endsWith('.svg')
                 ? SvgPicture.asset(assetPfad, fit: BoxFit.contain)
                 : Image.asset(assetPfad, fit: BoxFit.contain),

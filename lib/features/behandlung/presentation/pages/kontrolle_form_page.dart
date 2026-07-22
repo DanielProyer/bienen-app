@@ -7,6 +7,10 @@ import 'package:bienen_app/features/behandlung/domain/varroa_kontrolle.dart';
 import 'package:bienen_app/features/behandlung/presentation/providers/behandlung_provider.dart';
 import 'package:bienen_app/features/wissen/domain/behandlung_wissen.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
 
 class KontrolleFormPage extends ConsumerStatefulWidget {
   final String volkId;
@@ -46,16 +50,25 @@ class _KontrolleFormPageState extends ConsumerState<KontrolleFormPage> {
   @override
   Widget build(BuildContext context) {
     if (!ref.watch(darfSchreibenProvider)) {
-      return Scaffold(appBar: AppBar(title: const Text('Milbendiagnose')),
-          body: const Center(child: Text('Nur Lesezugriff.')));
+      return Scaffold(
+        appBar: AppBar(title: const Text('Milbendiagnose')),
+        body: const EmptyState(icon: Icons.lock_outline, titel: 'Nur Lesezugriff.'),
+      );
     }
     final gemuell = _methode == 'gemuell';
-    return Scaffold(
-      appBar: AppBar(title: const Text('Milbendiagnose')),
-      body: ListView(padding: const EdgeInsets.all(16), children: [
+    return FormScaffold(
+      titel: 'Milbendiagnose',
+      bodenleiste: AppButton(
+        label: 'Speichern',
+        icon: Icons.save,
+        busy: _speichert,
+        full: true,
+        onPressed: _speichern,
+      ),
+      child: ListView(padding: const EdgeInsets.all(BeeTokens.lg), children: [
         Row(children: [
           Expanded(
-            child: Wrap(spacing: 8, children: [
+            child: Wrap(spacing: BeeTokens.sm, children: [
               for (final m in const ['gemuell', 'puderzucker', 'auswaschung'])
                 ChoiceChip(
                   label: Text(switch (m) { 'gemuell' => 'Gemüll', 'puderzucker' => 'Puderzucker', _ => 'Auswaschung' }),
@@ -66,7 +79,7 @@ class _KontrolleFormPageState extends ConsumerState<KontrolleFormPage> {
           ),
           WissenInfoButton(wissenKey: kVarroaMethodeWissen[_methode] ?? ''),
         ]),
-        const SizedBox(height: 12),
+        const SizedBox(height: BeeTokens.md),
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: Text('Datum: ${_datum.day}.${_datum.month}.${_datum.year}'),
@@ -85,16 +98,10 @@ class _KontrolleFormPageState extends ConsumerState<KontrolleFormPage> {
         if (!gemuell)
           TextField(controller: _bienen, keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'Bienen in der Probe (~300)'), onChanged: (_) => setState(() {})),
-        const SizedBox(height: 8),
+        const SizedBox(height: BeeTokens.sm),
         _AmpelZeile(methode: _methode, ampel: _ampel, milben: _milbenVal,
             messdauer: int.tryParse(_messdauer.text), bienen: int.tryParse(_bienen.text)),
         TextField(controller: _notiz, decoration: const InputDecoration(labelText: 'Notiz')),
-        const SizedBox(height: 16),
-        FilledButton.icon(
-          onPressed: _speichert ? null : _speichern,
-          icon: const Icon(Icons.save),
-          label: Text(_speichert ? 'Speichert…' : 'Speichern'),
-        ),
       ]),
     );
   }
@@ -136,11 +143,14 @@ class _AmpelZeile extends StatelessWidget {
         : befallProzent(milben, bienen)?.toStringAsFixed(1);
     final einheit = methode == 'gemuell' ? 'Milben/Tag' : '% Befall';
     final color = switch (ampel) {
-      Ampel.gruen => Colors.green, Ampel.gelb => Colors.orange, Ampel.rot => Colors.red, Ampel.keinRichtwert => Colors.grey,
+      Ampel.gruen => BeeSignal.erfolg.text,
+      Ampel.gelb => BeeSignal.warnung.text,
+      Ampel.rot => BeeSignal.gefahr.text,
+      Ampel.keinRichtwert => BeeTokens.textGedaempft,
     };
     return Row(children: [
       Icon(Icons.circle, color: color, size: 14),
-      const SizedBox(width: 8),
+      const SizedBox(width: BeeTokens.sm),
       Text('${wert ?? '—'} $einheit'),
     ]);
   }
