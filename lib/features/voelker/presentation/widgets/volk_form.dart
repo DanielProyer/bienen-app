@@ -199,7 +199,20 @@ Future<void> showUmweiselnDialog(BuildContext context, WidgetRef ref, Volk volk)
 
 /// Königin anlegen — analog zu [showVolkForm]. Rasse wird aus
 /// `betriebsEinstellungenProvider.rasseDefault` vorbelegt.
-Future<void> showKoeniginForm(BuildContext context, WidgetRef ref, {Koenigin? koenigin}) async {
+///
+/// [zuVolkId]: Wird die Königin aus der Königin-Sektion eines Volks heraus neu
+/// angelegt, soll sie diesem Volk auch GEHÖREN. Ohne das entsteht nur ein
+/// unverknüpfter Register-Eintrag, den die Volk-Sektion nicht anzeigt — genau
+/// diese Falle liess frueher mehrfach erfasste Königinnen "verschwinden".
+/// Die Zuordnung laeuft ueber die atomare RPC `volk_umweiseln` (setzt volk_id,
+/// zugeordnet_am, status und voelker.koenigin_id); sie vertraegt ein Volk ohne
+/// alte Königin. Bei bestehender Königin (Bearbeiten) wird nichts zugeordnet.
+Future<void> showKoeniginForm(
+  BuildContext context,
+  WidgetRef ref, {
+  Koenigin? koenigin,
+  String? zuVolkId,
+}) async {
   await _stammdatenLaden(ref);
   if (!context.mounted) return;
   final einst = ref.read(betriebsEinstellungenProvider).valueOrNull;
@@ -253,8 +266,28 @@ Future<void> showKoeniginForm(BuildContext context, WidgetRef ref, {Koenigin? ko
                 mutterKoeniginId: koenigin?.mutterKoeniginId,
               );
               try {
-                await ref.read(koeniginnenProvider.notifier).speichern(neu);
+                final gespeichert =
+                    await ref.read(koeniginnenProvider.notifier).speichern(neu);
+                // Neu angelegt UND aus einem Volk heraus? Dann sofort zuordnen,
+                // sonst bliebe sie ein unsichtbarer Register-Eintrag.
+                final zuzuordnen = koenigin == null && zuVolkId != null;
+                if (zuzuordnen) {
+                  await ref.read(voelkerListProvider.notifier).umweiseln(
+                        volkId: zuVolkId,
+                        neueKoeniginId: gespeichert.id,
+                      );
+                }
                 if (ctx.mounted) Navigator.pop(ctx);
+                // Rueckmeldung auf dem Seiten-Context (ctx ist nach dem Pop weg).
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(zuzuordnen
+                        ? 'Königin gespeichert und dem Volk zugeordnet.'
+                        : koenigin == null
+                            ? 'Königin im Register gespeichert.'
+                            : 'Königin aktualisiert.'),
+                  ));
+                }
               } on VoelkerFehler catch (e) {
                 if (ctx.mounted) {
                   ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(e.message)));

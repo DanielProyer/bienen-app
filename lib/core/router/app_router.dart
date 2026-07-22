@@ -40,6 +40,7 @@ import 'package:bienen_app/features/fuetterung/presentation/pages/fuetterung_for
 import 'package:bienen_app/features/gesundheit/presentation/pages/gesundheit_form_page.dart';
 import 'package:bienen_app/features/vermehrung/presentation/pages/vermehrung_form_page.dart';
 import 'package:bienen_app/features/zucht/presentation/pages/bewertung_form_page.dart';
+import 'package:bienen_app/features/voelker/presentation/pages/koeniginnen_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/voelker_page.dart';
 import 'package:bienen_app/features/voelker/presentation/pages/volk_detail_page.dart';
 import 'package:bienen_app/shared/widgets/app_shell.dart';
@@ -456,6 +457,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ],
         ),
         GoRoute(path: '/projekt', builder: (context, state) => const ProjektPage()),
+        GoRoute(path: '/koeniginnen', builder: (c, s) => const KoeniginnenPage()),
         GoRoute(path: '/einstellungen', builder: (c, s) => const EinstellungenPage()),
         GoRoute(path: '/backup', builder: (context, state) => const BackupPage()),
         GoRoute(path: '/mehr', redirect: (context, state) => '/projekt'),

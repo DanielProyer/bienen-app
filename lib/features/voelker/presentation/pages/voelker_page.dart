@@ -23,7 +23,16 @@ class VoelkerPage extends ConsumerWidget {
     ref.watch(betriebsEinstellungenProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Völker')),
+      appBar: AppBar(
+        title: const Text('Völker'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.workspace_premium_outlined),
+            tooltip: 'Königinnen',
+            onPressed: () => context.go('/koeniginnen'),
+          ),
+        ],
+      ),
       floatingActionButton: darfSchreiben
           ? FloatingActionButton(
               onPressed: () => showVolkForm(context, ref),
