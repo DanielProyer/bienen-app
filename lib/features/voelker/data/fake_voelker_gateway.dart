@@ -59,14 +59,30 @@ class FakeVoelkerGateway implements VoelkerGateway {
   Future<void> volkLoeschen(String id) async => _voelker.remove(id);
 
   @override
-  Future<void> standortSpeichern(Standort s) async {
+  Future<Standort> standortSpeichern(Standort s) async {
     final id = s.id.isEmpty ? 's${++_seq}' : s.id;
-    _standorte[id] = Standort(
+    final gespeichert = Standort(
       id: id, name: s.name, adresse: s.adresse, parzelle: s.parzelle, gpsLat: s.gpsLat,
       gpsLng: s.gpsLng, hoeheM: s.hoeheM, kanton: s.kanton, amtlicheStandnummer: s.amtlicheStandnummer,
       inspektionskreis: s.inspektionskreis, status: s.status, aufgeloestAm: s.aufgeloestAm,
       trachtnotiz: s.trachtnotiz, sperrbezirk: s.sperrbezirk, notes: s.notes, sortOrder: s.sortOrder,
     );
+    _standorte[id] = gespeichert;
+    return gespeichert;
+  }
+
+  @override
+  Future<void> standortLoeschen(String id) async {
+    _standorte.remove(id);
+    // Voelker an diesem Stand verlieren den Standort (wie ON DELETE SET NULL in
+    // der DB, `voelker_standort_fk`). ALLE uebrigen Felder bleiben — dafuer
+    // copyWith. Das Aufgaben-Pendant (`aufgaben_standort_fk`) lebt im
+    // Aufgaben-Gateway.
+    for (final v in _voelker.values.toList()) {
+      if (v.standortId == id) {
+        _voelker[v.id] = v.copyWith(standortEntfernen: true);
+      }
+    }
   }
 
   @override
@@ -85,18 +101,11 @@ class FakeVoelkerGateway implements VoelkerGateway {
   @override
   Future<void> koeniginLoeschen(String id) async {
     _koeniginnen.remove(id);
-    // Volk, das diese Koenigin trug, wird weisellos (wie ON DELETE SET NULL in der DB).
-    // ALLE uebrigen Felder muessen erhalten bleiben — Volk hat kein copyWith.
+    // Volk, das diese Koenigin trug, wird weisellos (wie ON DELETE SET NULL in
+    // der DB). ALLE uebrigen Felder muessen erhalten bleiben — dafuer copyWith.
     for (final v in _voelker.values.toList()) {
       if (v.koeniginId == id) {
-        _voelker[v.id] = Volk(
-          id: v.id, name: v.name, status: v.status, standortId: v.standortId,
-          koeniginId: null, mutterVolkId: v.mutterVolkId, beutentyp: v.beutentyp,
-          zargen: v.zargen, brutwaben: v.brutwaben, bioStatus: v.bioStatus,
-          gesundheitsstatus: v.gesundheitsstatus, einweiselungAm: v.einweiselungAm,
-          herkunft: v.herkunft, notes: v.notes, sortOrder: v.sortOrder,
-          koenigin: null, standort: v.standort,
-        );
+        _voelker[v.id] = v.copyWith(koeniginEntfernen: true);
       }
     }
   }
