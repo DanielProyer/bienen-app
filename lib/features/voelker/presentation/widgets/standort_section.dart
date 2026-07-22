@@ -18,9 +18,14 @@ class StandortSection extends ConsumerWidget {
           Row(children: [
             const Text('Standort', style: TextStyle(fontWeight: FontWeight.bold)),
             const Spacer(),
-            if (darf)
+            // Nur wenn das Volk noch keinen Stand hat: sonst wuerde ein
+            // Neuanlegen es still umziehen. Umziehen laeuft ueber das
+            // Volk-Formular (Standort-Dropdown).
+            if (darf && s == null)
               TextButton(
-                onPressed: () => showStandortForm(context, ref),
+                // zuVolk: der neue Stand gehoert diesem Volk — sonst entstuende
+                // nur ein unsichtbarer Stammdaten-Eintrag.
+                onPressed: () => showStandortForm(context, ref, zuVolk: volk),
                 child: const Text('Standort anlegen'),
               ),
           ]),
