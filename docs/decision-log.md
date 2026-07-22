@@ -4,6 +4,14 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-22 — App-Design-Überarbeitung: Design-System + Kern-Screens live (v1.30.0)
+
+Erster Durchgang der App-weiten Design-Überarbeitung (bewusst nach dem Material-Rework aufgehoben). Fokus: Einhandbedienung + Einfachheit + Konsistenz. Reine Präsentationsschicht (keine DB/Provider/Routen). Brainstorming (mit Inline-Mockups) → Spec → Plan (12 Tasks) → subagent-getrieben (Fundament inline wegen kurzer Subagent-Ausfälle, Bausteine + Screens per Subagent, adversariale Verhaltensprüfung). 264/264 Tests, live.
+
+- **D-72 · Zentrales Design-System statt handgesetzter Stile (Richtung „A — warm, beruhigt").** Neue `BeeTokens` (Farb-**Rollen** oberflaeche/karte/text/rand/honig + Signal-Rollen erfolg/warnung/gefahr/info als Fläche+Text-Paar; 4/8-Abstandsraster; Schrift-Skala 2 Gewichte; 48px-Tap-Ziele) + `BeeSignal`-Enum. **Baukasten** (`lib/shared/widgets/`): AppButton, AppCard, SectionHeader, StatusPill, AppListTile, StatTile, FormScaffold, EmptyState, `confirmSheet` — je mit Smoke-Test. Bausteine/Screens lesen **nur Tokens**, nie rohe Hex/Pixel; kräftige Farbe **nur als Signal** (die roh-Hex-Ampel-Map in voelker_karte + das `Colors.red.shade*`-Schema in warnband sind aufgelöst). Warme Bienen-Identität behalten, aber Farbe rausnehmen (viel Weiß, Honig als Akzent, helle Kopfleiste mit Honig-Unterkante statt dunkelbraunem Balken). `AppColors` bleibt für noch nicht migrierte Screens.
+- **D-73 · Einhand-Modell (Feld/Handschuh, Handy hochkant, Daumen).** `FormScaffold` heftet die Hauptaktion **unten** an (Daumen-erreichbar: „Weiter"/„Speichern"), Kopfleiste = nur Titel + Kontext, Sekundär/Zerstörerisch ins Overflow oben (nie in die Daumenzone); große Ziele (Stepper 52px, alles ≥48px), Bestätigungen als `confirmSheet` (Bodenblatt) statt zentralem Dialog. FAB für „neu anlegen" (Listen), Bodenleiste für „Screen bestätigen" (Formulare/Wizard) — bewusst beide, je nach Zweck. Der Durchsicht-Wizard ist die Referenz-Umsetzung.
+- **D-74 · Inter lokal gebündelt, kein Dark-Mode (YAGNI).** Inter als Variable-Font-Asset (`assets/fonts/InterVariable.ttf`, OFL) statt `google_fonts`-Runtime-Fetch (Offline/erste Anzeige; App pausiert ohnehin ohne Netz) — `google_fonts`-Dependency entfernt. **Kein Dark-Mode** (Tageslicht-Feldnutzung; ein gut gemachter heller Look statt zwei halbe) — die Token-Rollen-Struktur macht ihn später nachrüstbar. **Nachziehen:** die übrigen Module tauschen ihre handgesetzten Widgets modulweise in eigenen kleinen Folge-Durchgängen gegen den Baukasten; bis dahin läuft alles unverändert weiter.
+
 ## 2026-07-21 — Material-Rework + Kosten-Dashboard live (v1.29.0)
 
 Materialmanagement tief überarbeitet: Typ-Trennung Verbrauch/Anlage/Archiv, der gemeldete Nachkauf-Fehlalarm gefixt, professionelles Kosten-Dashboard. Subagent-getrieben (Kern Fable + adversariale Verifikation, UI Opus + Spec-Review), 253/253 Tests, live.

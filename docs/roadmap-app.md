@@ -21,6 +21,7 @@
 | Benachrichtigungs-Engine (F3) | ⬜ P1 | Web-Push + E-Mail/Telegram-Fallback, Routing, Quittierung, Ruhezeiten. |
 | Einstellungen/Settings (F4) | ⬜ P1 | Defaults (Winterfutter 22 kg, Varroa-Schwellen …), Mitgliederverwaltung, Theme. |
 | Onboarding-/Setup-Assistent (F5) | ⬜ P1 | owner-Ersteinrichtung, Empty-States, kuratierte Gast-Ansicht. |
+| **Design-System & UX (Einhandbedienung)** | 🟡 **Durchgang 1 LIVE** (v1.30.0) | Zentrale `BeeTokens`/`BeeSignal` + 9 Baukasten-Widgets (Richtung „A warm/beruhigt"), Einhand-Modell (`FormScaffold`-Bodenleiste, ≥48px, `confirmSheet`), Inter lokal. Kern-Screens (Cockpit/Völker/Volk-Detail/Durchsicht-Wizard/Nav) umgebaut. **Offen:** restliche Module modulweise nachziehen; optional Dark-Mode (Rollen vorbereitet). |
 
 ## Phase 1 — Herbst/Winter 2026 (Volk 1, Waage + Brutraumtemp live)
 
