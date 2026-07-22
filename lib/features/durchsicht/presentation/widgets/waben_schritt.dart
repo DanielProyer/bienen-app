@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/durchsicht/domain/wabe.dart';
 import 'package:bienen_app/features/durchsicht/sprache/domain/sprach_kommando.dart';
 import 'package:bienen_app/features/durchsicht/sprache/presentation/sprach_mikro.dart';
 import 'package:bienen_app/features/wissen/domain/durchsicht_wissen.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
 
 /// Controlled Waben-Erfassung: die Wahrheit (Liste) hält die Wizard-Page,
 /// dieses Widget rendert die aktive Wabe + meldet Änderungen via [onChanged].
@@ -91,22 +92,22 @@ class _WabenSchrittState extends State<WabenSchritt> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SprachMikro(mikroId: 'kmd-waben', label: 'Waben-Kommando sprechen',
           onEndText: (t) => _wendeSprachAktionAn(parseWabenKommandos(t))),
-      const SizedBox(height: 8),
+      const SizedBox(height: BeeTokens.sm),
       // Waben-Streifen
       Row(children: [
         for (var i = 0; i < _ws.length; i++)
           Expanded(child: GestureDetector(
             onTap: () => setState(() => _aktiv = i),
             child: Container(height: 30, margin: const EdgeInsets.symmetric(horizontal: 1),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: i == _aktiv ? AppColors.honeyDark : AppColors.brown300, width: i == _aktiv ? 2 : 0.5),
-                color: _ws[i].schied ? AppColors.brown300 : (_ws[i].inhalte.contains('brut') ? AppColors.honey.withAlpha(60) : null))))),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(BeeTokens.xs),
+                border: Border.all(color: i == _aktiv ? BeeTokens.honig : BeeTokens.textGedaempft, width: i == _aktiv ? 2 : 0.5),
+                color: _ws[i].schied ? BeeTokens.textGedaempft : (_ws[i].inhalte.contains('brut') ? BeeTokens.honig.withAlpha(60) : null))))),
         IconButton(icon: const Icon(Icons.remove), onPressed: () => _wabenzahl(-1)),
         IconButton(icon: const Icon(Icons.add), onPressed: () => _wabenzahl(1)),
       ]),
-      const SizedBox(height: 12),
+      const SizedBox(height: BeeTokens.md),
       Text('Wabe ${_aktiv + 1} / ${_ws.length}', style: const TextStyle(fontWeight: FontWeight.w600)),
-      const SizedBox(height: 8),
+      const SizedBox(height: BeeTokens.sm),
       if (!w.schied) ...[
         Wrap(spacing: 8, runSpacing: 8, children: [
           for (final e in _inhaltLabel.entries)
@@ -135,20 +136,20 @@ class _WabenSchrittState extends State<WabenSchritt> {
           ]),
         ]),
       ],
-      const SizedBox(height: 8),
+      const SizedBox(height: BeeTokens.sm),
       SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Trennschied (dahinter Schluss)'),
           value: w.schied, onChanged: _setSchied),
-      const SizedBox(height: 8),
+      const SizedBox(height: BeeTokens.sm),
       Row(children: [
-        OutlinedButton(onPressed: _aktiv > 0 ? () => setState(() => _aktiv--) : null, child: const Text('Zurück')),
-        const SizedBox(width: 12),
-        Expanded(child: FilledButton(
-          onPressed: _aktiv < _ws.length - 1 ? () => setState(() => _aktiv++) : null,
-          child: const Text('Nächste Wabe →'))),
+        AppButton(label: 'Zurück', kind: AppButtonKind.sekundaer,
+            onPressed: _aktiv > 0 ? () => setState(() => _aktiv--) : null),
+        const SizedBox(width: BeeTokens.md),
+        Expanded(child: AppButton(label: 'Nächste Wabe', icon: Icons.arrow_forward,
+            onPressed: _aktiv < _ws.length - 1 ? () => setState(() => _aktiv++) : null)),
       ]),
-      const SizedBox(height: 12),
+      const SizedBox(height: BeeTokens.md),
       Text('Brutwaben: ${brutWabenAus(_ws)}  ·  Königin: ${koeniginAus(_ws) ? 'ja' : '—'}  ·  Stifte: ${stifteAus(_ws) ? 'ja' : '—'}',
-          style: const TextStyle(fontSize: 13, color: AppColors.brown600)),
+          style: const TextStyle(fontSize: 13, color: BeeTokens.textPrimaer)),
     ]);
   }
 }
