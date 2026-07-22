@@ -4,6 +4,10 @@ Chronik der **App-Entscheide** (neueste zuerst). Format: **Datum — Entscheid**
 
 ---
 
+## 2026-07-22 — Fix: Königinnen wurden nicht angezeigt (v1.35.0)
+
+- **D-76 · Wer etwas anlegt, muss die vergebene id zurückbekommen — und jede Entität braucht mindestens eine Ansicht, in der sie sichtbar ist.** Zwei Lücken ergaben zusammen einen Datenfriedhof: (a) `koeniginSpeichern` gab `void` zurück, die neue id war für den Aufrufer verloren → eine frisch angelegte Königin konnte gar nicht zugeordnet werden (`volk_id` blieb null); (b) die einzige Anzeige (`KoeniginSection`) zeigt nur die **zugeordnete** Königin, ein Königinnen-Register existierte nicht → unzugeordnete Einträge waren **nirgends** sichtbar. Der „Anlegen"-Knopf am weisellosen Volk versprach dadurch etwas, das er technisch nicht halten konnte; vier Erfassungen an drei Tagen landeten unsichtbar in der DB. **Konsequenz:** Speichern-Methoden geben die gespeicherte Entität mit id zurück (Supabase `.select().single()`); ein aus dem Volk heraus angelegte Königin wird sofort per RPC `volk_umweiseln` zugeordnet; der Knopf heißt beim weisellosen Volk „Zuordnen" (umweiseln kann man nur, was schon da ist); und das **Register `/koeniginnen`** macht alle Königinnen sichtbar und verwaltbar. **Prüffrage für künftige Entitäten:** „Wo sehe ich das Ding wieder, wenn ich es angelegt, aber noch nicht verknüpft habe?" — gibt es darauf keine Antwort, fehlt eine Ansicht.
+
 ## 2026-07-22 — F1 Backup & Export gebaut (v1.34.0)
 
 Die App war System of Record **ohne jede Offsite-Kopie** (amtliches TAMV-Journal, Bio-Nachweis, Diagnose-Journal, 6 Foto-Buckets). F1 wurde zerlegt: **F1a Export + F1b automatisches Offsite-Backup** umgesetzt, **F1c Restore/CSV-Import** bewusst später.

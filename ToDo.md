@@ -29,6 +29,13 @@
 
 ---
 
+## ✅ Erledigt — Session 2026-07-22 (Fix: Königinnen wurden nicht angezeigt, v1.35.0)
+
+- [x] ✓ **Königinnen-Fehler behoben + Register** (v1.35.0+57). Daniel hatte über mehrere Tage 4 Königinnen erfasst, die nirgends auftauchten. **Ursache:** `koeniginSpeichern` gab die von der DB vergebene **id nicht zurück** → der Aufrufer konnte die neue Königin gar nicht zuordnen (`volk_id` blieb null); die Volk-Sektion zeigt aber nur die **zugeordnete** Königin (`volk.koenigin`), und eine Königinnen-Liste existierte nicht → die Einträge waren unsichtbar. Der „Anlegen"-Knopf am weisellosen Volk versprach damit etwas, das er technisch nicht halten konnte. (Nicht vom Design-Umbau verursacht — die Datensätze stammten vom 17./18./20.7., der Umbau war am 22.7.)
+  - **Fix:** `koeniginSpeichern` liefert die Königin **mit id** (Interface, Supabase via `.select().single()`, Fake, Notifier); `showKoeniginForm(zuVolkId:)` ordnet neu Angelegte sofort per RPC `volk_umweiseln` zu (die verträgt ein Volk ohne alte Königin) + Bestätigungs-Snackbar; in der Sektion heißt der Knopf beim weisellosen Volk jetzt **„Zuordnen"** statt „Umweiseln".
+  - **NEU: Königinnen-Register `/koeniginnen`** (Einstieg: Völker-Seite, Kronen-Symbol) — zeigt **alle** Königinnen getrennt nach „Nicht zugeordnet"/„Zugeordnet", mit Bearbeiten und Löschen (Warnung: „Volk wird weisellos", entspricht `ON DELETE SET NULL`). Damit kann nichts mehr unsichtbar verwaisen.
+  - Die 4 verwaisten Datensätze wurden nach der Diagnose gelöscht. **274/274 Tests** (5 neue: Zuordnungs-Kontrakt + Sektions-Beschriftung), analyze sauber, live. Entscheid D-76.
+
 ## ✅ Erledigt — Session 2026-07-22 (F1 Backup & Export, v1.34.0)
 
 - [x] ✓ **F1 Backup & Export gebaut** (v1.34.0+56). Die App war System of Record **ohne jede Offsite-Kopie** — amtliches TAMV-Journal, Bio-Nachweis, Diagnose-Journal und alle Fotos lagen nur in Supabase. Brainstorming (F1 in a/b/c zerlegt) → Spec → Plan (8 Tasks) → subagent-getrieben, zwei Buckets **parallel** (verschiedene Repos → kein Git-Konflikt). **269/269 Tests grün**, analyze sauber, `flutter build web --release` erfolgreich.
