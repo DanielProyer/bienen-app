@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 
 class AppColors {
@@ -33,24 +32,23 @@ class AppColors {
 
 class AppTheme {
   static ThemeData get light {
-    final textTheme = GoogleFonts.interTextTheme();
-
     return ThemeData(
       useMaterial3: true,
+      fontFamily: 'Inter',
       colorScheme: ColorScheme.fromSeed(
         seedColor: BeeTokens.honig,
         brightness: Brightness.light,
         surface: BeeTokens.karte,
       ),
       scaffoldBackgroundColor: BeeTokens.oberflaeche,
-      textTheme: textTheme,
       appBarTheme: AppBarTheme(
         backgroundColor: BeeTokens.karte,
         foregroundColor: BeeTokens.textPrimaer,
         elevation: 0,
         scrolledUnderElevation: 0,
         shape: const Border(bottom: BorderSide(color: BeeTokens.honig, width: 2)),
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: const TextStyle(
+          fontFamily: 'Inter',
           fontSize: 20,
           fontWeight: FontWeight.w500,
           color: BeeTokens.textPrimaer,
