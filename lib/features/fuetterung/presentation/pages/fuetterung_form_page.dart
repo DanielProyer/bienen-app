@@ -12,6 +12,11 @@ import 'package:bienen_app/features/phaenologie/presentation/providers/phaenolog
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 import 'package:bienen_app/features/wissen/domain/fuetterung_wissen.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 class FuetterungFormPage extends ConsumerStatefulWidget {
   final String volkId;
@@ -61,8 +66,10 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
   @override
   Widget build(BuildContext context) {
     if (!ref.watch(darfSchreibenProvider)) {
-      return Scaffold(appBar: AppBar(title: const Text('Fütterung')),
-          body: const Center(child: Text('Nur Lesezugriff.')));
+      return Scaffold(
+        appBar: AppBar(title: const Text('Fütterung')),
+        body: const EmptyState(icon: Icons.lock_outline, titel: 'Nur Lesezugriff.'),
+      );
     }
     final voelker = ref.watch(voelkerListProvider).valueOrNull ?? [];
     final materialien = (ref.watch(materialListProvider).valueOrNull ?? [])
@@ -84,13 +91,24 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
     final honigHinweis = honigreinheitHinweis(
         futterart: _futterart, zweck: _zweck, datum: _datum, trachtFenster: fenster);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Fütterung erfassen')),
-      body: !_geladen
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(padding: const EdgeInsets.all(16), children: [
-              const Text('Völker (Sammelfütterung)', style: TextStyle(fontWeight: FontWeight.bold)),
-              Wrap(spacing: 8, children: [
+    if (!_geladen) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Fütterung erfassen')),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+    return FormScaffold(
+      titel: 'Fütterung erfassen',
+      bodenleiste: AppButton(
+        label: 'Fütterung speichern',
+        icon: Icons.save,
+        busy: _speichert,
+        full: true,
+        onPressed: _speichern,
+      ),
+      child: ListView(padding: const EdgeInsets.all(BeeTokens.lg), children: [
+              const SectionHeader(titel: 'Völker (Sammelfütterung)'),
+              Wrap(spacing: BeeTokens.sm, children: [
                 for (final v in voelker)
                   FilterChip(
                     label: Text(v.name),
@@ -98,7 +116,7 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
                     onSelected: (s) => setState(() => s ? _volkIds.add(v.id) : _volkIds.remove(v.id)),
                   ),
               ]),
-              const SizedBox(height: 12),
+              const SizedBox(height: BeeTokens.md),
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text('Datum: ${_datum.day}.${_datum.month}.${_datum.year}'),
@@ -109,7 +127,7 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
                   if (d != null) setState(() => _datum = d);
                 },
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: BeeTokens.sm),
               const Text('Zweck'),
               Row(children: [
                 Expanded(
@@ -155,39 +173,35 @@ class _FuetterungFormPageState extends ConsumerState<FuetterungFormPage> {
               TextField(controller: _person, decoration: const InputDecoration(labelText: 'Verantwortliche Person')),
               if (zeigeBioBanner)
                 Container(
-                  margin: const EdgeInsets.only(top: 12),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(color: Colors.orange.withAlpha(38), borderRadius: BorderRadius.circular(8)),
+                  margin: const EdgeInsets.only(top: BeeTokens.md),
+                  padding: const EdgeInsets.all(BeeTokens.md),
+                  decoration: BoxDecoration(color: BeeSignal.warnung.flaeche, borderRadius: BorderRadius.circular(BeeTokens.rKarte)),
                   child: Row(children: [
-                    const Icon(Icons.warning_amber, color: Colors.orange),
-                    const SizedBox(width: 8),
+                    Icon(Icons.warning_amber, color: BeeSignal.warnung.text),
+                    const SizedBox(width: BeeTokens.sm),
                     Expanded(child: Text(
                       'Nicht bio-zertifiziertes Futter auf: ${selektierte.where((v) => v.bioStatus != 'konventionell').map((v) => v.name).join(', ')}',
+                      style: TextStyle(color: BeeSignal.warnung.text),
                     )),
                   ]),
                 ),
               if (honigHinweis != HonigreinheitHinweis.keiner)
                 Container(
-                  margin: const EdgeInsets.only(top: 12),
-                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(top: BeeTokens.md),
+                  padding: const EdgeInsets.all(BeeTokens.md),
                   decoration: BoxDecoration(
-                      color: Colors.amber.withAlpha(38), borderRadius: BorderRadius.circular(8)),
+                      color: BeeSignal.warnung.flaeche, borderRadius: BorderRadius.circular(BeeTokens.rKarte)),
                   child: Row(children: [
-                    const Icon(Icons.info_outline, color: Colors.amber),
-                    const SizedBox(width: 8),
+                    Icon(Icons.info_outline, color: BeeSignal.warnung.text),
+                    const SizedBox(width: BeeTokens.sm),
                     Expanded(
                       child: Text(honigHinweis == HonigreinheitHinweis.notfuetterung
                           ? 'Notfütterung: Honig aus dieser Periode nicht als reinen Honig ernten (BGD 4.2).'
-                          : 'Zuckerfütterung während der Tracht kann den Honig verfälschen (BGD 4.2).'),
+                          : 'Zuckerfütterung während der Tracht kann den Honig verfälschen (BGD 4.2).',
+                          style: TextStyle(color: BeeSignal.warnung.text)),
                     ),
                   ]),
                 ),
-              const SizedBox(height: 16),
-              FilledButton.icon(
-                onPressed: _speichert ? null : _speichern,
-                icon: const Icon(Icons.save),
-                label: Text(_speichert ? 'Speichert…' : 'Fütterung speichern'),
-              ),
             ]),
     );
   }

@@ -6,6 +6,9 @@ import 'package:bienen_app/features/fuetterung/domain/futterart.dart';
 import 'package:bienen_app/features/fuetterung/presentation/providers/fuetterung_provider.dart';
 import 'package:bienen_app/features/fuetterung/presentation/widgets/winterfutter_balken.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 class FuetterungSection extends ConsumerWidget {
   final String volkId;
@@ -18,37 +21,35 @@ class FuetterungSection extends ConsumerWidget {
     final darf = ref.watch(darfSchreibenProvider);
     final zielKg = einst?.winterfutterZielKg ?? 22;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            const Text('Fütterung', style: TextStyle(fontWeight: FontWeight.bold)),
-            const Spacer(),
-            if (darf)
-              TextButton.icon(
-                onPressed: () => context.go('/voelker/$volkId/fuetterung'),
-                icon: const Icon(Icons.water_drop_outlined, size: 18),
-                label: const Text('Fütterung erfassen')),
-          ]),
+    return AppCard(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SectionHeader(
+            titel: 'Fütterung',
+            action: darf
+                ? TextButton.icon(
+                    onPressed: () => context.go('/voelker/$volkId/fuetterung'),
+                    icon: const Icon(Icons.water_drop_outlined, size: 18),
+                    label: const Text('Fütterung erfassen'))
+                : null,
+          ),
           async.when(
-            loading: () => const Padding(padding: EdgeInsets.all(8), child: LinearProgressIndicator()),
-            error: (e, _) => Padding(padding: const EdgeInsets.all(8), child: Text('Fehler: $e')),
+            loading: () => const Padding(padding: EdgeInsets.all(BeeTokens.sm), child: LinearProgressIndicator()),
+            error: (e, _) => Padding(padding: const EdgeInsets.all(BeeTokens.sm), child: Text('Fehler: $e')),
             data: (list) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               WinterfutterBalken(fuetterungen: list, zielKg: zielKg, stichtag: DateTime.now()),
               const Divider(),
               if (list.isEmpty)
-                const Padding(padding: EdgeInsets.all(8), child: Text('Noch keine Fütterung.'))
+                const Padding(padding: EdgeInsets.all(BeeTokens.sm), child: Text('Noch keine Fütterung.'))
               else
                 for (final f in list.take(5))
                   ListTile(
                     dense: true,
                     leading: Icon(f.isStorniert ? Icons.cancel : Icons.water_drop_outlined,
-                        color: f.isStorniert ? Colors.grey : null),
+                        color: f.isStorniert ? BeeTokens.textGedaempft : null),
                     title: Text(
                       '${Zweck.labels[f.zweck] ?? f.zweck} · ${f.mengeProVolkKg} kg · ${Futterart.labels[f.futterart] ?? f.futterart}',
                       style: f.isStorniert
-                          ? const TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey)
+                          ? const TextStyle(decoration: TextDecoration.lineThrough, color: BeeTokens.textGedaempft)
                           : null,
                     ),
                     subtitle: Text('${f.durchgefuehrtAm.day}.${f.durchgefuehrtAm.month}.${f.durchgefuehrtAm.year}'
@@ -65,7 +66,6 @@ class FuetterungSection extends ConsumerWidget {
             ]),
           ),
         ]),
-      ),
     );
   }
 
