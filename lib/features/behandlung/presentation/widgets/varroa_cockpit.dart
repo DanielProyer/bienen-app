@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/behandlung/domain/ampel_schwellen.dart';
 import 'package:bienen_app/features/behandlung/domain/behandlung.dart';
 import 'package:bienen_app/features/behandlung/domain/varroa_kontrolle.dart';
@@ -13,10 +14,10 @@ class VarroaCockpit extends StatelessWidget {
   const VarroaCockpit({super.key, required this.kontrollen, required this.behandlungen});
 
   static Color _ampelColor(Ampel a) => switch (a) {
-        Ampel.gruen => Colors.green,
-        Ampel.gelb => Colors.orange,
-        Ampel.rot => Colors.red,
-        Ampel.keinRichtwert => Colors.grey,
+        Ampel.gruen => BeeSignal.erfolg.text,
+        Ampel.gelb => BeeSignal.warnung.text,
+        Ampel.rot => BeeSignal.gefahr.text,
+        Ampel.keinRichtwert => BeeTokens.textGedaempft,
       };
 
   static String _ampelText(Ampel a) => switch (a) {
@@ -62,11 +63,11 @@ class VarroaCockpit extends StatelessWidget {
     for (final b in behandlungen.where((b) => !b.isStorniert)) {
       final idx = sortedGemuell.indexWhere((k) => !k.durchgefuehrtAm.isBefore(b.datumBeginn));
       final x = idx < 0 ? (sortedGemuell.length - 1).toDouble() : idx.toDouble();
-      if (x >= 0) marker.add(VerticalLine(x: x, color: Colors.blue.withAlpha(128), strokeWidth: 1.5));
+      if (x >= 0) marker.add(VerticalLine(x: x, color: BeeSignal.info.text.withAlpha(128), strokeWidth: 1.5));
     }
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      if (ampelChip != null) Padding(padding: const EdgeInsets.only(bottom: 8), child: ampelChip),
+      if (ampelChip != null) Padding(padding: const EdgeInsets.only(bottom: BeeTokens.sm), child: ampelChip),
       if (punkte.length >= 2)
         SizedBox(
           height: 160,
@@ -81,15 +82,15 @@ class VarroaCockpit extends StatelessWidget {
             borderData: FlBorderData(show: false),
             extraLinesData: ExtraLinesData(verticalLines: marker),
             lineBarsData: [
-              LineChartBarData(spots: punkte, isCurved: false, barWidth: 2, color: Colors.brown, dotData: const FlDotData(show: true)),
+              LineChartBarData(spots: punkte, isCurved: false, barWidth: 2, color: BeeTokens.honig, dotData: const FlDotData(show: true)),
             ],
           )),
         )
       else
-        const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Text('Noch keine Gemüll-Verlaufskurve (mind. 2 Messungen).')),
+        const Padding(padding: EdgeInsets.symmetric(vertical: BeeTokens.sm), child: Text('Noch keine Gemüll-Verlaufskurve (mind. 2 Messungen).')),
       if (proben.isNotEmpty)
         Padding(
-          padding: const EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: BeeTokens.sm),
           child: Wrap(spacing: 6, runSpacing: 4, children: [
             for (final k in proben.take(6))
               Builder(builder: (_) {
@@ -103,11 +104,11 @@ class VarroaCockpit extends StatelessWidget {
           ]),
         ),
       const Padding(
-        padding: EdgeInsets.only(top: 8),
+        padding: EdgeInsets.only(top: BeeTokens.sm),
         child: Text(
           'Höhenabhängig — im Gebirge die Saison-Schwelle ~4–6 Wochen später lesen. '
           'Milbenfall nach einer Winterbehandlung ist Erfolgskontrolle, kein Behandlungsanlass.',
-          style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: Colors.grey),
+          style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: BeeTokens.textGedaempft),
         ),
       ),
     ]);

@@ -9,6 +9,11 @@ import 'package:bienen_app/features/material/presentation/providers/material_pro
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 import 'package:bienen_app/features/wissen/domain/behandlung_wissen.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_info_button.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 class BehandlungFormPage extends ConsumerStatefulWidget {
   final String volkId;
@@ -71,8 +76,10 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
   @override
   Widget build(BuildContext context) {
     if (!ref.watch(darfSchreibenProvider)) {
-      return Scaffold(appBar: AppBar(title: const Text('Behandlung')),
-          body: const Center(child: Text('Nur Lesezugriff.')));
+      return Scaffold(
+        appBar: AppBar(title: const Text('Behandlung')),
+        body: const EmptyState(icon: Icons.lock_outline, titel: 'Nur Lesezugriff.'),
+      );
     }
     final voelker = ref.watch(voelkerListProvider).valueOrNull ?? [];
     final materialien = (ref.watch(materialListProvider).valueOrNull ?? [])
@@ -84,13 +91,24 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
     final zeigeBioBanner = bioKonformitaet(_wirkstoff, _anwendungsart) == BioBewertung.warnung &&
         selektierte.any((v) => v.bioStatus != 'konventionell');
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Behandlung erfassen')),
-      body: !_geladen
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(padding: const EdgeInsets.all(16), children: [
-              const Text('Völker (Sammelbehandlung)', style: TextStyle(fontWeight: FontWeight.bold)),
-              Wrap(spacing: 8, children: [
+    if (!_geladen) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Behandlung erfassen')),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+    return FormScaffold(
+      titel: 'Behandlung erfassen',
+      bodenleiste: AppButton(
+        label: 'Behandlung speichern',
+        icon: Icons.save,
+        busy: _speichert,
+        full: true,
+        onPressed: _speichern,
+      ),
+      child: ListView(padding: const EdgeInsets.all(BeeTokens.lg), children: [
+              const SectionHeader(titel: 'Völker (Sammelbehandlung)'),
+              Wrap(spacing: BeeTokens.sm, children: [
                 for (final v in voelker)
                   FilterChip(
                     label: Text(v.name),
@@ -98,7 +116,7 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
                     onSelected: (s) => setState(() => s ? _volkIds.add(v.id) : _volkIds.remove(v.id)),
                   ),
               ]),
-              const SizedBox(height: 12),
+              const SizedBox(height: BeeTokens.md),
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text('Beginn: ${_datum.day}.${_datum.month}.${_datum.year}'),
@@ -146,7 +164,7 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
                 Row(children: [
                   Expanded(child: TextField(controller: _menge, keyboardType: TextInputType.number,
                       decoration: const InputDecoration(labelText: 'Menge je Volk'))),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: BeeTokens.md),
                   SizedBox(
                     width: 100,
                     child: DropdownButtonFormField<String>(
@@ -165,7 +183,7 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
                 Row(children: [
                   Expanded(child: TextField(controller: _konzentration,
                       decoration: const InputDecoration(labelText: 'Konzentration (z.B. 60%)'))),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: BeeTokens.md),
                   Expanded(child: TextField(controller: _charge,
                       decoration: const InputDecoration(labelText: 'Charge'))),
                 ]),
@@ -181,7 +199,7 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
               Row(children: [
                 Expanded(child: TextField(controller: _aussentemp, keyboardType: TextInputType.number,
                     decoration: const InputDecoration(labelText: 'Aussentemp. °C'))),
-                const SizedBox(width: 12),
+                const SizedBox(width: BeeTokens.md),
                 Expanded(child: TextField(controller: _wartefrist, keyboardType: TextInputType.number,
                     decoration: const InputDecoration(labelText: 'Wartefrist (Tage)'))),
               ]),
@@ -189,23 +207,18 @@ class _BehandlungFormPageState extends ConsumerState<BehandlungFormPage> {
               TextField(controller: _person, decoration: const InputDecoration(labelText: 'Verantwortliche Person')),
               if (zeigeBioBanner)
                 Container(
-                  margin: const EdgeInsets.only(top: 12),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(color: Colors.orange.withAlpha(38), borderRadius: BorderRadius.circular(8)),
+                  margin: const EdgeInsets.only(top: BeeTokens.md),
+                  padding: const EdgeInsets.all(BeeTokens.md),
+                  decoration: BoxDecoration(color: BeeSignal.warnung.flaeche, borderRadius: BorderRadius.circular(BeeTokens.rKarte)),
                   child: Row(children: [
-                    const Icon(Icons.warning_amber, color: Colors.orange),
-                    const SizedBox(width: 8),
+                    Icon(Icons.warning_amber, color: BeeSignal.warnung.text),
+                    const SizedBox(width: BeeTokens.sm),
                     Expanded(child: Text(
                       'Nicht bio-konformer Wirkstoff auf: ${selektierte.where((v) => v.bioStatus != 'konventionell').map((v) => v.name).join(', ')}',
+                      style: TextStyle(color: BeeSignal.warnung.text),
                     )),
                   ]),
                 ),
-              const SizedBox(height: 16),
-              FilledButton.icon(
-                onPressed: _speichert ? null : _speichern,
-                icon: const Icon(Icons.save),
-                label: Text(_speichert ? 'Speichert…' : 'Behandlung speichern'),
-              ),
             ]),
     );
   }
