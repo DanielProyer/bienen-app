@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/projekt/domain/meilensteine.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 class ProjektPage extends StatelessWidget {
   const ProjektPage({super.key});
@@ -25,132 +27,114 @@ class ProjektPage extends StatelessWidget {
     (icon: Icons.group, text: 'Daniel & Lorena'),
   ];
 
+  Widget _statusIcon(MeilensteinStatus status) => switch (status) {
+        MeilensteinStatus.erledigt =>
+          Icon(Icons.check_circle, size: 22, color: BeeSignal.erfolg.text),
+        MeilensteinStatus.naechster =>
+          const Icon(Icons.radio_button_checked, size: 22, color: BeeTokens.honig),
+        MeilensteinStatus.offen =>
+          const Icon(Icons.radio_button_unchecked, size: 22, color: BeeTokens.chevron),
+      };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Projekt')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(BeeTokens.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(children: [
-                  const Text('🐝', style: TextStyle(fontSize: 32)),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      const Text('Projekt Imkerei Arosa',
-                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.brown800)),
-                      Text(kBetriebLaeuftSeit,
-                          style: TextStyle(fontSize: 12.5, color: Colors.green.shade700, fontWeight: FontWeight.w600)),
-                    ]),
-                  ),
-                ]),
-              ),
+            AppCard(
+              child: Row(children: [
+                const Text('🐝', style: TextStyle(fontSize: 32)),
+                const SizedBox(width: BeeTokens.md),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const Text('Projekt Imkerei Arosa', style: BeeTokens.abschnitt),
+                    const SizedBox(height: 2),
+                    Text(kBetriebLaeuftSeit,
+                        style: TextStyle(
+                            fontSize: 12.5, color: BeeSignal.erfolg.text, fontWeight: FontWeight.w600)),
+                  ]),
+                ),
+              ]),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
+              mainAxisSpacing: BeeTokens.md,
+              crossAxisSpacing: BeeTokens.md,
               childAspectRatio: 2.1,
               children: [
                 for (final b in _bereiche)
-                  Card(
-                    margin: EdgeInsets.zero,
-                    child: InkWell(
-                      onTap: () => context.go(b.route),
-                      borderRadius: BorderRadius.circular(12),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        child: Row(children: [
-                          Icon(b.icon, size: 24, color: AppColors.honey),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(b.titel,
-                                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-                                      overflow: TextOverflow.ellipsis),
-                                  Text(b.sub,
-                                      style: const TextStyle(fontSize: 10.5, color: AppColors.brown300),
-                                      overflow: TextOverflow.ellipsis),
-                                ]),
-                          ),
-                        ]),
+                  AppCard(
+                    onTap: () => context.go(b.route),
+                    padding: const EdgeInsets.symmetric(horizontal: BeeTokens.md, vertical: BeeTokens.sm),
+                    child: Row(children: [
+                      Icon(b.icon, size: 24, color: BeeTokens.honig),
+                      const SizedBox(width: BeeTokens.md),
+                      Expanded(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(b.titel,
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: BeeTokens.textPrimaer),
+                                  overflow: TextOverflow.ellipsis),
+                              Text(b.sub, style: BeeTokens.gedaempft, overflow: TextOverflow.ellipsis),
+                            ]),
                       ),
-                    ),
+                    ]),
                   ),
               ],
             ),
-            const SizedBox(height: 16),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text('Projektfortschritt', style: TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 10),
-                  for (final m in kProjektMeilensteine)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Row(children: [
-                        Container(
-                          width: 22, height: 22, alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: m.status == MeilensteinStatus.erledigt ? AppColors.green600 : null,
-                            border: m.status == MeilensteinStatus.erledigt
-                                ? null
-                                : Border.all(
-                                    color: m.status == MeilensteinStatus.naechster
-                                        ? AppColors.honeyDark
-                                        : AppColors.brown100,
-                                    width: 2),
-                          ),
-                          child: m.status == MeilensteinStatus.erledigt
-                              ? const Icon(Icons.check, size: 14, color: Colors.white)
-                              : null,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(m.titel,
-                              style: TextStyle(
-                                fontSize: 13.5,
-                                fontWeight: m.status == MeilensteinStatus.naechster
-                                    ? FontWeight.w600
-                                    : FontWeight.w400,
-                                color: m.status == MeilensteinStatus.offen
-                                    ? AppColors.brown300
-                                    : AppColors.brown800,
-                              )),
-                        ),
-                        Text(m.wann, style: const TextStyle(fontSize: 11, color: AppColors.brown300)),
-                      ]),
-                    ),
-                ]),
-              ),
+            const SizedBox(height: BeeTokens.lg),
+            const SectionHeader(titel: 'Projektfortschritt'),
+            AppCard(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                for (final m in kProjektMeilensteine)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: BeeTokens.sm),
+                    child: Row(children: [
+                      _statusIcon(m.status),
+                      const SizedBox(width: BeeTokens.md),
+                      Expanded(
+                        child: Text(m.titel,
+                            style: TextStyle(
+                              fontSize: 13.5,
+                              fontWeight: m.status == MeilensteinStatus.naechster
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
+                              color: m.status == MeilensteinStatus.offen
+                                  ? BeeTokens.textGedaempft
+                                  : BeeTokens.textPrimaer,
+                            )),
+                      ),
+                      Text(m.wann, style: BeeTokens.gedaempft),
+                    ]),
+                  ),
+              ]),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: BeeTokens.lg),
             Wrap(
-              spacing: 8,
-              runSpacing: 8,
+              spacing: BeeTokens.sm,
+              runSpacing: BeeTokens.sm,
               children: [
                 for (final f in _facts)
                   Chip(
-                    avatar: Icon(f.icon, size: 16, color: AppColors.brown600),
+                    avatar: Icon(f.icon, size: 16, color: BeeTokens.textSekundaer),
                     label: Text(f.text, style: const TextStyle(fontSize: 12)),
                     visualDensity: VisualDensity.compact,
                   ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: BeeTokens.xl),
           ],
         ),
       ),
