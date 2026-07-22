@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
 
 class BauplanView extends StatefulWidget {
   const BauplanView({super.key});
@@ -46,57 +47,58 @@ class _BauplanViewState extends State<BauplanView> {
   Widget build(BuildContext context) {
     if (_error != null) {
       return Center(
-        child: Text(_error!, style: const TextStyle(color: Colors.red)),
+        child: Text(_error!, style: const TextStyle(color: BeeTokens.gefahrText)),
       );
     }
     if (_content == null) {
       return const Center(child: CircularProgressIndicator());
     }
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(BeeTokens.lg),
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(BeeTokens.rKarte),
           child: Image.asset('assets/bauplan/bienenstand_iso.png'),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: BeeTokens.md),
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: BeeTokens.sm,
+          runSpacing: BeeTokens.sm,
           children: [
-            FilledButton.icon(
+            AppButton(
+              label: 'Bauplan als PDF öffnen',
+              icon: Icons.picture_as_pdf,
               onPressed: _openPdf,
-              icon: const Icon(Icons.picture_as_pdf),
-              label: const Text('Bauplan als PDF öffnen'),
             ),
-            OutlinedButton.icon(
+            AppButton(
+              label: 'Zur Einkaufsliste',
+              icon: Icons.shopping_cart,
+              kind: AppButtonKind.sekundaer,
               onPressed: () => context.go('/material'),
-              icon: const Icon(Icons.shopping_cart),
-              label: const Text('Zur Einkaufsliste'),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: BeeTokens.sm),
         MarkdownBody(
           data: _content!,
           selectable: true,
           styleSheet: MarkdownStyleSheet(
-            h1: TextStyle(
+            h1: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppColors.brown800),
-            h2: TextStyle(
+                color: BeeTokens.textPrimaer),
+            h2: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppColors.brown800),
-            h3: TextStyle(
+                color: BeeTokens.textPrimaer),
+            h3: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: AppColors.honeyDark),
+                color: BeeTokens.textSekundaer),
             p: const TextStyle(fontSize: 14, height: 1.6),
             tableHead: const TextStyle(fontWeight: FontWeight.bold),
             tableBorder:
-                TableBorder.all(color: AppColors.brown100, width: 1),
+                TableBorder.all(color: BeeTokens.randStark, width: 1),
             tableCellsPadding: const EdgeInsets.all(6),
             listBullet: const TextStyle(fontSize: 14),
           ),

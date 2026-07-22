@@ -2,11 +2,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/construction/data/models/build_step_content.dart';
 import 'package:bienen_app/features/construction/data/models/construction_step.dart';
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
 
 class BuildStepCard extends ConsumerWidget {
   final BuildStepContent content;
@@ -142,7 +144,7 @@ class BuildStepCard extends ConsumerWidget {
           child: Image(
             image: image,
             errorBuilder: (_, _, _) => const Padding(
-              padding: EdgeInsets.all(24),
+              padding: EdgeInsets.all(BeeTokens.xl),
               child: Icon(Icons.broken_image, size: 48),
             ),
           ),
@@ -157,10 +159,10 @@ class BuildStepCard extends ConsumerWidget {
         ConstructionStep(stepKey: content.key);
     final done = progress.isDone;
 
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: BeeTokens.md, vertical: 6),
+      child: AppCard(
+        padding: const EdgeInsets.all(BeeTokens.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -173,7 +175,7 @@ class BuildStepCard extends ConsumerWidget {
                   height: 30,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: done ? AppColors.green600 : AppColors.honey,
+                    color: done ? BeeSignal.erfolg.text : BeeTokens.honig,
                     shape: BoxShape.circle,
                   ),
                   child: done
@@ -183,14 +185,16 @@ class BuildStepCard extends ConsumerWidget {
                               color: Colors.white,
                               fontWeight: FontWeight.bold)),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: BeeTokens.sm + 2),
                 Expanded(
                   child: Text(
                     content.title,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: done ? AppColors.brown300 : AppColors.brown800,
+                      color: done
+                          ? BeeTokens.textGedaempft
+                          : BeeTokens.textPrimaer,
                       decoration: done ? TextDecoration.lineThrough : null,
                     ),
                   ),
@@ -204,21 +208,21 @@ class BuildStepCard extends ConsumerWidget {
 
             // Zeichnungen
             if (content.drawings.isNotEmpty) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: BeeTokens.sm),
               SizedBox(
                 height: 160,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: content.drawings.length,
-                  separatorBuilder: (_, _) => const SizedBox(width: 8),
+                  separatorBuilder: (_, _) => const SizedBox(width: BeeTokens.sm),
                   itemBuilder: (_, i) {
                     final asset = content.drawings[i];
                     return GestureDetector(
                       onTap: () => _showImage(context, AssetImage(asset)),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.brown100),
-                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: BeeTokens.rand),
+                          borderRadius: BorderRadius.circular(BeeTokens.sm),
                         ),
                         clipBehavior: Clip.antiAlias,
                         child: Image.asset(asset, fit: BoxFit.contain),
@@ -230,22 +234,30 @@ class BuildStepCard extends ConsumerWidget {
             ],
 
             // Anleitung
-            const SizedBox(height: 10),
+            const SizedBox(height: BeeTokens.sm + 2),
             const Text('So geht\'s',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
-            const SizedBox(height: 4),
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                    color: BeeTokens.textPrimaer)),
+            const SizedBox(height: BeeTokens.xs),
             for (var i = 0; i < content.instructions.length; i++)
               Padding(
-                padding: const EdgeInsets.only(bottom: 4),
+                padding: const EdgeInsets.only(bottom: BeeTokens.xs),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('${i + 1}. ',
                         style: const TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 13)),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                            color: BeeTokens.textPrimaer)),
                     Expanded(
                       child: Text(content.instructions[i],
-                          style: const TextStyle(fontSize: 13, height: 1.4)),
+                          style: const TextStyle(
+                              fontSize: 13,
+                              height: 1.4,
+                              color: BeeTokens.textPrimaer)),
                     ),
                   ],
                 ),
@@ -257,14 +269,14 @@ class BuildStepCard extends ConsumerWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.straighten,
-                      size: 16, color: AppColors.green800),
+                  Icon(Icons.straighten,
+                      size: 16, color: BeeSignal.erfolg.text),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text('Soll: ${content.soll}',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 12.5,
-                            color: AppColors.green800,
+                            color: BeeSignal.erfolg.text,
                             fontWeight: FontWeight.w600)),
                   ),
                 ],
@@ -273,24 +285,25 @@ class BuildStepCard extends ConsumerWidget {
 
             // Tipp
             if (content.tip != null) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: BeeTokens.sm),
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(BeeTokens.sm),
                 decoration: BoxDecoration(
-                  color: AppColors.amber50,
+                  color: BeeTokens.honigTint,
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: AppColors.amber200),
+                  border: Border.all(color: BeeTokens.honig, width: 0.5),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Icon(Icons.lightbulb_outline,
-                        size: 16, color: AppColors.honeyDark),
+                        size: 16, color: BeeTokens.textSekundaer),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(content.tip!,
                           style: const TextStyle(
-                              fontSize: 12.5, color: AppColors.brown800)),
+                              fontSize: 12.5,
+                              color: BeeTokens.textPrimaer)),
                     ),
                   ],
                 ),
@@ -299,11 +312,11 @@ class BuildStepCard extends ConsumerWidget {
 
             // Notiz-Anzeige
             if (progress.note != null && progress.note!.isNotEmpty) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: BeeTokens.sm),
               Text('📝 ${progress.note}',
                   style: const TextStyle(
                       fontSize: 12.5,
-                      color: AppColors.brown600,
+                      color: BeeTokens.textGedaempft,
                       fontStyle: FontStyle.italic)),
             ],
 
@@ -312,20 +325,19 @@ class BuildStepCard extends ConsumerWidget {
             // Aktionen + Foto
             Row(
               children: [
-                TextButton.icon(
+                AppButton(
+                  label: progress.photoUrl == null ? 'Foto' : 'Ersetzen',
+                  icon: progress.photoUrl == null
+                      ? Icons.add_a_photo_outlined
+                      : Icons.cameraswitch_outlined,
+                  kind: AppButtonKind.text,
                   onPressed: () => _choosePhotoSource(context, ref),
-                  icon: Icon(
-                    progress.photoUrl == null
-                        ? Icons.add_a_photo_outlined
-                        : Icons.cameraswitch_outlined,
-                    size: 18,
-                  ),
-                  label: Text(progress.photoUrl == null ? 'Foto' : 'Ersetzen'),
                 ),
-                TextButton.icon(
+                AppButton(
+                  label: 'Notiz',
+                  icon: Icons.edit_note,
+                  kind: AppButtonKind.text,
                   onPressed: () => _editNote(context, ref, progress.note),
-                  icon: const Icon(Icons.edit_note, size: 18),
-                  label: const Text('Notiz'),
                 ),
                 const Spacer(),
                 if (progress.photoUrl != null)
