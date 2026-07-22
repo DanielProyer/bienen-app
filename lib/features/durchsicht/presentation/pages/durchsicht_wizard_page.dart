@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/durchsicht/domain/bienen_schaetzung.dart';
 import 'package:bienen_app/features/durchsicht/domain/durchsicht.dart';
@@ -10,6 +11,10 @@ import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht
 import 'package:bienen_app/features/durchsicht/presentation/widgets/waben_schritt.dart';
 import 'package:bienen_app/features/durchsicht/sprache/domain/sprach_kommando.dart';
 import 'package:bienen_app/features/durchsicht/sprache/presentation/sprach_mikro.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/confirm_sheet.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/form_scaffold.dart';
 
 /// Geführte Durchsicht als 3-Schritt-Wizard: Kontext → optional Waben → Kennzahlen.
 /// [bestehend] != null -> Bearbeiten. Deckt ALLE Felder des alten Formulars ab.
@@ -94,18 +99,14 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
   Future<void> _wabenModusSetzen(bool on) async {
     // Edit mit erfassten Waben: Ausschalten erst nach Bestätigung (sonst stumm verworfen).
     if (!on && (widget.bestehend?.waben.isNotEmpty ?? false)) {
-      final verwerfen = await showDialog<bool>(
-        context: context,
-        builder: (c) => AlertDialog(
-          title: const Text('Erfasste Waben verwerfen?'),
-          content: const Text('Die Wabe-für-Wabe-Erfassung dieser Durchsicht wird beim Speichern entfernt.'),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Abbrechen')),
-            FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Verwerfen')),
-          ],
-        ),
+      final verwerfen = await confirmSheet(
+        context,
+        titel: 'Erfasste Waben verwerfen?',
+        text: 'Die Wabe-für-Wabe-Erfassung dieser Durchsicht wird beim Speichern entfernt.',
+        bestaetigenLabel: 'Verwerfen',
+        gefahr: true,
       );
-      if (verwerfen != true) return; // Schalter bleibt an
+      if (!verwerfen) return; // Schalter bleibt an
     }
     if (!mounted) return;
     setState(() {
@@ -364,41 +365,32 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
     if (!ref.watch(darfSchreibenProvider)) {
       return Scaffold(
         appBar: AppBar(title: const Text('Durchsicht')),
-        body: const Center(child: Text('Nur Lesezugriff.')),
+        body: const EmptyState(icon: Icons.lock_outline, titel: 'Nur Lesezugriff'),
       );
     }
     const titel = ['Kontext', 'Waben', 'Kennzahlen'];
     final letzte = _seite == 2;
-    return Scaffold(
-      appBar: AppBar(title: Text('${widget.bestehend == null ? 'Durchsicht' : 'Durchsicht bearbeiten'} · ${_seite + 1}/3 · ${titel[_seite]}')),
-      body: AbsorbPointer(
-        absorbing: _busy,
-        child: Column(children: [
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              onPageChanged: (i) => setState(() => _seite = i),
-              children: [_seiteKontext(), _seiteWaben(), _seiteKennzahlen()],
-            ),
-          ),
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(children: [
-                if (_seite > 0) ...[
-                  OutlinedButton(onPressed: _busy ? null : _zurueck, child: const Text('Zurück')),
-                  const SizedBox(width: 12),
-                ],
-                Expanded(child: FilledButton(
-                  onPressed: _busy ? null : (letzte ? _speichern : _weiter),
-                  child: Text(letzte ? 'Speichern' : 'Weiter →'),
-                )),
-              ]),
-            ),
-          ),
-        ]),
+    return FormScaffold(
+      titel: widget.bestehend == null ? 'Durchsicht' : 'Durchsicht bearbeiten',
+      untertitel: '${_seite + 1}/3 · ${titel[_seite]}',
+      busy: _busy,
+      bodenleiste: Row(children: [
+        if (_seite > 0) ...[
+          AppButton(label: 'Zurück', kind: AppButtonKind.sekundaer, onPressed: _busy ? null : _zurueck),
+          const SizedBox(width: BeeTokens.sm),
+        ],
+        Expanded(child: AppButton(
+          label: letzte ? 'Speichern' : 'Weiter',
+          icon: letzte ? null : Icons.arrow_forward,
+          busy: _busy,
+          onPressed: letzte ? _speichern : _weiter,
+        )),
+      ]),
+      child: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        onPageChanged: (i) => setState(() => _seite = i),
+        children: [_seiteKontext(), _seiteWaben(), _seiteKennzahlen()],
       ),
     );
   }

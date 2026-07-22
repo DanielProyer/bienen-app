@@ -5,6 +5,8 @@ import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/volk_card.dart';
 import 'package:bienen_app/features/voelker/presentation/widgets/volk_form.dart';
+import 'package:bienen_app/shared/widgets/app_button.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
 
 class VoelkerPage extends ConsumerWidget {
   const VoelkerPage({super.key});
@@ -21,7 +23,7 @@ class VoelkerPage extends ConsumerWidget {
     ref.watch(betriebsEinstellungenProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Voelker')),
+      appBar: AppBar(title: const Text('Völker')),
       floatingActionButton: darfSchreiben
           ? FloatingActionButton(
               onPressed: () => showVolkForm(context, ref),
@@ -30,25 +32,28 @@ class VoelkerPage extends ConsumerWidget {
           : null,
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Text('Fehler: $e'),
-            TextButton(
-              onPressed: () => ref.invalidate(voelkerListProvider),
-              child: const Text('Erneut versuchen'),
-            ),
-          ]),
+        error: (e, _) => EmptyState(
+          icon: Icons.error_outline,
+          titel: 'Fehler beim Laden',
+          text: '$e',
+          aktion: AppButton(
+            label: 'Erneut versuchen',
+            kind: AppButtonKind.sekundaer,
+            onPressed: () => ref.invalidate(voelkerListProvider),
+          ),
         ),
         data: (_) => aktive.isEmpty
-            ? Center(
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  const Text('Noch keine Voelker.'),
-                  if (darfSchreiben)
-                    FilledButton(
-                      onPressed: () => showVolkForm(context, ref),
-                      child: const Text('Erstes Volk anlegen'),
-                    ),
-                ]),
+            ? EmptyState(
+                icon: Icons.hive_outlined,
+                titel: 'Noch keine Völker',
+                text: 'Lege dein erstes Volk an, um loszulegen.',
+                aktion: darfSchreiben
+                    ? AppButton(
+                        label: 'Erstes Volk anlegen',
+                        icon: Icons.add,
+                        onPressed: () => showVolkForm(context, ref),
+                      )
+                    : null,
               )
             : ListView(
                 children: [
