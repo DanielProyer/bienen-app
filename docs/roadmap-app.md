@@ -16,7 +16,7 @@
 | Baustein | Status | Notiz |
 |---|---|---|
 | **Auth & Rollen (owner/editor/viewer) + RLS-Härtung + Mandantenfähigkeit** | ✅ **LIVE** (2026-07-16, v1.8.1) | E-Mail+Passwort, JWT-Claim-Tenancy, `betriebe`/`betrieb_mitglieder`/`einladungen`, `betrieb_id` NOT NULL auf allen 8 Tabellen. Plan 1 (DB A01–A13) + Plan 2 (Flutter-Auth) + Plan 3 (Cutover B01/B02) umgesetzt & live-verifiziert. Echte Mandanten-Isolation, `anon` ausgesperrt. |
-| Backup, Restore & Import (F1) | ⬜ P1 | tägl. DB+Storage-Backup, Offsite, Keep-alive, „Jetzt exportieren"-ZIP, CSV/Alt-App-Import. |
+| Backup, Restore & Import (F1) | 🟡 **F1a+F1b gebaut** (v1.34.0) — wartet auf Einrichtung | **F1a Export LIVE:** Seite `/backup` („Daten & Backup"), ZIP mit allen Daten (JSON+CSV) + Fotos, client-seitig über die eigene Sitzung/RLS. **F1b Offsite:** privates Repo `bienen-backup` mit GitHub-Actions-Workflow (täglich 03:15, Schema-Erkennung, Blätterung, Zeilenzahl-Gegenprobe, Schutzriegel „Repo privat?"), Git-Historie = Versionierung, **Keep-alive** inklusive. **Offen:** Daniel muss Repo + 2 Secrets anlegen und den ersten Lauf verifizieren. **F1c Restore & CSV/Alt-App-Import** noch offen (eigene Spec). |
 | Datenschutz & Aufbewahrung (F2) | ⬜ P1 | Soft-Delete/Löschsperre amtl. Daten, EXIF-Stripping, Bearbeitungsverzeichnis, Retention. |
 | Benachrichtigungs-Engine (F3) | ⬜ P1 | Web-Push + E-Mail/Telegram-Fallback, Routing, Quittierung, Ruhezeiten. |
 | Einstellungen/Settings (F4) | ⬜ P1 | Defaults (Winterfutter 22 kg, Varroa-Schwellen …), Mitgliederverwaltung, Theme. |

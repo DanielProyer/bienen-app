@@ -11,6 +11,7 @@ import 'package:bienen_app/features/auth/presentation/login_page.dart';
 import 'package:bienen_app/features/auth/presentation/mail_bestaetigen_page.dart';
 import 'package:bienen_app/features/auth/presentation/onboarding_page.dart';
 import 'package:bienen_app/features/auth/presentation/registrieren_page.dart';
+import 'package:bienen_app/features/backup/presentation/backup_page.dart';
 import 'package:bienen_app/features/behandlung/presentation/pages/behandlung_form_page.dart';
 import 'package:bienen_app/features/behandlung/presentation/pages/kontrolle_form_page.dart';
 import 'package:bienen_app/features/dashboard/pages/dashboard_page.dart';
@@ -456,6 +457,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         ),
         GoRoute(path: '/projekt', builder: (context, state) => const ProjektPage()),
         GoRoute(path: '/einstellungen', builder: (c, s) => const EinstellungenPage()),
+        GoRoute(path: '/backup', builder: (context, state) => const BackupPage()),
         GoRoute(path: '/mehr', redirect: (context, state) => '/projekt'),
         GoRoute(
           path: '/konto',
