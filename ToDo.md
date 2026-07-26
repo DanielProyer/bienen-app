@@ -1,6 +1,6 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-26 · **Phase:** P1-Fundament + Fachmodule · **App-Version:** 1.36.0+58 (live)
+**Stand:** 2026-07-26 · **Phase:** P1-Fundament + Fachmodule · **App-Version:** 1.37.0+59 (live)
 
 **Aktueller Fokus:** ✅ **F3 Benachrichtigungen gebaut** (täglicher Telegram-Überblick) — Migration **O01 ist live** (pg_cron/pg_net im extensions-Schema, 0 neue Advisor; Tabelle `benachrichtigungs_einstellungen` mit personenbezogener RLS + Stunden-Cron), App-Seite + Edge Function fertig auf `feat/benachrichtigungen` (281 Tests grün). **Deploy + Scharfschaltung wartet auf Daniels Rechner-Sitzung** (Supabase-CLI + Secrets, siehe Block unten). Davor: ✅ **Königinnen-Fix + Register** (v1.35.0) und ✅ **Standort-Fix + Register** (v1.36.0) — dieselbe „angelegt aber unsichtbar"-Falle geschlossen; ✅ **F1 Backup & Export** (v1.34.0, Offsite wartet ebenfalls auf Rechner); ✅ App-Design-Überarbeitung (v1.30–1.33), ✅ Material-Rework (v1.29.0).
 **Nächste Schritte (Rechner-Sitzung schaltet beide gebauten Features scharf):** (1) **Backup** einrichten + verifizieren · (2) **F3** Function deployen + Secrets + Testnachricht · (3) dein Feldtest der App am Handy · (4) **4.9 Monitoring**, sobald die HiveWatch-Waage da ist.
@@ -23,6 +23,13 @@
 4. Actions → „Backup" → **Run workflow**.
 5. **Mit Claude verifizieren:** Lauf grün? `manifest.json`-Zeilenzahlen plausibel? `warnungen` leer? Fotos da?
 
+### C) Krankheits-Fotos holen (kleiner Job, ~20 Min — braucht offenes Netz)
+> **Warum am Rechner:** In der Claude-Sandbox sind **Bugwood/IPM Images netzseitig gesperrt** (DNS/403) und die USDA-ARS-Galerie gibt über ihre JS-Suche keine Bild-URLs heraus. Auf Wikimedia liegen die 5 Motive nur als **CC BY-SA** (→ Policy D-65 verbietet SA) oder als historische Zeichnungen (→ Qualitäts-Bar „nur echte Fotos"). Regeln brechen wäre der falsche Ausweg; die 5 Einträge haben ja bereits SVG-Skizzen.
+> **Ziel-Einträge (haben Skizze, kein Foto):** `afb`, `efb`, `sackbrut`, `stifte`, `ruhr_nosema`.
+>
+> **Rezept:** Auf **bugwood.org / insectimages.org** suchen: `foulbrood`, `sacbrood`, `nosema`, `honey bee eggs`. Dort liegen die USDA-/Jeff-Pettis-Fotos meist als **„CC BY 3.0 US"** — das ist erlaubt (kein SA/NC) und exakt die Quelle unseres bestehenden `kalkbrut.jpg`. Alternativ **USDA-ARS** (Public Domain). Je Bild die Lizenzzeile auf der Detailseite prüfen.
+> **Übergabe an Claude:** die direkten Bild-URLs + Autor + wörtliche Lizenz nennen — dann lade ich sie nach `assets/wissen/fotos/<key>.jpg`, prüfe das Motiv visuell, ergänze `foto:` + `fotoQuelle: WissensBildquelle(...)` im Katalog (Muster: Eintrag `kalkbrut`) und deploye. Der Lizenz-Guard-Test (`test/wissen/wissen_katalog_test.dart`) blockt SA/NC automatisch.
+
 ### B) F3 Benachrichtigungen scharfschalten
 > O01 ist bereits live (Tabelle + Cron laufen). Es fehlen nur noch: Function-Deploy, 2 Secrets, deine Telegram-Verknüpfung. **Danach muss die App noch deployt werden** (Branch `feat/benachrichtigungen` → v-Bump + `deploy.sh`) — das macht Claude in der Rechner-Sitzung, sobald die Function steht.
 
@@ -32,13 +39,18 @@
 4. Supabase → Edge Functions → Secrets: `TELEGRAM_BOT_TOKEN` (neuer Token) + `CRON_SHARED_SECRET` (z. B. `openssl rand -hex 32`).
 5. Denselben Cron-Wert im Vault ablegen: `select vault.create_secret('<DEIN_SECRET>', 'cron_shared_secret');`
 6. Dem Bot einmal schreiben → Chat-ID (z. B. via @userinfobot) → App: **Konto → Benachrichtigungen** → eintragen, speichern, **Testnachricht**.
-7. **Mit Claude:** Deno-Tests grün? App deployen (v1.37.0)? Ersten Morgenlauf am Folgetag verifizieren (`cron.job_run_details`).
+7. **Mit Claude:** Deno-Tests grün? App deployen (**v1.38.0** — 1.37.0 ist inzwischen von den Design-Resten belegt)? Ersten Morgenlauf am Folgetag verifizieren (`cron.job_run_details`).
 
 **Frühere Schwerpunkte (Chronik, älteste zuletzt):** ✅ **App-Design-Überarbeitung KOMPLETT (alle Module)** — Design-System (`BeeTokens`/`BeeSignal` + 9 Baukasten-Widgets, Richtung „A warm/beruhigt") + Einhand-Modell (`FormScaffold`-Bodenleiste, ≥48px, `confirmSheet`) auf **allen 13 Modulen**: v1.30.0 Kern (Cockpit/Völker/Volk-Detail/Durchsicht-Wizard/Nav, Inter lokal) → v1.31.0 (Aufgaben/Material/Bewertung/Wissen/Vermehrung) → v1.32.0 (Einstellungen/Projekt/Konto/Bau/Recherche) → v1.33.0 (**Compliance-Trio** Behandlung/Fütterung/Gesundheit, adversarial feld-für-feld verifiziert). Rein Präsentation, keine DB/Logik-Änderung. **Nächster Schritt:** **dein Feldtest am Handy** (13 Module ungesehen). Davor: ✅ **Material-Rework + Kosten-Dashboard** (v1.29.0) — Typ-Trennung **Verbrauch/Anlage/Archiv**, der gemeldete **Nachkauf-Fehlalarm gefixt** (Kauf→Bestand-Trigger N01), professionelles **Kosten-Dashboard** (Investition vs. laufend, Budget Soll/Ist, Kategorie/Jahr/Zahlungsart, je Volk). **Nächster Schritt:** dein Feldtest der Material-Ansicht (3 Segmente + Dashboard) + der Spracheingabe. Dann **4.9 Monitoring** (HiveWatch-Waage ~ab 25.07.). Davor: ✅ **Durchsicht-Spracheingabe KOMPLETT** (v1 + v2). v1 (v1.27.0): Diktat + Kommando-Mikro je Wizard-Seite. **v2 (v1.28.0): sprachgeführter Waben-Durchgang** — im Waben-Schritt „Brut Pollen Königin nächste" setzt + blättert, Mehr-Token, Auto-Anhängen am Ende. Davor: ✅ **Wissensdatenbank** (5 Kategorien / 35 Einträge + 10 lizenzsaubere Fotos, v1.21.0–1.26.1). **Nächster Schritt:** dein Feldtest der Spracheingabe (Chrome/Edge, Mikro erlauben) → Mundart-Wörter, die verschluckt werden, sammeln → Alias-Tabelle nachschärfen. Dann **4.9 Monitoring** (HiveWatch-Waage ~ab 25.07.). ✅ **Zyklus 5 Zucht** (v1.25.0, 6 Einträge, ⓘ je Bewertungs-Achse). Davor: ✅ Zyklus 4 Fütterung (v1.24.0, 8), Zyklus 3 Krankheiten (v1.23.0, 7), Zyklus 2 Varroa (v1.22.0, 7), Zyklus 1 Durchsicht+Fotos (v1.21.0, 7). **Wissensdatenbank jetzt 5 Kategorien / 35 Einträge — alle Modul-Andocke fertig** (Durchsicht, Behandlung/Diagnose, Gesundheit, Fütterung, Bewertung). **Offen:** Honig-Ernte/Recht als Stöber-Kategorien (kein Modul-Andock); Polish (Inspektionsfoto→key, HEIC). ✅ **Zyklus 1 (Modul 4.21) LIVE** (v1.21.0) — Kontext-Wissen mit SVG-Skizzen + eigenen Fotos je Betrieb, generischer `key`-Deep-Link, ⓘ-Andock in der Durchsicht. **Nächste Zyklen:** Krankheiten→Gesundheit, Fütterung→Fütterung, dann Honig-Ernte/Zucht/Recht. Davor am selben Tag: ✅ Geführte Durchsicht (v1.20.0), ✅ D2a Volk-Bewertung (v1.19.0), ✅ D1 Vermehrung (v1.18.0), ✅ C Phänologie (v1.17.0), ✅ A+B Betriebsprofil (v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **Durchsicht-Spracheingabe (Zyklus 2)**, **Wissensdatenbank-Ausbau (weitere Kategorien)**, **D2b Umlarv-Kalender** oder 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-26 (Design-Reste vereinheitlicht, v1.37.0)
+
+- [x] ✓ **Letzte `AppColors`-Reste auf das Design-System** (v1.37.0+59). Dabei kam heraus: **zwei Module waren im Design-Durchgang übersehen** worden, weil sie nicht auf der Modul-Liste standen — **`monitoring`** (4 Dateien) und **`entscheidungen`**. Beide jetzt migriert, plus ein Warnhinweis-Einzelfall in `phaenologie_sektion` und das bewusst zurückgestellte **Nav-Chrome**: Desktop-`NavigationRail` und die Bau-`TabBar`s/`ChoiceChip`s sind jetzt hell (weiß + Hairline + Honig-Akzent) statt dunkelbraun — die App ist damit **durchgehend** im Schema „A". Verifiziert: `grep AppColors.` außerhalb der Palette = **0 Treffer**; 281/281 Tests, analyze sauber, live.
+  - **Monitoring bewusst nur tokenisiert, nicht umgebaut** (wartet als Andockpunkt auf die HiveWatch-Waage): `fl_chart`-Achsen/Intervalle/Schwellen/Tooltips sind rechnerisch unverändert, Sensor-Status → `BeeSignal` bei identischen Schwellen (Batterie <20 gefahr / <50 warnung; Sync >2h gefahr / >30min warnung). `scale_settings_page` ist read-only → **kein** `FormScaffold` (Subagent-Korrektur meiner Vorgabe).
 
 ## ✅ Erledigt — Session 2026-07-26 (F3 Benachrichtigungen gebaut, O01 live)
 
@@ -47,7 +59,7 @@
   - **Edge Function `taeglicher-ueberblick`** (Deno): reine `nachricht.ts` (Textbau + DST-feste Zeitzonen-/Doppelversand-Logik, Deno-Tests — **am Rechner auszuführen**, Deno hier nicht installiert) + `index.ts` mit zwei getrennten Eingängen (Cron via `CRON_SHARED_SECRET` = Massenversand / Nutzer-JWT = nur Testnachricht an sich selbst), Selbstheilung bei Telegram-Ausfall, 403 → aktiv=false.
   - **App:** `lib/features/benachrichtigungen/` (Modell/Gateway/Provider + Seite `/benachrichtigungen`, Einstieg über Konto — persönlich). `zuletzt_gesendet_am` wird von der App nie geschrieben (Test hält das fest). **281/281 Tests, analyze sauber.** Der Subagent fand 3 echte Plan-Fehler (DateTime.parse-UTC, 200-trotz-nicht-gesendet, Resync-Flag) — alle korrigiert.
   - Docs: `docs/superpowers/specs/2026-07-22-benachrichtigungen-design.md`, `…/plans/2026-07-22-benachrichtigungen.md`. Entscheid D-77.
-  - **🔴 OFFEN:** Rechner-Sitzung (Block B ganz oben) — Function-Deploy, 2 Secrets, Telegram-Verknüpfung, dann App-Deploy v1.37.0 + erster Morgenlauf verifizieren.
+  - **🔴 OFFEN:** Rechner-Sitzung (Block B ganz oben) — Function-Deploy, 2 Secrets, Telegram-Verknüpfung, dann App-Deploy **v1.38.0** + erster Morgenlauf verifizieren.
 
 ## ✅ Erledigt — Session 2026-07-22 (Fix: Standort-Falle geschlossen, v1.36.0)
 
