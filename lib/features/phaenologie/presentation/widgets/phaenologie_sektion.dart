@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/phaenologie/domain/beobachtung.dart';
 import 'package:bienen_app/features/phaenologie/domain/phaenologie.dart';
 import 'package:bienen_app/features/phaenologie/presentation/providers/phaenologie_provider.dart';
@@ -25,13 +25,13 @@ class PhaenologieSektion extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Zeigerpflanzen-Blüte (Phänologie)', style: TextStyle(fontWeight: FontWeight.w600)),
-        const SizedBox(height: 4),
+        const Text('Zeigerpflanzen-Blüte (Phänologie)', style: BeeTokens.abschnitt),
+        const SizedBox(height: BeeTokens.xs),
         Text('Wann die Zeigerpflanze an deinem Standort blüht, verschiebt die Saisonaufgaben '
-            'präziser als das feste Offset (Jahr $jahr).', style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
-        const SizedBox(height: 8),
+            'präziser als das feste Offset (Jahr $jahr).', style: BeeTokens.gedaempft),
+        const SizedBox(height: BeeTokens.sm),
         _AnkerZeile(anker: PhaenoAnker.fruehjahr, jahr: jahr, vorhanden: fuer(PhaenoAnker.fruehjahr)),
-        const SizedBox(height: 8),
+        const SizedBox(height: BeeTokens.sm),
         _AnkerZeile(anker: PhaenoAnker.tracht, jahr: jahr, vorhanden: fuer(PhaenoAnker.tracht)),
       ],
     );
@@ -93,7 +93,7 @@ class _AnkerZeileState extends ConsumerState<_AnkerZeile> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        Text(label, style: BeeTokens.label),
         Row(children: [
           Expanded(
             child: DropdownButton<String>(
@@ -124,8 +124,8 @@ class _AnkerZeileState extends ConsumerState<_AnkerZeile> {
           ),
         ]),
         if (_unplausibel)
-          const Text('Ungewöhnliches Blühdatum — bitte prüfen.',
-              style: TextStyle(fontSize: 12, color: AppColors.amber800, fontWeight: FontWeight.w600)),
+          Text('Ungewöhnliches Blühdatum — bitte prüfen.',
+              style: TextStyle(fontSize: 12, color: BeeSignal.warnung.text, fontWeight: FontWeight.w500)),
       ],
     );
   }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/app_list_tile.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 class EntscheidungenPage extends StatelessWidget {
   const EntscheidungenPage({super.key});
@@ -9,17 +12,11 @@ class EntscheidungenPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Entscheidungen')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(BeeTokens.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Getroffene Entscheidungen',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 16),
+            const SectionHeader(titel: 'Getroffene Entscheidungen'),
             _buildDecisionCard(
               context,
               title: 'Beutensystem',
@@ -99,15 +96,10 @@ class EntscheidungenPage extends StatelessWidget {
               date: '2. Mai 2026',
               isDone: true,
             ),
-            const SizedBox(height: 32),
-            Text(
-              'Noch offen',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 16),
-            _buildOpenItem(context, 'Stall OG: Masse + Fotos auswerten (Honigverarbeitung)'),
+            const SizedBox(height: BeeTokens.xl),
+            const SectionHeader(titel: 'Noch offen'),
+            _buildOpenItem(
+                context, 'Stall OG: Masse + Fotos auswerten (Honigverarbeitung)'),
             _buildOpenItem(context, 'Kontakt Ernst Iten (Miel du Ciel)'),
             _buildOpenItem(context, 'Kontakt Bündner Imkerverband'),
             _buildOpenItem(context, 'Bienenstand beim ALT GR registrieren'),
@@ -126,10 +118,9 @@ class EntscheidungenPage extends StatelessWidget {
     required String date,
     required bool isDone,
   }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: BeeTokens.lg),
+      child: AppCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -137,62 +128,50 @@ class EntscheidungenPage extends StatelessWidget {
               children: [
                 Icon(
                   isDone ? Icons.check_circle : Icons.radio_button_unchecked,
-                  color: isDone ? AppColors.green600 : AppColors.brown300,
+                  size: 20,
+                  color: isDone
+                      ? BeeSignal.erfolg.text
+                      : BeeTokens.textGedaempft,
                 ),
-                const SizedBox(width: 12),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const Spacer(),
-                Chip(
-                  label: Text(date, style: const TextStyle(fontSize: 12)),
-                  backgroundColor: AppColors.amber50,
-                  padding: EdgeInsets.zero,
-                  visualDensity: VisualDensity.compact,
-                ),
+                const SizedBox(width: BeeTokens.md),
+                Expanded(child: Text(title, style: BeeTokens.abschnitt)),
+                Text(date, style: BeeTokens.gedaempft),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(BeeTokens.md),
               decoration: BoxDecoration(
-                color: AppColors.green50,
-                borderRadius: BorderRadius.circular(8),
+                color: BeeSignal.erfolg.flaeche,
+                borderRadius: BorderRadius.circular(BeeTokens.rKarte),
               ),
               child: Text(
                 decision,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
                   fontSize: 16,
-                  color: AppColors.green800,
+                  color: BeeSignal.erfolg.text,
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: BeeTokens.md),
             ...details.map((d) => Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
+                  padding: const EdgeInsets.only(bottom: BeeTokens.xs),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('• ', style: TextStyle(color: AppColors.brown600)),
-                      Expanded(
-                        child: Text(d,
-                            style: const TextStyle(color: AppColors.brown600)),
-                      ),
+                      const Text('• ',
+                          style: TextStyle(color: BeeTokens.textSekundaer)),
+                      Expanded(child: Text(d, style: BeeTokens.text)),
                     ],
                   ),
                 )),
-            const SizedBox(height: 8),
+            const SizedBox(height: BeeTokens.sm),
             Text(
               'Begründung: $reason',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontStyle: FontStyle.italic,
-                    color: AppColors.brown300,
-                  ),
+              style: BeeTokens.gedaempft
+                  .copyWith(fontStyle: FontStyle.italic),
             ),
           ],
         ),
@@ -201,16 +180,10 @@ class EntscheidungenPage extends StatelessWidget {
   }
 
   Widget _buildOpenItem(BuildContext context, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          const Icon(Icons.radio_button_unchecked,
-              size: 20, color: AppColors.amber600),
-          const SizedBox(width: 12),
-          Expanded(child: Text(text)),
-        ],
-      ),
+    return AppListTile(
+      leading: Icon(Icons.radio_button_unchecked,
+          size: 20, color: BeeSignal.warnung.text),
+      titel: text,
     );
   }
 }

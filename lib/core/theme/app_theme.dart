@@ -119,9 +119,23 @@ class AppTheme {
         ),
       ),
       navigationRailTheme: const NavigationRailThemeData(
-        backgroundColor: AppColors.brown800,
-        selectedIconTheme: IconThemeData(color: AppColors.amber400),
-        unselectedIconTheme: IconThemeData(color: Colors.white70),
+        backgroundColor: BeeTokens.karte,
+        indicatorColor: BeeTokens.honigTint,
+        elevation: 0,
+        selectedIconTheme: IconThemeData(color: BeeTokens.honig),
+        unselectedIconTheme: IconThemeData(color: BeeTokens.textGedaempft),
+        selectedLabelTextStyle: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: BeeTokens.honig,
+        ),
+        unselectedLabelTextStyle: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: BeeTokens.textGedaempft,
+        ),
       ),
     );
   }

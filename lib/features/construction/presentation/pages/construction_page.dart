@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/construction/data/models/build_step_content.dart';
 import 'package:bienen_app/features/construction/presentation/pages/bauplan_view.dart';
@@ -42,23 +41,23 @@ class _KategorieSelector extends ConsumerWidget {
     Widget chip(BauKategorie k, String label, IconData icon) {
       final active = sel == k;
       return Padding(
-        padding: const EdgeInsets.only(right: 8),
+        padding: const EdgeInsets.only(right: BeeTokens.sm),
         child: ChoiceChip(
           avatar: Icon(
             icon,
             size: 18,
-            color: active ? AppColors.brown800 : Colors.white70,
+            color: active ? BeeTokens.honig : BeeTokens.textGedaempft,
           ),
           label: Text(label),
           selected: active,
           showCheckmark: false,
           labelStyle: TextStyle(
-            color: active ? AppColors.brown800 : Colors.white,
-            fontWeight: FontWeight.w600,
+            color: active ? BeeTokens.textPrimaer : BeeTokens.textGedaempft,
+            fontWeight: FontWeight.w500,
           ),
-          backgroundColor: AppColors.brown600,
-          selectedColor: AppColors.amber400,
-          side: const BorderSide(color: Colors.white24),
+          backgroundColor: BeeTokens.karte,
+          selectedColor: BeeTokens.honigTint,
+          side: const BorderSide(color: BeeTokens.rand, width: 0.5),
           onSelected: (_) =>
               ref.read(selectedBauKategorieProvider.notifier).state = k,
         ),
@@ -67,11 +66,14 @@ class _KategorieSelector extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      color: AppColors.brown800,
-      padding: const EdgeInsets.only(bottom: 10),
+      decoration: const BoxDecoration(
+        color: BeeTokens.karte,
+        border: Border(bottom: BorderSide(color: BeeTokens.rand, width: 0.5)),
+      ),
+      padding: const EdgeInsets.only(bottom: BeeTokens.sm),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: BeeTokens.md),
         child: Row(
           children: [
             chip(BauKategorie.bienenstand, 'Bienenstand', Icons.deck),
@@ -95,16 +97,22 @@ class _BienenstandView extends StatelessWidget {
       child: Column(
         children: [
           Material(
-            color: AppColors.brown600,
-            child: const TabBar(
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white70,
-              indicatorColor: AppColors.amber400,
-              indicatorWeight: 3,
-              tabs: [
-                Tab(text: 'Bauplan', icon: Icon(Icons.architecture)),
-                Tab(text: 'Bauschritte', icon: Icon(Icons.checklist)),
-              ],
+            color: BeeTokens.karte,
+            child: Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: BeeTokens.rand, width: 0.5)),
+              ),
+              child: const TabBar(
+                labelColor: BeeTokens.textPrimaer,
+                unselectedLabelColor: BeeTokens.textGedaempft,
+                indicatorColor: BeeTokens.honig,
+                indicatorWeight: 3,
+                tabs: [
+                  Tab(text: 'Bauplan', icon: Icon(Icons.architecture)),
+                  Tab(text: 'Bauschritte', icon: Icon(Icons.checklist)),
+                ],
+              ),
             ),
           ),
           const Expanded(

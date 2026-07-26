@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/monitoring/presentation/providers/monitoring_provider.dart';
+import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/empty_state.dart';
 
+/// Read-only Übersicht der konfigurierten Stockwaagen (Andockpunkt HiveWatch).
+/// Kein Formular/Speichern → bewusst kein FormScaffold (keine Bodenleiste).
 class ScaleSettingsPage extends ConsumerWidget {
   const ScaleSettingsPage({super.key});
 
@@ -19,80 +23,52 @@ class ScaleSettingsPage extends ConsumerWidget {
         error: (e, _) => Center(child: Text('Fehler: $e')),
         data: (scales) {
           if (scales.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.monitor_weight_outlined,
-                        size: 64, color: AppColors.brown100),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Keine Waage konfiguriert',
-                      style:
-                          Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: AppColors.brown600,
-                              ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Sobald eine Stockwaage angeschlossen ist, '
-                      'erscheinen hier die Einstellungen.\n\n'
-                      'Geplant: HiveWatch oder BroodMinder Integration.',
-                      textAlign: TextAlign.center,
-                      style:
-                          Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.brown300,
-                              ),
-                    ),
-                    const SizedBox(height: 24),
-                    _InfoCard(
-                      title: 'Architektur',
-                      items: const [
-                        'Vendor-agnostisch (HiveWatch / BroodMinder)',
-                        'Supabase Edge Function pollt Vendor-API',
-                        'Realtime-Updates in der App',
-                        'Schwarm-Alerts bei >1 kg/h Verlust',
-                      ],
-                    ),
-                  ],
-                ),
+            return const EmptyState(
+              icon: Icons.monitor_weight_outlined,
+              titel: 'Keine Waage konfiguriert',
+              text: 'Sobald eine Stockwaage angeschlossen ist, '
+                  'erscheinen hier die Einstellungen.\n\n'
+                  'Geplant: HiveWatch oder BroodMinder Integration.',
+              aktion: _InfoCard(
+                title: 'Architektur',
+                items: [
+                  'Vendor-agnostisch (HiveWatch / BroodMinder)',
+                  'Supabase Edge Function pollt Vendor-API',
+                  'Realtime-Updates in der App',
+                  'Schwarm-Alerts bei >1 kg/h Verlust',
+                ],
               ),
             );
           }
 
           return ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(BeeTokens.lg),
             itemCount: scales.length,
             itemBuilder: (context, index) {
               final scale = scales[index];
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
+              return Padding(
+                padding: const EdgeInsets.only(bottom: BeeTokens.md),
+                child: AppCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.monitor_weight,
-                              color: AppColors.honey),
-                          const SizedBox(width: 8),
-                          Text(
-                            scale.hiveName,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w600),
+                          const Icon(Icons.monitor_weight,
+                              color: BeeTokens.honig, size: 20),
+                          const SizedBox(width: BeeTokens.sm),
+                          Expanded(
+                            child: Text(scale.hiveName,
+                                style: BeeTokens.abschnitt),
                           ),
-                          const Spacer(),
                           Chip(
-                            label: Text(scale.vendor),
-                            backgroundColor: AppColors.amber50,
+                            label: Text(scale.vendor,
+                                style: const TextStyle(fontSize: 12)),
+                            visualDensity: VisualDensity.compact,
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: BeeTokens.md),
                       _DetailRow('ID', scale.id),
                       if (scale.location != null)
                         _DetailRow('Standort', scale.location!),
@@ -125,24 +101,21 @@ class _DetailRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.only(bottom: BeeTokens.xs),
       child: Row(
         children: [
           SizedBox(
             width: 140,
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.brown300,
-                  ),
-            ),
+            child: Text(label, style: BeeTokens.gedaempft),
           ),
           Expanded(
             child: Text(
               value,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: BeeTokens.textPrimaer,
+              ),
             ),
           ),
         ],
@@ -159,42 +132,34 @@ class _InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: AppColors.amber50,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.honeyDark,
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            ...items.map((item) => Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('  •  ',
-                          style: TextStyle(color: AppColors.honeyDark)),
-                      Expanded(
-                        child: Text(
-                          item,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.brown600,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
-          ],
-        ),
+    return Container(
+      padding: const EdgeInsets.all(BeeTokens.lg),
+      decoration: BoxDecoration(
+        color: BeeTokens.honigTint,
+        borderRadius: BorderRadius.circular(BeeTokens.rKarte),
+        border: Border.all(color: BeeTokens.honig, width: 0.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: BeeTokens.label),
+          const SizedBox(height: BeeTokens.sm),
+          ...items.map((item) => Padding(
+                padding: const EdgeInsets.only(bottom: BeeTokens.xs),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('•  ',
+                        style: TextStyle(color: BeeTokens.textSekundaer)),
+                    Expanded(
+                      child: Text(item,
+                          style: const TextStyle(
+                              fontSize: 13, color: BeeTokens.textPrimaer)),
+                    ),
+                  ],
+                ),
+              )),
+        ],
       ),
     );
   }
