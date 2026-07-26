@@ -42,6 +42,12 @@ class ExportService {
     final zahlen = <String, int>{};
     final schema = <String, List<String>>{};
     final gesamt = _tabellen.length + _buckets.length;
+    // Alt-Objekte in material-media liegen unter <material_id>/… statt
+    // <betrieb_id>/… (Befuellung vor der Praefix-Haertung). Die Praefix-
+    // Auflistung unten findet sie nicht — ohne diesen Zusatz fehlten sie im
+    // Export, obwohl materials.photo_urls sie referenziert. Lesbar sind sie
+    // ueber die Alt-Pfad-Policy aus P01.
+    final altMediaPfade = <String>{};
 
     for (var i = 0; i < _tabellen.length; i++) {
       final t = _tabellen[i];
@@ -60,6 +66,9 @@ class ExportService {
         continue;
       }
       zahlen[t] = zeilen.length;
+      if (t == 'materials') {
+        altMediaPfade.addAll(altMediaPfadeAus(zeilen, betriebId));
+      }
       if (zeilen.isNotEmpty) schema[t] = (zeilen.first.keys.toList()..sort());
       _dateiZu(archiv, 'daten/$t.json', utf8.encode(stabilesJson(zeilen)));
       _dateiZu(archiv, 'daten/$t.csv', utf8.encode(csvVon(zeilen)));
@@ -70,7 +79,11 @@ class ExportService {
       final b = _buckets[i];
       fortschritt?.call('Fotos $b', _tabellen.length + i, gesamt);
       try {
-        for (final pfad in await _pfadeIn(b, '$betriebId/')) {
+        final pfade = <String>[
+          ...await _pfadeIn(b, '$betriebId/'),
+          if (b == 'material-media') ...altMediaPfade,
+        ];
+        for (final pfad in pfade) {
           try {
             final bytes = await client.storage.from(b).download(pfad);
             _dateiZu(archiv, 'fotos/$b/$pfad', bytes);
@@ -103,6 +116,27 @@ class ExportService {
     final roh = ZipEncoder().encode(archiv);
     if (roh == null) throw StateError('ZIP konnte nicht erzeugt werden');
     return (bytes: Uint8List.fromList(roh), warnungen: warnungen);
+  }
+
+  /// Sammelt aus `materials.photo_urls` die Werte, die NICHT unter
+  /// `<betrieb_id>/` liegen — die Alt-Objekte aus der Zeit vor der Praefix-
+  /// Haertung. Volle URLs (uebersehener Altbestand) werden uebersprungen: das
+  /// sind keine Storage-Pfade. Rein und darum testbar.
+  static Set<String> altMediaPfadeAus(
+      List<Map<String, dynamic>> materials, String betriebId) {
+    final treffer = <String>{};
+    for (final zeile in materials) {
+      final werte = zeile['photo_urls'];
+      if (werte is! List) continue;
+      for (final w in werte) {
+        final pfad = w?.toString().trim() ?? '';
+        if (pfad.isEmpty) continue;
+        if (pfad.startsWith('http://') || pfad.startsWith('https://')) continue;
+        if (pfad.startsWith('$betriebId/')) continue;
+        treffer.add(pfad);
+      }
+    }
+    return treffer;
   }
 
   /// Rekursive Auflistung eines Bucket-Praefix.
