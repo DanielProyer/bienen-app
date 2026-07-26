@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <rect x="60" y="10" width="120" height="20" rx="4" fill="#F0C24A" stroke="#633806" stroke-width="1.5"/>
+  <text x="120" y="24" font-family="sans-serif" font-size="10" text-anchor="middle" fill="#633806">Was verkaufe ich, wem?</text>
+  <g stroke="#633806" stroke-width="1.5" fill="none">
+    <line x1="120" y1="30" x2="120" y2="42"/><line x1="43" y1="42" x2="197" y2="42"/>
+    <line x1="43" y1="42" x2="43" y2="54"/><line x1="120" y1="42" x2="120" y2="54"/><line x1="197" y1="42" x2="197" y2="54"/>
+  </g>
+  <g fill="#FBF6E9" stroke="#633806" stroke-width="1.5"><rect x="6" y="54" width="74" height="42" rx="3"/><rect x="83" y="54" width="74" height="42" rx="3"/><rect x="160" y="54" width="74" height="42" rx="3"/></g>
+  <g font-family="sans-serif" font-size="9" text-anchor="middle" fill="#633806">
+    <text x="43" y="72">nur eigener</text><text x="43" y="84">Honig ab Hof</text>
+    <text x="120" y="72">mischen oder</text><text x="120" y="84">handeln</text>
+    <text x="197" y="72">gelegentlich</text><text x="197" y="84">am Fest</text>
+  </g>
+  <rect x="6" y="100" width="74" height="40" rx="3" fill="#EAF3DE" stroke="#3B6D11" stroke-width="1.5"/>
+  <rect x="83" y="100" width="74" height="40" rx="3" fill="#FBF0D6" stroke="#E8A33D" stroke-width="1.5"/>
+  <rect x="160" y="100" width="74" height="40" rx="3" fill="#EAF3DE" stroke="#3B6D11" stroke-width="1.5"/>
+  <g font-family="sans-serif" font-size="9" text-anchor="middle">
+    <text x="43" y="113" fill="#3B6D11">melden</text><text x="43" y="125" fill="#3B6D11">ohne Bewilligung</text><text x="43" y="137" fill="#3B6D11">kein HACCP</text>
+    <text x="120" y="119" fill="#8a6a2e">zusätzlich</text><text x="120" y="131" fill="#8a6a2e">melden</text>
+    <text x="197" y="125" fill="#3B6D11">keine Meldung</text>
+  </g>
+  <text x="120" y="155" font-family="sans-serif" font-size="10" text-anchor="middle" fill="#633806">vor dem ersten Verkauf klären</text>
+</svg>

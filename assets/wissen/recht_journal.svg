@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <rect x="8" y="14" width="96" height="104" rx="3" fill="#FBF6E9" stroke="#633806" stroke-width="1.5"/>
+  <line x1="8" y1="30" x2="104" y2="30" stroke="#633806" stroke-width="1"/>
+  <text x="56" y="26" font-family="sans-serif" font-size="9" text-anchor="middle" fill="#633806">Behandlungsjournal</text>
+  <rect x="12" y="86" width="88" height="12" rx="2" fill="#FBF0D6" stroke="#B32D2D" stroke-width="1"/>
+  <g font-family="sans-serif" font-size="9" text-anchor="start" fill="#633806">
+    <text x="16" y="42">Datum</text><text x="16" y="53">Volk</text><text x="16" y="64">Präparat</text><text x="16" y="75">Wirkstoff</text><text x="16" y="86">Menge</text><text x="16" y="108">Person</text>
+  </g>
+  <text x="16" y="96" font-family="sans-serif" font-size="9" text-anchor="start" fill="#B32D2D">Wartefrist</text>
+  <rect x="136" y="14" width="96" height="104" rx="3" fill="#FBF6E9" stroke="#633806" stroke-width="1.5"/>
+  <line x1="136" y1="30" x2="232" y2="30" stroke="#633806" stroke-width="1"/>
+  <text x="184" y="26" font-family="sans-serif" font-size="9" text-anchor="middle" fill="#633806">Inventar</text>
+  <g font-family="sans-serif" font-size="10" text-anchor="middle" fill="#633806">
+    <text x="184" y="46">Kauf</text><text x="184" y="76">Anwendung</text><text x="184" y="106">Entsorgung</text>
+  </g>
+  <g stroke="#633806" stroke-width="1.5"><line x1="184" y1="52" x2="184" y2="58"/><line x1="184" y1="82" x2="184" y2="88"/></g>
+  <g fill="#633806"><path d="M180 58 h8 l-4 6 z"/><path d="M180 88 h8 l-4 6 z"/></g>
+  <g stroke="#633806" stroke-width="2" fill="none"><line x1="120" y1="58" x2="120" y2="78"/><line x1="108" y1="58" x2="132" y2="58"/><line x1="112" y1="78" x2="128" y2="78"/></g>
+  <g stroke="#633806" stroke-width="1.5" fill="none"><path d="M104 60 q6 8 12 0"/><path d="M124 60 q6 8 12 0"/></g>
+  <text x="120" y="136" font-family="sans-serif" font-size="10" text-anchor="middle" fill="#633806">Bezug ↔ Verbrauch plausibel</text>
+  <rect x="88" y="141" width="64" height="17" rx="3" fill="#E8B84D" stroke="#633806" stroke-width="1.5"/>
+  <text x="120" y="154" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#633806">3 Jahre</text>
+</svg>
