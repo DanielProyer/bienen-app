@@ -5,6 +5,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:bienen_app/core/storage/foto_quelle.dart';
+import 'package:bienen_app/core/storage/foto_speicher.dart';
 import 'package:bienen_app/core/supabase/supabase_config.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
@@ -14,6 +16,7 @@ import 'package:bienen_app/features/material/data/models/material_purchase.dart'
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/shared/widgets/app_button.dart';
 import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/signed_image.dart';
 import 'package:bienen_app/shared/widgets/status_pill.dart';
 import 'package:intl/intl.dart';
 
@@ -21,6 +24,11 @@ final _chf = NumberFormat('#,##0.00', 'de_CH');
 final _qty = NumberFormat('#,##0.##', 'de_CH');
 
 const _zahlungsarten = ['Barzahlung', 'Twint', 'QR-Rechnung Post', 'Andere'];
+
+/// Beide Buckets sind seit P01 PRIVAT: gespeichert wird der Pfad, angezeigt
+/// wird über eine Signed-URL (siehe [SignedImage]).
+const _mediaBucket = 'material-media';
+const _belegBucket = 'material-receipts';
 
 class MaterialDetailPage extends ConsumerWidget {
   final MaterialItem item;
@@ -515,7 +523,7 @@ class _MediaSection extends ConsumerStatefulWidget {
 }
 
 class _MediaSectionState extends ConsumerState<_MediaSection> {
-  static const _bucket = 'material-media';
+  static const _bucket = _mediaBucket;
   static const _maxPhotos = 4;
   static const _maxPdfs = 4;
   bool _busy = false;
@@ -570,19 +578,22 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
         _snack('Kein Betrieb aktiv — bitte neu anmelden.');
         return;
       }
-      // <betrieb_id>/-Praefix: mandanten-scoped (Storage-Policies A10).
-      final path =
-          '$betriebId/${item.id}/photo_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      await SupabaseConfig.client.storage.from(_bucket).uploadBinary(
-            path,
-            bytes,
-            fileOptions:
-                const FileOptions(upsert: true, contentType: 'image/jpeg'),
-          );
-      final url = SupabaseConfig.client.storage.from(_bucket).getPublicUrl(path);
+      // FotoSpeicher ist der einzige Upload-Weg: er strippt die Bildmetadaten
+      // (GPS!) und setzt das mandanten-scoped <betrieb_id>/-Praefix
+      // (Storage-Policies A10). Gespeichert wird der PFAD, nicht die URL —
+      // der Bucket ist privat.
+      final speicher = FotoSpeicher(SupabaseConfig.client, _bucket);
+      final pfad = await speicher.hochladen(
+        betriebId: betriebId,
+        gruppeId: item.id,
+        bytes: bytes,
+      );
       await ref
           .read(materialListProvider.notifier)
-          .updatePhotoUrls(item.id, [...item.photoUrls, url]);
+          .updatePhotoUrls(item.id, [...item.photoUrls, pfad]);
+    } on StateError {
+      // Der Metadaten-Strip konnte das Bild nicht dekodieren (z. B. HEIC).
+      _snack('Format nicht unterstützt — bitte als JPEG aufnehmen.');
     } catch (e) {
       _snack('Foto fehlgeschlagen: $e');
     } finally {
@@ -590,14 +601,14 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
     }
   }
 
-  Future<void> _removePhoto(String url) async {
+  Future<void> _removePhoto(String wert) async {
     final item = _item;
-    final updated = item.photoUrls.where((u) => u != url).toList();
+    final updated = item.photoUrls.where((u) => u != wert).toList();
     try {
       await ref
           .read(materialListProvider.notifier)
           .updatePhotoUrls(item.id, updated);
-      await _removeStorageObject(url);
+      await _removeStorageObject(wert);
     } catch (e) {
       _snack('Löschen fehlgeschlagen: $e');
     }
@@ -625,20 +636,22 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
         _snack('Kein Betrieb aktiv — bitte neu anmelden.');
         return;
       }
-      final path =
+      // PDFs laufen NICHT über FotoSpeicher (der erzwingt image/jpeg und
+      // re-encodiert), aber im selben privaten Bucket: gespeichert wird der
+      // PFAD, geöffnet wird über eine Signed-URL (_oeffnePdf).
+      final pfad =
           '$betriebId/${item.id}/pdf_${DateTime.now().millisecondsSinceEpoch}.pdf';
       await SupabaseConfig.client.storage.from(_bucket).uploadBinary(
-            path,
+            pfad,
             bytes,
             fileOptions: const FileOptions(
                 upsert: true, contentType: 'application/pdf'),
           );
-      final url = SupabaseConfig.client.storage.from(_bucket).getPublicUrl(path);
       final name =
           f.name.trim().isNotEmpty ? f.name.trim() : 'Anleitung ${item.pdfUrls.length + 1}.pdf';
       await ref.read(materialListProvider.notifier).updatePdfs(
         item.id,
-        [...item.pdfUrls, url],
+        [...item.pdfUrls, pfad],
         [...item.pdfNames, name],
       );
     } catch (e) {
@@ -663,31 +676,45 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
     }
   }
 
-  Future<void> _removeStorageObject(String url) async {
-    const marker = '/$_bucket/';
-    final i = url.indexOf(marker);
-    if (i < 0) return;
-    final path = url.substring(i + marker.length).split('?').first;
+  Future<void> _removeStorageObject(String wert) async {
+    final pfad = _pfadVon(wert);
+    if (pfad == null) return;
     try {
-      await SupabaseConfig.client.storage.from(_bucket).remove([path]);
+      await SupabaseConfig.client.storage.from(_bucket).remove([pfad]);
     } catch (_) {}
   }
 
-  void _viewImage(String url) {
+  /// Nach P01 steht in der DB der Pfad; ein übersehener Altwert kann noch eine
+  /// volle öffentliche URL sein — daraus den Objektpfad herausschneiden.
+  String? _pfadVon(String wert) {
+    if (!istVolleUrl(wert)) return wert.split('?').first;
+    const marker = '/$_bucket/';
+    final i = wert.indexOf(marker);
+    if (i < 0) return null;
+    return wert.substring(i + marker.length).split('?').first;
+  }
+
+  void _viewImage(String wert) {
     showDialog<void>(
       context: context,
       builder: (ctx) => Dialog(
         child: InteractiveViewer(
-          child: Image.network(
-            url,
-            errorBuilder: (_, _, _) => const Padding(
-              padding: EdgeInsets.all(24),
-              child: Icon(Icons.broken_image, size: 48),
-            ),
-          ),
+          child: SignedImage(wert: wert, bucket: _bucket, fit: BoxFit.contain),
         ),
       ),
     );
+  }
+
+  /// Privater Bucket: die Anleitung wird über eine Signed-URL geöffnet.
+  Future<void> _oeffnePdf(String wert) async {
+    try {
+      final ziel = istVolleUrl(wert)
+          ? wert
+          : await FotoSpeicher(SupabaseConfig.client, _bucket).signedUrl(wert);
+      await launchUrl(Uri.parse(ziel), mode: LaunchMode.externalApplication);
+    } catch (e) {
+      _snack('PDF konnte nicht geöffnet werden: $e');
+    }
   }
 
   @override
@@ -764,28 +791,21 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
     );
   }
 
-  Widget _photoThumb(String url) {
+  Widget _photoThumb(String wert) {
     return SizedBox(
       width: 76,
       height: 76,
       child: Stack(
         children: [
           GestureDetector(
-            onTap: () => _viewImage(url),
+            onTap: () => _viewImage(wert),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                url,
-                width: 76,
-                height: 76,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => Container(
-                  width: 76,
-                  height: 76,
-                  color: BeeTokens.rand,
-                  child: const Icon(Icons.broken_image,
-                      color: BeeTokens.textGedaempft),
-                ),
+              child: SignedImage(
+                wert: wert,
+                bucket: _bucket,
+                breite: 76,
+                hoehe: 76,
               ),
             ),
           ),
@@ -793,7 +813,7 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
             top: 0,
             right: 0,
             child: GestureDetector(
-              onTap: _busy ? null : () => _removePhoto(url),
+              onTap: _busy ? null : () => _removePhoto(wert),
               child: Container(
                 margin: const EdgeInsets.all(2),
                 decoration: const BoxDecoration(
@@ -834,7 +854,7 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
     );
   }
 
-  Widget _pdfRow(int i, String url) {
+  Widget _pdfRow(int i, String wert) {
     final item = _item;
     final name = i < item.pdfNames.length && item.pdfNames[i].isNotEmpty
         ? item.pdfNames[i]
@@ -854,8 +874,7 @@ class _MediaSectionState extends ConsumerState<_MediaSection> {
             icon: const Icon(Icons.open_in_new, size: 18),
             color: BeeTokens.textSekundaer,
             tooltip: 'Öffnen',
-            onPressed: () =>
-                launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
+            onPressed: () => _oeffnePdf(wert),
           ),
           IconButton(
             icon: Icon(Icons.delete_outline, size: 18, color: BeeSignal.gefahr.text),
@@ -1096,18 +1115,13 @@ class _PurchaseTile extends ConsumerWidget {
   final MaterialPurchase purchase;
   const _PurchaseTile({required this.purchase});
 
-  void _showImage(BuildContext context, String url) {
+  void _showImage(BuildContext context, String wert) {
     showDialog<void>(
       context: context,
       builder: (ctx) => Dialog(
         child: InteractiveViewer(
-          child: Image.network(
-            url,
-            errorBuilder: (_, _, _) => const Padding(
-              padding: EdgeInsets.all(24),
-              child: Icon(Icons.broken_image, size: 48),
-            ),
-          ),
+          child:
+              SignedImage(wert: wert, bucket: _belegBucket, fit: BoxFit.contain),
         ),
       ),
     );
@@ -1134,12 +1148,11 @@ class _PurchaseTile extends ConsumerWidget {
                 onTap: () => _showImage(context, p.belegFoto!),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(6),
-                  child: Image.network(
-                    p.belegFoto!,
-                    width: 48,
-                    height: 48,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => const Icon(Icons.broken_image),
+                  child: SignedImage(
+                    wert: p.belegFoto!,
+                    bucket: _belegBucket,
+                    breite: 48,
+                    hoehe: 48,
                   ),
                 ),
               ),
@@ -1348,27 +1361,21 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
     setState(() => _saving = true);
     final item = widget.item;
     try {
-      String? photoUrl;
+      String? belegPfad;
       if (_photoBytes != null) {
         final betriebId = ref.read(currentBetriebIdProvider);
         if (betriebId == null) {
           setState(() => _saving = false);
           return;
         }
-        // Belege sind finanz-/personenbezogen -> mandanten-scoped Pfad.
-        final path =
-            '$betriebId/${item.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        await SupabaseConfig.client.storage
-            .from('material-receipts')
-            .uploadBinary(
-              path,
-              _photoBytes!,
-              fileOptions:
-                  const FileOptions(upsert: true, contentType: 'image/jpeg'),
-            );
-        photoUrl = SupabaseConfig.client.storage
-            .from('material-receipts')
-            .getPublicUrl(path);
+        // Belege sind finanz-/personenbezogen -> mandanten-scoped Pfad, privater
+        // Bucket, Metadaten-Strip im FotoSpeicher. Gespeichert wird der PFAD.
+        final belegSpeicher = FotoSpeicher(SupabaseConfig.client, _belegBucket);
+        belegPfad = await belegSpeicher.hochladen(
+          betriebId: betriebId,
+          gruppeId: item.id,
+          bytes: _photoBytes!,
+        );
       }
 
       final purchase = MaterialPurchase(
@@ -1381,7 +1388,7 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
         shop: _shopCtrl.text.trim().isEmpty ? null : _shopCtrl.text.trim(),
         belegNr:
             _belegNrCtrl.text.trim().isEmpty ? null : _belegNrCtrl.text.trim(),
-        belegFoto: photoUrl,
+        belegFoto: belegPfad, // Feld heisst weiterhin beleg_foto, enthaelt den Pfad
         notiz: _notizCtrl.text.trim().isEmpty ? null : _notizCtrl.text.trim(),
         zahlungsart: _zahlungsart,
       );
@@ -1397,6 +1404,15 @@ class _PurchaseFormState extends ConsumerState<_PurchaseForm> {
           .updateStatus(item.id, 'gekauft');
 
       if (mounted) Navigator.of(context).pop();
+    } on StateError {
+      // Der Metadaten-Strip konnte den Beleg nicht dekodieren (z. B. HEIC).
+      if (mounted) {
+        setState(() => _saving = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Format nicht unterstützt — bitte als JPEG aufnehmen.')),
+        );
+      }
     } catch (e) {
       if (mounted) {
         setState(() => _saving = false);
