@@ -7,6 +7,7 @@ import 'package:bienen_app/features/material/data/models/material_alternatives.d
 import 'package:bienen_app/features/material/presentation/providers/material_provider.dart';
 import 'package:bienen_app/features/material/presentation/pages/material_detail_page.dart';
 import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/signed_image.dart';
 import 'package:intl/intl.dart';
 
 class MaterialListTile extends ConsumerWidget {
@@ -82,12 +83,14 @@ class MaterialListTile extends ConsumerWidget {
                 if (item.photoUrls.isNotEmpty) ...[
                   ClipRRect(
                     borderRadius: BorderRadius.circular(6),
-                    child: Image.network(
-                      item.photoUrls.first,
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => Container(
+                    // Privater Bucket seit P01: der gespeicherte Wert ist ein
+                    // Pfad und wird zur Laufzeit signiert.
+                    child: SignedImage(
+                      wert: item.photoUrls.first,
+                      bucket: 'material-media',
+                      breite: 40,
+                      hoehe: 40,
+                      fehlerBild: Container(
                         width: 40,
                         height: 40,
                         color: BeeTokens.rand,

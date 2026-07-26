@@ -1,9 +1,14 @@
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:bienen_app/core/storage/foto_speicher.dart';
 import 'package:bienen_app/core/supabase/supabase_config.dart';
 import 'package:bienen_app/features/construction/data/models/build_step_content.dart';
 import 'package:bienen_app/features/construction/data/models/construction_step.dart';
+
+/// Bucket der Bau-Fotos — seit P01 PRIVAT: gespeichert wird der Pfad, die
+/// Anzeige signiert ihn zur Laufzeit. Public, damit die Anzeige (BuildStepCard)
+/// denselben Namen nutzt statt ihn zu wiederholen.
+const bauFotoBucket = 'construction-photos';
 
 /// Kategorien im Bau-Tab. Erweiterbar – später evtl. Werkstatt / Lager /
 /// Bienenunterstand (noch nicht geklärt).
@@ -46,7 +51,7 @@ final constructionProgressMapProvider =
 });
 
 class ConstructionStepsNotifier extends AsyncNotifier<List<ConstructionStep>> {
-  static const _bucket = 'construction-photos';
+  static const _bucket = bauFotoBucket;
 
   @override
   Future<List<ConstructionStep>> build() => _fetch();
@@ -102,31 +107,34 @@ class ConstructionStepsNotifier extends AsyncNotifier<List<ConstructionStep>> {
   /// mit upsert:true auf exakt denselben Objektpfad schreiben und sich
   /// gegenseitig ueberschreiben (kein Angriff noetig, das passiert im
   /// Normalbetrieb). Die Storage-Policies (A10) erzwingen das Praefix zusaetzlich.
+  ///
+  /// `dateiname` (kein `gruppeId`) haelt den Pfad DETERMINISTISCH bei
+  /// `<betrieb_id>/<stepKey>.jpg`: pro Bauschritt bleibt so genau ein Objekt,
+  /// sonst wuerde jedes ersetzte Foto Waisen hinterlassen. In
+  /// `construction_steps.photo_url` landet seit P01 der PFAD (privater Bucket);
+  /// der frueher noetige `?v=`-Cache-Buster entfaellt, weil Signed-URLs je
+  /// Abruf neu entstehen.
   Future<void> attachPhoto(
       String stepKey, Uint8List bytes, String betriebId) async {
-    final path = '$betriebId/$stepKey.jpg';
-    await SupabaseConfig.client.storage.from(_bucket).uploadBinary(
-          path,
-          bytes,
-          fileOptions:
-              const FileOptions(upsert: true, contentType: 'image/jpeg'),
-        );
-    final base = SupabaseConfig.client.storage.from(_bucket).getPublicUrl(path);
+    final speicher = FotoSpeicher(SupabaseConfig.client, _bucket);
+    final pfad = await speicher.hochladen(
+      betriebId: betriebId,
+      dateiname: '$stepKey.jpg',
+      bytes: bytes,
+    );
     final takenAt = DateTime.now();
-    // Cache-Bust, damit ein ersetztes Foto sofort/nach Reload neu geladen wird.
-    final url = '$base?v=${takenAt.millisecondsSinceEpoch}';
 
     final current = state.valueOrNull ?? [];
     state = AsyncData([
       for (final s in current)
         if (s.stepKey == stepKey)
-          s.copyWith(photoUrl: url, photoTakenAt: takenAt)
+          s.copyWith(photoUrl: pfad, photoTakenAt: takenAt)
         else
           s,
     ]);
     try {
       await SupabaseConfig.client.from('construction_steps').update({
-        'photo_url': url,
+        'photo_url': pfad,
         'photo_taken_at': takenAt.toIso8601String(),
       }).eq('step_key', stepKey);
     } catch (_) {

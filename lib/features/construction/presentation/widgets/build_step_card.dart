@@ -9,6 +9,7 @@ import 'package:bienen_app/features/construction/data/models/construction_step.d
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
 import 'package:bienen_app/shared/widgets/app_button.dart';
 import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/signed_image.dart';
 
 class BuildStepCard extends ConsumerWidget {
   final BuildStepContent content;
@@ -70,6 +71,13 @@ class BuildStepCard extends ConsumerWidget {
       await ref
           .read(constructionStepsProvider.notifier)
           .attachPhoto(content.key, bytes, betriebId);
+    } on StateError {
+      // Der Metadaten-Strip konnte das Bild nicht dekodieren (z. B. HEIC).
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content:
+                Text('Format nicht unterstützt — bitte als JPEG aufnehmen.')));
+      }
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -136,6 +144,7 @@ class BuildStepCard extends ConsumerWidget {
     }
   }
 
+  /// Zeichnungen liegen als Asset in der App — kein Storage im Spiel.
   void _showImage(BuildContext context, ImageProvider image) {
     showDialog(
       context: context,
@@ -147,6 +156,22 @@ class BuildStepCard extends ConsumerWidget {
               padding: EdgeInsets.all(BeeTokens.xl),
               child: Icon(Icons.broken_image, size: 48),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Das Bau-Foto kommt aus dem privaten Bucket und wird signiert.
+  void _showFoto(BuildContext context, String wert) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        child: InteractiveViewer(
+          child: SignedImage(
+            wert: wert,
+            bucket: bauFotoBucket,
+            fit: BoxFit.contain,
           ),
         ),
       ),
@@ -342,17 +367,17 @@ class BuildStepCard extends ConsumerWidget {
                 const Spacer(),
                 if (progress.photoUrl != null)
                   GestureDetector(
-                    onTap: () =>
-                        _showImage(context, NetworkImage(progress.photoUrl!)),
+                    onTap: () => _showFoto(context, progress.photoUrl!),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6),
-                      child: Image.network(
-                        progress.photoUrl!,
-                        width: 52,
-                        height: 52,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) =>
-                            const Icon(Icons.broken_image),
+                      // Privater Bucket seit P01: photoUrl ist ein Pfad und
+                      // wird zur Laufzeit signiert (Altwerte mit voller URL
+                      // laufen direkt durch).
+                      child: SignedImage(
+                        wert: progress.photoUrl!,
+                        bucket: bauFotoBucket,
+                        breite: 52,
+                        hoehe: 52,
                       ),
                     ),
                   ),
