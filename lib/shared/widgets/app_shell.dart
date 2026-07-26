@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
+import 'package:bienen_app/core/theme/app_tokens.dart';
 
 class AppShell extends StatelessWidget {
   final Widget child;
@@ -54,55 +54,65 @@ class AppShell extends StatelessWidget {
       return Scaffold(
         body: Row(
           children: [
-            NavigationRail(
-              selectedIndex: selectedIndex,
-              onDestinationSelected: (i) =>
-                  _onDestinationSelected(context, i),
-              labelType: NavigationRailLabelType.all,
-              backgroundColor: AppColors.brown800,
-              leading: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Column(
-                  children: [
-                    const Text(
-                      '🐝',
-                      style: TextStyle(fontSize: 32),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Bienen\nArosa',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white.withAlpha(220),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
+            // Helles Schema wie die Bottom-Navigation: weisse Leiste mit
+            // Hairline-Kante, Honig als Auswahl-Akzent.
+            DecoratedBox(
+              decoration: const BoxDecoration(
+                color: BeeTokens.karte,
+                border: Border(
+                    right: BorderSide(color: BeeTokens.rand, width: 0.5)),
               ),
-              destinations: const [
-                NavigationRailDestination(
-                  icon: Icon(Icons.home_outlined),
-                  selectedIcon: Icon(Icons.home),
-                  label: Text('Cockpit'),
+              child: NavigationRail(
+                selectedIndex: selectedIndex,
+                onDestinationSelected: (i) =>
+                    _onDestinationSelected(context, i),
+                labelType: NavigationRailLabelType.all,
+                backgroundColor: BeeTokens.karte,
+                indicatorColor: BeeTokens.honigTint,
+                leading: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: BeeTokens.lg),
+                  child: Column(
+                    children: [
+                      Text(
+                        '🐝',
+                        style: TextStyle(fontSize: 32),
+                      ),
+                      SizedBox(height: BeeTokens.xs),
+                      Text(
+                        'Bienen\nArosa',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: BeeTokens.textSekundaer,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.hive_outlined),
-                  selectedIcon: Icon(Icons.hive),
-                  label: Text('Völker'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.task_alt_outlined),
-                  selectedIcon: Icon(Icons.task_alt),
-                  label: Text('Aufgaben'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.folder_open_outlined),
-                  selectedIcon: Icon(Icons.folder_open),
-                  label: Text('Projekt'),
-                ),
-              ],
+                destinations: const [
+                  NavigationRailDestination(
+                    icon: Icon(Icons.home_outlined),
+                    selectedIcon: Icon(Icons.home),
+                    label: Text('Cockpit'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.hive_outlined),
+                    selectedIcon: Icon(Icons.hive),
+                    label: Text('Völker'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.task_alt_outlined),
+                    selectedIcon: Icon(Icons.task_alt),
+                    label: Text('Aufgaben'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.folder_open_outlined),
+                    selectedIcon: Icon(Icons.folder_open),
+                    label: Text('Projekt'),
+                  ),
+                ],
+              ),
             ),
             Expanded(child: child),
           ],

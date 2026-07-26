@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bienen_app/core/theme/app_theme.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/construction/data/models/build_step_content.dart';
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
@@ -23,16 +22,22 @@ class HonigverarbeitungView extends StatelessWidget {
       child: Column(
         children: [
           Material(
-            color: AppColors.brown600,
-            child: const TabBar(
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white70,
-              indicatorColor: AppColors.amber400,
-              indicatorWeight: 3,
-              tabs: [
-                Tab(text: 'Info', icon: Icon(Icons.info_outline)),
-                Tab(text: 'Bauschritte', icon: Icon(Icons.checklist)),
-              ],
+            color: BeeTokens.karte,
+            child: Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: BeeTokens.rand, width: 0.5)),
+              ),
+              child: const TabBar(
+                labelColor: BeeTokens.textPrimaer,
+                unselectedLabelColor: BeeTokens.textGedaempft,
+                indicatorColor: BeeTokens.honig,
+                indicatorWeight: 3,
+                tabs: [
+                  Tab(text: 'Info', icon: Icon(Icons.info_outline)),
+                  Tab(text: 'Bauschritte', icon: Icon(Icons.checklist)),
+                ],
+              ),
             ),
           ),
           const Expanded(
