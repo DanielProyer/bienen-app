@@ -9,6 +9,7 @@ import 'package:bienen_app/features/auth/domain/rolle.dart';
 import 'package:bienen_app/features/aufgaben/presentation/providers/aufgaben_provider.dart';
 import 'package:bienen_app/features/auth/presentation/auth_state.dart';
 import 'package:bienen_app/features/behandlung/presentation/providers/behandlung_provider.dart';
+import 'package:bienen_app/features/benachrichtigungen/presentation/providers/benachrichtigungen_provider.dart';
 import 'package:bienen_app/features/construction/presentation/providers/construction_provider.dart';
 import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht_provider.dart';
 import 'package:bienen_app/features/fuetterung/presentation/providers/fuetterung_provider.dart';
@@ -97,6 +98,7 @@ class AuthController extends Notifier<AuthState> {
     ref.invalidate(phaenologieProvider);
     ref.invalidate(vermehrungListProvider);
     ref.invalidate(bewertungenProvider);
+    ref.invalidate(benachrichtigungenProvider);
   }
 }
 

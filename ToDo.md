@@ -1,17 +1,18 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-22 · **Phase:** P1-Fachmodule + Design-Track · **App-Version:** 1.34.0+56 (live)
+**Stand:** 2026-07-26 · **Phase:** P1-Fundament + Fachmodule · **App-Version:** 1.36.0+58 (live)
 
-**Aktueller Fokus:** ✅ **F1 Backup & Export gebaut** (v1.34.0) — manueller Export-Knopf (Projekt → „Daten & Backup") ist live und sofort nutzbar; das **automatische tägliche Offsite-Backup** (privates GitHub-Repo, GitHub Actions) ist fertig programmiert, **wartet aber auf Daniels Einrichtung am Rechner** (siehe Block direkt darunter). Davor: ✅ App-Design-Überarbeitung komplett (alle 13 Module, v1.30.0–v1.33.0), ✅ Material-Rework + Kosten-Dashboard (v1.29.0).
-**Nächste Schritte:** (1) Backup scharfschalten + ersten Lauf verifizieren · (2) dein Feldtest der App am Handy · (3) **4.9 Monitoring**, sobald die HiveWatch-Waage da ist.
+**Aktueller Fokus:** ✅ **F3 Benachrichtigungen gebaut** (täglicher Telegram-Überblick) — Migration **O01 ist live** (pg_cron/pg_net im extensions-Schema, 0 neue Advisor; Tabelle `benachrichtigungs_einstellungen` mit personenbezogener RLS + Stunden-Cron), App-Seite + Edge Function fertig auf `feat/benachrichtigungen` (281 Tests grün). **Deploy + Scharfschaltung wartet auf Daniels Rechner-Sitzung** (Supabase-CLI + Secrets, siehe Block unten). Davor: ✅ **Königinnen-Fix + Register** (v1.35.0) und ✅ **Standort-Fix + Register** (v1.36.0) — dieselbe „angelegt aber unsichtbar"-Falle geschlossen; ✅ **F1 Backup & Export** (v1.34.0, Offsite wartet ebenfalls auf Rechner); ✅ App-Design-Überarbeitung (v1.30–1.33), ✅ Material-Rework (v1.29.0).
+**Nächste Schritte (Rechner-Sitzung schaltet beide gebauten Features scharf):** (1) **Backup** einrichten + verifizieren · (2) **F3** Function deployen + Secrets + Testnachricht · (3) dein Feldtest der App am Handy · (4) **4.9 Monitoring**, sobald die HiveWatch-Waage da ist.
 
 ---
 
-## 🔴 OFFEN — von Daniel am Rechner zu erledigen: Backup scharfschalten
+## 🔴 OFFEN — von Daniel am Rechner zu erledigen (zwei gebaute Features scharfschalten)
 
-> Der Code ist fertig und live; das **automatische Offsite-Backup läuft erst nach diesen vier Schritten**. Bis dahin gibt es nur den manuellen Export-Knopf. Das lokale Repo `D:\Projekte\Bienen\bienen-backup` ist gebaut und committet, hat aber noch keinen Remote.
+### A) Backup-Offsite scharfschalten
+> Code fertig; das **automatische Offsite-Backup läuft erst nach diesen Schritten**. Bis dahin nur der manuelle Export-Knopf. Das lokale Repo `D:\Projekte\Bienen\bienen-backup` ist gebaut/committet, hat aber noch keinen Remote.
 
-1. Auf GitHub ein **privates** Repo `bienen-backup` anlegen (ohne README-/gitignore-Vorlage, **„Private"** wählen).
+1. Auf GitHub ein **privates** Repo `bienen-backup` anlegen (ohne Vorlage, **„Private"**).
 2. Verbinden + hochladen:
    ```bash
    cd /d/Projekte/Bienen/bienen-backup && git remote add origin https://github.com/DanielProyer/bienen-backup.git && git push -u origin main
@@ -19,15 +20,38 @@
 3. Repo → Settings → Secrets and variables → Actions → **New repository secret**, zweimal:
    - `SUPABASE_URL` = `https://dcdcohktxbhdxnxjvcyp.supabase.co`
    - `SUPABASE_SERVICE_ROLE_KEY` = der **service_role**-Key (Supabase → Settings → API) — *nicht* der anon-Key
-4. Actions → „Backup" → **Run workflow** (manueller Start).
+4. Actions → „Backup" → **Run workflow**.
+5. **Mit Claude verifizieren:** Lauf grün? `manifest.json`-Zeilenzahlen plausibel? `warnungen` leer? Fotos da?
 
-**Danach mit Claude verifizieren:** Lauf grün? `manifest.json` — Zeilenzahlen plausibel (`materials` 52, `weight_readings` 151, `voelker` ≥ 1)? `warnungen` leer? Fotos vorhanden? **Erst dann gilt das Backup als stehend** — ein ungeprüftes Backup ist keins.
+### B) F3 Benachrichtigungen scharfschalten
+> O01 ist bereits live (Tabelle + Cron laufen). Es fehlen nur noch: Function-Deploy, 2 Secrets, deine Telegram-Verknüpfung. **Danach muss die App noch deployt werden** (Branch `feat/benachrichtigungen` → v-Bump + `deploy.sh`) — das macht Claude in der Rechner-Sitzung, sobald die Function steht.
+
+1. **@BotFather** → `/revoke` (der zwischenzeitlich im Chat geteilte Token gilt als kompromittiert) → **neuen** Token holen.
+2. Werkzeuge installieren, falls nicht da: **Deno** (für `deno test` der Function-Logik) und **Supabase-CLI**.
+3. `cd /d/Projekte/Bienen/bienen_app && supabase functions deploy taeglicher-ueberblick` (Projekt vorher `supabase link`).
+4. Supabase → Edge Functions → Secrets: `TELEGRAM_BOT_TOKEN` (neuer Token) + `CRON_SHARED_SECRET` (z. B. `openssl rand -hex 32`).
+5. Denselben Cron-Wert im Vault ablegen: `select vault.create_secret('<DEIN_SECRET>', 'cron_shared_secret');`
+6. Dem Bot einmal schreiben → Chat-ID (z. B. via @userinfobot) → App: **Konto → Benachrichtigungen** → eintragen, speichern, **Testnachricht**.
+7. **Mit Claude:** Deno-Tests grün? App deployen (v1.37.0)? Ersten Morgenlauf am Folgetag verifizieren (`cron.job_run_details`).
 
 **Frühere Schwerpunkte (Chronik, älteste zuletzt):** ✅ **App-Design-Überarbeitung KOMPLETT (alle Module)** — Design-System (`BeeTokens`/`BeeSignal` + 9 Baukasten-Widgets, Richtung „A warm/beruhigt") + Einhand-Modell (`FormScaffold`-Bodenleiste, ≥48px, `confirmSheet`) auf **allen 13 Modulen**: v1.30.0 Kern (Cockpit/Völker/Volk-Detail/Durchsicht-Wizard/Nav, Inter lokal) → v1.31.0 (Aufgaben/Material/Bewertung/Wissen/Vermehrung) → v1.32.0 (Einstellungen/Projekt/Konto/Bau/Recherche) → v1.33.0 (**Compliance-Trio** Behandlung/Fütterung/Gesundheit, adversarial feld-für-feld verifiziert). Rein Präsentation, keine DB/Logik-Änderung. **Nächster Schritt:** **dein Feldtest am Handy** (13 Module ungesehen). Davor: ✅ **Material-Rework + Kosten-Dashboard** (v1.29.0) — Typ-Trennung **Verbrauch/Anlage/Archiv**, der gemeldete **Nachkauf-Fehlalarm gefixt** (Kauf→Bestand-Trigger N01), professionelles **Kosten-Dashboard** (Investition vs. laufend, Budget Soll/Ist, Kategorie/Jahr/Zahlungsart, je Volk). **Nächster Schritt:** dein Feldtest der Material-Ansicht (3 Segmente + Dashboard) + der Spracheingabe. Dann **4.9 Monitoring** (HiveWatch-Waage ~ab 25.07.). Davor: ✅ **Durchsicht-Spracheingabe KOMPLETT** (v1 + v2). v1 (v1.27.0): Diktat + Kommando-Mikro je Wizard-Seite. **v2 (v1.28.0): sprachgeführter Waben-Durchgang** — im Waben-Schritt „Brut Pollen Königin nächste" setzt + blättert, Mehr-Token, Auto-Anhängen am Ende. Davor: ✅ **Wissensdatenbank** (5 Kategorien / 35 Einträge + 10 lizenzsaubere Fotos, v1.21.0–1.26.1). **Nächster Schritt:** dein Feldtest der Spracheingabe (Chrome/Edge, Mikro erlauben) → Mundart-Wörter, die verschluckt werden, sammeln → Alias-Tabelle nachschärfen. Dann **4.9 Monitoring** (HiveWatch-Waage ~ab 25.07.). ✅ **Zyklus 5 Zucht** (v1.25.0, 6 Einträge, ⓘ je Bewertungs-Achse). Davor: ✅ Zyklus 4 Fütterung (v1.24.0, 8), Zyklus 3 Krankheiten (v1.23.0, 7), Zyklus 2 Varroa (v1.22.0, 7), Zyklus 1 Durchsicht+Fotos (v1.21.0, 7). **Wissensdatenbank jetzt 5 Kategorien / 35 Einträge — alle Modul-Andocke fertig** (Durchsicht, Behandlung/Diagnose, Gesundheit, Fütterung, Bewertung). **Offen:** Honig-Ernte/Recht als Stöber-Kategorien (kein Modul-Andock); Polish (Inspektionsfoto→key, HEIC). ✅ **Zyklus 1 (Modul 4.21) LIVE** (v1.21.0) — Kontext-Wissen mit SVG-Skizzen + eigenen Fotos je Betrieb, generischer `key`-Deep-Link, ⓘ-Andock in der Durchsicht. **Nächste Zyklen:** Krankheiten→Gesundheit, Fütterung→Fütterung, dann Honig-Ernte/Zucht/Recht. Davor am selben Tag: ✅ Geführte Durchsicht (v1.20.0), ✅ D2a Volk-Bewertung (v1.19.0), ✅ D1 Vermehrung (v1.18.0), ✅ C Phänologie (v1.17.0), ✅ A+B Betriebsprofil (v1.16.0). **Volk 1 ist da** (19.07., Tino Hassler) → Live-Test mit echten Daten läuft. **Nächster Fokus:** **4.9 Monitoring-Ausbau, sobald die HiveWatch-Waage da ist** (Bestellung ~ab 2026-07-25); bis dahin ggf. **Durchsicht-Spracheingabe (Zyklus 2)**, **Wissensdatenbank-Ausbau (weitere Kategorien)**, **D2b Umlarv-Kalender** oder 4.22 Kosten-Dashboard — nach Absprache.
 
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-26 (F3 Benachrichtigungen gebaut, O01 live)
+
+- [x] ✓ **F3 Benachrichtigungen — täglicher Telegram-Überblick gebaut** (Branch `feat/benachrichtigungen`, noch nicht deployt). Der Saison-Generator produziert Termine, aber nichts erinnerte. Brainstorming (Kanal Telegram statt Web-Push — der Service-Worker-Killer in `index.html` schließt Push aus; kein pg_cron/pg_net vorhanden) → Spec → Plan (6 Tasks) → subagent-getrieben.
+  - **Migration O01 LIVE** (freigegeben, angewandt + verifiziert): `pg_cron` + `pg_net` erstmals aktiviert (**pg_net ins `extensions`-Schema** verschoben → 0 neue Advisor-Findings; `net.http_post` bleibt im `net`-Schema, Cron unberührt). Tabelle `benachrichtigungs_einstellungen` mit **personenbezogener RLS** (nur eigene Zeile, kein DELETE — eine Chat-ID ist privat, auch vor Mitgliedern). Stündlicher Cron-Job `ueberblick-stuendlich` (läuft ins Leere, bis Function+Secret da sind).
+  - **Edge Function `taeglicher-ueberblick`** (Deno): reine `nachricht.ts` (Textbau + DST-feste Zeitzonen-/Doppelversand-Logik, Deno-Tests — **am Rechner auszuführen**, Deno hier nicht installiert) + `index.ts` mit zwei getrennten Eingängen (Cron via `CRON_SHARED_SECRET` = Massenversand / Nutzer-JWT = nur Testnachricht an sich selbst), Selbstheilung bei Telegram-Ausfall, 403 → aktiv=false.
+  - **App:** `lib/features/benachrichtigungen/` (Modell/Gateway/Provider + Seite `/benachrichtigungen`, Einstieg über Konto — persönlich). `zuletzt_gesendet_am` wird von der App nie geschrieben (Test hält das fest). **281/281 Tests, analyze sauber.** Der Subagent fand 3 echte Plan-Fehler (DateTime.parse-UTC, 200-trotz-nicht-gesendet, Resync-Flag) — alle korrigiert.
+  - Docs: `docs/superpowers/specs/2026-07-22-benachrichtigungen-design.md`, `…/plans/2026-07-22-benachrichtigungen.md`. Entscheid D-77.
+  - **🔴 OFFEN:** Rechner-Sitzung (Block B ganz oben) — Function-Deploy, 2 Secrets, Telegram-Verknüpfung, dann App-Deploy v1.37.0 + erster Morgenlauf verifizieren.
+
+## ✅ Erledigt — Session 2026-07-22 (Fix: Standort-Falle geschlossen, v1.36.0)
+
+- [x] ✓ **Standort-Zuordnung + Register** (v1.36.0+58). Dieselbe Falle wie bei den Königinnen (D-76): „Standort anlegen" am Volk ordnete nicht zu, es gab keine Standort-Liste → unsichtbar/nicht korrigierbar. Fix analog: `standortSpeichern` liefert die id zurück, Anlegen ordnet sofort zu (via `Volk.copyWith` — **neu**, verhindert stillen Feldverlust), neues Register `/standorte` (alle Standorte + amtliche Standnummer, „Standnr. fehlt" sichtbar; Löschen warnt, dass **Völker UND Aufgaben** ihren Standort verlieren — beide FKs `ON DELETE SET NULL`). Einstieg über Standort-Icon in der Völker-AppBar. 279/279 Tests, live.
 
 ## ✅ Erledigt — Session 2026-07-22 (Fix: Königinnen wurden nicht angezeigt, v1.35.0)
 

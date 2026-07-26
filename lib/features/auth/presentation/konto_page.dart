@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/auth/domain/auth_gateway.dart';
@@ -42,6 +43,19 @@ class KontoPage extends ConsumerWidget {
                         trailing: StatusPill(label: session.rolle.anzeige, signal: BeeSignal.info),
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: BeeTokens.lg),
+                // Persoenlich, nicht betrieblich -> gehoert ins Konto.
+                AppCard(
+                  padding: EdgeInsets.zero,
+                  child: AppListTile(
+                    key: const Key('konto_benachrichtigungen'),
+                    leading: const Icon(Icons.notifications_outlined,
+                        color: BeeTokens.textSekundaer),
+                    titel: 'Benachrichtigungen',
+                    untertitel: 'Täglicher Überblick per Telegram',
+                    onTap: () => context.go('/benachrichtigungen'),
                   ),
                 ),
                 if (session.rolle.istOwner) ...[
