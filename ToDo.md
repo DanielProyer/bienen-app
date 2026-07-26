@@ -1,6 +1,6 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-26 · **Phase:** P1-Fundament + Fachmodule · **App-Version:** 1.37.0+59 (live)
+**Stand:** 2026-07-26 · **Phase:** P1-Fundament + Fachmodule · **App-Version:** 1.38.0+60 (live)
 
 **Aktueller Fokus:** ✅ **F3 Benachrichtigungen gebaut** (täglicher Telegram-Überblick) — Migration **O01 ist live** (pg_cron/pg_net im extensions-Schema, 0 neue Advisor; Tabelle `benachrichtigungs_einstellungen` mit personenbezogener RLS + Stunden-Cron), App-Seite + Edge Function fertig auf `feat/benachrichtigungen` (281 Tests grün). **Deploy + Scharfschaltung wartet auf Daniels Rechner-Sitzung** (Supabase-CLI + Secrets, siehe Block unten). Davor: ✅ **Königinnen-Fix + Register** (v1.35.0) und ✅ **Standort-Fix + Register** (v1.36.0) — dieselbe „angelegt aber unsichtbar"-Falle geschlossen; ✅ **F1 Backup & Export** (v1.34.0, Offsite wartet ebenfalls auf Rechner); ✅ App-Design-Überarbeitung (v1.30–1.33), ✅ Material-Rework (v1.29.0).
 **Nächste Schritte (Rechner-Sitzung schaltet beide gebauten Features scharf):** (1) **Backup** einrichten + verifizieren · (2) **F3** Function deployen + Secrets + Testnachricht · (3) dein Feldtest der App am Handy · (4) **4.9 Monitoring**, sobald die HiveWatch-Waage da ist.
@@ -46,6 +46,17 @@
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-26 (F2 Teil 1: Fotos abgesichert, v1.38.0)
+
+- [x] ✓ **Kein Foto mehr ohne Login, keine Standortdaten in Fotos** (v1.38.0+60). Ausgangsbefund bei der Code-Prüfung: **3 Storage-Buckets waren `public = true`** → der Endpunkt `/storage/v1/object/public/…` lieferte **ohne Login** aus und umging die RLS komplett; betroffen u. a. `material-receipts` (**Belege = Rechnungen mit Name/Adresse**, damals leer). Zusätzlich: der Metadaten-Schutz griff **nirgends garantiert** — `image_picker_for_web` fällt bei Dekodier-Fehlern (HEIC!) **stillschweigend auf die Originaldatei** zurück, und der „Dokumente"-Pfad strippte nie.
+  - **Nachweis statt Behauptung** (Browser, ohne Session): **vorher HTTP 200** (Bild ausgeliefert) → **nachher HTTP 400** `{"error":"Bucket not found"}`.
+  - **Migration P01 (live):** 3 Buckets privat; Alt-Pfad-Policy für die 28 Objekte, die unter `<material_id>/…` statt `<betrieb_id>/…` liegen (Storage-Umzug per SQL ist **nicht** sicher — `storage.objects.name` ist der Backend-Schlüssel); `materials.photo_urls` von 26 vollen URLs auf **Pfade** umgeschrieben. 0 neue Advisor-Findings.
+  - **Ein Upload-Weg:** `FotoSpeicher` ist jetzt der einzige und strippt **alle** Metadaten per Canvas-Re-Encode (`ohne_metadaten.dart`, `dart:js_interop` + VM-Stub) — **fail-safe: wirft** bei HEIC/defekt statt das Original mit GPS durchzulassen. Die 3 Direkt-Uploads (Material-Foto, Beleg, Bau) laufen darüber; Anzeige über Signed-URLs (`SignedImage` im Baukasten). `getPublicUrl` kommt in `lib/` nicht mehr vor. **288 Tests grün**, `flutter build web --release` als js-interop-Beweis.
+  - **🔴 Regress + Fix (P02), ehrlich dokumentiert:** Nach P01 waren die 26 Produktfotos **nicht mehr sichtbar**. Ursache war **mein Fehler in P01**: unqualifiziertes `storage.foldername(name)` in der korrelierten Subquery band `name` an **`materials.name`** (innere Tabelle hat Vorrang) statt an `storage.objects.name` → Policy verglich Material-ID mit Material-*Namen* → immer falsch. **P02** qualifiziert `objects.name` explizit; verifiziert als Rolle `authenticated`: **26 sichtbar** (vorher 0), öffentlicher Zugriff weiter gesperrt. Siehe **D-78** für die Test-Lehre.
+  - **4 Lücken meines Plans fand der Subagent** — die wichtigste betrifft F1: die 28 Alt-Objekte waren **nie im Backup-Export** (der Export listet nur `<betrieb_id>/…`) → behoben (`altMediaPfadeAus`, 4 Tests). Ebenso: Löschpfad hätte künftig Waisen hinterlassen, PDF-Weg tote Links geschrieben, eine dritte Anzeigestelle (Listen-Vorschau) fehlte.
+  - Docs: `docs/superpowers/specs/2026-07-26-datenschutz-fotos-design.md`, `…/plans/2026-07-26-fotos-privat.md`. Entscheide D-78.
+  - **🔴 OFFEN — EXIF-Endnachweis (Handy, schnell):** ein Foto **mit Standortdaten** hochladen (Kamera *und* „Dokumente"), dann prüfe ich die Datei im Storage auf GPS. Bis dahin gilt der Strip als *plausibel*, nicht *bewiesen*. Wird ein iPhone-HEIC abgelehnt („Format nicht unterstützt"), ist das beabsichtigt — bitte melden. Ebenfalls offen: 2 Waisen-Objekte im Storage aufräumen (Material gelöscht, für niemanden lesbar — kein Sicherheitsthema).
 
 ## ✅ Erledigt — Session 2026-07-26 (Design-Reste vereinheitlicht, v1.37.0)
 
