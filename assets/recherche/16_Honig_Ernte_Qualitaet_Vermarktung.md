@@ -76,6 +76,10 @@ Ein häufiges Missverständnis: „Rhododendron-Honig ist giftig." Die dokumenti
 
 ## 3. Reife & Wassergehalt — der Kern der Qualität
 
+![Tragbares Handrefraktometer](bilder/fund/tragbares_handrefraktometer_wym_5_der_deut.jpg)
+
+*Das Handrefraktometer entscheidet über Erntereife — Augenmass genügt hier nicht. Wenige Tropfen auf das Prisma, Wert ablesen: Über 18 % Wasser droht Gärung, die Goldsiegel-Grenze liegt bei 18,5 %. Foto: CC BY, via Wikimedia Commons.*
+
 Der **Wassergehalt** ist der wichtigste einzelne Qualitäts- und Haltbarkeitsparameter. Zu feuchter Honig **gärt** (osmotolerante Hefen vermehren sich, Bildung von Alkohol/Essigsäure → Honig verdirbt).
 
 ### 3.1 Grenz- und Richtwerte (Schweiz)

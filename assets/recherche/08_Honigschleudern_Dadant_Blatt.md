@@ -8,6 +8,10 @@
 - **Antrieb:** NUR motorisiert
 - **Standort:** Arosa 1570m → Transport/Gewicht wichtig!
 
+![Offene Edelstahl-Radialschleuder mit Blick in den Korb](bilder/fund/honigschleuder_leer_offen_edelstahl_vierwa.jpg)
+
+*Radialschleuder mit offenem Deckel. Entscheidend beim Kauf ist genau das hier Sichtbare: Der Korb muss die Wabenlänge aufnehmen — Dadant-Rahmen sind mit 435 mm deutlich breiter als Zander, und ein zu kleiner Korb macht die Schleuder für dieses Format unbrauchbar. Foto: CC BY, via Wikimedia Commons.*
+
 ## Schleudertypen
 
 ### Radialschleuder (EMPFOHLEN für Halbrahmen)

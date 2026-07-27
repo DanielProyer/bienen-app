@@ -152,6 +152,10 @@ Das **Jenter- bzw. Nicot-System** umgeht das heikle manuelle Umlarven mit dem Um
 
 ### 4.4 Stufe 3 — Klassisches Umlarven mit dem Zuchtrahmen
 
+![Drei Weiselzellen an der Wabe in unterschiedlichen Stadien](bilder/fund/drei_weiselzellen_auf_der_wabe_in_untersch.jpg)
+
+*Weiselzellen am Wabenrand, in verschiedenen Reifestadien. An ihnen liest man den Zeitplan ab: Vom Verdeckeln bis zum Schlupf bleiben etwa acht Tage — genau das Fenster, in dem eine Zelle noch umgesetzt werden kann. Foto: CC BY, via Wikimedia Commons.*
+
 Der „Königsweg" der Berufszucht, für Eigenbedarf meist Overkill, aber gut zu kennen.
 
 **Werkzeug:** Umlarvlöffel (chinesischer Umlarvlöffel mit Federzunge empfohlen), Zuchtrahmen mit Zellenleisten und Weiselnäpfchen (Kunststoff oder gewachst), gute Lichtquelle/Lupe, warmer, zugfreier Raum (**> 25 °C, ~50–70 % Luftfeuchte**).
@@ -218,6 +222,10 @@ Referenzplan für **Jenter/Nicot oder Umlarven** mit Starter-Finisher. „Tag 0"
 ---
 
 ## 7. Begattung — Standbegattung, Belegstelle, instrumentelle Besamung
+
+![Einsetzen einer Weiselzelle in ein Begattungskästchen](bilder/fund/einsetzen_einer_weiselzelle_in_ein_begattu.jpg)
+
+*Eine schlupfreife Weiselzelle wird in ein Begattungskästchen gesetzt. Der Handgriff ist heikel: Die Zelle darf nicht erschüttert und nicht gekippt werden, sonst stirbt die Puppe. Foto: CC BY, via Wikimedia Commons.*
 
 Die Königin paart sich **nur in den ersten ~1–3 Lebenswochen**, auf 1–3 Hochzeitsflügen mit **10–20 Drohnen**, in **Drohnensammelplätzen** in der Luft (typ. 10–40 m Höhe, oft mehrere km vom Stand entfernt). Die Spermien werden lebenslang in der Spermatheca gespeichert. **Wo sie sich paart, bestimmt die väterliche Genetik** — hier entscheidet sich, ob die Nachzucht „rein" oder „durchmischt" ist.
 
