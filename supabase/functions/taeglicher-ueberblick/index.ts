@@ -6,9 +6,15 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { baueNachricht, istSendezeit, lokalDatumStunde, type Aufgabe } from './nachricht.ts';
 import { corsKopf } from './cors.ts';
+import { waehleServiceKey } from './schluessel.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+// Moderner Key bevorzugt, Legacy als Rueckfall — laeuft vor UND nach dem
+// Deaktivieren der Legacy-Keys (siehe schluessel.ts).
+const SERVICE_KEY = waehleServiceKey(
+  Deno.env.get('SUPABASE_SECRET_KEYS'),
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
+);
 const BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN')!;
 const CRON_SECRET = Deno.env.get('CRON_SHARED_SECRET')!;
 const APP_URL = 'https://danielproyer.github.io/bienen-app/';
