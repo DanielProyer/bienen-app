@@ -186,6 +186,14 @@ Die alpine Kälte ist der **natürliche Verbündete**: Waben nach der letzten Sc
 
 ## 8. Der Wachskreislauf — Schmelzen, Klären, Verarbeiten
 
+![Wachs ausschmelzen im Freien mit Dampfschmelzer](bilder/fund/wachs_ausschmelzen_im_freien_grosser_dampf.jpg)
+
+*Wachsschmelzen mit Dampf, aufgebaut im Freien. Das hat einen handfesten Grund: Wachsdampf kondensiert an jeder kalten Fläche, und ausgelaufenes Wachs bekommt man aus Küchenfugen praktisch nicht mehr heraus. Foto: CC BY, via Wikimedia Commons.*
+
+![Mittelwand-Herstellung am Prägewalzwerk](bilder/fund/mittelwand_herstellung_praegewalzwerk_mitt.jpg)
+
+*Das andere Ende des Kreislaufs: Aus geklärtem Wachs werden im Prägewalzwerk neue Mittelwände. Wer eigenes Wachs einschickt und Mittelwände zurückbekommt, hält den Kreislauf geschlossen — die Voraussetzung dafür, dass keine fremden Rückstände eingetragen werden (Kap. 10). Foto: CC BY, via Wikimedia Commons.*
+
 Der Wachskreislauf verwandelt anfallendes Altwachs in neue Mittelwände. Die Rohstoffquellen und ihre Qualität:
 
 | Wachsquelle | Reinheit | Verwendung |

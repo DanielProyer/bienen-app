@@ -59,6 +59,10 @@ Ausrüstungsliste und Bezug: siehe `03_Erstausstattung_Einkaufsliste.md`. Hier s
 
 ### 2.1 Stockmeissel (Hebemeissel) — das meistgenutzte Werkzeug
 
+![Stockmeissel beim Abkratzen der Oberträger](bilder/fund/einsatz_des_stockmeissels_reinigen_abkratz.jpg)
+
+*Der Stockmeissel im häufigsten Einsatz: Propolis und Wachs von den Oberträgern lösen. Ohne dieses Abkratzen verkleben die Rähmchen mit der Zeit so fest, dass sie beim Ziehen ruckeln — und ruckelnde Waben quetschen Bienen. Foto: Joe DeLuca, CC BY 2.0, via Wikimedia Commons.*
+
 Ein flacher Stahlhebel, an einer Seite ~90° abgewinkelt und geschärft, an der anderen gerade und ggf. mit Nagelzieher-Kerbe. Funktionen:
 
 - **Zargen/Deckel lösen:** Propolis verklebt alle Fugen; der Meissel bricht sie an der Ecke auf.
@@ -69,6 +73,10 @@ Ein flacher Stahlhebel, an einer Seite ~90° abgewinkelt und geschärft, an der 
 *Praxis:* Immer in der Hand behalten (nicht ablegen und suchen). Ein **Edelstahl-Modell** hält Jahrzehnte (→ Material-Präferenz «Qualität vor Preis»). Der «Amerikanische» Typ mit Rähmchenheber-Haken erleichtert das Ziehen dicht sitzender Waben.
 
 ### 2.2 Smoker (Rauchapparat)
+
+![Imker beräuchert eine geöffnete Beute](bilder/fund/imker_beraeuchert_eine_geoeffnete_beute_sm.jpg)
+
+*Rauch über der geöffneten Beute. Er beruhigt nicht durch Betäubung, sondern unterbricht die Alarmpheromone und lenkt die Bienen zum Futteraufnehmen ab — deshalb sparsam und aus Abstand, nicht in die Gassen hineinblasen. Foto: Alabama Extension, CC0, via Wikimedia Commons.*
 
 Blechzylinder mit Feuerraum, Deckel-Tülle und Blasebalg. Rauch beruhigt das Volk auf zwei Wegen: Er dämpft die **Alarmpheromon-Kommunikation** (Isopentylacetat) und löst einen **Volllauf-Reflex** aus — die Bienen nehmen Honig auf (Fluchtvorsorge) und werden dadurch stichträger und ruhiger.
 

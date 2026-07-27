@@ -52,6 +52,10 @@ Völkervermehrung ist für das Projekt Arosa **kein Nebenprodukt, sondern der Mo
 
 ## 2. Biologische Grundlagen: Schwarmtrieb, Weiselzellen, Nachschaffung
 
+![Notweiselzelle mitten auf der Wabenfläche](bilder/fund/notweiselzelle_emergency_queen_cell_von_de.jpg)
+
+*Eine Nachschaffungszelle — angelegt aus einer bereits bestifteten Arbeiterinnenzelle **mitten auf der Wabenfläche**. Genau daran unterscheidet man sie von Schwarmzellen, die am Wabenrand hängen: Die Lage verrät, ob das Volk schwärmen will oder seine Königin verloren hat. Foto: CC BY, via Wikimedia Commons.*
+
 ### Der Schwarmtrieb — warum Völker schwärmen
 
 Das Schwärmen ist die **natürliche Vermehrung des Bienenvolks als Superorganismus**: Das Volk teilt sich, die alte Königin zieht mit einem Teil der Bienen aus, im Muttervolk schlüpft eine neue Königin. Auslöser sind ein Bündel von Faktoren, die im Frühsommer zusammenkommen:
@@ -105,6 +109,10 @@ Ein verbreitetes Missverständnis ist, dass Höhenlage per se „schlechte" Bega
 ---
 
 ## 3. Der natürliche Schwarm — Ablauf, Einfangen, Einschlagen
+
+![Schwarm läuft in die vorbereitete Beute ein](bilder/fund/schwarm_beim_einlaufen_in_die_beute_quelle.jpg)
+
+*Ein Schwarm läuft in die vorbereitete Beute ein. Dass er von selbst hineinläuft statt wieder aufzufliegen, ist die verlässlichste Erfolgskontrolle beim Einschlagen — dann ist die Königin drin. Foto: CC BY, via Wikimedia Commons.*
 
 Auch wenn Schwärmen **verhindert** werden soll (Kap. 4), muss man den Ablauf kennen — für den Fall, dass es doch passiert (eigener Schwarm oder fremder Schwarm am Stand).
 
