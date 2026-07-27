@@ -70,7 +70,7 @@ Seit **2013** müssen **alle** Bienenhalter ihre Bienenstände registrieren (Ric
 
 In Graubünden müssen **alle besetzten UND unbesetzten** Bienenstände gemeldet werden. Das erfolgt über das kantonale Online-Formular **«Mutation Bienenstände»** (eGovernment-Portal des Kantons, `eportal.gr.ch`, JaxForms `ALT_Bienenstaende`). Gemeldet werden u. a.:
 
-- **Standort** (Adresse, Parzelle/Koordinaten) — bei euch: Maiensäss Tannen 85a, Arosa
+- **Standort** (Adresse, Parzelle/Koordinaten) — bei euch: Maiensäss, Arosa
 - **Halterdaten** (Daniel + Lorena / Betrieb)
 - **Anzahl Völker** am Standort
 - **Status** (besetzt/unbesetzt), Auf-/Abgabe eines Standorts (deshalb «Mutation»)
@@ -102,7 +102,7 @@ Mindestens zu führen:
 | **Volk-ID** | eindeutige Bezeichnung/Nummer | Volk 1 |
 | **Herkunft / Ziel** | von wem / wohin (Name, Adresse, TVD-Nr. der Gegenseite) | Tino Hassler, Maladers |
 | **Anzahl** | betroffene Völker | 1 |
-| **Standort** | an welchem gemeldeten Stand | Tannen 85a |
+| **Standort** | an welchem gemeldeten Stand | Heimstand |
 | **Bemerkung** | Grund (Kauf, Kunstschwarm, Winterverlust …) | Buckfast-Ableger |
 
 Empfehlung über die reine Pflicht hinaus: **Königin-Herkunft/Jahrgang/Rasse** und **Zuchtlinie** mitführen — das braucht ihr ohnehin für Buckfast-Selektion und Umweiselung (siehe App-Zuchtbuch, Kapitel 12).

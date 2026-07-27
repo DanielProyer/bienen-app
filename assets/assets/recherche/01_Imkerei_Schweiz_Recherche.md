@@ -1,7 +1,7 @@
 # Imkerei-Recherche: Projekt Bienen Arosa (1570 m ü.M.)
 
 > Recherche-Stand: 2. Mai 2026
-> Standort: Tannen 85a, Arosa, Graubünden (1570 m ü.M.)
+> Standort: Arosa, Graubünden (1570 m ü.M.)
 
 ---
 
@@ -287,7 +287,7 @@ Für 1570 m geschätzte Haupttracht: **Mitte Juni bis Mitte/Ende Juli**
 - **Wasserquelle:** Bach/Quelle/Tränke in <200 m Entfernung
 - **Erreichbarkeit:** Mit Auto im Sommer/Herbst für Materialtransport
 
-### Empfehlung für Tannen 85a
+### Empfehlung für den Standort
 
 - **Südseite** des Maiensässgebäudes oder waldnaher Südrand
 - Windschutz durch Gebäude und/oder Waldrand

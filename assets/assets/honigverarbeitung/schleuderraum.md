@@ -1,6 +1,6 @@
 # Honigverarbeitung - Schleuderraum
 
-Der Honigverarbeitungs- und Schleuderraum für die Imkerei Arosa entsteht im Maiensäss Tannen 85a auf 1570 m ü.M. (Graubünden). Er ist die Infrastruktur-Basis für die Ernte des Bergblütenhonigs aus dem Dadant-Blatt-10er-System (Rasse Buckfast, Ziel Bio-Honig).
+Der Honigverarbeitungs- und Schleuderraum für die Imkerei Arosa entsteht im Maiensäss auf 1570 m ü.M. (Graubünden). Er ist die Infrastruktur-Basis für die Ernte des Bergblütenhonigs aus dem Dadant-Blatt-10er-System (Rasse Buckfast, Ziel Bio-Honig).
 
 **Zeitplan:** Einrichtung von **2026 bis Frühling 2027**, damit der Raum rechtzeitig zur **ersten Honigernte im Sommer 2027** betriebsbereit ist. Ausgelegt wird der Raum für den geplanten Ausbaupfad **2 → 4 (bis 2028) → max. 8 Völker (bis 2030)**.
 
@@ -239,7 +239,7 @@ Für Primärproduktion genügt die **gute Hygienepraxis** (keine Fliesen-bis-Dec
 ### Freiwillige Zusatzlabels
 
 - **apisuisse-Goldsiegel** (empfehlenswert für Bergsommerhonig): strenger als Gesetz – **Wassergehalt max. 18,5 %**, **HMF max. 15 mg/kg**, dokumentierte Selbstkontrolle. Betriebsprüfung durch Honigkontrolleur, **CHF 30/Kontrolle**. Der kühle Bergstandort + späte Tracht begünstigen niedrigen Wassergehalt → gut erreichbar (Refraktometer-Kontrolle vorausgesetzt).
-- **Bio-Honig** (Ziel des Projekts): zusätzliche freiwillige Zertifizierung (Bio-Verordnung oder Bio Suisse Knospe). Kritischster Punkt: im **3-km-Radius** mind. **50 % Bio-/ÖLN-Flächen/Wildpflanzen/Wald** – für Tannen 85a vorab per GIS/Standortbestätigung prüfen. Beute Naturholz (kein Kunststoff), Bio-Wachs, Winterfutter Bio-Zucker/-Sirup, Varroa nur mit organischen Säuren/Thymol (deckt sich mit Formivar/Oxuvar/Thymovar), Verarbeitung nicht über ~40 °C. Jährliche Kontrolle durch akkreditierte Stelle (z. B. bio.inspecta), grob einige hundert CHF/Jahr – Kosten/Umstellungsfristen **direkt beim Zertifizierer einholen**.
+- **Bio-Honig** (Ziel des Projekts): zusätzliche freiwillige Zertifizierung (Bio-Verordnung oder Bio Suisse Knospe). Kritischster Punkt: im **3-km-Radius** mind. **50 % Bio-/ÖLN-Flächen/Wildpflanzen/Wald** – für den Standort vorab per GIS/Standortbestätigung prüfen. Beute Naturholz (kein Kunststoff), Bio-Wachs, Winterfutter Bio-Zucker/-Sirup, Varroa nur mit organischen Säuren/Thymol (deckt sich mit Formivar/Oxuvar/Thymovar), Verarbeitung nicht über ~40 °C. Jährliche Kontrolle durch akkreditierte Stelle (z. B. bio.inspecta), grob einige hundert CHF/Jahr – Kosten/Umstellungsfristen **direkt beim Zertifizierer einholen**.
 
 ### Checkliste – Schritt für Schritt
 
