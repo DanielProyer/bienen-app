@@ -5,6 +5,7 @@
 // Deploy: supabase functions deploy taeglicher-ueberblick
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { baueNachricht, istSendezeit, lokalDatumStunde, type Aufgabe } from './nachricht.ts';
+import { corsKopf } from './cors.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -92,11 +93,27 @@ Deno.serve(async (req) => {
   const jetzt = new Date();
   const cronSecret = req.headers.get('x-cron-secret');
 
+  // CORS: der Browser verlangt die Freigabe auf JEDER Antwort, nicht nur auf
+  // dem Preflight. Fehlt sie auf der echten Antwort, verwirft er sie ebenso.
+  const cors = corsKopf(
+    req.headers.get('Origin'),
+    req.headers.get('Access-Control-Request-Headers'),
+  );
+  const text = (koerper: string, status: number) =>
+    new Response(koerper, { status, headers: cors });
+  const json = (koerper: unknown) =>
+    new Response(JSON.stringify(koerper), {
+      headers: { ...cors, 'Content-Type': 'application/json' },
+    });
+
+  // ── Preflight ──
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
+
   // ── Eingang 1: Cron (Massenversand) ──
   if (cronSecret && CRON_SECRET && cronSecret === CRON_SECRET) {
     const { data, error } = await admin
       .from('benachrichtigungs_einstellungen').select('*').eq('aktiv', true);
-    if (error) return new Response(`DB-Fehler: ${error.message}`, { status: 500 });
+    if (error) return text(`DB-Fehler: ${error.message}`, 500);
     const bericht: Record<string, string> = {};
     for (const e of (data ?? []) as Einstellung[]) {
       try {
@@ -105,21 +122,21 @@ Deno.serve(async (req) => {
         bericht[e.user_id] = `fehler: ${err}`; // einer scheitert != Abbruch
       }
     }
-    return Response.json({ modus: 'cron', bericht });
+    return json({ modus: 'cron', bericht });
   }
 
   // ── Eingang 2: Eingeloggter Nutzer (nur Testnachricht an sich selbst) ──
   const auth = req.headers.get('Authorization') ?? '';
   const jwt = auth.startsWith('Bearer ') ? auth.slice(7) : '';
-  if (!jwt) return new Response('Nicht berechtigt', { status: 401 });
+  if (!jwt) return text('Nicht berechtigt', 401);
   const { data: userData, error: userErr } = await admin.auth.getUser(jwt);
-  if (userErr || !userData.user) return new Response('Nicht berechtigt', { status: 401 });
+  if (userErr || !userData.user) return text('Nicht berechtigt', 401);
 
   const { data, error } = await admin
     .from('benachrichtigungs_einstellungen').select('*')
     .eq('user_id', userData.user.id).maybeSingle();
-  if (error) return new Response(`DB-Fehler: ${error.message}`, { status: 500 });
-  if (!data) return new Response('Keine Einstellungen gefunden', { status: 404 });
+  if (error) return text(`DB-Fehler: ${error.message}`, 500);
+  if (!data) return text('Keine Einstellungen gefunden', 404);
 
   try {
     const status = await bediene(data as Einstellung, jetzt, true);
@@ -127,8 +144,8 @@ Deno.serve(async (req) => {
       await admin.from('benachrichtigungs_einstellungen')
         .update({ aktiv: true }).eq('id', (data as Einstellung).id);
     }
-    return Response.json({ modus: 'test', status });
+    return json({ modus: 'test', status });
   } catch (err) {
-    return new Response(`Fehler: ${err}`, { status: 500 });
+    return text(`Fehler: ${err}`, 500);
   }
 });
