@@ -656,12 +656,12 @@ const kWissensKatalog = <WissensEintrag>[
         'Täuschungsschutz, Rückverfolgbarkeit und Dokumentation — im Umfang angepasst an Risiko und '
         'Produktionsmenge. Für die Primärproduktion und Direktvermarkter kleiner Mengen ist kein HACCP-System '
         'nötig, Kleinstbetriebe bis 9 Mitarbeitende haben erleichterte Anforderungen. Konkret: Erntemengen '
-        'dokumentieren, jedem Warenlos eine Losnummer geben, je Los ein Rückstellmuster im Originalgebinde kühl '
-        'und dunkel bis Ende der Haltbarkeitsgarantie aufbewahren (das Goldsiegel verlangt dafür mindestens '
-        '250 g), Räume und Geräte sauber '
+        'dokumentieren, jedem Warenlos eine Losnummer geben und je Los ein Rückstellmuster aufbewahren (das '
+        'Goldsiegel verlangt mindestens 250 g im Originalgebinde, kühl und dunkel bis Ende der '
+        'Haltbarkeitsgarantie), Räume und Geräte sauber '
         'halten und die Selbstkontrolle jährlich schriftlich festhalten (3 Jahre). Wer nur Imkereierzeugnisse '
-        'herstellt, braucht keine kantonale Bewilligung; ob und wie die Tätigkeit gemeldet werden muss, klärt die '
-        'zuständige kantonale Stelle. '
+        'herstellt, braucht keine kantonale Bewilligung — die Honigproduktion gilt aber als Primärproduktion und '
+        'ist der zuständigen kantonalen Stelle zu melden (VPrP Art. 3); wie gemeldet wird, regelt der Kanton. '
         'Richtwert und keine Rechtsauskunft — verbindlich ist die zuständige kantonale Fachstelle.',
     skizze: 'assets/wissen/recht_selbstkontrolle.svg',
     mehr: [
@@ -674,7 +674,7 @@ const kWissensKatalog = <WissensEintrag>[
   WissensEintrag(
     key: 'wandern_melden', titel: 'Verstellen & Wandern melden', kategorie: 'recht',
     kurzinfo: 'Bevor Bienen in einen anderen Inspektionskreis verbracht werden, ist das dem Bieneninspektor des '
-        'alten UND des neuen Standorts zu melden und der Bescheid abzuwarten (TSV Art. 19a Abs. 2) — nötigenfalls '
+        'alten UND des neuen Standorts zu melden (TSV Art. 19a Abs. 2) und der Bescheid abzuwarten — nötigenfalls '
         'wird vorher eine Gesundheitskontrolle angeordnet. Der Verordnungstext nennt keine feste Frist und keine '
         'Schriftform mehr; ein Vorlauf von rund 10 Tagen ist eine gängige Merkblatt-Empfehlung, keine gesetzliche '
         'Frist. Gemeldet wird über beetraffic.ch, telefonisch oder per E-Mail — nicht über die '
@@ -696,7 +696,8 @@ const kWissensKatalog = <WissensEintrag>[
     key: 'bio_knospe', titel: 'Bio/Knospe: mehr als das Gesetz', kategorie: 'recht',
     kurzinfo: 'Bio ist freiwillig — aber die Dokumentation muss rückwirkend stimmen, deshalb von Anfang an '
         'bio-konform führen. Die Knospe verlangt mehr als das Gesetz: im 3-km-Umkreis mindestens 50 % Bio-/ÖLN- '
-        'oder Wildflächen, Fütterung mit Bio-Sirup, angereichert mit mindestens 5 % eigenem Bio-Honig, gegen '
+        'oder Wildflächen, Fütterung nur mit biozertifiziertem Futter (Bio-Zucker oder -Sirup, Bio-Futterteig, '
+        'eigener Bio-Honig), gegen '
         'Varroa nur organische Säuren (Ameisen-, Milch-, Oxalsäure) und Thymol statt synthetischer Akarizide, und '
         'einen Bio-Wachskreislauf mit einem Thymol-Grenzwert von 5 mg/kg — deutlich strenger als die 500 mg/kg der '
         'Bio-Verordnung des Bundes. Vermarktet werden darf Knospe-Honig in der Regel erst ab der ersten Ernte im '
