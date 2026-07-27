@@ -149,6 +149,14 @@ class RechercheOverviewPage extends StatelessWidget {
             ),
             _buildTopicCard(
               context,
+              title: 'Varroa-Zählung per Foto',
+              subtitle:
+                  'Forschungsstand, verfügbare Lösungen, eigene Messungen (35 px/mm)',
+              icon: Icons.center_focus_strong,
+              route: '/recherche/varroa-bildzaehlung',
+            ),
+            _buildTopicCard(
+              context,
               title: 'Honig: Ernte bis Vermarktung',
               subtitle: 'Reife, Schleudern, Qualität, Deklaration, Verkauf',
               icon: Icons.water_drop,
