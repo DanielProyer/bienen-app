@@ -103,7 +103,7 @@
   - **Edge Function `taeglicher-ueberblick`** (Deno): reine `nachricht.ts` (Textbau + DST-feste Zeitzonen-/Doppelversand-Logik, Deno-Tests — **am Rechner auszuführen**, Deno hier nicht installiert) + `index.ts` mit zwei getrennten Eingängen (Cron via `CRON_SHARED_SECRET` = Massenversand / Nutzer-JWT = nur Testnachricht an sich selbst), Selbstheilung bei Telegram-Ausfall, 403 → aktiv=false.
   - **App:** `lib/features/benachrichtigungen/` (Modell/Gateway/Provider + Seite `/benachrichtigungen`, Einstieg über Konto — persönlich). `zuletzt_gesendet_am` wird von der App nie geschrieben (Test hält das fest). **281/281 Tests, analyze sauber.** Der Subagent fand 3 echte Plan-Fehler (DateTime.parse-UTC, 200-trotz-nicht-gesendet, Resync-Flag) — alle korrigiert.
   - Docs: `docs/superpowers/specs/2026-07-22-benachrichtigungen-design.md`, `…/plans/2026-07-22-benachrichtigungen.md`. Entscheid D-77.
-  - **🔴 OFFEN:** Rechner-Sitzung (Block B ganz oben) — Function-Deploy, 2 Secrets, Telegram-Verknüpfung, dann App-Deploy **v1.40.0** + erster Morgenlauf verifizieren.
+  - **Nachtrag 2026-07-27:** Function ist deployt, App-Seite war seit **v1.39.0** schon live → **kein eigener App-Deploy nötig**, v1.40.0 bleibt frei. Offen nur noch Bot-Token, Cron-Secret (Function-Secret **und** Vault) und Chat-ID (Block B oben), danach Morgenlauf verifizieren.
 
 ## ✅ Erledigt — Session 2026-07-22 (Fix: Standort-Falle geschlossen, v1.36.0)
 
