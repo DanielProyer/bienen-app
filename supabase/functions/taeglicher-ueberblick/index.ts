@@ -21,17 +21,43 @@ interface Einstellung {
   sende_stunde: number; zeitzone: string; zuletzt_gesendet_am: string | null;
 }
 
-/** Telegram-Versand. Gibt 'ok' | 'blockiert' | 'fehler' zurueck. */
-async function sendeTelegram(chatId: string, text: string): Promise<'ok' | 'blockiert' | 'fehler'> {
-  const r = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
-  });
+/**
+ * Telegram-Versand.
+ *
+ * Der Fehlerfall traegt die Ursache MIT (`fehler: 401 Unauthorized`), nicht
+ * nur das Wort "fehler". Vorher landete sie ausschliesslich in console.error —
+ * und Konsolenausgaben sind ueber die Log-API nicht abrufbar, sodass in der
+ * App nur ein nichtssagendes "(fehler)" ankam. Telegram-Antworten enthalten
+ * den Token nicht, das Weitergeben ist also unbedenklich.
+ *
+ * Typische Faelle: 401 Unauthorized = Bot-Token fehlt/falsch ·
+ * 400 "chat not found" = Chat-ID falsch oder dem Bot nie geschrieben ·
+ * 404 = Token unvollstaendig (URL wird ungueltig).
+ */
+async function sendeTelegram(
+  chatId: string,
+  text: string,
+): Promise<'ok' | 'blockiert' | `fehler: ${string}`> {
+  if (!BOT_TOKEN) return 'fehler: TELEGRAM_BOT_TOKEN ist nicht gesetzt';
+  let r: Response;
+  try {
+    r = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
+    });
+  } catch (err) {
+    return `fehler: Telegram nicht erreichbar (${err})`;
+  }
   if (r.ok) return 'ok';
   if (r.status === 403) return 'blockiert'; // Bot vom Nutzer blockiert
-  console.error(`Telegram ${r.status}: ${await r.text()}`);
-  return 'fehler';
+  let grund = '';
+  try {
+    const j = JSON.parse(await r.text());
+    grund = j?.description ?? '';
+  } catch { /* kein JSON — Status genuegt */ }
+  console.error(`Telegram ${r.status}: ${grund}`);
+  return `fehler: Telegram ${r.status}${grund ? ` — ${grund}` : ''}`;
 }
 
 /** Offene Aufgaben des Betriebs bis einschliesslich heute (lokales Datum). */
@@ -81,7 +107,9 @@ async function bediene(e: Einstellung, jetzt: Date, test: boolean): Promise<stri
       .update({ aktiv: false }).eq('id', e.id);
     return 'blockiert-deaktiviert';
   }
-  if (ergebnis === 'fehler') return 'fehler'; // zuletzt_gesendet_am BLEIBT -> naechste Stunde erneut
+  // Fehler samt Ursache durchreichen; zuletzt_gesendet_am BLEIBT ungesetzt,
+  // damit die naechste Stunde es erneut versucht (Selbstheilung).
+  if (ergebnis !== 'ok') return ergebnis;
   if (!test) {
     await admin.from('benachrichtigungs_einstellungen')
       .update({ zuletzt_gesendet_am: heute }).eq('id', e.id);
