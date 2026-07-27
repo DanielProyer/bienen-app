@@ -1,13 +1,21 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-26 · **Phase:** P1-Fundament + Fachmodule · **App-Version:** 1.38.0+60 (live)
+**Stand:** 2026-07-27 · **Phase:** P1-Fundament + Fachmodule · **App-Version:** **1.38.0+60 live** · 1.39.0+61 gebaut + auf master gemerged, **Deploy ausstehend** (siehe Block D)
 
-**Aktueller Fokus:** ✅ **F3 Benachrichtigungen gebaut** (täglicher Telegram-Überblick) — Migration **O01 ist live** (pg_cron/pg_net im extensions-Schema, 0 neue Advisor; Tabelle `benachrichtigungs_einstellungen` mit personenbezogener RLS + Stunden-Cron), App-Seite + Edge Function fertig auf `feat/benachrichtigungen` (281 Tests grün). **Deploy + Scharfschaltung wartet auf Daniels Rechner-Sitzung** (Supabase-CLI + Secrets, siehe Block unten). Davor: ✅ **Königinnen-Fix + Register** (v1.35.0) und ✅ **Standort-Fix + Register** (v1.36.0) — dieselbe „angelegt aber unsichtbar"-Falle geschlossen; ✅ **F1 Backup & Export** (v1.34.0, Offsite wartet ebenfalls auf Rechner); ✅ App-Design-Überarbeitung (v1.30–1.33), ✅ Material-Rework (v1.29.0).
+**Aktueller Fokus:** ✅ **Wissens-Stöberkategorien fertig** — „Honig & Ernte" und „Recht & Pflichten" mit je 7 Einträgen + 14 Skizzen, fachlich gegen die Quell-Recherchen geprüft (4 Korrekturen, siehe D-80). Die Wissensdatenbank hat damit **7 Kategorien / 49 Einträge**. Der Deploy scheiterte am fehlenden Netz in der Sandbox und ist nachzuholen. Davor: ✅ **F3 Benachrichtigungen gebaut** (täglicher Telegram-Überblick) — Migration **O01 ist live** (pg_cron/pg_net im extensions-Schema, 0 neue Advisor; Tabelle `benachrichtigungs_einstellungen` mit personenbezogener RLS + Stunden-Cron), App-Seite + Edge Function fertig auf `feat/benachrichtigungen` (281 Tests grün). **Deploy + Scharfschaltung wartet auf Daniels Rechner-Sitzung** (Supabase-CLI + Secrets, siehe Block unten). Davor: ✅ **Königinnen-Fix + Register** (v1.35.0) und ✅ **Standort-Fix + Register** (v1.36.0) — dieselbe „angelegt aber unsichtbar"-Falle geschlossen; ✅ **F1 Backup & Export** (v1.34.0, Offsite wartet ebenfalls auf Rechner); ✅ App-Design-Überarbeitung (v1.30–1.33), ✅ Material-Rework (v1.29.0).
 **Nächste Schritte (Rechner-Sitzung schaltet beide gebauten Features scharf):** (1) **Backup** einrichten + verifizieren · (2) **F3** Function deployen + Secrets + Testnachricht · (3) dein Feldtest der App am Handy · (4) **4.9 Monitoring**, sobald die HiveWatch-Waage da ist.
 
 ---
 
 ## 🔴 OFFEN — von Daniel am Rechner zu erledigen (zwei gebaute Features scharfschalten)
+
+### D) Deploy v1.39.0 nachholen (zuerst — nur ein Befehl, sobald Netz da ist)
+> Die Stöberkategorien sind gebaut, geprüft, committet und **auf `master` gemerged**; `flutter build web --release` lief sauber durch. Nur der letzte Schritt fehlt: `deploy.sh` konnte nicht auf `gh-pages` pushen, weil in der Sandbox **`github.com` nicht auflösbar** war (`Could not resolve host`). Live läuft deshalb weiterhin 1.38.0. Der Merge liegt lokal, `master` ist **6 Commits vor `origin/master`**.
+
+```bash
+cd /d/Projekte/Bienen/bienen_app && bash deploy.sh && git push origin master
+```
+Danach mit Claude: Version im Browser prüfen (Wissen → die zwei neuen Kacheln, ein Recht-Eintrag, eine Skizze mit Pfeil).
 
 ### A) Backup-Offsite scharfschalten
 > Code fertig; das **automatische Offsite-Backup läuft erst nach diesen Schritten**. Bis dahin nur der manuelle Export-Knopf. Das lokale Repo `D:\Projekte\Bienen\bienen-backup` ist gebaut/committet, hat aber noch keinen Remote.
@@ -46,6 +54,19 @@
 > Lebende Status-Liste der **App-Schiene** (Arbeitsschluss-Methode, siehe `CLAUDE.md` + `../CLAUDE.md`). App-Roadmap: `docs/roadmap-app.md` · App-Entscheide: `docs/decision-log.md` · Specs/Pläne: `docs/superpowers/`. Die **Imkerei-Schiene** (Fachwissen, Fahrplan, Material, Bau) liegt in `../imkerei/`.
 
 ---
+
+## ✅ Erledigt — Session 2026-07-27 (Wissens-Stöberkategorien, v1.39.0 — Deploy offen)
+
+- [x] ✓ **Zwei neue Stöber-Kategorien: „Honig & Ernte" und „Recht & Pflichten"** (je 7 Einträge, 14 neue SVG-Skizzen). Damit ist die Wissensdatenbank auf **7 Kategorien / 49 Einträge**. Reine Stöber-Kategorien ohne Modul-Andock — die ⓘ-Buttons der Module bleiben unberührt.
+  - **Honig:** `erntereife` (Verdeckelung + Spritzprobe), `wassergehalt` (Refraktometer, 20 % gesetzlich / 18,5 % Goldsiegel / 17,5–18 % Betriebsziel), `honig_zu_feucht`, `schleudern` (≤ 35 °C, Bienenflucht, Deckelwachs), `sieben_klaeren` (Maschenweite ≥ 0,2 mm — Feinstfiltern macht deklarationspflichtigen „gefilterten Honig"), `cremig_ruehren`, `abfuellen_lagern` (HMF 40 mg/kg gesetzlich / < 15 Goldsiegel).
+  - **Recht:** `stand_anmelden` (TSV Art. 18a, **3 Arbeitstage**; Kennzeichnung Art. 19a Abs. 1 = Pflicht), `bestandeskontrolle` (Art. 20), `behandlungsjournal` (auch Ameisen-/Oxalsäure und Thymol sind Tierarzneimittel), `honig_etikette` (VLtH Art. 98, x-Höhe 1,2 / 0,9 mm), `selbstkontrolle`, `wandern_melden`, `bio_knospe`. Jeder Eintrag endet zeichengenau mit dem Richtwert-/Keine-Rechtsauskunft-Satz (7/7 geprüft), alles kantonsneutral formuliert.
+  - **Fachreview gegen die Quell-Recherchen 16/18/19/27/28 — 4 Korrekturen** (Details in **D-80**): (1) `abfuellen_lagern` verallgemeinerte „kein Verarbeitungsschritt über 35 °C" und **widersprach damit dem eigenen Eintrag `cremig_ruehren`** (Verflüssigen darf kurzzeitig 40 °C — Honigreglement 5d vs. 6g); (2) Heide-/Backhonig-Ausnahmen (23 / 25 %) beim Wassergehalt ergänzt, weil die App mandantenfähig ist und nicht den Alpenbetrieb als Annahme setzen darf; (3) die 250 g Rückstellmuster sind eine **Goldsiegel**-Anforderung, standen aber als allgemeine Gesetzespflicht; (4) der 3-km-Standortabstand ist **imkerliche Praxis**, stand aber in einer Reihe mit echten Meldepflichten. **Unverändert bestätigt:** alle TSV-Artikel, VLtH Art. 98 und **Thymol 5 mg/kg (Bio Suisse) gegen 500 mg/kg (Bund)** — kein Faktorfehler, der Bundeswert ist tatsächlich hundertfach höher. Ebenfalls sauber: der Eintrag nennt die verbreitete „10 Tage schriftlich"-Regel ausdrücklich als Merkblatt-Empfehlung und **nicht** als Gesetzesfrist.
+  - **Bestandsfehler nebenbei gefunden und behoben:** `futter.svg`, `notfuetterung.svg` und `reizfuetterung.svg` zeichneten ihre Pfeile mit `<marker>` — das parst `vector_graphics_compiler` (flutter_svg) **nicht**, die Spitzen wurden still verworfen. Seit Monaten kopflose Pfeile, von Test und `flutter analyze` unbemerkt. Jetzt explizite Dreieck-Pfade; neues Werkzeug **`tool/svg_check.dart`** kompiliert alle Skizzen mit dem echten Parser (49 Skizzen, 0 Befunde). Siehe **D-79**.
+  - **Versionskollision aufgelöst:** F3 war auf v1.39.0 vorgemerkt, deployt aber später → F3 ist jetzt überall **v1.40.0**. (Dieselbe Doppelvergabe war schon einmal bei 1.37.0 passiert.)
+  - Gates: `flutter analyze lib test` sauber · **288 Tests grün** · `flutter build web --release` erfolgreich.
+  - **🔴 OFFEN — Deploy** (Block D oben): `deploy.sh` kam bis zum gh-pages-Push, dann war `github.com` in der Sandbox nicht auflösbar. Live ist weiterhin 1.38.0.
+  - **🟡 Befund, nicht behoben:** `WissensKategorie.icon` ist **toter Code** — es gibt nirgends ein Mapping, alle 7 Kategoriekacheln rendern ohne Symbol (betrifft auch die 5 alten Kategorien). Entweder Mapping bauen oder das Feld entfernen; bewusst außerhalb dieses Zyklus gelassen.
+  - **🟡 Prozess:** Das Fachreview lief **inline statt über unabhängige Subagenten** — beide Review-Agenten starben am Monats-Ausgabenlimit. Die Fakten oben sind gegen die Quelldateien belegt, aber ein unabhängiger Zweitblick auf die 14 Einträge steht noch aus.
 
 ## ✅ Erledigt — Session 2026-07-26 (F2 Teil 1: Fotos abgesichert, v1.38.0)
 
