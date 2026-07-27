@@ -42,6 +42,10 @@ Dieses Dokument ist bewusst das **Grundlagenwerk**, auf das die anderen Recherch
 
 Ein Volk besteht aus drei morphologisch und funktional klar getrennten „Wesen" (im Imkerdeutsch), die zusammen erst den Organismus bilden. Alle drei entstehen aus demselben Ei-Material — die Kaste entscheidet sich über **Ernährung** (Königin ↔ Arbeiterin) bzw. über **Befruchtung** (Weibchen ↔ Drohn).
 
+![Gelb markierte Königin im Hofstaat auf der Wabe](bilder/fund/gelb_markierte_koenigin_inmitten_des_hofst.jpg)
+
+*Die Königin, gelb markiert, inmitten ihres Hofstaats. Auffällig ist nicht nur ihre Länge, sondern das Verhalten der Umgebung: Die Arbeiterinnen wenden sich ihr zu, füttern und putzen sie — dieser „Hofstaat" ist beim Suchen auf der Wabe oft das verlässlichere Erkennungszeichen als die Königin selbst. Foto: U.S. Geological Survey (gemeinfrei), via Wikimedia Commons.*
+
 | Merkmal | Königin (Weisel) | Arbeiterin | Drohn |
 |---|---|---|---|
 | Geschlecht / Genetik | Weiblich, **diploid** (befruchtet) | Weiblich, **diploid** (befruchtet) | Männlich, **haploid** (unbefruchtet, aus Ei ohne Spermium) |
@@ -102,6 +106,10 @@ Die Arbeiterin ist eine hochspezialisierte „Multifunktions-Maschine". Wichtig 
 ## 4. Entwicklungszyklus & Brutbiologie (Tag für Tag)
 
 Alle drei Wesen durchlaufen die **vollständige Verwandlung** (Holometabolie): **Ei → Larve (Made) → Puppe → Imago (fertige Biene)**. Die Kaste entscheidet sich früh über Ernährung/Befruchtung.
+
+![Brutzellen mit Larven verschiedener Altersstufen](bilder/fund/bienenbrut_in_den_wabenzellen_aus_der_nahd.jpg)
+
+*Brut in der Nahaufnahme. Auf einer gesunden Brutwabe liegen die Stadien in Ringen um das Zentrum: aussen die Stifte, dann offene Maden zunehmender Grösse, innen die verdeckelte Brut. Diese Ordnung ist das eigentliche Diagnosewerkzeug — ein löchriges oder durcheinandergeratenes Brutbild ist ein Alarmzeichen (siehe `14`). Foto: Monika Fischer, CC BY 2.0, via Wikimedia Commons.*
 
 ### 4.1 Der Zeitplan der drei Wesen
 

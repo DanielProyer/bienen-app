@@ -20,6 +20,10 @@
 
 ## 1. Dadant Blatt im Detail
 
+![Betriebsfertige Beute auf Beutenbock im Freien](bilder/fund/betriebsfertige_beute_im_freien_auf_hoelze.jpg)
+
+*Eine betriebsfertige Magazinbeute auf hölzernem Bock — so sieht der Alltag aus: Brutraum unten, Honigraum darüber, flaches Blechdach, alles frei stehend und von hinten zugänglich. Foto: Maja Dumat, CC BY 2.0, via Wikimedia Commons.*
+
 ### 1.1 Geschichte und Herkunft
 
 Das Dadant-Beutensystem wurde um 1874 von **Charles Dadant** in den USA entwickelt. Sein Sohn **Camille Pierre Dadant** ueberarbeitete das System spaeter (Dadant modifiziert / Dadant US). Der Schweizer Imker **Johann Blatt** modifizierte das System fuer europaeische Verhaeltnisse -- daraus entstand das **Dadant Blatt**, heute die am weitesten verbreitete Grossraumbeute in Europa. Seit 1950 ist Dadant Blatt nach der franzoesischen Norm **NF U82-101:1950-03-01** (AFNOR) standardisiert.
@@ -102,6 +106,14 @@ Die 10er-Variante ist handlicher und fuer die meisten Hobbyimker ausreichend. Di
 ### 2.1 Grundprinzip: Einzargiger Brutraum + Halbzargen
 
 Das Dadant-System arbeitet mit einem **einzigen grossen Brutraum** und aufgesetzten **Halbzargen** (Flachzargen) als Honigraum. Dies ist der fundamentale Unterschied zu Zweizarger-Systemen wie Zander oder CH-Mass.
+
+![Geöffneter Brutraum in der Aufsicht, alle Rahmen sichtbar](bilder/fund/geoeffneter_dadant_brutraum_in_aufsicht_al.jpg)
+
+*Der geöffnete Brutraum von oben — der ganze Brutraum auf einen Blick. Genau das ist der praktische Vorteil des Systems: keine zweite Zarge, die abgehoben werden muss, um an die Brut zu kommen. Foto: Maja Dumat, CC BY 2.0, via Wikimedia Commons.*
+
+![Zwei versetzt aufeinanderstehende Halbzargen im Gras](bilder/fund/dadant_honigraeume_10er_im_gras_zwei_verse.jpg)
+
+*Halbzargen als Honigraum. Ihre geringe Höhe ist der Grund, warum sich Dadant auch mit vollen Waben noch heben lässt — eine volle Vollzarge wiegt deutlich mehr. Foto: Maja Dumat, CC BY 2.0, via Wikimedia Commons.*
 
 **Aufbau von unten nach oben:**
 1. Boden (Varroaboden mit Gitterboden und Schieber)

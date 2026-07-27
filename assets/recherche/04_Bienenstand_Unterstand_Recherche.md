@@ -120,6 +120,10 @@
 
 ## 2. Aufstellungsmuster und Verflug-Praevention
 
+![Lehrbienenstand mit farbig markierten Fluglöchern](bilder/fund/lehrbienenstand_des_bienenzuechtervereins_.jpg)
+
+*Ein Schweizer Lehrbienenstand — sichtbar wird das Prinzip gegen Verflug: unterschiedliche **Farben** an den Fluglöchern und versetzte Anordnung, damit heimkehrende Sammlerinnen ihre eigene Beute finden und nicht in die Nachbarbeute geraten (was Krankheiten und Milben verteilt). Foto: Arkelin, CC BY 4.0, via Wikimedia Commons.*
+
 ### 2.1 Viererblock nach Bruder Adam
 
 Bruder Adam (1898--1996) entwickelte die Viererblock-Aufstellung am Bienenstand Buckfast Abbey:
@@ -158,6 +162,10 @@ Bruder Adam (1898--1996) entwickelte die Viererblock-Aufstellung am Bienenstand 
 ---
 
 ## 3. Unterstand-Konstruktion fuer 1570 m
+
+![Verwitterte Holz-Bienenhütte in Steilhanglage](bilder/fund/verwitterte_holz_bienenhuette_in_steilhang.jpg)
+
+*Ein gewachsenes Beispiel aus dem Alpenraum: Bienenhütte in Steilhanglage, auf Stelzen über dem Gefälle, mit weit überstehendem Dach und farbig markierten Fluglöchern. Die Bauform ist keine Zierde, sondern Antwort auf Schnee, Hangwasser und Wetterschlag — dieselben Anforderungen, die unten in der Schneelast-Rechnung stehen. Foto: Aschroet, CC0, via Wikimedia Commons.*
 
 ### 3.1 Schneelast-Berechnung nach SIA 261
 
