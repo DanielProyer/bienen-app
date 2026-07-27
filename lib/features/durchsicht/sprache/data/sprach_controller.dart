@@ -41,6 +41,13 @@ class SprachController extends Notifier<SprachZustand> {
   /// Startet [mikroId]; ein bereits aktives anderes Mikro wird gestoppt.
   Future<void> starten(String mikroId, void Function(String endText) onEndText) async {
     if (!_e.verfuegbar) { state = state.kopie(status: ErkennerStatus.fehler); return; }
+    // Das stand bisher nur im Kommentar: Beim Wechsel auf ein anderes Mikro
+    // (Wizard-Seite gewechselt) muss der laufende Erkenner erst enden. Sonst
+    // liefen zwei parallel und starteten sich endlos gegenseitig neu — der
+    // gemeldete Mikro-Loop vom 2026-07-27.
+    if (state.aktivesMikro != null && state.aktivesMikro != mikroId) {
+      await _e.stoppen();
+    }
     _onEnd = onEndText;
     _subErg ??= _e.ergebnisse.listen((r) {
       if (r.endgueltig) { _onEnd?.call(r.text); state = state.kopie(interim: ''); }
