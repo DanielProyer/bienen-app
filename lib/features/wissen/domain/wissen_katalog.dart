@@ -478,7 +478,8 @@ const kWissensKatalog = <WissensEintrag>[
   WissensEintrag(
     key: 'wassergehalt', titel: 'Wassergehalt messen', kategorie: 'honig',
     kurzinfo: 'Der Wassergehalt ist der wichtigste Qualitäts- und Haltbarkeitsparameter — zu feuchter Honig gärt. '
-        'Gesetzlich sind max. 20 % Wasser erlaubt (VLtH), das Goldsiegel verlangt max. 18,5 % (refraktometrisch '
+        'Gesetzlich sind max. 20 % Wasser erlaubt (VLtH; Heide- und Backhonig 23 %, Heide-Backhonig 25 %), das '
+        'Goldsiegel verlangt max. 18,5 % (refraktometrisch '
         'bestimmt UND dokumentiert), als Betriebsziel gelten 17,5–18 %; Bienen erreichen bei Verdeckelung typisch '
         '16–18 %. Gemessen wird mit dem Handrefraktometer (mit ATC, ca. CHF 40–120, vor jeder Saison kalibrieren): '
         '1–2 Tropfen gut durchmischten Honigs aufs Prisma, 1–2 Minuten temperieren lassen, gegen Licht ablesen. '
@@ -562,7 +563,8 @@ const kWissensKatalog = <WissensEintrag>[
         'Los am Glas bleibt. Gelagert wird kühl (etwa 10–15 °C, angestrebt rund 15 °C), dunkel, trocken und '
         'geruchsneutral: Licht baut Farbe und Inhaltsstoffe ab, und der hygroskopische Honig zieht aus feuchter Luft '
         'Wasser. Kühle Lagerung hält den HMF-Wert tief — gesetzlich sind max. 40 mg/kg erlaubt, das Goldsiegel '
-        'verlangt unter 15 mg/kg; kein Verarbeitungsschritt über 35 °C. Bei höchstens 18 % Wasser und kühl-dunkler '
+        'verlangt unter 15 mg/kg; kein Erwärmungsschritt über 35 °C — einzige Ausnahme ist das Verflüssigen '
+        'kristallisierten Honigs mit kurzzeitig max. 40 °C. Bei höchstens 18 % Wasser und kühl-dunkler '
         'Lagerung ist Honig jahrelang haltbar; als MHD sind in der Schweiz 2 Jahre ab Abfüllung üblich, das '
         'Goldsiegel erlaubt maximal 3 Jahre nach Ende des Produktionsjahrs.',
     skizze: 'assets/wissen/honig_lagern.svg',
@@ -654,8 +656,9 @@ const kWissensKatalog = <WissensEintrag>[
         'Täuschungsschutz, Rückverfolgbarkeit und Dokumentation — im Umfang angepasst an Risiko und '
         'Produktionsmenge. Für die Primärproduktion und Direktvermarkter kleiner Mengen ist kein HACCP-System '
         'nötig, Kleinstbetriebe bis 9 Mitarbeitende haben erleichterte Anforderungen. Konkret: Erntemengen '
-        'dokumentieren, jedem Warenlos eine Losnummer geben, je Los ein Rückstellmuster von mindestens 250 g im '
-        'Originalgebinde kühl und dunkel bis Ende der Haltbarkeitsgarantie aufbewahren, Räume und Geräte sauber '
+        'dokumentieren, jedem Warenlos eine Losnummer geben, je Los ein Rückstellmuster im Originalgebinde kühl '
+        'und dunkel bis Ende der Haltbarkeitsgarantie aufbewahren (das Goldsiegel verlangt dafür mindestens '
+        '250 g), Räume und Geräte sauber '
         'halten und die Selbstkontrolle jährlich schriftlich festhalten (3 Jahre). Wer nur Imkereierzeugnisse '
         'herstellt, braucht keine kantonale Bewilligung; ob und wie die Tätigkeit gemeldet werden muss, klärt die '
         'zuständige kantonale Stelle. '
@@ -677,8 +680,9 @@ const kWissensKatalog = <WissensEintrag>[
         'Frist. Gemeldet wird über beetraffic.ch, telefonisch oder per E-Mail — nicht über die '
         'Tierverkehrsdatenbank; die Pflicht gilt auch für kurzes Wandern und für Handänderungen über eine '
         'Kreisgrenze, ausgenommen sind brutfreie Begattungseinheiten auf Belegstationen. Vorher die Sperrgebiete '
-        'prüfen (aus und in Sperrgebiete dürfen weder Völker noch Waben verstellt werden), zwischen altem und '
-        'neuem Standort mindestens 3 km Abstand halten und das Verstelldatum in der Bestandeskontrolle festhalten. '
+        'prüfen (aus und in Sperrgebiete dürfen weder Völker noch Waben verstellt werden) und das Verstelldatum in '
+        'der Bestandeskontrolle festhalten. Der Mindestabstand von 3 km zwischen altem und neuem Standort ist gute '
+        'imkerliche Praxis gegen Rückflug, keine Vorschrift. '
         'Richtwert und keine Rechtsauskunft — verbindlich ist die zuständige kantonale Fachstelle.',
     skizze: 'assets/wissen/recht_wandern.svg',
     mehr: [
