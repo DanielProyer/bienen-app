@@ -12,7 +12,7 @@
 4. [Material: Holz vs. Styropor](#4-material-holz-vs-styropor)
 5. [Kosten](#5-kosten)
 6. [Zubehoer und Grundausstattung](#6-zubehoer-und-grundausstattung)
-7. [Vergleich: Dadant vs. Zander vs. CH-Mass](#7-vergleich-dadant-vs-zander-vs-ch-mass)
+7. [Vergleich: Dadant Blatt vs. Zander vs. CH-Mass Magazin](#7-vergleich-dadant-blatt-vs-zander-vs-ch-mass-magazin)
 8. [Empfehlung fuer 1570 m Hoehenlage](#8-empfehlung-fuer-1570-m-hoehenlage)
 9. [Quellen](#9-quellen)
 

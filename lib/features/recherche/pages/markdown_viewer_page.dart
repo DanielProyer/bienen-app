@@ -3,7 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
+import 'package:bienen_app/features/recherche/domain/markdown_anker.dart';
 
+/// Zeigt ein Recherche-Dokument aus `assets/recherche/`.
+///
+/// Das Dokument wird nicht als ein Block gerendert, sondern in Abschnitte je
+/// Überschrift zerlegt (siehe `markdown_anker.dart`). Nur so gibt es überhaupt
+/// Sprungziele: `flutter_markdown` kennt keine Anker, und ein Verweis der Form
+/// `[Kapitel](#1-kapitel)` lief zuvor in `launchUrl` — eine URI, die nur aus
+/// einem Fragment besteht, kann der Browser nicht öffnen, es passierte nichts.
 class MarkdownViewerPage extends StatefulWidget {
   final String title;
   final String assetPath;
@@ -19,100 +27,192 @@ class MarkdownViewerPage extends StatefulWidget {
 }
 
 class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
-  String? _content;
-  String? _error;
+  final _rollen = ScrollController();
+
+  List<MarkdownAbschnitt>? _abschnitte;
+  String? _fehler;
+
+  /// Ein Schlüssel je Anker — das Ziel eines Verweises.
+  final _schluessel = <String, GlobalKey>{};
+
+  /// Zeigt den Zurück-nach-oben-Knopf erst, wenn er gebraucht wird.
+  bool _weitUnten = false;
 
   @override
   void initState() {
     super.initState();
-    _loadMarkdown();
+    _rollen.addListener(_pruefePosition);
+    _lade();
   }
 
-  Future<void> _loadMarkdown() async {
+  @override
+  void dispose() {
+    _rollen.removeListener(_pruefePosition);
+    _rollen.dispose();
+    super.dispose();
+  }
+
+  void _pruefePosition() {
+    final weit = _rollen.hasClients && _rollen.offset > 600;
+    if (weit != _weitUnten) setState(() => _weitUnten = weit);
+  }
+
+  Future<void> _lade() async {
     try {
-      final content = await rootBundle.loadString(widget.assetPath);
-      setState(() => _content = content);
+      final inhalt = await rootBundle.loadString(widget.assetPath);
+      final abschnitte = zerlegeInAbschnitte(inhalt);
+      _schluessel.clear();
+      for (final a in abschnitte) {
+        if (a.anker != null) _schluessel[a.anker!] = GlobalKey();
+      }
+      if (mounted) setState(() => _abschnitte = abschnitte);
     } catch (e) {
-      setState(() => _error = 'Datei konnte nicht geladen werden: $e');
+      if (mounted) {
+        setState(() => _fehler = 'Datei konnte nicht geladen werden: $e');
+      }
     }
   }
+
+  void _zumAnker(String anker) {
+    final ziel = _schluessel[anker]?.currentContext;
+    if (ziel == null) {
+      // Verweis ohne passende Überschrift — lieber sagen als stumm bleiben.
+      _melde('Zu diesem Verweis gibt es kein Kapitel im Dokument.');
+      return;
+    }
+    Scrollable.ensureVisible(
+      ziel,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeOutCubic,
+      alignment: 0.05, // knapp unter die Kopfzeile statt exakt an den Rand
+    );
+  }
+
+  void _melde(String text) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(text)));
+  }
+
+  /// Behandelt die drei Linkarten der Recherchen getrennt.
+  Future<void> _linkGetippt(String? href) async {
+    if (href == null || href.isEmpty) return;
+
+    if (href.startsWith('#')) {
+      _zumAnker(href.substring(1));
+      return;
+    }
+
+    final ziel = Uri.tryParse(href);
+    if (ziel != null && (ziel.scheme == 'http' || ziel.scheme == 'https')) {
+      if (!await launchUrl(ziel, mode: LaunchMode.externalApplication)) {
+        _melde('Der Link konnte nicht geöffnet werden.');
+      }
+      return;
+    }
+
+    // Querverweise auf andere Recherchen (`15_Varroa_….md`) — die liegen in der
+    // App unter eigenen Routen, ein Dateipfad führt hier ins Leere. Statt
+    // stumm zu bleiben, den gemeinten Titel nennen.
+    final name = href.split('/').last.replaceAll('.md', '').replaceAll('_', ' ');
+    _melde('Verweis auf „$name" — über die Recherche-Übersicht erreichbar.');
+  }
+
+  MarkdownStyleSheet _stil() => MarkdownStyleSheet(
+        h1: const TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: BeeTokens.textPrimaer,
+        ),
+        h2: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: BeeTokens.textPrimaer,
+        ),
+        h3: const TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w600,
+          color: BeeTokens.textSekundaer,
+        ),
+        h4: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: BeeTokens.textPrimaer,
+        ),
+        p: const TextStyle(fontSize: 14, height: 1.6),
+        blockquote: const TextStyle(
+          color: BeeTokens.textGedaempft,
+          fontStyle: FontStyle.italic,
+        ),
+        blockquoteDecoration: const BoxDecoration(
+          color: BeeTokens.honigTint,
+          border: Border(
+            left: BorderSide(color: BeeTokens.honig, width: 4),
+          ),
+        ),
+        tableHead: const TextStyle(fontWeight: FontWeight.bold),
+        tableBorder: TableBorder.all(color: BeeTokens.randStark, width: 1),
+        tableCellsPadding: const EdgeInsets.all(BeeTokens.sm),
+        code: const TextStyle(
+          backgroundColor: BeeTokens.honigTint,
+          fontSize: 13,
+        ),
+        codeblockDecoration: BoxDecoration(
+          color: BeeTokens.honigTint,
+          borderRadius: BorderRadius.circular(BeeTokens.sm),
+        ),
+        a: const TextStyle(
+          color: BeeTokens.infoText,
+          decoration: TextDecoration.underline,
+        ),
+        listBullet: const TextStyle(fontSize: 14),
+        horizontalRuleDecoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(color: BeeTokens.randStark, width: 1),
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
-      body: _error != null
+      floatingActionButton: _weitUnten
+          ? FloatingActionButton.small(
+              onPressed: () => _rollen.animateTo(
+                0,
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeOutCubic,
+              ),
+              tooltip: 'Zum Inhaltsverzeichnis',
+              child: const Icon(Icons.arrow_upward),
+            )
+          : null,
+      body: _fehler != null
           ? Center(
-              child: Text(_error!,
+              child: Text(_fehler!,
                   style: const TextStyle(color: BeeTokens.gefahrText)))
-          : _content == null
+          : _abschnitte == null
               ? const Center(child: CircularProgressIndicator())
-              : Markdown(
-                  data: _content!,
-                  selectable: true,
+              : SingleChildScrollView(
+                  // Bewusst kein ListView.builder: Nur wenn alle Abschnitte
+                  // gebaut sind, hat jeder Anker einen BuildContext — sonst
+                  // fände ein Sprung sein Ziel nicht.
+                  controller: _rollen,
                   padding: const EdgeInsets.all(BeeTokens.xl),
-                  onTapLink: (text, href, title) {
-                    if (href != null) {
-                      launchUrl(Uri.parse(href),
-                          mode: LaunchMode.externalApplication);
-                    }
-                  },
-                  styleSheet: MarkdownStyleSheet(
-                    h1: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: BeeTokens.textPrimaer,
-                    ),
-                    h2: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: BeeTokens.textPrimaer,
-                    ),
-                    h3: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: BeeTokens.textSekundaer,
-                    ),
-                    h4: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: BeeTokens.textPrimaer,
-                    ),
-                    p: const TextStyle(fontSize: 14, height: 1.6),
-                    blockquote: const TextStyle(
-                      color: BeeTokens.textGedaempft,
-                      fontStyle: FontStyle.italic,
-                    ),
-                    blockquoteDecoration: const BoxDecoration(
-                      color: BeeTokens.honigTint,
-                      border: Border(
-                        left: BorderSide(color: BeeTokens.honig, width: 4),
-                      ),
-                    ),
-                    tableHead: const TextStyle(fontWeight: FontWeight.bold),
-                    tableBorder: TableBorder.all(
-                      color: BeeTokens.randStark,
-                      width: 1,
-                    ),
-                    tableCellsPadding: const EdgeInsets.all(BeeTokens.sm),
-                    code: const TextStyle(
-                      backgroundColor: BeeTokens.honigTint,
-                      fontSize: 13,
-                    ),
-                    codeblockDecoration: BoxDecoration(
-                      color: BeeTokens.honigTint,
-                      borderRadius: BorderRadius.circular(BeeTokens.sm),
-                    ),
-                    a: const TextStyle(
-                      color: BeeTokens.infoText,
-                      decoration: TextDecoration.underline,
-                    ),
-                    listBullet: const TextStyle(fontSize: 14),
-                    horizontalRuleDecoration: const BoxDecoration(
-                      border: Border(
-                        top: BorderSide(color: BeeTokens.randStark, width: 1),
-                      ),
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (final a in _abschnitte!)
+                        MarkdownBody(
+                          key: a.anker == null ? null : _schluessel[a.anker!],
+                          data: a.text,
+                          selectable: true,
+                          styleSheet: _stil(),
+                          onTapLink: (text, href, title) => _linkGetippt(href),
+                        ),
+                    ],
                   ),
                 ),
     );
