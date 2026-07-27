@@ -419,6 +419,10 @@ Der Maßstab wurde nicht geschätzt, sondern über die mm-Teilung des mitfotogra
 
 **Das ist der zentrale Befund:** Die Originalaufnahmen liegen mit 35 px/mm exakt auf dem Wert, bei dem die publizierten Genauigkeiten erreicht wurden. Die Hardware reicht also aus — es braucht keine Spezialkamera wie bei apiZoom.
 
+![Derselbe Bildausschnitt bei 10 und bei 35 Pixel pro Millimeter](bilder/30_aufloesung_vergleich.jpg)
+
+*Abb. 1 — Derselbe Fleck der Windel, zwei Übertragungswege. Links nach Cloud-Übertragung (10 px/mm): Milben und Wachskrümel sind kaum zu unterscheiden. Rechts das Original (35 px/mm): Die Körperform wird sichtbar, wodurch der Formfilter Krümel aussortieren kann. Genau daran hängt, ob die Zählung stimmt — siehe Kap. 12.4.*
+
 ### 12.3 Das Trennmerkmal ist „dunkel UND rotstichig" — nicht die Farbe allein
 
 Gemessene Mittelwerte (5 × 5-px-Fenster) auf der Originalaufnahme:
@@ -431,6 +435,10 @@ Gemessene Mittelwerte (5 × 5-px-Fenster) auf der Originalaufnahme:
 | Vlies-Untergrund | 121–155 | ≈ 0 | ≈ 0 |
 
 Der erste Detektorversuch filterte auf „rotbraun" (R−B ≥ 26) und schlug fehl: Er fand nur 52 Objekte, verpasste offensichtliche Milben und markierte zwei Wachskrümel. Der Grund steht in der Tabelle — **Wachskrümel sind im Rot-Blau-Sinn deutlich „röter" als Milben**, weil sie hell und warmgelb sind. Ein reiner Farbfilter trennt genau verkehrt herum.
+
+![Varroamilben in der Detailansicht](bilder/30_milben_detail.jpg)
+
+*Abb. 2 — Varroamilben auf dem Vlies, Originalauflösung. Zu sehen ist, worauf es ankommt: Die Milben sind **dunkler** als alles ringsum und zugleich rötlich; die hellen gelben Wachskrümel daneben sind zwar warmfarben, aber viel zu hell. Das Vlies selbst ist grau meliert und voller dunkler Faserpunkte — deshalb reicht Dunkelheit allein nicht als Merkmal.*
 
 Milben sind die einzigen **dunklen** Objekte mit **positivem** Rotstich; alles andere Dunkle ist neutral bis leicht bläulich. Selbst ein schwarzes Partikel mit identischer Helligkeit (69) bleibt daran sauber trennbar. Mit gemessenen statt geratenen Schwellen (Helligkeit 40–110, R−B ≥ 8, R−G ≥ 8) stieg die Trefferzahl von 52 auf 115, bei einem mittleren Achsverhältnis von **1,44** — die echte Milbenform (1,6 : 1,1 mm) liegt bei 1,45.
 
@@ -446,6 +454,10 @@ Derselbe Bildausschnitt, derselbe Detektor, nur andere Auflösung:
 Bei 10 px/mm sieht jeder Krümel rund und milbenförmig aus; erst bei 35 px/mm wird die unregelmäßige Form sichtbar und der Formfilter greift. **Eine zu niedrig aufgelöste Aufnahme liefert also nicht einfach eine ungenauere Zahl, sondern eine systematisch zu hohe.** Das ist beim Festlegen der Mindestauflösung wichtiger als jede Modellverbesserung — und es widerlegt die naheliegende Annahme, ein grober Zählwert sei „immerhin ungefähr richtig".
 
 Zur Einordnung der Zählgüte: In einem Kontrollfeld von 40 × 32 mm fand der Detektor 5 Objekte, die manuelle Nachzählung ergab 6 sichere und 2 unsichere. Der Prototyp **unterschätzt** also leicht — er erfindet keine Milben.
+
+![Vom Prototyp markierte Fundstellen](bilder/30_erkennung_markiert.jpg)
+
+*Abb. 3 — So sieht die assistierte Zählung aus: Der Prototyp ringelt drei Milben ein. Die vierte, unten rechts, hat er übersehen — genau das ist das erwartete Verhalten und der Grund, warum die Marker **prüfbar** sein müssen. Ringe statt gefüllter Punkte, damit das beurteilte Objekt sichtbar bleibt; in der App soll ein Fehltreffer weggetippt und eine übersehene Milbe angetippt werden können (Kap. 15).*
 
 ### 12.5 Behandlungsabfall überlagert den natürlichen Fall — die wichtigste methodische Lehre
 
@@ -485,6 +497,10 @@ Ein 50-MP-Foto deckt bei den angestrebten 35 px/mm **175 × 233 mm** ab. Die Wan
 Das ist **weniger** als die bisher gemachten 6–8 Teilfotos — die höhere Auflösung spart Aufnahmen, statt mehr zu verlangen. *(Windel-Innenmaß bitte nachmessen; die 30 cm sind aus dem Foto über den Maßstab abgeleitet.)*
 
 ### 13.3 Bauvorschlag
+
+![Skizze: Rasterrahmen in der Draufsicht und Abstandshalter in der Seitenansicht](bilder/30_rasterrahmen_skizze.png)
+
+*Abb. 4 — Der Aufbau in zwei Ansichten. Links der aufgelegte Rahmen, der die Windel in vier Felder teilt; rechts der Anschlag, der Höhe und Winkel des Handys festhält. Beides zusammen ergibt den kontrollierten Aufbau, für den die publizierten Genauigkeiten gelten — einzeln bringt keines von beiden den vollen Nutzen.*
 
 - **Rahmen:** leichte Holzleisten oder Alu-Winkel, auf die Wanne auflegbar, **abnehmbar** — keine bauliche Änderung an der Windel.
 - **Raster:** gespannte **grüne** Schnüre im ~15-cm-Raster. Straff spannen: Hängen sie durch, verdecken oder verschieben sie beim Auflegen Milben. Alternative, falls das heikel erscheint: vier farbige Eckmarken je Feld — weniger bequem, aber ohne Kontakt zum Gemüll.
