@@ -25,6 +25,45 @@ void main() {
         reason: 'Zu wenige Recherchen gefunden — falscher Arbeitsordner?');
   });
 
+  group('Abbildungen', () {
+    test('jeder Bildverweis zeigt auf eine vorhandene Datei', () {
+      // Bilder stehen relativ im Dokument (bilder/30_x.jpg) und werden vom
+      // Viewer auf assets/recherche/… aufgelöst. Ein Tippfehler im Pfad fiele
+      // sonst erst am Bienenstand auf.
+      final fehlend = <String>[];
+      for (final datei in dateien) {
+        final text = datei.readAsStringSync();
+        for (final m in RegExp(r'!\[[^\]]*\]\(([^)]+)\)').allMatches(text)) {
+          final verweis = m.group(1)!;
+          if (verweis.startsWith('http')) continue; // extern: bewusst nicht gebündelt
+          final pfad = verweis.startsWith('assets/')
+              ? verweis
+              : 'assets/recherche/$verweis';
+          if (!File(pfad).existsSync()) {
+            fehlend.add('${datei.path.split(RegExp(r"[\\/]")).last} → $verweis');
+          }
+        }
+      }
+      expect(fehlend, isEmpty,
+          reason: 'Bildverweise ohne Datei:\n  ${fehlend.join("\n  ")}');
+    });
+
+    test('gebündelte Abbildungen sind klein genug für die Web-App', () {
+      final ordner = Directory('assets/recherche/bilder');
+      if (!ordner.existsSync()) return;
+      final zuGross = ordner
+          .listSync()
+          .whereType<File>()
+          .where((f) => f.lengthSync() > 600 * 1024)
+          .map((f) => '${f.path.split(RegExp(r"[\\/]")).last} '
+              '(${(f.lengthSync() / 1024).round()} KB)')
+          .toList();
+      expect(zuGross, isEmpty,
+          reason: 'Über 600 KB — die App lädt das über Mobilfunk am Stand:\n'
+              '  ${zuGross.join("\n  ")}');
+    });
+  });
+
   group('Sprungmarken der Inhaltsverzeichnisse', () {
     for (final datei in dateien) {
       final name = datei.path.split(RegExp(r'[\\/]')).last;

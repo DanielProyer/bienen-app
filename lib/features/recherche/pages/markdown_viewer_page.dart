@@ -119,6 +119,57 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
     _melde('Verweis auf „$name" — über die Recherche-Übersicht erreichbar.');
   }
 
+  /// Löst einen Bildverweis aus dem Markdown auf einen Asset-Pfad auf.
+  ///
+  /// In den Dokumenten stehen die Bilder relativ (`bilder/30_x.jpg`), damit sie
+  /// auch ausserhalb der App lesbar bleiben. Hier wird der Ordner des Dokuments
+  /// davorgesetzt.
+  String _bildPfad(String verweis) {
+    if (verweis.startsWith('assets/')) return verweis;
+    final schnitt = widget.assetPath.lastIndexOf('/');
+    final ordner = schnitt < 0 ? '' : widget.assetPath.substring(0, schnitt + 1);
+    return '$ordner$verweis';
+  }
+
+  Widget _bild(MarkdownImageConfig config) {
+    // Netzwerkbilder bewusst nicht: Die App soll offline am Bienenstand
+    // funktionieren, und die Recherchen bringen ihre Abbildungen selbst mit.
+    if (config.uri.scheme == 'http' || config.uri.scheme == 'https') {
+      return _bildHinweis(config.alt ?? 'Externes Bild wird nicht geladen');
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: BeeTokens.md),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(BeeTokens.sm),
+        child: Image.asset(
+          _bildPfad(config.uri.toString()),
+          width: config.width ?? double.infinity,
+          height: config.height,
+          fit: BoxFit.contain,
+          errorBuilder: (_, _, _) =>
+              _bildHinweis(config.alt ?? 'Abbildung nicht gefunden'),
+        ),
+      ),
+    );
+  }
+
+  Widget _bildHinweis(String text) => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(BeeTokens.md),
+        decoration: BoxDecoration(
+          color: BeeTokens.honigTint,
+          borderRadius: BorderRadius.circular(BeeTokens.sm),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.image_not_supported_outlined,
+                size: 18, color: BeeTokens.textGedaempft),
+            const SizedBox(width: BeeTokens.sm),
+            Expanded(child: Text(text, style: BeeTokens.gedaempft)),
+          ],
+        ),
+      );
+
   MarkdownStyleSheet _stil() => MarkdownStyleSheet(
         h1: const TextStyle(
           fontSize: 24,
@@ -210,6 +261,7 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
                           data: a.text,
                           selectable: true,
                           styleSheet: _stil(),
+                          sizedImageBuilder: _bild,
                           onTapLink: (text, href, title) => _linkGetippt(href),
                         ),
                     ],
