@@ -291,6 +291,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               ),
             ),
             GoRoute(
+              path: 'varroa-bildzaehlung',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Varroa-Zählung per Foto',
+                assetPath:
+                    'assets/recherche/30_Varroa_Bildzaehlung_Automatisierung.md',
+              ),
+            ),
+            GoRoute(
               path: 'honig',
               builder: (context, state) => const MarkdownViewerPage(
                 title: 'Honig: Ernte, Qualität, Vermarktung',
