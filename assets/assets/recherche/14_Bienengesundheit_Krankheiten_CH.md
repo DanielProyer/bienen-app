@@ -251,6 +251,10 @@ Viren sind meist **latent** und werden erst durch **Varroa** klinisch (die Milbe
 
 **Erreger:** Käfer *Aethina tumida*. **MELDEPFLICHTIG, «zu bekämpfen»** (EU-Kategorie D/E, handelsrelevant).
 
+![Adulter Kleiner Beutenkäfer, Studio-Makroaufnahme von oben](bilder/fund/adulter_kleiner_beutenkaefer_dorsalansicht.jpg)
+
+*Der adulte Käfer in der Aufsicht — das Bild, das man im Kopf haben muss, bevor man ihn je gesehen hat. Kennzeichen: 5–7 mm lang, dunkelbraun bis schwarz, breit-oval, mit **keulenförmig verdickten Fühlerenden**; die Flügeldecken lassen das Hinterleibsende frei. Bei Verdacht gilt Meldepflicht — nicht selbst «entsorgen», sondern den Bieneninspektor rufen. Foto: gemeinfrei (USDA), via Wikimedia Commons.*
+
 ### 12.1 Status Schweiz (Stand 2026)
 - **In der Schweiz weiterhin KEIN Nachweis / kein etablierter Befall** von Bienenvölkern (Stand 2025/2026 laut BLV). In **Süditalien (Kalabrien)** seit 2014 etabliert und nicht mehr tilgbar → **Einschleppungsrisiko** über Handel/Reisen/Bienenimporte bleibt bestehen.
 - **Früherkennungsprogramm APINELLA** (seit 2015; jährlich neu gestartet, Saison 2026 ab **1. Mai bis Ende Oktober**): pro Kanton überwachen von den kantonalen Veterinärdiensten rekrutierte **«Sentinel-/Vertrauensimker»** an exponierten/strategischen Standorten (Grenznähe, Umschlagplätze, Importbetriebe) **alle 2 Wochen** mit **Schäfer-Diagnosefallen** (gewellte Kunststoff-Streifen, in die Käfer/Larven kriechen). Das BLV hat **Importvorschriften** erlassen, um Einschleppung zu minimieren.
@@ -283,6 +287,14 @@ Viren sind meist **latent** und werden erst durch **Varroa** klinisch (die Milbe
 **Erreger:** **Grosse** (*Galleria mellonella*) und **kleine Wachsmotte** (*Achroia grisella*). **Nicht meldepflichtig** — ein **Lager-/Schwächeschädling**, kein Volksparasit.
 
 - **Schaden:** Larven durchfressen **Wabenwerk** (v. a. bebrütete, dunkle Waben) → Gespinste, «verwebte» Waben, Kot; in **eingelagerten Waben** und in **schwachen Völkern**. Ein **starkes Volk hält Motten selbst in Schach**.
+
+![Von Wachsmotten zerstörte dunkle Brutwabe im Rähmchen](bilder/fund/wachsmotten_schadbild_an_einer_dunklen_bru.jpg)
+
+*Das typische Schadbild an einer eingelagerten dunklen Brutwabe: watteartige Gespinste überziehen die Zellen, das Wabenwerk zerfällt. Genau solche alten, bebrüteten Waben sind gefährdet — helle Waben werden kaum befallen. Foto: Sarah Zukoff, CC BY 3.0, via Wikimedia Commons.*
+
+![Frassgang einer Wachsmottenlarve in der Wabe](bilder/fund/frassgang_einer_einzelnen_wachsmottenlarve.jpg)
+
+*Frühstadium und damit das, was man beim Kontrollieren des Wabenlagers sucht: der Frassgang einer einzelnen Larve, die sich unter den Zelldeckeln durch die Mittelwand arbeitet. Wer erst die Gespinste bemerkt, hat die Wabe meist schon verloren. Foto: Sarah Zukoff, CC BY 3.0, via Wikimedia Commons.*
 - **Vorbeuge/Bekämpfung Lagerwaben:**
   - Nur **saubere, möglichst helle** Waben lagern; Altwaben rechtzeitig einschmelzen.
   - **Kühl, trocken, luftig, hell** lagern (Motten mögen warm/dunkel/stickig).
@@ -519,3 +531,8 @@ Melde-Flag ist **Katalog-Attribut**, nicht pro Betrieb hartcodiert → wenn sich
 - apiservice / Bienengesundheitsdienst Überblick: https://www.apiara.app/de/ratgeber/bienengesundheitsdienst-bgd (Sekundärquelle)
 
 > **Nächster Schritt für Daniel:** (1) Vor Volk-1-Einzug Standort in **TVD registrieren** + **GR-Bieneninspektor** ermitteln und in Betriebsstammdaten hinterlegen. (2) **AFB/EFB-Schnelltest** + Diagnose-Merkblätter in den Standkoffer. (3) Melde-Flags/Kategorien mit dem Bieneninspektor **verifizieren**, bevor sie als App-Referenzdaten fix eingetragen werden.
+
+
+---
+
+> **📎 Ergänzung Juli 2026 (bienen.ch/BGD-Auswertung):** BGD-Krankheitsbilder + Rechtsstatus je Erreger in [23_Krankheiten_Schaedlinge_BGD.md](23_Krankheiten_Schaedlinge_BGD.md); Asiatische Hornisse (Vespa velutina) eigenständig in [24_Asiatische_Hornisse_Vespa_velutina.md](24_Asiatische_Hornisse_Vespa_velutina.md).

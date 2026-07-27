@@ -550,3 +550,8 @@ Reale, überwiegend Schweizer Primärquellen (Stand Juli 2026). **Preise/rechtli
 - **apis-grischun.ch — Bündner Imkerverband (kantonale Kurse/Beratung, Bieneninspektor GR):** <https://www.apis-grischun.ch/>
 
 > **Verifizieren mit Daniel/Fachstelle:** exakte Mindest-Wabenzahl in **Dadant-Zählung** am eigenen Stand; Wintervolk-Zielgewicht 1570 m; Meldeprozess Verstellung/Inspektionskreis GR beim **Bieneninspektor Graubünden** (Begleitdokument Bienenverkehr, aktuelle Sperrgebiete); **aktuelle OS-Zulassung, Sommer-Sprühdosis (ml/kg, Konzentration) und Wartefristen** (apiservice/BGD-Hotline 0800 274 274); Knospe-Detailanforderungen für die eigene Vermehrung.
+
+
+---
+
+> **📎 Ergänzung Juli 2026 (bienen.ch/BGD-Auswertung):** Methodenscharfe BGD-Merkblätter (Ableger/Kunstschwarm/Flügling/Schwarm) mit exakten Fristen (Tag 9 Weiselzellen, Tag 25–30 Weiselkontrolle+OS) und Varroa-Nutzen in [25_Vermehrung_Jungvolkbildung_BGD.md](25_Vermehrung_Jungvolkbildung_BGD.md).

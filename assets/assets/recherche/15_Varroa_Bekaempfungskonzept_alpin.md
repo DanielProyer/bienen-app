@@ -30,6 +30,10 @@ Dieses Dokument geht deutlich tiefer als der Varroa-Überblick in `01_Imkerei_Sc
 
 Wer die Milbe schlagen will, muss ihren Lebenszyklus verstehen — jede biotechnische Massnahme und jedes Behandlungsfenster leitet sich direkt daraus ab.
 
+![Varroamilbe auf einer Honigbiene, Rasterelektronenmikroskop](bilder/fund/varroamilbe_weibchen_auf_einer_erwachsenen.jpg)
+
+*Varroa destructor auf ihrer Wirtsbiene — koloriertes Rasterelektronenmikroskop-Bild. Gut zu sehen ist, wie flach und breit die Milbe gebaut ist: Diese Form erlaubt ihr, sich zwischen den Hinterleibsringen der Biene festzusetzen, wo sie mit blossem Auge kaum auffällt. Aufnahme: Eric Erbe, Christopher Pooley — USDA/ARS (gemeinfrei).*
+
 ### Der zweigeteilte Lebenszyklus
 
 Die Varroamilbe lebt in zwei Phasen:
@@ -88,10 +92,20 @@ Bei einem kleinen Bestand (max. 8 Völker) ist Monitoring **pro Volk** gut machb
 
 **Vorteil:** Völlig bienenschonend, kein Eingriff, ideal für Dauerüberwachung. **Nachteil:** Ungenau (Streuung durch Ameisen, Wind, unterschiedliche Volksstärke), nur ein Trendindikator.
 
+![Zwei weisse Bodeneinlagen mit Gemüll](bilder/fund/gemuellwindel_bodeneinlage_zwei_weisse_bod.jpg)
+
+*So sieht die Windeldiagnose in der Praxis aus: zwei Bodenschieber nach einigen Tagen unter dem Gitterboden. Das Gemüll verteilt sich streifenförmig — jeder Streifen liegt unter einer bebrüteten Wabengasse, woraus sich Lage und Breite des Brutnests ablesen lassen, ohne das Volk zu öffnen. Foto: Einebillion, CC BY 4.0, via Wikimedia Commons.*
+
+![Gemüllbestandteile neben einem Streichholz als Grössenvergleich](bilder/fund/gemuell_detail_mit_groessenvergleich_polle.jpg)
+
+*Was auf der Windel liegt, im Grössenvergleich zum Streichholzkopf: Pollenhöschen, ein Bienenflügel, frische Wachsplättchen — und rechts eine Varroamilbe. Der Vergleich macht das Kernproblem der Zählung anschaulich: Die Milbe ist kleiner als fast alles andere im Gemüll und unterscheidet sich vor allem durch ihre dunkle, rotbraune Färbung (siehe `30`, Kap. 12.3). Foto: Waugsberg, CC BY 2.5, via Wikimedia Commons.*
+
 **Faustregel (Sommer):** Als grober Umrechnungsfaktor gilt in der Hauptsaison: **täglicher natürlicher Fall × ~250–500 ≈ Gesamtmilbenzahl im Volk** (der Faktor ist saisonabhängig und ungenau — nur zur Grössenordnung).
 
 > **Für Arosa (1570 m) bedeutet das:**
 > Die Windeldiagnose passt perfekt zur ohnehin geplanten **Stockwaage (HiveWatch, siehe `07`)** und dem offenen Gitterboden. In Windlagen wird der Schieber im Winter teils eingeschoben (Kondens/Zugluft, siehe `01`/`02`) — dann ist er **ohnehin drin** und kann als Windel dienen. Aber: Bei Schneelast/Sturm die Windel nicht wochenlang vergessen. Auf 1570 m ist der natürliche Fall im Frühjahr/Sommer oft *niedriger* als im Flachland (kleinere Völker, spätere Entwicklung) — das darf nicht in Sicherheit wiegen, weil die Kurve im Spätsommer trotzdem steil wird.
+
+> **📷 Zählung per Foto automatisieren?** Der Forschungsstand, die verfügbaren Produkte (keines direkt nutzbar), die Lizenzfallen und ein realistischer Weg mit einem Volk stehen in [30_Varroa_Bildzaehlung_Automatisierung.md](30_Varroa_Bildzaehlung_Automatisierung.md). Kernbefund für die Praxis: Die Automatik ist bei **wenigen** Milben deutlich schlechter als der Mensch, ab ~50 Milben pro Blatt aber **besser** — und der entscheidungsrelevante Bereich (grob 15–175 Milben pro Windel bei 3–7 Tagen Liegezeit) liegt genau in ihrem zuverlässigen Band. Unter ~10 Milben bleibt Handzählen die genauere Methode.
 
 ### 3.2 Puderzuckermethode (Milben pro 100 Bienen — bienenschonend)
 
@@ -155,6 +169,14 @@ Biotechnik ist besonders wertvoll für Arosa: Sie ist **rückstandsfrei** (ideal
 ### 6.1 Drohnenbrutschneiden (Drohnenrahmen)
 
 **Prinzip:** Man gibt einen **Baurahmen / Drohnenrahmen** (leerer Rahmen, den die Bienen mit Drohnenwaben ausbauen) in den Brutraum. Weil Milben Drohnenbrut 8–10× bevorzugen, sammeln sie sich dort. Sobald die Drohnenbrut **verdeckelt** ist (aber *bevor* Drohnen + Milben schlüpfen), schneidet man sie heraus und vernichtet sie (einfrieren/einschmelzen).
+
+![Frisch ausgebaute Drohnenwabe mit verdeckelter Brut](bilder/fund/drohnenbrut_im_naturbau_frisch_gebaute_wab.jpg)
+
+*Ausgebauter Baurahmen mit verdeckelter Drohnenbrut. Die Drohnenzellen sind deutlich grösser und stärker gewölbt als Arbeiterinnenzellen — daran erkennt man im Volk sofort, ob der Rahmen schnittreif ist. Foto: Maja Dumat, CC BY 2.0, via Wikimedia Commons.*
+
+![Mit der Entdeckelungsgabel ausgezogene Drohnenpuppen](bilder/fund/drohnenbrut_kontrolle_mit_der_entdeckelung.jpg)
+
+*Die Kontrolle vor dem Schneiden: Mit der Entdeckelungsgabel werden Drohnenpuppen ausgezogen; auf einer der Puppen sitzt eine rotbraune Milbe. Dieser Handgriff ist zugleich eine Befallsmessung — er zeigt an, ob die Milbenlast im Volk gerade steigt. Foto: Forest & Kim Starr, CC BY 3.0 US, via Wikimedia Commons.*
 
 **Praxis:**
 - **Zeitfenster:** während der Aufbau-/Schwarmphase, solange das Volk Drohnen aufzieht (ca. Mai–Juni im Flachland).
@@ -489,3 +511,8 @@ Reale, überprüfte Quellen (Stand 2026-07-16). Dosierungen/Rechtsangaben sind *
 - OXUVAR 5,7 % ad us. vet. — Produkt-/Anwendungsinfo (CH-Fachhandel, z. B. apiline.ch): https://www.apiline.ch/shop/Imkereibedarf/varroa-behandlung/saeueren/oxuvar-5-7-ad-us-vet.html
 - Milchsäure 15 % ad us. vet. — Standardzulassung/Anwendung (Wortlaut BVL): https://www.bvl.bund.de/SharedDocs/Downloads/05_Tierarzneimittel/Zulassung/Standardzulassung/2569_99_99.pdf
 - Varroa-Hotline BienenSchweiz: **0800 274 274**
+
+
+---
+
+> **📎 Ergänzung Juli 2026 (bienen.ch/BGD-Auswertung):** Offizielles BGD-Varroakonzept mit allen Schwellen (>3/>10 Milben/Tag, Puderzucker %, >500 Winter), Dosierungen und Temperaturfenstern der Methoden in [22_Varroa_Behandlungskonzept_BGD.md](22_Varroa_Behandlungskonzept_BGD.md).

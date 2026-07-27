@@ -378,7 +378,7 @@ Beim Stich bleibt der **Widerhaken-Stachel samt Giftblase** in der Haut; die Mus
 - **Immer griffbereit am Stand:** Kühlung, Antihistaminikum; bei diagnostizierter Allergie **Notfallset (Adrenalin-Autoinjektor, Kortison, Antihistaminikum)** — und **niemand arbeitet allein**, wenn ein Allergierisiko besteht.
 - **Zweite Person informieren:** Wo ist das Notfallset, wie Notruf, Standort-Koordinaten für Rettung.
 
-**Für Arosa (1570 m) bedeutet das:** **Abgelegene Maiensäss-Lage** → Rettungswege lang. Konsequenzen: (1) **Beide** (Daniel & Lorena) vorab **auf Bienengift-Allergie testen** lassen (Richtwert-Empfehlung, mit Hausarzt klären). (2) Immer ein **Notfallset + Handy mit Empfang/Koordinaten** am Stand; wenn möglich **nicht allein** durchsehen. (3) **Rega/Notruf 144** und die **exakten Standort-Koordinaten** parat haben. (4) Bei Alleinarbeit jemandem Bescheid geben (Zeitfenster).
+**Für Arosa (1570 m) bedeutet das:** **Abgelegene Maiensäss-Lage** → Rettungswege lang. Konsequenzen: (1) **Beide** (Daniel & Lorena) vorab **auf Bienengift-Allergie testen** lassen (Richtwert-Empfehlung, mit Hausarzt klären). (2) Immer ein **Notfallset + Handy mit Empfang/Koordinaten** am Stand; wenn möglich **nicht allein** durchsehen. (3) **Rega/Notruf 144** und die **exakten Standort-Koordinaten**  parat haben. (4) Bei Alleinarbeit jemandem Bescheid geben (Zeitfenster).
 
 ### 10.3 Ergonomie & körperliche Sicherheit
 
@@ -597,3 +597,8 @@ Alle Preis-/Rechts-/Zertifizierungsangaben sind **Richtwerte — mit Daniel bzw.
 - BLV — Bienen/Tierseuchen — https://www.blv.admin.ch
 
 *Fachliche Standardwerke (nicht online verifiziert, als Vertiefung): Pia Aumeier / Gerhard Liebig «Kurse»; Bruder Adam «Meine Betriebsweise»; Hans Beer zum angepassten Brutraum; Armin Spürgin «Die Honigbiene».*
+
+
+---
+
+> **📎 Ergänzung Juli 2026 (bienen.ch/BGD-Auswertung):** Konkrete BGD-Richtwerte zu Betriebsweise, Hygiene, Fütterung, Überwinterung, Wabenpflege und Diagnose in [27_Gute_imkerliche_Praxis_BGD.md](27_Gute_imkerliche_Praxis_BGD.md); Dachstruktur in [21_Betriebskonzept_Jahresplanung_BGD.md](21_Betriebskonzept_Jahresplanung_BGD.md).
