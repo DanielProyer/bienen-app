@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/recherche/domain/markdown_anker.dart';
+import 'package:bienen_app/features/recherche/domain/recherche_foto.dart';
+import 'package:bienen_app/features/recherche/presentation/widgets/recherche_foto_strip.dart';
 
 /// Zeigt ein Recherche-Dokument aus `assets/recherche/`.
 ///
@@ -12,7 +15,7 @@ import 'package:bienen_app/features/recherche/domain/markdown_anker.dart';
 /// Sprungziele: `flutter_markdown` kennt keine Anker, und ein Verweis der Form
 /// `[Kapitel](#1-kapitel)` lief zuvor in `launchUrl` — eine URI, die nur aus
 /// einem Fragment besteht, kann der Browser nicht öffnen, es passierte nichts.
-class MarkdownViewerPage extends StatefulWidget {
+class MarkdownViewerPage extends ConsumerStatefulWidget {
   final String title;
   final String assetPath;
 
@@ -23,10 +26,10 @@ class MarkdownViewerPage extends StatefulWidget {
   });
 
   @override
-  State<MarkdownViewerPage> createState() => _MarkdownViewerPageState();
+  ConsumerState<MarkdownViewerPage> createState() => _MarkdownViewerPageState();
 }
 
-class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
+class _MarkdownViewerPageState extends ConsumerState<MarkdownViewerPage> {
   final _rollen = ScrollController();
 
   List<MarkdownAbschnitt>? _abschnitte;
@@ -225,10 +228,46 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
         ),
       );
 
+  /// Die Kapitel als Auswahl für den Foto-Dialog: lesbare Überschrift je Anker.
+  List<({String? anker, String titel})> _kapitelListe() {
+    final liste = <({String? anker, String titel})>[
+      (anker: null, titel: 'Ganzes Dokument'),
+    ];
+    for (final a in _abschnitte ?? const <MarkdownAbschnitt>[]) {
+      if (a.anker == null) continue;
+      // Erste Zeile ohne Rauten = die Überschrift, wie sie im Text steht.
+      final kopf = a.text
+          .split('\n')
+          .first
+          .replaceFirst(RegExp(r'^\s*#{1,6}\s+'), '')
+          .replaceAll(RegExp(r'[*`]'), '')
+          .trim();
+      liste.add((anker: a.anker, titel: kopf.isEmpty ? a.anker! : kopf));
+    }
+    return liste;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final rechercheKey = rechercheKeyAusAssetPfad(widget.assetPath);
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            tooltip: 'Eigenes Foto ergänzen',
+            icon: const Icon(Icons.add_a_photo_outlined),
+            onPressed: _abschnitte == null
+                ? null
+                : () => fotoErgaenzenSheet(
+                      context,
+                      ref,
+                      rechercheKey: rechercheKey,
+                      kapitel: _kapitelListe(),
+                    ),
+          ),
+        ],
+      ),
       floatingActionButton: _weitUnten
           ? FloatingActionButton.small(
               onPressed: () => _rollen.animateTo(
@@ -255,7 +294,7 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (final a in _abschnitte!)
+                      for (final a in _abschnitte!) ...[
                         MarkdownBody(
                           key: a.anker == null ? null : _schluessel[a.anker!],
                           data: a.text,
@@ -264,6 +303,13 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage> {
                           sizedImageBuilder: _bild,
                           onTapLink: (text, href, title) => _linkGetippt(href),
                         ),
+                        // Eigene Fotos direkt beim zugehörigen Kapitel; zeigt
+                        // sich nur, wenn zu diesem Anker welche vorliegen.
+                        RechercheFotoStrip(
+                          rechercheKey: rechercheKey,
+                          anker: a.anker,
+                        ),
+                      ],
                     ],
                   ),
                 ),
