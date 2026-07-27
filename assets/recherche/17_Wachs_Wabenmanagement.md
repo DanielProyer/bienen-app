@@ -491,3 +491,8 @@ Reale, im Juli 2026 abgerufene Quellen. Preis-/Rechtsangaben sind **Richtwerte �
 - Imkerverein Simmern — *Rähmchenmaße-Tabelle (PDF)*: http://www.imkerverein-simmern.de/wp-content/uploads/2019/01/R%C3%A4hmchentabelle.pdf
 
 > Hinweis: Foren-/Händlerangaben zu exakten Maßen und Mengen variieren; die im Text genannten Zahlen sind Konsens-Richtwerte und vor Einkauf/Umsetzung mit den konkreten Lieferanten (CH) und der Bio-Kontrollstelle zu verifizieren.
+
+
+---
+
+> **📎 Ergänzung Juli 2026 (bienen.ch/BGD-Auswertung):** BGD-Wabenumtrieb-Richtwert (1/3 pro Jahr = 3-Jahres-Zyklus), Einschmelz-/Lager-/Entseuchungs-Daten in [27_Gute_imkerliche_Praxis_BGD.md](27_Gute_imkerliche_Praxis_BGD.md).
