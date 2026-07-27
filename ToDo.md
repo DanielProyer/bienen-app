@@ -13,19 +13,23 @@
 
 ## 🔴 OFFEN — von Daniel am Rechner zu erledigen (zwei gebaute Features scharfschalten)
 
-### A) Backup-Offsite scharfschalten
-> Code fertig; das **automatische Offsite-Backup läuft erst nach diesen Schritten**. Bis dahin nur der manuelle Export-Knopf. Das lokale Repo `D:\Projekte\Bienen\bienen-backup` ist gebaut/committet, hat aber noch keinen Remote.
+### 🔴 A2) Exponierten service_role-Key entwerten (SICHERHEIT, zuerst)
+> Beim Einrichten des Backups wurde der **service_role-Key von `bienen-arosa` im Klartext sichtbar** (das Diagnose-Skript hat die Eingabe geechoot, der Key steht im Terminal-Verlauf und in einem Screenshot davon im Chat). Ursache war mein Skript — inzwischen behoben (Eingabe ohne Echo). Der Key selbst gilt damit als **kompromittiert**: service_role umgeht RLS vollständig, also Vollzugriff auf alle Mandantendaten.
+>
+> **Wichtig:** Legacy-Keys (`anon` + `service_role`) leiten sich beide vom JWT-Secret ab — sie lassen sich nicht einzeln rotieren. Der `anon`-Key steckt im Flutter-Build, deshalb ist in **jedem** Weg ein App-Deploy nötig.
+>
+> **Empfohlen (zukunftssicher, Supabase migriert ohnehin dorthin):** App auf `sb_publishable_…` umstellen, Backup-Secret auf einen neuen `sb_secret_…` setzen, dann die **Legacy-Keys deaktivieren** → der exponierte JWT ist wertlos. **Alternative (schneller):** JWT-Secret rotieren, neuen anon-Key in die App, neu deployen, Backup-Secret neu setzen.
+>
+> Eigener kleiner Zyklus; Claude kann den App-Teil und den Deploy übernehmen, die Dashboard-Schritte machst du.
 
-1. Auf GitHub ein **privates** Repo `bienen-backup` anlegen (ohne Vorlage, **„Private"**).
-2. Verbinden + hochladen:
-   ```bash
-   cd /d/Projekte/Bienen/bienen-backup && git remote add origin https://github.com/DanielProyer/bienen-backup.git && git push -u origin main
-   ```
-3. Repo → Settings → Secrets and variables → Actions → **New repository secret**, zweimal:
-   - `SUPABASE_URL` = `https://dcdcohktxbhdxnxjvcyp.supabase.co`
-   - `SUPABASE_SERVICE_ROLE_KEY` = der **service_role**-Key (Supabase → Settings → API) — *nicht* der anon-Key
-4. Actions → „Backup" → **Run workflow**.
-5. **Mit Claude verifizieren:** Lauf grün? `manifest.json`-Zeilenzahlen plausibel? `warnungen` leer? Fotos da?
+### ✅ A) Backup-Offsite scharfgeschaltet (2026-07-27)
+- [x] Repo `bienen-backup` **privat** auf GitHub (hattest du selbst angelegt), lokales Repo verbunden und gepusht, Workflow „Backup" aktiv (mit Schutzriegel „nur wenn Repo privat"), beide Secrets gesetzt, **Lauf grün und inhaltlich geprüft**.
+- **Ergebnis:** 26 Tabellen (JSON+CSV), **27 Fotos / 4,78 MB**, Bot-Commit in der Git-Historie, täglicher Lauf 03:15 UTC scharf.
+- **🔴 Zwei echte Fehler auf dem Weg gefunden und behoben** (Details: D-84/D-85):
+  - Das Backup hing am Endpunkt `GET /rest/v1/`, der **service_role-only** ist → gelöst mit Migration **Q01** (`public.backup_schema()` als RPC). Ursache der ersten vier roten Läufe war aber ein Key aus einem **anderen** der fünf Supabase-Projekte.
+  - Der erste grüne Lauf sicherte **1 von 29 Fotos** — mit leerem Warnungs-Array. Die 28 Produktfotos liegen unter `<material_id>/…`, das Skript listete nur `<betrieb_id>/…`. Jetzt: Zuordnung auch über referenzierte Pfade **plus Storage-Gegenprobe** (jedes Objekt muss in genau einem Betriebs-Backup landen). Die **2 verbleibenden Waisen** stehen namentlich in `manifest.json`.
+- **Neues Werkzeug:** `scripts/key_diagnose.mjs` — prüft einen Key gegen alle relevanten Endpunkte und liest bei Legacy-JWTs **Projekt-Ref und Rolle** aus dem Payload (falsches Projekt/falsche Rolle werden direkt benannt), ohne den Key auszugeben.
+- **Erledigt damit auch:** die 2 Waisen sind jetzt sichtbar dokumentiert statt nur im ToDo vermerkt.
 
 ### C) Krankheits-Fotos holen (kleiner Job, ~20 Min — braucht offenes Netz)
 > **Warum am Rechner:** In der Claude-Sandbox sind **Bugwood/IPM Images netzseitig gesperrt** (DNS/403) und die USDA-ARS-Galerie gibt über ihre JS-Suche keine Bild-URLs heraus. Auf Wikimedia liegen die 5 Motive nur als **CC BY-SA** (→ Policy D-65 verbietet SA) oder als historische Zeichnungen (→ Qualitäts-Bar „nur echte Fotos"). Regeln brechen wäre der falsche Ausweg; die 5 Einträge haben ja bereits SVG-Skizzen.

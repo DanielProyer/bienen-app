@@ -1,0 +1,32 @@
+-- Q02_backup_schema_revoke_authenticated.sql | Fix zu Q01.
+--
+-- BUG (von Q01): `revoke execute ... from anon, public` entfernt NICHT das
+-- EXECUTE-Recht von `authenticated`. Supabase vergibt per
+--   alter default privileges in schema public grant all on functions
+--     to postgres, anon, authenticated, service_role
+-- ein EIGENES Grant an `authenticated`; ein revoke von PUBLIC laesst das
+-- unberuehrt. Das Hausmuster in CLAUDE.md ("revoke from anon, public") ist
+-- damit unvollstaendig, wenn `authenticated` ausgeschlossen sein soll.
+--
+-- GEMESSEN nach Q01 (als echte Rolle, nicht als Superuser):
+--   set local role authenticated; select count(*) from public.backup_schema();
+--     -> 26   (falsch: haette scheitern muessen)
+--   select grantee, privilege_type from information_schema.routine_privileges
+--    where routine_name = 'backup_schema';
+--     -> authenticated | EXECUTE   (eigenes Grant, nicht ueber PUBLIC)
+--
+-- Ohne diesen Fix haette der Advisor `authenticated_security_definer_function
+-- _executable` ein zehntes Finding gemeldet.
+revoke execute on function public.backup_schema() from authenticated;
+
+-- VERIFIKATION (nachher gemessen):
+--   set local role authenticated; select count(*) from public.backup_schema();
+--     -> ERROR 42501 permission denied for function backup_schema   ✓
+--   set local role anon;          select count(*) from public.backup_schema();
+--     -> ERROR 42501 permission denied                              ✓
+--   set local role service_role;  select count(*) from public.backup_schema();
+--     -> 26 Tabellen                                                ✓
+--   get_advisors(security) -> 9 Findings, identisch zur Baseline, kein neues.
+--
+-- ROLLBACK: grant execute on function public.backup_schema() to authenticated;
+--           (Nicht empfohlen — die App braucht die Funktion nicht.)
