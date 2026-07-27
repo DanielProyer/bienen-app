@@ -464,7 +464,9 @@ const kWissensKatalog = <WissensEintrag>[
     kurzinfo: 'Erst ernten, wenn die Honigwaben mindestens zu zwei Dritteln bis drei Vierteln verdeckelt sind — '
         'konservativ und in Höhenlage: weit überwiegend verdeckelt. An unverdeckelten Stellen die Spritzprobe machen: '
         'Wabe waagrecht halten und ruckartig nach unten stossen — spritzt dünner Nektar heraus, ist der Honig nicht '
-        'reif; bleibt alles in den Zellen, ist er eingedickt. Der Ernteentscheid hängt an drei Dingen: '
+        'reif; bleibt alles in den Zellen, ist er eingedickt. Waben, die die Spritzprobe nicht bestehen, nicht '
+        'mitschleudern: aussortieren oder zurückhängen und dem Volk einige Tage zum Eindicken geben — wenige '
+        'feuchte Randwaben heben den Wassergehalt der ganzen Mischcharge. Der Ernteentscheid hängt an drei Dingen: '
         'Verdeckelungsgrad, Wassergehalt und Trachtende/Witterung — nicht am Kalenderdatum. Fürs Goldsiegel gilt: '
         'nur reifen Honig ernten (verdeckelt oder Spritzprobe negativ).',
     skizze: 'assets/wissen/honig_erntereife.svg',
@@ -483,6 +485,8 @@ const kWissensKatalog = <WissensEintrag>[
         'bestimmt UND dokumentiert), als Betriebsziel gelten 17,5–18 %; Bienen erreichen bei Verdeckelung typisch '
         '16–18 %. Gemessen wird mit dem Handrefraktometer (mit ATC, ca. CHF 40–120, vor jeder Saison kalibrieren): '
         '1–2 Tropfen gut durchmischten Honigs aufs Prisma, 1–2 Minuten temperieren lassen, gegen Licht ablesen. '
+        'Bereits kristallisierten Honig vorher schonend anwärmen und homogenisieren — sonst misst man nur die '
+        'flüssige Phase und der Wert fällt falsch zu hoch aus. '
         'Immer eine Mischprobe über mehrere Waben bzw. aus dem Sammeleimer messen, nie eine einzelne Zelle.',
     skizze: 'assets/wissen/honig_wassergehalt.svg',
     mehr: [
@@ -496,15 +500,21 @@ const kWissensKatalog = <WissensEintrag>[
     key: 'honig_zu_feucht', titel: 'Honig zu feucht', kategorie: 'honig',
     kurzinfo: 'Reifen lässt man Honig im Stock — das ist immer die erste Wahl. Ist eine Charge trotzdem grenzwertig '
         'feucht, darf man die Waben VOR dem Schleudern in einem temperierten, entfeuchteten Raum trocknen '
-        '(Raumklima etwa 55–60 % relative Luftfeuchte, Luftentfeuchter) — realistisch lassen sich so 1–2 % Wasser '
-        'senken. Dem geschleuderten Honig aktiv Wasser zu entziehen ist nicht statthaft (dem fertigen Honig darf '
-        'nichts entzogen werden); eine feuchte mit einer trockeneren EIGENEN Charge zu verschneiden ist dagegen '
-        'zulässige Praxis. Vorbeugen ist besser: hohe Verdeckelung abwarten, am trockenen, warmen Tag schleudern und '
-        'offenen Honig nicht in feuchter Luft stehen lassen — Honig ist hygroskopisch.',
+        '(Raumklima etwa 55–60 % relative Luftfeuchte als Praxisrichtwert, Luftentfeuchter) — realistisch lassen '
+        'sich so 1–2 % Wasser senken. Das wirkt nur auf die offenen Zellen, der Wachsdeckel dichtet ab: Zargen mit '
+        'Abstand stapeln und die Luft umwälzen. Dem geschleuderten Honig aktiv Wasser zu entziehen ist nicht '
+        'statthaft (dem fertigen Honig darf nichts entzogen werden); eine feuchte mit einer trockeneren EIGENEN '
+        'Charge zu verschneiden ist dagegen zulässige Praxis. Über 20 % Wasser ist Honig aber nicht mehr '
+        'verkehrsfähig, und Gärung ist nicht rückholbar — Hefegeruch, Schaum, aufsteigende Bläschen oder ein '
+        'prickelnd-säuerlicher Geschmack sind Ausschlusskriterien: solcher Honig darf nur als „Backhonig" bzw. '
+        '„Industriehonig" mit dem Hinweis „nur zum Kochen und Backen" abgegeben werden, nie als Honig oder unter '
+        'einem Qualitätssiegel. Vorbeugen ist besser: hohe Verdeckelung abwarten, am trockenen, warmen Tag '
+        'schleudern und offenen Honig nicht in feuchter Luft stehen lassen — Honig ist hygroskopisch.',
     skizze: 'assets/wissen/honig_zu_feucht.svg',
     mehr: [WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md')],
     verwandte: ['wassergehalt', 'erntereife', 'abfuellen_lagern'],
-    stichworte: ['zu feucht', 'gaerung', 'entfeuchten', 'luftentfeuchter', 'verschneiden', 'hygroskopisch'],
+    stichworte: ['zu feucht', 'gaerung', 'entfeuchten', 'luftentfeuchter', 'verschneiden', 'hygroskopisch',
+      'backhonig', 'industriehonig'],
   ),
   WissensEintrag(
     key: 'schleudern', titel: 'Schleudern', kategorie: 'honig',
@@ -513,8 +523,10 @@ const kWissensKatalog = <WissensEintrag>[
         'bekommen — chemische Repellents sind für Qualität und Bio tabu. Beim Entdeckeln (Gabel, Messer oder '
         'Entdeckelungsgeschirr) das Deckelwachs getrennt auffangen: es ist rückstandsarmes, wertvolles Wachs für den '
         'eigenen Wachskreislauf. Geschleudert wird in geruchsneutralen, bienendichten Räumen mit hygienischen '
-        'Geräten, ohne Brutwaben und mit einer Erwärmung von höchstens 35 °C; die Schleuder langsam anfahren und die '
-        'Drehzahl dann steigern.',
+        'Geräten, ohne Brutwaben und mit einer Erwärmung von höchstens 35 °C — so verlangt es das Goldsiegel; '
+        'gesetzlich gilt allgemeiner, dass Honig nicht so erhitzt werden darf, dass die Enzyme wesentlich '
+        'inaktiviert werden. Ein konsequent aufgelegtes Absperrgitter ist die Voraussetzung für einen brutfreien '
+        'Honigraum. Die Schleuder langsam anfahren und die Drehzahl dann steigern.',
     skizze: 'assets/wissen/honig_schleudern.svg',
     mehr: [
       WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
@@ -526,9 +538,10 @@ const kWissensKatalog = <WissensEintrag>[
   WissensEintrag(
     key: 'sieben_klaeren', titel: 'Sieben, Klären, Abschäumen', kategorie: 'honig',
     kurzinfo: 'Ablaufenden Honig doppelt sieben: grob etwa 0,5–1 mm für Wachs- und Bienenteile, fein etwa '
-        '0,2–0,3 mm. Die Maschenweite darf nicht unter 0,2 mm liegen und der Pollengehalt muss erhalten bleiben — '
-        'Feinstfiltern unter Druck macht aus Naturhonig deklarationspflichtigen „gefilterten Honig". Bei '
-        'Raumtemperatur (etwa 20–25 °C) läuft Honig gut durchs Sieb, kalt wird er zäh. Danach im Klär-/Abfülleimer '
+        '0,2–0,3 mm. Fürs Goldsiegel darf die Maschenweite nicht unter 0,2 mm liegen; Feinstfiltern unter Druck '
+        'entzieht dem Honig den Pollen und ist schon gesetzlich unzulässig — dem Honig darf nichts entzogen werden, '
+        'auch kein Pollen. Bei Raumtemperatur (etwa 20–25 °C) läuft Honig gut durchs Sieb, kalt wird er zäh. Danach '
+        'im lebensmittelechten Klär-/Abfülleimer (Glas-Gabel-Symbol oder Edelstahl, nie unbeschichtetes Eisen) '
         '1–3 Tage bei etwa 20–24 °C ruhen lassen: feinste Luftbläschen und Restpartikel steigen auf und werden als '
         'Schaumschicht abgehoben (abschäumen) — erst danach cremig rühren oder flüssig abfüllen.',
     skizze: 'assets/wissen/honig_sieben.svg',
@@ -542,11 +555,15 @@ const kWissensKatalog = <WissensEintrag>[
   WissensEintrag(
     key: 'cremig_ruehren', titel: 'Cremig rühren', kategorie: 'honig',
     kurzinfo: 'Kristallisation ist ein natürliches Qualitätszeichen: die Glukose kristallisiert aus, die Fruktose '
-        'bleibt flüssig. Für streichzarten Cremehonig den gesiebten Honig bei 10–17 °C lagern, etwa 5–10 % bereits '
+        'bleibt flüssig. Cremig gerührt wird aber nur gärsicherer Honig — vorher den Wassergehalt messen und die '
+        'Charge nur rühren, wenn sie das Betriebsziel von rund 17,5–18 % einhält: beim Kristallisieren bindet die '
+        'Glukose Wasser, der Anteil freien Wassers in der Restlösung steigt, und feuchter Honig gärt cremig gerührt '
+        'schneller als flüssig. Für streichzarten Cremehonig den gesiebten Honig bei 10–17 °C lagern, etwa 5–10 % bereits '
         'feincremig gerührten Impfhonig untermischen und ab den ersten Kristallisationszeichen 1–2× täglich je '
         '5–15 Minuten langsam und tief rühren (keine Luft einschlagen) — über mehrere Tage, bis keine Körnung mehr '
-        'spürbar ist, dann abfüllen, solange die Masse fliessfähig ist. Zum Rühren nie über etwa 30–33 °C erwärmen, '
-        'sonst lösen sich die Kristalle wieder auf. Kristallisierten Honig nur schonend verflüssigen (kurzzeitig '
+        'spürbar ist, dann abfüllen, solange die Masse fliessfähig ist. Gerührt wird im Kristallisationsfenster von '
+        '10–17 °C, nicht warm: 30–33 °C ist die Obergrenze für ein kurzes Anwärmen, darüber lösen sich die feinen '
+        'Kristalle wieder auf. Kristallisierten Honig nur schonend verflüssigen (kurzzeitig '
         'max. 40 °C bzw. Durchlauf-Verflüssigung), nie in der Mikrowelle oder auf der Herdplatte.',
     skizze: 'assets/wissen/honig_ruehren.svg',
     mehr: [
@@ -563,8 +580,10 @@ const kWissensKatalog = <WissensEintrag>[
         'Los am Glas bleibt. Gelagert wird kühl (etwa 10–15 °C, angestrebt rund 15 °C), dunkel, trocken und '
         'geruchsneutral: Licht baut Farbe und Inhaltsstoffe ab, und der hygroskopische Honig zieht aus feuchter Luft '
         'Wasser. Kühle Lagerung hält den HMF-Wert tief — gesetzlich sind max. 40 mg/kg erlaubt, das Goldsiegel '
-        'verlangt unter 15 mg/kg; kein Erwärmungsschritt über 35 °C — einzige Ausnahme ist das Verflüssigen '
-        'kristallisierten Honigs mit kurzzeitig max. 40 °C. Bei höchstens 18 % Wasser und kühl-dunkler '
+        'verlangt unter 15 mg/kg. Als Betriebsregel (Goldsiegel-Vorgabe für die Schleuderung) kein Erwärmungsschritt '
+        'über 35 °C — einzige Ausnahme ist das Verflüssigen kristallisierten Honigs mit kurzzeitig max. 40 °C. Bei '
+        'dieser Lagertemperatur kristallisiert flüssig abgefüllter Honig zügig; das ist ein Qualitätszeichen, kein '
+        'Fehler. Bei höchstens 18 % Wasser und kühl-dunkler '
         'Lagerung ist Honig jahrelang haltbar; als MHD sind in der Schweiz 2 Jahre ab Abfüllung üblich, das '
         'Goldsiegel erlaubt maximal 3 Jahre nach Ende des Produktionsjahrs.',
     skizze: 'assets/wissen/honig_lagern.svg',
