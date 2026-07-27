@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bienen_app/features/wissen/domain/wissen_eintrag.dart';
 import 'package:bienen_app/features/wissen/domain/wissen_katalog.dart';
+import 'package:bienen_app/features/wissen/presentation/wissen_kategorie_symbol.dart';
 
 void main() {
   test('keys eindeutig und nicht leer', () {
@@ -75,5 +76,24 @@ void main() {
     const eintrag = WissensEintrag(key: 'x', titel: 'X', kurzinfo: 'x', kategorie: 'durchsicht');
     final res = belegteKategorien(kategorien: const [voll, leere], katalog: const [eintrag]);
     expect(res.map((k) => k.key), ['durchsicht']);
+  });
+  // Bis v1.39.3 war `WissensKategorie.icon` toter Code: das Feld existierte,
+  // ein Mapping in die UI nie — alle Kategorie-Überschriften rendeten ohne
+  // Symbol, ohne dass Test oder analyze etwas gemerkt hätten. Dieser Test
+  // schliesst die Lücke in beide Richtungen.
+  test('jede Kategorie löst ihr Symbol auf', () {
+    for (final k in kWissensKategorien) {
+      expect(wissensKategorieSymbol(k.icon), isNotNull,
+          reason: 'Kategorie "${k.key}" nennt das Symbol "${k.icon}", '
+              'das in kWissensKategorieSymbole fehlt — die Überschrift bliebe ohne Symbol.');
+    }
+  });
+  test('kein Symbol im Mapping ist unbenutzt', () {
+    final benutzt = kWissensKategorien.map((k) => k.icon).toSet();
+    expect(kWissensKategorieSymbole.keys.toSet().difference(benutzt), isEmpty,
+        reason: 'Symbol-Namen ohne Kategorie sind toter Code — entfernen oder zuordnen.');
+  });
+  test('wissensKategorieSymbol Null-Kontrakt (kein Throw)', () {
+    expect(wissensKategorieSymbol('gibt_es_nicht'), isNull);
   });
 }

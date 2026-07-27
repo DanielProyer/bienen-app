@@ -5,9 +5,9 @@ const kWissensKategorien = <WissensKategorie>[
   WissensKategorie(key: 'varroa', titel: 'Varroa', icon: 'bug'),
   WissensKategorie(key: 'krankheit', titel: 'Krankheiten', icon: 'health'),
   WissensKategorie(key: 'fuetterung', titel: 'Fütterung', icon: 'droplet'),
-  WissensKategorie(key: 'zucht', titel: 'Zucht & Auslese', icon: 'zucht'),
-  WissensKategorie(key: 'honig', titel: 'Honig & Ernte', icon: 'honig'),
-  WissensKategorie(key: 'recht', titel: 'Recht & Pflichten', icon: 'recht'),
+  WissensKategorie(key: 'zucht', titel: 'Zucht & Auslese', icon: 'star'),
+  WissensKategorie(key: 'honig', titel: 'Honig & Ernte', icon: 'honeycomb'),
+  WissensKategorie(key: 'recht', titel: 'Recht & Pflichten', icon: 'scale'),
 ];
 
 const kWissensKatalog = <WissensEintrag>[
