@@ -10,10 +10,23 @@ class FakeSpracheErkenner implements SpracheErkenner {
   Stream<SprachErgebnis> get ergebnisse => _erg.stream;
   @override
   Stream<ErkennerStatus> get status => _st.stream;
+  /// Test-Protokoll: hält die Aufrufreihenfolge fest.
+  ///
+  /// Nötig, um zu prüfen, dass beim Mikro-Wechsel wirklich erst gestoppt und
+  /// dann gestartet wird — sonst liefen zwei Erkenner parallel (Mikro-Loop).
+  final List<String> aufrufe = [];
+
   @override
-  Future<void> starten({String sprache = 'de-CH', bool kontinuierlich = true}) async => _st.add(ErkennerStatus.hoert);
+  Future<void> starten({String sprache = 'de-CH', bool kontinuierlich = true}) async {
+    aufrufe.add('starten');
+    _st.add(ErkennerStatus.hoert);
+  }
+
   @override
-  Future<void> stoppen() async => _st.add(ErkennerStatus.idle);
+  Future<void> stoppen() async {
+    aufrufe.add('stoppen');
+    _st.add(ErkennerStatus.idle);
+  }
   @override
   void dispose() { _erg.close(); _st.close(); }
   /// Test-Helfer: simuliert ein Erkennungs-Ergebnis.
