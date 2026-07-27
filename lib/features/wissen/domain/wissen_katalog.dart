@@ -16,6 +16,9 @@ const kWissensKatalog = <WissensEintrag>[
     kurzinfo: 'Frische Eier sind schlanke, ~1,5 mm lange „Reiskörner", die senkrecht am Zellboden stehen. '
         'Sichtbare Stifte = die Königin hat vor höchstens 3 Tagen gelegt.',
     skizze: 'assets/wissen/stifte.svg',
+    foto: 'assets/wissen/fotos/stifte.jpg',
+    fotoQuelle: WissensBildquelle(autor: 'conall..', lizenz: 'CC BY 2.0',
+        url: 'https://www.flickr.com/photos/16176711@N02/52078257394'),
     mehr: [WissensLink(label: 'Bienenvolk & Eilage', rechercheAsset: 'assets/recherche/10_Bienenbiologie_Das_Bienenvolk.md')],
     verwandte: ['koenigin_finden', 'brut_offen_verdeckelt', 'weiselzelle'],
     stichworte: ['ei', 'eier', 'reiskorn', 'gelege', 'stift'],
@@ -206,6 +209,12 @@ const kWissensKatalog = <WissensEintrag>[
         '(Streichholzprobe); modriger Geruch; lückiges Brutbild. Volk geschlossen halten, NICHTS umhängen — der '
         'Bieneninspektor nimmt die amtliche Probe — keine Eigenprobe einsenden (Details siehe Melde-Banner im Formular).',
     skizze: 'assets/wissen/afb.svg',
+    // Zeigt das Spätstadium: ausgeräumte, dunkle Wabe mit festsitzendem Schorf
+    // am Zellboden. Ergänzt die Skizze, die die frühen Deckel-Merkmale zeigt.
+    foto: 'assets/wissen/fotos/afb.jpg',
+    fotoQuelle: WissensBildquelle(
+        autor: 'AEEA – Apiculture Extension Educators of America', lizenz: 'CC BY 2.0',
+        url: 'https://www.flickr.com/photos/198426306@N05/53093622988'),
     mehr: [
       WissensLink(label: 'Bienengesundheit (CH)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md'),
       WissensLink(label: 'Krankheiten/Schädlinge (BGD)', rechercheAsset: 'assets/recherche/23_Krankheiten_Schaedlinge_BGD.md'),
@@ -219,6 +228,12 @@ const kWissensKatalog = <WissensEintrag>[
         'Larven (vor der Verdeckelung — Unterschied zur AFB in der verdeckelten Brut); lückiges Brutbild; '
         'säuerlicher Geruch. Volk geschlossen halten, Inspektor melden (siehe Melde-Banner).',
     skizze: 'assets/wissen/efb.svg',
+    // Verkrümmte, vergilbte Larven in verschiedenen Verfallsstadien, daneben
+    // gesunde weisse Larven — der Vergleich macht das Bild lehrreich.
+    foto: 'assets/wissen/fotos/efb.jpg',
+    fotoQuelle: WissensBildquelle(
+        autor: 'AEEA – Apiculture Extension Educators of America', lizenz: 'CC BY 2.0',
+        url: 'https://www.flickr.com/photos/198426306@N05/53093311574'),
     mehr: [
       WissensLink(label: 'Bienengesundheit (CH)', rechercheAsset: 'assets/recherche/14_Bienengesundheit_Krankheiten_CH.md'),
       WissensLink(label: 'Krankheiten/Schädlinge (BGD)', rechercheAsset: 'assets/recherche/23_Krankheiten_Schaedlinge_BGD.md'),
