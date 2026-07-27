@@ -364,7 +364,7 @@ In der Schweiz sind Varroa-Behandlungen mit Tierarzneimitteln (organische Säure
 | Feld | Beispiel/Inhalt |
 |---|---|
 | Datum | 2026-08-03 |
-| Volk-ID / Stand | Volk 1, Stand Tannen 85a |
+| Volk-ID / Stand | Volk 1, Heimstand |
 | Wirkstoff / Präparat | Ameisensäure 60 % (FORMIVAR 60 %) |
 | Charge / Ablaufdatum | Chargen-Nr. vom Etikett |
 | Konzentration | 60 % |

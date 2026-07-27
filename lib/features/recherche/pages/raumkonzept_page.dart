@@ -26,7 +26,7 @@ class RaumkonzeptPage extends StatelessWidget {
           children: [
             const SectionHeader(
               title: 'Raumkonzept Maiensäss',
-              subtitle: 'Tannen 85a, Arosa · 4-5 Völker (ab 2036: max. 8)',
+              subtitle: 'Arosa · 4-5 Völker (ab 2036: max. 8)',
             ),
             const SizedBox(height: BeeTokens.xl),
             _buildSavingsBanner(context),

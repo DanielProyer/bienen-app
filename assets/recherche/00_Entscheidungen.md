@@ -29,7 +29,7 @@
 
 ## 2. Standort
 
-**Entscheidung: Maiensäss Tannen 85a, Arosa (1570 m ü.M.)**
+**Entscheidung: Maiensäss, Arosa (1570 m ü.M.)**
 
 - Vorentscheid aus Startprompt
 - Überwinterung vorerst auf der Alp (mit gutem Unterstand)

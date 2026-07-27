@@ -16,10 +16,12 @@ declare
   t text;
 begin
   -- betrieb_id zur Laufzeit aufloesen (E-Mail nur hier, als Parameter gedacht).
+  -- Vor dem Ausfuehren die Owner-Adresse unten eintragen. Bewusst OHNE spitze
+  -- Klammern als Platzhalter: die wuerden beim Kopieren im String landen (D-86b).
   select m.betrieb_id into v_betrieb
     from auth.users u
     join public.betrieb_mitglieder m on m.user_id = u.id and m.is_deleted = false
-   where lower(u.email) = lower('dani.proyer@gmail.com')
+   where lower(u.email) = lower('OWNER_EMAIL_HIER_EINTRAGEN')
      and m.rolle = 'owner'
    order by m.created_at
    limit 1;

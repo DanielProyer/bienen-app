@@ -1,6 +1,6 @@
 # Bienen Arosa – Funktionsumfang der App (finale Fassung)
 
-*Stand: 2026-07-11 · Flutter Web + Supabase · GitHub Pages · Standort Maiensäss Tannen 85a, Arosa (1570 m)*
+*Stand: 2026-07-11 · Flutter Web + Supabase · GitHub Pages · Standort Maiensäss, Arosa (1570 m)*
 
 Dieses Dokument ist die verbindliche Ziel-Landkarte für die App. Es beschreibt, **was die App am Ende können soll** – nicht die Implementierung im Detail. Es bündelt Bestandsanalyse, Wettbewerbsrecherche, CH-/GR-Recht, Betriebsthemen und die eingearbeitete Kritik (Querschnitts-/Betriebslücken) zu einem vollständigen Bild. Grundprinzip: **pro Volk erfassen, aggregiert auswerten**, alles hängt an der Entität `voelker`, skalierbar bis 32 (evtl. 64) Völker ohne Hardcaps.
 
