@@ -378,7 +378,7 @@ Beim Stich bleibt der **Widerhaken-Stachel samt Giftblase** in der Haut; die Mus
 - **Immer griffbereit am Stand:** Kühlung, Antihistaminikum; bei diagnostizierter Allergie **Notfallset (Adrenalin-Autoinjektor, Kortison, Antihistaminikum)** — und **niemand arbeitet allein**, wenn ein Allergierisiko besteht.
 - **Zweite Person informieren:** Wo ist das Notfallset, wie Notruf, Standort-Koordinaten für Rettung.
 
-**Für Arosa (1570 m) bedeutet das:** **Abgelegene Maiensäss-Lage** → Rettungswege lang. Konsequenzen: (1) **Beide** (Daniel & Lorena) vorab **auf Bienengift-Allergie testen** lassen (Richtwert-Empfehlung, mit Hausarzt klären). (2) Immer ein **Notfallset + Handy mit Empfang/Koordinaten** am Stand; wenn möglich **nicht allein** durchsehen. (3) **Rega/Notruf 144** und die **exakten Standort-Koordinaten** (Tannen 85a) parat haben. (4) Bei Alleinarbeit jemandem Bescheid geben (Zeitfenster).
+**Für Arosa (1570 m) bedeutet das:** **Abgelegene Maiensäss-Lage** → Rettungswege lang. Konsequenzen: (1) **Beide** (Daniel & Lorena) vorab **auf Bienengift-Allergie testen** lassen (Richtwert-Empfehlung, mit Hausarzt klären). (2) Immer ein **Notfallset + Handy mit Empfang/Koordinaten** am Stand; wenn möglich **nicht allein** durchsehen. (3) **Rega/Notruf 144** und die **exakten Standort-Koordinaten** parat haben. (4) Bei Alleinarbeit jemandem Bescheid geben (Zeitfenster).
 
 ### 10.3 Ergonomie & körperliche Sicherheit
 

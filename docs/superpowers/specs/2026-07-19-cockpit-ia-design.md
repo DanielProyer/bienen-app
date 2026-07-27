@@ -22,7 +22,7 @@
 
 Nach Dringlichkeit gestapelt; **konsumiert ausschliesslich bestehende Provider** (keine neuen Fetches):
 
-1. **Kopfzeile** (schlank): „Cockpit" + Wochentag/Datum. (Korrektur nach Codebase-Check: der Auth-State trägt nur `betriebId`, keinen Betriebsnamen — ein Name-Fetch dafür wäre YAGNI.) Das Konto-Icon in der AppBar bleibt. Der bisherige grosse Header mit **Arosa-Hardcode** („Maiensäss Tannen 85a · 1570 m · Start Herbst 2026") **entfällt ersatzlos** (Mandanten-Regel).
+1. **Kopfzeile** (schlank): „Cockpit" + Wochentag/Datum. (Korrektur nach Codebase-Check: der Auth-State trägt nur `betriebId`, keinen Betriebsnamen — ein Name-Fetch dafür wäre YAGNI.) Das Konto-Icon in der AppBar bleibt. Der bisherige grosse Header mit **Arosa-Hardcode** („Maiensäss · 1570 m · Start Herbst 2026") **entfällt ersatzlos** (Mandanten-Regel).
 2. **Warnband** (nur wenn nötig, rotes Band je Befund):
    - überfällige Aufgaben (`offeneAufgabenStatsProvider.ueberfaellig > 0`) → Tap `/aufgaben`;
    - aktive meldepflichtige Gesundheitsereignisse: über die aktiven Völker `aktiveMeldepflichtProvider(volkId)` gesammelt (Family-Watch je Volk; bei Zielgrösse ≤ 8 Völker unkritisch) → Tap Volk-Detail.

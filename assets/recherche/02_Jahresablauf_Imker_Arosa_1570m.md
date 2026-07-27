@@ -1,7 +1,7 @@
 # Jahresablauf Imkerei -- Arosa 1570 m ü.M.
 
 > Recherche-Stand: 2. Mai 2026
-> Standort: Tannen 85a, Arosa, Graubünden (1570 m ü.M.)
+> Standort: Arosa, Graubünden (1570 m ü.M.)
 > Saison-Verschiebung: ca. **40--45 Tage** gegenüber Tallagen (500 m)
 
 ---

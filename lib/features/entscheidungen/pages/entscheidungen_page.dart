@@ -34,7 +34,7 @@ class EntscheidungenPage extends StatelessWidget {
             _buildDecisionCard(
               context,
               title: 'Standort',
-              decision: 'Maiensäss Tannen 85a, Arosa (1570 m ü.M.)',
+              decision: 'Maiensäss, Arosa (1570 m ü.M.)',
               details: [
                 'Überwinterung vorerst auf der Alp',
                 'Evaluation nach 1-2 Wintern',

@@ -1,6 +1,6 @@
 # Bienenstand und Unterstand fuer 8 Dadant-Blatt-Beuten auf 1570 m
 
-*Stand: Mai 2026 | Standort: Maiensaess Tannen 85a, Arosa (GR), 1570 m ue.M.*
+*Stand: Mai 2026 | Standort: Maiensaess, Arosa (GR), 1570 m ue.M.*
 *Beutensystem: Dadant Blatt 10er, Holz (Weymouthskiefer)*
 
 ---

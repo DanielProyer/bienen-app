@@ -1,4 +1,4 @@
-# Raumkonzept Imkerei -- Maiensäss Tannen 85a, Arosa (1570 m)
+# Raumkonzept Imkerei -- Maiensäss, Arosa (1570 m)
 
 > Stand: 2. Mai 2026 | Auslegung: 4-5 Völker bis 2036, danach max. 8 Dadant-Blatt-Völker in Holz
 > Grundsatz: Qualität vor Preis, Langlebigkeit, Bio-kompatibel

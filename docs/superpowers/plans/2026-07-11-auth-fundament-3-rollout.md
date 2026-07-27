@@ -101,7 +101,7 @@ bash deploy.sh
 
 - [ ] **Step 1: Registrieren**
 
-In der Live-App: „Neu hier? Betrieb registrieren" → **dani.proyer@gmail.com** + Passwort (≥ 8 Zeichen, im Passwortmanager sichern) → Bestätigungs-Mail abwarten → Link klicken.
+In der Live-App: „Neu hier? Betrieb registrieren" → **deine E-Mail-Adresse** + Passwort (≥ 8 Zeichen, im Passwortmanager sichern) → Bestätigungs-Mail abwarten → Link klicken.
 
 - [ ] **Step 2: Anmelden + gründen**
 
@@ -117,7 +117,7 @@ select u.email, p.id as user_id, b.id as betrieb_id, b.name, m.rolle
   join public.profiles p on p.id = u.id
   join public.betrieb_mitglieder m on m.user_id = u.id and m.is_deleted = false
   join public.betriebe b on b.id = m.betrieb_id
- where lower(u.email) = 'dani.proyer@gmail.com';
+ where lower(u.email) = 'OWNER_EMAIL_HIER_EINTRAGEN';
 ```
 Erwartet: **genau 1 Zeile**, `rolle = owner`, `name = Imkerei Arosa`. Die `betrieb_id` **notieren** — sie ist der Parameter für Task 4.
 
@@ -156,7 +156,7 @@ begin
   select m.betrieb_id into v_betrieb
     from auth.users u
     join public.betrieb_mitglieder m on m.user_id = u.id and m.is_deleted = false
-   where lower(u.email) = lower('dani.proyer@gmail.com')
+   where lower(u.email) = lower('OWNER_EMAIL_HIER_EINTRAGEN')
      and m.rolle = 'owner'
    order by m.created_at
    limit 1;
@@ -196,7 +196,7 @@ MCP `execute_sql`:
 select count(*) as owner_betriebe
   from auth.users u
   join public.betrieb_mitglieder m on m.user_id=u.id and m.is_deleted=false and m.rolle='owner'
- where lower(u.email)='dani.proyer@gmail.com';
+ where lower(u.email)='OWNER_EMAIL_HIER_EINTRAGEN';
 ```
 Erwartet: **1**. Bei 0 → **STOPP**, Task 3 nachholen.
 
