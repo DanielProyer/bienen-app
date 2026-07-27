@@ -7,6 +7,10 @@
 
 ---
 
+## 📌 Vorgemerkt für später (Daniels Vorgaben, noch nicht geplant)
+
+- **Honig: Rückverfolgbarkeit bis zum einzelnen Glas + Etiketten-Generator** (Vorgabe 2026-07-27, gehört zu **Modul 4.7 Ernte & Honig**, Phase 2 / erste Ernte 2027). Ziel: von der Glasnummer aus rückwärts nachvollziehen, **aus welchem Volk/Standort** der Honig kommt, mit **Erntedatum, Jahr, Sorte, Wassergehalt/HMF und Verarbeitungsschritten**; vorwärts bis zum Verkauf. **Wichtig fürs Datenmodell:** Mischchargen über mehrere Völker müssen abbildbar sein → **n:m Los↔Volk**, kein einzelnes `volk_id` am Los. Darauf aufbauend soll die App die **Etiketten selbst generieren** (druckfertig, mit den Pflichtangaben aus dem Wissenseintrag `honig_etikette`: Sachbezeichnung, Produzent + Adresse, Produktionsland, MHD „mindestens haltbar bis Ende …", Warenlos mit „L", Nennfüllmenge, x-Höhe ≥ 1,2 mm bzw. 0,9 mm bei < 80 cm²; optional QR auf eine Chargen-Seite). Verzahnt sich mit Rückstellmuster/Selbstkontrolle und mit Kosten/kg im Kosten-Dashboard. Eigener Brainstorming-Zyklus, wenn die erste Ernte näher rückt.
+
 ## 🔴 OFFEN — von Daniel am Rechner zu erledigen (zwei gebaute Features scharfschalten)
 
 ### A) Backup-Offsite scharfschalten
