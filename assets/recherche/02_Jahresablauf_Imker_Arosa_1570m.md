@@ -32,6 +32,14 @@ Jan  Feb  Mär  Apr  Mai  Jun  Jul  Aug  Sep  Okt  Nov  Dez
 
 ## Trachtkalender Arosa (1570 m)
 
+![Blühende Salweide mit anfliegender Biene](bilder/fund/salweide_salix_caprea_weidenkaetzchen_in_v.jpg)
+
+*Die **Salweide** ist der Startschuss des Bienenjahres: Ihre Kätzchen liefern die erste kräftige Pollenquelle, wenn sonst noch nichts blüht — und Pollen ist es, der die Brutentwicklung anschiebt. Auf 1570 m verschiebt sich dieser Termin gegenüber dem Flachland um Wochen; die Weidenblüte zu beobachten ist deshalb verlässlicher als jedes Kalenderdatum (siehe den phänologischen Ansatz in `21`). Foto: gemeinfrei/CC0, via Wikimedia Commons.*
+
+![Blühende Bergwiese in Hanglage mit Bergpanorama](bilder/fund/bluehende_schweizer_alm_bergwiese_in_hangl.jpg)
+
+*Die alpine Hauptracht: artenreiche Bergwiese in Hanglage. Genau diese Vielfalt begründet den kurzen, dafür aromatisch dichten Ernteertrag der Höhenlage — eine Blütentracht statt der Massentracht des Mittellands. Foto: CC BY 4.0, via Wikimedia Commons.*
+
 | Zeitraum | Trachtpflanzen | Bedeutung |
 |----------|---------------|-----------|
 | Ende Apr -- Mai | Weiden, Huflattich, Schlüsselblumen, erste Löwenzähne | Erste Pollen-/Nektarquelle |
@@ -52,6 +60,10 @@ Jan  Feb  Mär  Apr  Mai  Jun  Jul  Aug  Sep  Okt  Nov  Dez
 ## JANUAR -- Tiefster Winter
 
 **KW 1--5 | Max 0°C / Min -6°C | Schneefall: 140 cm**
+
+![Bienenbeuten mit dicker Schneeauflage](bilder/fund/eingeschneite_bienenbeuten_am_bienenstand_.jpg)
+
+*So sieht Januar am Stand aus. Schnee auf dem Deckel ist unbedenklich und isoliert sogar — worauf es ankommt, ist das **freie Flugloch** und dass die Last das Dach nicht drückt. Bei 140 cm Schneefall im Monat ist der Zugang zum Stand das eigentliche Thema: Die Winterbehandlung muss vorher erledigt sein (siehe `15`, Kap. 8). Foto: CC BY 2.0, via Wikimedia Commons.*
 
 ### Am Bienenstand
 - **Nichts tun.** Absolute Winterruhe.
