@@ -172,6 +172,10 @@ Wie AFB (Wabenhygiene, keine Fremdmaterialien), zusätzlich: **starke, gut genä
 **Erreger:** Pilz *Ascosphaera apis*. **Nicht meldepflichtig.**
 
 - **Symptom:** abgestorbene Larven verhärten zu **weissen bis grau-schwarzen «Mumien»** («Kalkbrut»); harte Klümpchen auf dem **Flugbrett / Bodeneinlage** sind das Leitsymptom.
+
+![Weisse Kalkbrut-Mumien auf dem Flugbrett](bilder/fund/kalkbrut_mumien_vor_dem_flugloch_das_flugb.jpg)
+
+*Das Leitsymptom, wie man es tatsächlich findet: Die Bienen räumen die verhärteten Larven aus, und sie liegen als weisse, harte Klümpchen auf dem Flugbrett. Deshalb lohnt der Blick aufs Flugbrett bei jedem Standbesuch — Kalkbrut zeigt sich dort, bevor man eine Wabe gezogen hat. Foto: CC BY 3.0, via Wikimedia Commons.*
 - **Ursachen/Fördernd:** Kühle + Feuchte im Brutnest, Volksschwäche, überdehntes Brutnest, genetische Disposition, Stress.
 - **Behandlung:** keine zugelassenen Medikamente — **imkerlich**: Volk stärken/wärmer/enger stellen, Nässe/Zugluft beseitigen, **befallene Waben entnehmen und erneuern**, ggf. **umweiseln** (frische, vitalere Genetik). Meist selbstlimitierend bei starkem Volk.
 

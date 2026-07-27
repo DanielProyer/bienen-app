@@ -42,6 +42,10 @@ Dieses Dokument ist bewusst das **Grundlagenwerk**, auf das die anderen Recherch
 
 Ein Volk besteht aus drei morphologisch und funktional klar getrennten „Wesen" (im Imkerdeutsch), die zusammen erst den Organismus bilden. Alle drei entstehen aus demselben Ei-Material — die Kaste entscheidet sich über **Ernährung** (Königin ↔ Arbeiterin) bzw. über **Befruchtung** (Weibchen ↔ Drohn).
 
+![Königin, Arbeiterin und Drohn im direkten Größenvergleich](bilder/fund/die_drei_wesen_des_bienenvolks_im_direkten.jpg)
+
+*Die drei Wesen nebeneinander, wie es im Volk nie zu sehen ist: Die Königin ist die längste, hat aber einen schmaleren Hinterleib als der Drohn; der Drohn ist massiger und trägt die auffällig grossen, fast zusammenstossenden Augen; die Arbeiterin ist die kleinste. Foto: CC BY, via Wikimedia Commons.*
+
 ![Gelb markierte Königin im Hofstaat auf der Wabe](bilder/fund/gelb_markierte_koenigin_inmitten_des_hofst.jpg)
 
 *Die Königin, gelb markiert, inmitten ihres Hofstaats. Auffällig ist nicht nur ihre Länge, sondern das Verhalten der Umgebung: Die Arbeiterinnen wenden sich ihr zu, füttern und putzen sie — dieser „Hofstaat" ist beim Suchen auf der Wabe oft das verlässlichere Erkennungszeichen als die Königin selbst. Foto: U.S. Geological Survey (gemeinfrei), via Wikimedia Commons.*
@@ -167,6 +171,10 @@ Genau hier liegt die Logik des **Schieds** im ungeteilten Dadant-Brutraum: Das S
 ---
 
 ## 6. Das Volk als Superorganismus
+
+![Frei hängende Schwarmtraube an einem Ast](bilder/fund/schwarmtraube_frei_haengender_bienenklumpe.jpg)
+
+*Der Superorganismus in seiner sichtbarsten Form: eine Schwarmtraube. Zehntausende Bienen hängen als ein Körper zusammen, halten im Inneren Temperatur, schützen die Königin und schicken Spurbienen aus — währenddessen wird kollektiv über den neuen Nistplatz entschieden. Kein Einzeltier könnte das. Foto: gemeinfrei, via Wikimedia Commons.*
 
 Der Begriff **„der Bien"** (schon von den alten Imkern geprägt) bzw. **Superorganismus** meint: Das biologisch relevante Individuum ist **nicht die einzelne Biene, sondern das ganze Volk**. Analogie zum Vielzeller:
 

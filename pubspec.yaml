@@ -1,7 +1,7 @@
 name: bienen_app
 description: "Bienen Arosa - Imkerei Projekt WebApp"
 publish_to: 'none'
-version: 1.40.3+73
+version: 1.40.4+74
 
 environment:
   sdk: ^3.11.0
@@ -35,7 +35,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/recherche/
+    # Asset-Ordner sind NICHT rekursiv: Jeder Unterordner braucht seinen eigenen
+    # Eintrag, sonst liegt die Datei da und fehlt trotzdem im Bundle.
     - assets/recherche/bilder/
+    - assets/recherche/bilder/fund/
     - assets/bauplan/
     - assets/bau/
     - assets/hv_bau/
