@@ -730,3 +730,8 @@ Bei 684 cm Neuschnee/Jahr und max. Schneehöhe 100--120 cm:
 ### Wissenschaftlich
 - [Agroscope -- Alpenrosenhonig](https://ira.agroscope.ch/it-CH/Page/Einzelpublikation/Download?einzelpublikationId=15594)
 - [Blühverzögerung pro 100 Höhenmeter -- science.ORF.at](https://science.orf.at/v2/stories/2831606/)
+
+
+---
+
+> **📎 Ergänzung Juli 2026 (bienen.ch/BGD-Auswertung):** Die offizielle BienenSchweiz-**Jahresplanung nach Betriebskonzept** (phänologisch nach Indikatorpflanzen statt Fixdatum) ist in [21_Betriebskonzept_Jahresplanung_BGD.md](21_Betriebskonzept_Jahresplanung_BGD.md) erschlossen — die maßgebliche Soll-Referenz für den App-Aufgaben-Generator.

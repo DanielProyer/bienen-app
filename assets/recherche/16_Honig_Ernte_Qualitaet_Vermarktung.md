@@ -577,3 +577,8 @@ Alle Felder **mandantenfähig** (jeder Betrieb eigene Sorten, Preise, Standorte,
 ---
 
 *Ende 16_Honig_Ernte_Qualitaet_Vermarktung.md — Stand 2026-07-16.*
+
+
+---
+
+> **📎 Ergänzung Juli 2026 (bienen.ch/BGD-Auswertung):** Honig-Grenzwerte (Wasser max 20 %/Goldsiegel 18,5 %, HMF), Etiketten-Pflichtangaben und Rückstellmuster/MHD-Regeln in [28_Honig_Recht_Pflichten_BGD.md](28_Honig_Recht_Pflichten_BGD.md).

@@ -536,3 +536,8 @@ Reale, im Juli 2026 geprüfte Quellen (Kernfakten am 2026-07-17 per Web nachveri
 - BeeVenture — Drohnenvölker für die Königinnenzucht: http://www.beeventure.de/imkerei/honigbiene/bienenzucht/koniginnenzucht/drohnenvoelker
 
 **Weiter zu prüfen (Fachstelle/Daniel):** Zugangs-/Mitgliedschaftsbedingungen und Auffuhrtermine **Belegstelle Grialetsch/Flüela (Buckfast IGEL)** — für Arosa die nächste kontrollierte Buckfast-Anpaarung; exakte Belegstellen-Auffuhrtermine & Gebühren BIVS; kantonale Verbringungs-/Gesundheitsvorgaben Bieneninspektor GR bei Auffuhr Flüela oder Begattung im Tal; Bio-Suisse-Detailregeln zu KB-Ausnahme (VSH)/Herkunft/Reizfütterung; zugelassene **Oxalsäure-Anwendung/Dosis im brutfreien Ableger** (apiservice/BioVet); Buckfast-Zuchtwert-Zugang via BIVS/IGEL/Tino Hassler.
+
+
+---
+
+> **📎 Ergänzung Juli 2026 (bienen.ch/BGD-Auswertung):** Offizielle Bewertungssystematik (Leistungsprüfung 7-Stufen-Skala, Zuchtwert BLUP, Herdebuch-Klassen) + Königin finden/zusetzen in [26_Zucht_Voelkerbeurteilung_BGD.md](26_Zucht_Voelkerbeurteilung_BGD.md).
