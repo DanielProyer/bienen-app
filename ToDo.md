@@ -1,21 +1,13 @@
 # ToDo — Bienen Arosa
 
-**Stand:** 2026-07-27 · **Phase:** P1-Fundament + Fachmodule · **App-Version:** **1.38.0+60 live** · 1.39.0+61 gebaut + auf master gemerged, **Deploy ausstehend** (siehe Block D)
+**Stand:** 2026-07-27 · **Phase:** P1-Fundament + Fachmodule · **App-Version:** 1.39.0+61 (live)
 
-**Aktueller Fokus:** ✅ **Wissens-Stöberkategorien fertig** — „Honig & Ernte" und „Recht & Pflichten" mit je 7 Einträgen + 14 Skizzen, fachlich gegen die Quell-Recherchen geprüft (4 Korrekturen, siehe D-80). Die Wissensdatenbank hat damit **7 Kategorien / 49 Einträge**. Der Deploy scheiterte am fehlenden Netz in der Sandbox und ist nachzuholen. Davor: ✅ **F3 Benachrichtigungen gebaut** (täglicher Telegram-Überblick) — Migration **O01 ist live** (pg_cron/pg_net im extensions-Schema, 0 neue Advisor; Tabelle `benachrichtigungs_einstellungen` mit personenbezogener RLS + Stunden-Cron), App-Seite + Edge Function fertig auf `feat/benachrichtigungen` (281 Tests grün). **Deploy + Scharfschaltung wartet auf Daniels Rechner-Sitzung** (Supabase-CLI + Secrets, siehe Block unten). Davor: ✅ **Königinnen-Fix + Register** (v1.35.0) und ✅ **Standort-Fix + Register** (v1.36.0) — dieselbe „angelegt aber unsichtbar"-Falle geschlossen; ✅ **F1 Backup & Export** (v1.34.0, Offsite wartet ebenfalls auf Rechner); ✅ App-Design-Überarbeitung (v1.30–1.33), ✅ Material-Rework (v1.29.0).
+**Aktueller Fokus:** ✅ **Wissens-Stöberkategorien live** (v1.39.0) — „Honig & Ernte" und „Recht & Pflichten" mit je 7 Einträgen + 14 Skizzen, fachlich gegen die Quell-Recherchen geprüft (4 Korrekturen, siehe D-80). Die Wissensdatenbank hat damit **7 Kategorien / 49 Einträge**. Davor: ✅ **F3 Benachrichtigungen gebaut** (täglicher Telegram-Überblick) — Migration **O01 ist live** (pg_cron/pg_net im extensions-Schema, 0 neue Advisor; Tabelle `benachrichtigungs_einstellungen` mit personenbezogener RLS + Stunden-Cron), App-Seite + Edge Function fertig auf `feat/benachrichtigungen` (281 Tests grün). **Deploy + Scharfschaltung wartet auf Daniels Rechner-Sitzung** (Supabase-CLI + Secrets, siehe Block unten). Davor: ✅ **Königinnen-Fix + Register** (v1.35.0) und ✅ **Standort-Fix + Register** (v1.36.0) — dieselbe „angelegt aber unsichtbar"-Falle geschlossen; ✅ **F1 Backup & Export** (v1.34.0, Offsite wartet ebenfalls auf Rechner); ✅ App-Design-Überarbeitung (v1.30–1.33), ✅ Material-Rework (v1.29.0).
 **Nächste Schritte (Rechner-Sitzung schaltet beide gebauten Features scharf):** (1) **Backup** einrichten + verifizieren · (2) **F3** Function deployen + Secrets + Testnachricht · (3) dein Feldtest der App am Handy · (4) **4.9 Monitoring**, sobald die HiveWatch-Waage da ist.
 
 ---
 
 ## 🔴 OFFEN — von Daniel am Rechner zu erledigen (zwei gebaute Features scharfschalten)
-
-### D) Deploy v1.39.0 nachholen (zuerst — nur ein Befehl, sobald Netz da ist)
-> Die Stöberkategorien sind gebaut, geprüft, committet und **auf `master` gemerged**; `flutter build web --release` lief sauber durch. Nur der letzte Schritt fehlt: `deploy.sh` konnte nicht auf `gh-pages` pushen, weil in der Sandbox **`github.com` nicht auflösbar** war (`Could not resolve host`). Live läuft deshalb weiterhin 1.38.0. Der Merge liegt lokal, `master` ist **6 Commits vor `origin/master`**.
-
-```bash
-cd /d/Projekte/Bienen/bienen_app && bash deploy.sh && git push origin master
-```
-Danach mit Claude: Version im Browser prüfen (Wissen → die zwei neuen Kacheln, ein Recht-Eintrag, eine Skizze mit Pfeil).
 
 ### A) Backup-Offsite scharfschalten
 > Code fertig; das **automatische Offsite-Backup läuft erst nach diesen Schritten**. Bis dahin nur der manuelle Export-Knopf. Das lokale Repo `D:\Projekte\Bienen\bienen-backup` ist gebaut/committet, hat aber noch keinen Remote.
@@ -64,7 +56,7 @@ Danach mit Claude: Version im Browser prüfen (Wissen → die zwei neuen Kacheln
   - **Bestandsfehler nebenbei gefunden und behoben:** `futter.svg`, `notfuetterung.svg` und `reizfuetterung.svg` zeichneten ihre Pfeile mit `<marker>` — das parst `vector_graphics_compiler` (flutter_svg) **nicht**, die Spitzen wurden still verworfen. Seit Monaten kopflose Pfeile, von Test und `flutter analyze` unbemerkt. Jetzt explizite Dreieck-Pfade; neues Werkzeug **`tool/svg_check.dart`** kompiliert alle Skizzen mit dem echten Parser (49 Skizzen, 0 Befunde). Siehe **D-79**.
   - **Versionskollision aufgelöst:** F3 war auf v1.39.0 vorgemerkt, deployt aber später → F3 ist jetzt überall **v1.40.0**. (Dieselbe Doppelvergabe war schon einmal bei 1.37.0 passiert.)
   - Gates: `flutter analyze lib test` sauber · **288 Tests grün** · `flutter build web --release` erfolgreich.
-  - **🔴 OFFEN — Deploy** (Block D oben): `deploy.sh` kam bis zum gh-pages-Push, dann war `github.com` in der Sandbox nicht auflösbar. Live ist weiterhin 1.38.0.
+  - **Deploy:** beim ersten Anlauf am gh-pages-Push gescheitert (`github.com` war in der Sandbox zeitweise nicht auflösbar), im zweiten Anlauf durch — **v1.39.0 live bestätigt**, `master` gepusht, Feature-Branch aufgeräumt.
   - **🟡 Befund, nicht behoben:** `WissensKategorie.icon` ist **toter Code** — es gibt nirgends ein Mapping, alle 7 Kategoriekacheln rendern ohne Symbol (betrifft auch die 5 alten Kategorien). Entweder Mapping bauen oder das Feld entfernen; bewusst außerhalb dieses Zyklus gelassen.
   - **🟡 Prozess:** Das Fachreview lief **inline statt über unabhängige Subagenten** — beide Review-Agenten starben am Monats-Ausgabenlimit. Die Fakten oben sind gegen die Quelldateien belegt, aber ein unabhängiger Zweitblick auf die 14 Einträge steht noch aus.
 
