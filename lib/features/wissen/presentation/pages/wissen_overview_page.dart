@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/wissen/domain/wissen_eintrag.dart';
 import 'package:bienen_app/features/wissen/domain/wissen_katalog.dart';
+import 'package:bienen_app/features/wissen/presentation/wissen_kategorie_symbol.dart';
 import 'package:bienen_app/features/wissen/presentation/widgets/wissen_panel.dart';
 import 'package:bienen_app/shared/widgets/app_card.dart';
 import 'package:bienen_app/shared/widgets/app_list_tile.dart';
@@ -35,7 +36,7 @@ class _WissenOverviewPageState extends State<WissenOverviewPage> {
         else ...[
           for (final kat in belegteKategorien()) ...[
             Padding(padding: const EdgeInsets.only(top: BeeTokens.sm),
-                child: SectionHeader(titel: kat.titel)),
+                child: SectionHeader(titel: kat.titel, symbol: wissensKategorieSymbol(kat.icon))),
             ...eintraegeDerKategorie(kat.key).map((e) => _EintragTile(e)),
           ],
         ],

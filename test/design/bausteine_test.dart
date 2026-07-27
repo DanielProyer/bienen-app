@@ -34,6 +34,22 @@ void main() {
     expect(find.text('Heute'), findsOneWidget);
     expect(find.text('3 Aufgaben'), findsOneWidget);
   });
+  // Symbole haben keine Textbaseline: die Row schaltet mit `symbol` auf
+  // zentrierte Ausrichtung um. Beide Zweige müssen fehlerfrei layouten.
+  testWidgets('SectionHeader rendert mit Symbol (ohne Baseline-Fehler)', (t) async {
+    await t.pumpWidget(_host(const SectionHeader(
+        titel: 'Honig & Ernte', trailingText: '7', symbol: Icons.hexagon_outlined)));
+    // Kein takeException() hier: das würde eine echte Layout-Exception
+    // konsumieren und den Test fälschlich grün machen. testWidgets schlägt
+    // bei einem Baseline-Fehler von sich aus fehl.
+    expect(find.text('Honig & Ernte'), findsOneWidget);
+    expect(find.byIcon(Icons.hexagon_outlined), findsOneWidget);
+    expect(find.text('7'), findsOneWidget);
+  });
+  testWidgets('SectionHeader ohne Symbol zeigt keines', (t) async {
+    await t.pumpWidget(_host(const SectionHeader(titel: 'Heute')));
+    expect(find.byType(Icon), findsNothing);
+  });
   testWidgets('StatusPill nutzt Signal-Farbe', (t) async {
     await t.pumpWidget(_host(const StatusPill(label: 'überfällig', signal: BeeSignal.gefahr)));
     expect(find.text('überfällig'), findsOneWidget);
