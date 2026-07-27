@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <g stroke="#633806" stroke-width="2">
+    <rect x="18" y="12" width="60" height="46" rx="3" fill="#EBD9A8"/>
+    <rect x="90" y="12" width="60" height="46" rx="3" fill="#F0C24A"/>
+    <rect x="162" y="12" width="60" height="46" rx="3" fill="#F0C24A"/>
+  </g>
+  <g stroke="#d8c9a0" stroke-width="1"><line x1="18" y1="27" x2="78" y2="27"/><line x1="18" y1="42" x2="78" y2="42"/></g>
+  <rect x="94" y="26" width="52" height="28" rx="2" fill="#EBD9A8" stroke="#c99433" stroke-width="1"/>
+  <g fill="#E8A33D" stroke="#c99433" stroke-width="0.8"><ellipse cx="104" cy="19" rx="7" ry="4.5"/><ellipse cx="120" cy="19" rx="7" ry="4.5"/><ellipse cx="136" cy="19" rx="7" ry="4.5"/></g>
+  <g fill="#E8A33D" stroke="#c99433" stroke-width="0.8"><ellipse cx="176" cy="22" rx="8" ry="5"/><ellipse cx="194" cy="22" rx="8" ry="5"/><ellipse cx="212" cy="22" rx="8" ry="5"/><ellipse cx="176" cy="35" rx="8" ry="5"/><ellipse cx="194" cy="35" rx="8" ry="5"/><ellipse cx="212" cy="35" rx="8" ry="5"/><ellipse cx="176" cy="48" rx="8" ry="5"/><ellipse cx="194" cy="48" rx="8" ry="5"/><ellipse cx="212" cy="48" rx="8" ry="5"/></g>
+  <g font-family="sans-serif" font-size="10" text-anchor="middle">
+    <text x="48" y="70" fill="#3B6D11">verdeckelt</text><text x="120" y="70" fill="#8a6a2e">2/3 · Rand offen</text><text x="192" y="70" fill="#B32D2D">offen</text>
+  </g>
+  <line x1="14" y1="80" x2="226" y2="80" stroke="#d8c9a0" stroke-width="1"/>
+  <text x="120" y="96" font-family="sans-serif" font-size="10" text-anchor="middle" fill="#633806">Spritzprobe</text>
+  <g stroke="#633806" stroke-width="2"><line x1="66" y1="88" x2="66" y2="93"/><line x1="176" y1="88" x2="176" y2="93"/></g>
+  <g fill="#633806"><path d="M62 93 h8 l-4 6 z"/><path d="M172 93 h8 l-4 6 z"/></g>
+  <g stroke="#633806" stroke-width="1.5"><rect x="34" y="104" width="64" height="12" rx="2" fill="#EBD9A8"/><rect x="144" y="104" width="64" height="12" rx="2" fill="#EBD9A8"/></g>
+  <g fill="#E8B84D" stroke="#c99433" stroke-width="0.8"><ellipse cx="24" cy="130" rx="4" ry="3"/><ellipse cx="42" cy="136" rx="3.5" ry="2.5"/><ellipse cx="58" cy="128" rx="3" ry="2.2"/></g>
+  <g stroke="#d8c9a0" stroke-width="1"><line x1="34" y1="119" x2="26" y2="126"/><line x1="50" y1="119" x2="44" y2="132"/><line x1="64" y1="119" x2="60" y2="124"/></g>
+  <path d="M166 130 l6 7 l13 -15" fill="none" stroke="#3B6D11" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g font-family="sans-serif" font-size="11" text-anchor="middle">
+    <text x="64" y="152" fill="#B32D2D">Tropfen = nicht reif</text><text x="176" y="152" fill="#3B6D11">nichts = reif</text>
+  </g>
+</svg>

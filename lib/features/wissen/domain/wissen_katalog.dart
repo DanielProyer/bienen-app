@@ -6,6 +6,8 @@ const kWissensKategorien = <WissensKategorie>[
   WissensKategorie(key: 'krankheit', titel: 'Krankheiten', icon: 'health'),
   WissensKategorie(key: 'fuetterung', titel: 'Fütterung', icon: 'droplet'),
   WissensKategorie(key: 'zucht', titel: 'Zucht & Auslese', icon: 'zucht'),
+  WissensKategorie(key: 'honig', titel: 'Honig & Ernte', icon: 'honig'),
+  WissensKategorie(key: 'recht', titel: 'Recht & Pflichten', icon: 'recht'),
 ];
 
 const kWissensKatalog = <WissensEintrag>[
@@ -456,6 +458,258 @@ const kWissensKatalog = <WissensEintrag>[
     mehr: [WissensLink(label: 'Zucht & Völkerbeurteilung (BGD)', rechercheAsset: 'assets/recherche/26_Zucht_Voelkerbeurteilung_BGD.md')],
     verwandte: ['varroa_milbe', 'gemuelldiagnose', 'brut_offen_verdeckelt'],
     stichworte: ['gesundheit', 'varroatoleranz', 'hygieneverhalten', 'vitalitaet', 'bruthygiene'],
+  ),
+  WissensEintrag(
+    key: 'erntereife', titel: 'Erntereife erkennen', kategorie: 'honig',
+    kurzinfo: 'Erst ernten, wenn die Honigwaben mindestens zu zwei Dritteln bis drei Vierteln verdeckelt sind — '
+        'konservativ und in Höhenlage: weit überwiegend verdeckelt. An unverdeckelten Stellen die Spritzprobe machen: '
+        'Wabe waagrecht halten und ruckartig nach unten stossen — spritzt dünner Nektar heraus, ist der Honig nicht '
+        'reif; bleibt alles in den Zellen, ist er eingedickt. Der Ernteentscheid hängt an drei Dingen: '
+        'Verdeckelungsgrad, Wassergehalt und Trachtende/Witterung — nicht am Kalenderdatum. Fürs Goldsiegel gilt: '
+        'nur reifen Honig ernten (verdeckelt oder Spritzprobe negativ).',
+    skizze: 'assets/wissen/honig_erntereife.svg',
+    mehr: [
+      WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+    ],
+    verwandte: ['wassergehalt', 'schleudern', 'futter_nektar'],
+    stichworte: ['erntereife', 'verdeckelung', 'spritzprobe', 'schuettelprobe', 'ernte', 'reif'],
+  ),
+  WissensEintrag(
+    key: 'wassergehalt', titel: 'Wassergehalt messen', kategorie: 'honig',
+    kurzinfo: 'Der Wassergehalt ist der wichtigste Qualitäts- und Haltbarkeitsparameter — zu feuchter Honig gärt. '
+        'Gesetzlich sind max. 20 % Wasser erlaubt (VLtH; Heide- und Backhonig 23 %, Heide-Backhonig 25 %), das '
+        'Goldsiegel verlangt max. 18,5 % (refraktometrisch '
+        'bestimmt UND dokumentiert), als Betriebsziel gelten 17,5–18 %; Bienen erreichen bei Verdeckelung typisch '
+        '16–18 %. Gemessen wird mit dem Handrefraktometer (mit ATC, ca. CHF 40–120, vor jeder Saison kalibrieren): '
+        '1–2 Tropfen gut durchmischten Honigs aufs Prisma, 1–2 Minuten temperieren lassen, gegen Licht ablesen. '
+        'Immer eine Mischprobe über mehrere Waben bzw. aus dem Sammeleimer messen, nie eine einzelne Zelle.',
+    skizze: 'assets/wissen/honig_wassergehalt.svg',
+    mehr: [
+      WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+    ],
+    verwandte: ['erntereife', 'honig_zu_feucht', 'selbstkontrolle'],
+    stichworte: ['wassergehalt', 'refraktometer', 'brix', 'wasser', 'gaerung', 'atc'],
+  ),
+  WissensEintrag(
+    key: 'honig_zu_feucht', titel: 'Honig zu feucht', kategorie: 'honig',
+    kurzinfo: 'Reifen lässt man Honig im Stock — das ist immer die erste Wahl. Ist eine Charge trotzdem grenzwertig '
+        'feucht, darf man die Waben VOR dem Schleudern in einem temperierten, entfeuchteten Raum trocknen '
+        '(Raumklima etwa 55–60 % relative Luftfeuchte, Luftentfeuchter) — realistisch lassen sich so 1–2 % Wasser '
+        'senken. Dem geschleuderten Honig aktiv Wasser zu entziehen ist nicht statthaft (dem fertigen Honig darf '
+        'nichts entzogen werden); eine feuchte mit einer trockeneren EIGENEN Charge zu verschneiden ist dagegen '
+        'zulässige Praxis. Vorbeugen ist besser: hohe Verdeckelung abwarten, am trockenen, warmen Tag schleudern und '
+        'offenen Honig nicht in feuchter Luft stehen lassen — Honig ist hygroskopisch.',
+    skizze: 'assets/wissen/honig_zu_feucht.svg',
+    mehr: [WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md')],
+    verwandte: ['wassergehalt', 'erntereife', 'abfuellen_lagern'],
+    stichworte: ['zu feucht', 'gaerung', 'entfeuchten', 'luftentfeuchter', 'verschneiden', 'hygroskopisch'],
+  ),
+  WissensEintrag(
+    key: 'schleudern', titel: 'Schleudern', kategorie: 'honig',
+    kurzinfo: 'Ablauf: Bienen entfernen, Honigräume abernten, entdeckeln, schleudern, sieben, klären/abschäumen, '
+        'abfüllen. Die Bienenflucht am Vortag einlegen ist die schonendste Methode, den Honigraum bienenfrei zu '
+        'bekommen — chemische Repellents sind für Qualität und Bio tabu. Beim Entdeckeln (Gabel, Messer oder '
+        'Entdeckelungsgeschirr) das Deckelwachs getrennt auffangen: es ist rückstandsarmes, wertvolles Wachs für den '
+        'eigenen Wachskreislauf. Geschleudert wird in geruchsneutralen, bienendichten Räumen mit hygienischen '
+        'Geräten, ohne Brutwaben und mit einer Erwärmung von höchstens 35 °C; die Schleuder langsam anfahren und die '
+        'Drehzahl dann steigern.',
+    skizze: 'assets/wissen/honig_schleudern.svg',
+    mehr: [
+      WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+    ],
+    verwandte: ['erntereife', 'sieben_klaeren', 'wassergehalt'],
+    stichworte: ['schleudern', 'entdeckeln', 'bienenflucht', 'radialschleuder', 'deckelwachs', 'ernte'],
+  ),
+  WissensEintrag(
+    key: 'sieben_klaeren', titel: 'Sieben, Klären, Abschäumen', kategorie: 'honig',
+    kurzinfo: 'Ablaufenden Honig doppelt sieben: grob etwa 0,5–1 mm für Wachs- und Bienenteile, fein etwa '
+        '0,2–0,3 mm. Die Maschenweite darf nicht unter 0,2 mm liegen und der Pollengehalt muss erhalten bleiben — '
+        'Feinstfiltern unter Druck macht aus Naturhonig deklarationspflichtigen „gefilterten Honig". Bei '
+        'Raumtemperatur (etwa 20–25 °C) läuft Honig gut durchs Sieb, kalt wird er zäh. Danach im Klär-/Abfülleimer '
+        '1–3 Tage bei etwa 20–24 °C ruhen lassen: feinste Luftbläschen und Restpartikel steigen auf und werden als '
+        'Schaumschicht abgehoben (abschäumen) — erst danach cremig rühren oder flüssig abfüllen.',
+    skizze: 'assets/wissen/honig_sieben.svg',
+    mehr: [
+      WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+    ],
+    verwandte: ['schleudern', 'cremig_ruehren', 'abfuellen_lagern'],
+    stichworte: ['sieben', 'klaeren', 'abschaeumen', 'doppelsieb', 'maschenweite', 'schaum'],
+  ),
+  WissensEintrag(
+    key: 'cremig_ruehren', titel: 'Cremig rühren', kategorie: 'honig',
+    kurzinfo: 'Kristallisation ist ein natürliches Qualitätszeichen: die Glukose kristallisiert aus, die Fruktose '
+        'bleibt flüssig. Für streichzarten Cremehonig den gesiebten Honig bei 10–17 °C lagern, etwa 5–10 % bereits '
+        'feincremig gerührten Impfhonig untermischen und ab den ersten Kristallisationszeichen 1–2× täglich je '
+        '5–15 Minuten langsam und tief rühren (keine Luft einschlagen) — über mehrere Tage, bis keine Körnung mehr '
+        'spürbar ist, dann abfüllen, solange die Masse fliessfähig ist. Zum Rühren nie über etwa 30–33 °C erwärmen, '
+        'sonst lösen sich die Kristalle wieder auf. Kristallisierten Honig nur schonend verflüssigen (kurzzeitig '
+        'max. 40 °C bzw. Durchlauf-Verflüssigung), nie in der Mikrowelle oder auf der Herdplatte.',
+    skizze: 'assets/wissen/honig_ruehren.svg',
+    mehr: [
+      WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+    ],
+    verwandte: ['sieben_klaeren', 'abfuellen_lagern'],
+    stichworte: ['cremig', 'ruehren', 'impfhonig', 'kristallisation', 'cremehonig', 'streichzart'],
+  ),
+  WissensEintrag(
+    key: 'abfuellen_lagern', titel: 'Abfüllen & Lagerung', kategorie: 'honig',
+    kurzinfo: 'Nur in lebensmittelechte, saubere, trockene Gläser mit dicht schliessendem Deckel abfüllen (gängig '
+        '250 g und 500 g), die Netto-Füllmenge auswiegen, nicht randvoll füllen und sofort etikettieren, damit das '
+        'Los am Glas bleibt. Gelagert wird kühl (etwa 10–15 °C, angestrebt rund 15 °C), dunkel, trocken und '
+        'geruchsneutral: Licht baut Farbe und Inhaltsstoffe ab, und der hygroskopische Honig zieht aus feuchter Luft '
+        'Wasser. Kühle Lagerung hält den HMF-Wert tief — gesetzlich sind max. 40 mg/kg erlaubt, das Goldsiegel '
+        'verlangt unter 15 mg/kg; kein Erwärmungsschritt über 35 °C — einzige Ausnahme ist das Verflüssigen '
+        'kristallisierten Honigs mit kurzzeitig max. 40 °C. Bei höchstens 18 % Wasser und kühl-dunkler '
+        'Lagerung ist Honig jahrelang haltbar; als MHD sind in der Schweiz 2 Jahre ab Abfüllung üblich, das '
+        'Goldsiegel erlaubt maximal 3 Jahre nach Ende des Produktionsjahrs.',
+    skizze: 'assets/wissen/honig_lagern.svg',
+    mehr: [
+      WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+    ],
+    verwandte: ['cremig_ruehren', 'honig_etikette', 'wassergehalt'],
+    stichworte: ['abfuellen', 'lagern', 'lagerung', 'hmf', 'mhd', 'glaeser'],
+  ),
+  WissensEintrag(
+    key: 'stand_anmelden', titel: 'Stand anmelden & kennzeichnen', kategorie: 'recht',
+    kurzinfo: 'Wer auch nur ein einziges Bienenvolk hält, ist rechtlich Tierhalter — es gibt keine Bagatellgrenze '
+        '„erst ab X Völkern". Jeder Bienenstand muss registriert sein: ein neuer Stand, der Halterwechsel und die '
+        'Auflösung sind der zuständigen kantonalen Stelle innert 3 Arbeitstagen zu melden (TSV Art. 18a), erfasst '
+        'werden auch unbesetzte Stände. Der Kanton vergibt je Imker und je Stand eine Identifikationsnummer, die '
+        'von aussen gut sichtbar am Bienenstand angebracht werden muss (TSV Art. 19a Abs. 1) — Pflicht, nicht '
+        'Empfehlung. Bienenstände laufen nicht über die Tierverkehrsdatenbank; zusätzlich verlangen die Kantone '
+        'nach Aufforderung eine jährliche Erhebung der Stände und Völkerzahlen. '
+        'Richtwert und keine Rechtsauskunft — verbindlich ist die zuständige kantonale Fachstelle.',
+    skizze: 'assets/wissen/recht_stand.svg',
+    mehr: [
+      WissensLink(label: 'Recht & Bestandeskontrolle (CH)', rechercheAsset: 'assets/recherche/19_Recht_Tierverkehr_Bestandeskontrolle_CH_GR.md'),
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+    ],
+    verwandte: ['bestandeskontrolle', 'wandern_melden'],
+    stichworte: ['registrierung', 'anmelden', 'standnummer', 'kennzeichnung', 'plakette', 'tsv'],
+  ),
+  WissensEintrag(
+    key: 'bestandeskontrolle', titel: 'Bestandeskontrolle führen', kategorie: 'recht',
+    kurzinfo: 'Wer Bienenvölker hält, kauft, verkauft oder verstellt, muss eine Bestandeskontrolle führen (TSV '
+        'Art. 20); bei Bienen sind zusätzlich die Standorte der Völker und die Verstelldaten festzuhalten. Erfasst '
+        'wird jeder Zu- und Abgang tagesaktuell: Datum, Ereignis (Zugang, Abgang, Verstellung, Ableger, '
+        'Vereinigung, Verlust), Volk, Anzahl, Herkunft oder Ziel, Standort. Zulässig sind das BLV-Formular, ein '
+        'elektronisches System oder eine geeignete App — 3 Jahre aufbewahren, Einsicht für die Vollzugsorgane '
+        'jederzeit auf Verlangen. '
+        'Richtwert und keine Rechtsauskunft — verbindlich ist die zuständige kantonale Fachstelle.',
+    skizze: 'assets/wissen/recht_bestandeskontrolle.svg',
+    mehr: [
+      WissensLink(label: 'Recht & Bestandeskontrolle (CH)', rechercheAsset: 'assets/recherche/19_Recht_Tierverkehr_Bestandeskontrolle_CH_GR.md'),
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+    ],
+    verwandte: ['stand_anmelden', 'wandern_melden', 'behandlungsjournal'],
+    stichworte: ['bestandeskontrolle', 'voelkerregister', 'zugang', 'abgang', 'rueckverfolgbarkeit', 'tsv'],
+  ),
+  WissensEintrag(
+    key: 'behandlungsjournal', titel: 'Behandlungsjournal & Inventar', kategorie: 'recht',
+    kurzinfo: 'Bienen sind heilmittelrechtlich lebensmittelliefernde Nutztiere: Über jede Anwendung eines '
+        'Tierarzneimittels ist ein Behandlungsjournal zu führen, ergänzt um eine Inventarliste über Kauf, Rückgabe '
+        'und Vernichtung der Mittel (chronologische Kaufbelege genügen als Inventar). Das gilt ausdrücklich auch '
+        'für die frei verkäuflichen Mittel — Ameisensäure, Oxalsäure und Thymol-Präparate sind Tierarzneimittel und '
+        'damit journalpflichtig; einzusetzen sind nur zugelassene Präparate, ohne Umwidmung. Ins Journal gehören '
+        'Datum, behandelte Völker, Präparat und Wirkstoff, Menge/Konzentration, Anwendungsart, Indikation, '
+        'Wartefrist und die verantwortliche Person. Journal und Inventar 3 Jahre aufbewahren und dem Inspektor auf '
+        'Verlangen vorweisen. '
+        'Richtwert und keine Rechtsauskunft — verbindlich ist die zuständige kantonale Fachstelle.',
+    skizze: 'assets/wissen/recht_journal.svg',
+    mehr: [
+      WissensLink(label: 'Recht & Bestandeskontrolle (CH)', rechercheAsset: 'assets/recherche/19_Recht_Tierverkehr_Bestandeskontrolle_CH_GR.md'),
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+    ],
+    verwandte: ['ameisensaeure', 'oxalsaeure', 'thymol', 'bestandeskontrolle'],
+    stichworte: ['behandlungsjournal', 'journal', 'tamv', 'tierarzneimittel', 'inventar', 'aufbewahrung'],
+  ),
+  WissensEintrag(
+    key: 'honig_etikette', titel: 'Honig-Etikette', kategorie: 'recht',
+    kurzinfo: 'Pflicht auf dem Glas sind: Sachbezeichnung („Honig", „Blütenhonig", „Honigtauhonig"), Name und '
+        'Adresse des Produzenten/Abfüllers, das Produktionsland, das Mindesthaltbarkeitsdatum ausgeschrieben als '
+        '„mindestens haltbar bis Ende …" (Abkürzungen wie „08/2029" sind unzulässig), das Warenlos mit '
+        'vorangestelltem „L" und die exakte Nennfüllmenge ohne „ca.". Die Schrift braucht eine x-Höhe von '
+        'mindestens 1,2 mm, bei einer grössten Verpackungsoberfläche unter 80 cm² mindestens 0,9 mm. '
+        'Zutatenverzeichnis, Nährwertdeklaration und Allergenhinweis braucht reiner Honig nicht. Verboten sind '
+        'Heil- und Gesundheitsversprechen, irreführende Zusätze wie „rein" oder „naturbelassen" sowie jede '
+        'Bio-/Knospe-Auslobung ohne gültiges Zertifikat; eine Sorten- oder Regionsbezeichnung nur, wenn der Honig '
+        'überwiegend bzw. vollständig von dort stammt und nicht mit anderen Provenienzen gemischt ist (VLtH '
+        'Art. 98). '
+        'Richtwert und keine Rechtsauskunft — verbindlich ist die zuständige kantonale Fachstelle.',
+    skizze: 'assets/wissen/recht_etikette.svg',
+    mehr: [
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+      WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
+    ],
+    verwandte: ['abfuellen_lagern', 'selbstkontrolle', 'bio_knospe'],
+    stichworte: ['etikette', 'kennzeichnung', 'pflichtangaben', 'los', 'mhd', 'sachbezeichnung'],
+  ),
+  WissensEintrag(
+    key: 'selbstkontrolle', titel: 'Selbstkontrolle & Meldung', kategorie: 'recht',
+    kurzinfo: 'Als Lebensmittelproduzent gilt die Selbstkontrollpflicht: gute Verfahrenspraxis, Hygiene, '
+        'Täuschungsschutz, Rückverfolgbarkeit und Dokumentation — im Umfang angepasst an Risiko und '
+        'Produktionsmenge. Für die Primärproduktion und Direktvermarkter kleiner Mengen ist kein HACCP-System '
+        'nötig, Kleinstbetriebe bis 9 Mitarbeitende haben erleichterte Anforderungen. Konkret: Erntemengen '
+        'dokumentieren, jedem Warenlos eine Losnummer geben, je Los ein Rückstellmuster im Originalgebinde kühl '
+        'und dunkel bis Ende der Haltbarkeitsgarantie aufbewahren (das Goldsiegel verlangt dafür mindestens '
+        '250 g), Räume und Geräte sauber '
+        'halten und die Selbstkontrolle jährlich schriftlich festhalten (3 Jahre). Wer nur Imkereierzeugnisse '
+        'herstellt, braucht keine kantonale Bewilligung; ob und wie die Tätigkeit gemeldet werden muss, klärt die '
+        'zuständige kantonale Stelle. '
+        'Richtwert und keine Rechtsauskunft — verbindlich ist die zuständige kantonale Fachstelle.',
+    skizze: 'assets/wissen/recht_selbstkontrolle.svg',
+    mehr: [
+      WissensLink(label: 'Honig-Recht & Pflichten (BGD)', rechercheAsset: 'assets/recherche/28_Honig_Recht_Pflichten_BGD.md'),
+      WissensLink(label: 'Honig-Ernte & Qualität', rechercheAsset: 'assets/recherche/16_Honig_Ernte_Qualitaet_Vermarktung.md'),
+    ],
+    verwandte: ['honig_etikette', 'wassergehalt', 'bestandeskontrolle'],
+    stichworte: ['selbstkontrolle', 'rueckverfolgbarkeit', 'rueckstellmuster', 'los', 'haccp', 'hygiene'],
+  ),
+  WissensEintrag(
+    key: 'wandern_melden', titel: 'Verstellen & Wandern melden', kategorie: 'recht',
+    kurzinfo: 'Bevor Bienen in einen anderen Inspektionskreis verbracht werden, ist das dem Bieneninspektor des '
+        'alten UND des neuen Standorts zu melden und der Bescheid abzuwarten (TSV Art. 19a Abs. 2) — nötigenfalls '
+        'wird vorher eine Gesundheitskontrolle angeordnet. Der Verordnungstext nennt keine feste Frist und keine '
+        'Schriftform mehr; ein Vorlauf von rund 10 Tagen ist eine gängige Merkblatt-Empfehlung, keine gesetzliche '
+        'Frist. Gemeldet wird über beetraffic.ch, telefonisch oder per E-Mail — nicht über die '
+        'Tierverkehrsdatenbank; die Pflicht gilt auch für kurzes Wandern und für Handänderungen über eine '
+        'Kreisgrenze, ausgenommen sind brutfreie Begattungseinheiten auf Belegstationen. Vorher die Sperrgebiete '
+        'prüfen (aus und in Sperrgebiete dürfen weder Völker noch Waben verstellt werden) und das Verstelldatum in '
+        'der Bestandeskontrolle festhalten. Der Mindestabstand von 3 km zwischen altem und neuem Standort ist gute '
+        'imkerliche Praxis gegen Rückflug, keine Vorschrift. '
+        'Richtwert und keine Rechtsauskunft — verbindlich ist die zuständige kantonale Fachstelle.',
+    skizze: 'assets/wissen/recht_wandern.svg',
+    mehr: [
+      WissensLink(label: 'Recht & Bestandeskontrolle (CH)', rechercheAsset: 'assets/recherche/19_Recht_Tierverkehr_Bestandeskontrolle_CH_GR.md'),
+      WissensLink(label: 'Gute imkerliche Praxis (BGD)', rechercheAsset: 'assets/recherche/27_Gute_imkerliche_Praxis_BGD.md'),
+    ],
+    verwandte: ['bestandeskontrolle', 'stand_anmelden'],
+    stichworte: ['wandern', 'verstellen', 'beetraffic', 'inspektionskreis', 'bieneninspektor', 'sperrgebiet'],
+  ),
+  WissensEintrag(
+    key: 'bio_knospe', titel: 'Bio/Knospe: mehr als das Gesetz', kategorie: 'recht',
+    kurzinfo: 'Bio ist freiwillig — aber die Dokumentation muss rückwirkend stimmen, deshalb von Anfang an '
+        'bio-konform führen. Die Knospe verlangt mehr als das Gesetz: im 3-km-Umkreis mindestens 50 % Bio-/ÖLN- '
+        'oder Wildflächen, Fütterung mit Bio-Sirup, angereichert mit mindestens 5 % eigenem Bio-Honig, gegen '
+        'Varroa nur organische Säuren (Ameisen-, Milch-, Oxalsäure) und Thymol statt synthetischer Akarizide, und '
+        'einen Bio-Wachskreislauf mit einem Thymol-Grenzwert von 5 mg/kg — deutlich strenger als die 500 mg/kg der '
+        'Bio-Verordnung des Bundes. Vermarktet werden darf Knospe-Honig in der Regel erst ab der ersten Ernte im '
+        '2. Jahr nach Umstellungsbeginn. „Bio" oder „Knospe" auf dem Glas ist ohne gültiges Zertifikat verboten — '
+        'auch wenn faktisch biotauglich produziert wird. '
+        'Richtwert und keine Rechtsauskunft — verbindlich ist die zuständige kantonale Fachstelle.',
+    skizze: 'assets/wissen/recht_bio.svg',
+    mehr: [
+      WissensLink(label: 'Bio-Imkerei (Knospe)', rechercheAsset: 'assets/recherche/18_Bio_Imkerei_Knospe_Schweiz.md'),
+      WissensLink(label: 'Recht & Bestandeskontrolle (CH)', rechercheAsset: 'assets/recherche/19_Recht_Tierverkehr_Bestandeskontrolle_CH_GR.md'),
+    ],
+    verwandte: ['honig_etikette', 'zuckerwasser', 'ameisensaeure', 'thymol'],
+    stichworte: ['bio', 'knospe', 'zertifizierung', 'umstellung', 'wachskreislauf', 'label'],
   ),
 ];
 

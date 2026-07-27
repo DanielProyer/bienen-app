@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <rect x="60" y="10" width="34" height="11" rx="2" fill="#E8EDF2" stroke="#633806" stroke-width="1.5"/>
+  <line x1="94" y1="15" x2="103" y2="15" stroke="#633806" stroke-width="2"/>
+  <rect x="72" y="21" width="9" height="6" fill="#E8EDF2" stroke="#633806" stroke-width="1.2"/>
+  <line x1="76" y1="28" x2="76" y2="42" stroke="#E8B84D" stroke-width="3.5"/>
+  <rect x="44" y="42" width="72" height="10" rx="1" fill="#FBF6E9" stroke="#633806" stroke-width="1.5"/>
+  <g stroke="#633806" stroke-width="1"><line x1="53" y1="42" x2="53" y2="52"/><line x1="62" y1="42" x2="62" y2="52"/><line x1="71" y1="42" x2="71" y2="52"/><line x1="80" y1="42" x2="80" y2="52"/><line x1="89" y1="42" x2="89" y2="52"/><line x1="98" y1="42" x2="98" y2="52"/><line x1="107" y1="42" x2="107" y2="52"/></g>
+  <line x1="76" y1="52" x2="76" y2="58" stroke="#E8B84D" stroke-width="3"/>
+  <rect x="50" y="58" width="60" height="10" rx="1" fill="#FBF6E9" stroke="#633806" stroke-width="1.5"/>
+  <g stroke="#633806" stroke-width="0.8"><line x1="55" y1="58" x2="55" y2="68"/><line x1="60" y1="58" x2="60" y2="68"/><line x1="65" y1="58" x2="65" y2="68"/><line x1="70" y1="58" x2="70" y2="68"/><line x1="75" y1="58" x2="75" y2="68"/><line x1="80" y1="58" x2="80" y2="68"/><line x1="85" y1="58" x2="85" y2="68"/><line x1="90" y1="58" x2="90" y2="68"/><line x1="95" y1="58" x2="95" y2="68"/><line x1="100" y1="58" x2="100" y2="68"/><line x1="105" y1="58" x2="105" y2="68"/></g>
+  <line x1="76" y1="68" x2="76" y2="86" stroke="#E8B84D" stroke-width="3"/>
+  <rect x="36" y="86" width="112" height="46" rx="3" fill="#E8B84D" stroke="#633806" stroke-width="2"/>
+  <rect x="40" y="89" width="104" height="8" fill="#FBF0D6" stroke="#c99433" stroke-width="1"/>
+  <rect x="90" y="78" width="62" height="7" rx="2" fill="#E8EDF2" stroke="#633806" stroke-width="1.5"/>
+  <path d="M44 84 l12 -7 l4 3 l-12 7 z" fill="#E8EDF2" stroke="#633806" stroke-width="1.2"/>
+  <line x1="78" y1="83" x2="68" y2="83" stroke="#633806" stroke-width="1.5"/>
+  <path d="M68 79 v8 l-6 -4 z" fill="#633806"/>
+  <g font-family="sans-serif" font-size="10" text-anchor="start" fill="#633806">
+    <text x="110" y="20">Quetschhahn</text><text x="122" y="50">grob ~0,5–1 mm</text><text x="122" y="66">fein ~0,2–0,3 mm</text><text x="156" y="85">Deckel</text><text x="156" y="102">Schaum abziehen</text>
+  </g>
+  <text x="92" y="148" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#633806">Klärkessel: grob → fein</text>
+</svg>
