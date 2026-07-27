@@ -46,16 +46,26 @@
 **Bot:** `BienenBot` (am 2026-07-27 neu erstellt — Name bewusst mandantenneutral, es gibt genau einen Bot für alle Betriebe). Der alte Bot `8909276696` ist verbrannt (Token im Chat geteilt) und wird nicht mehr verwendet; ein `/revoke` ist beim neuen Bot **nicht** nötig.
 
 1. Token des neuen `BienenBot` bereithalten (BotFather zeigt ihn direkt nach dem Anlegen; sonst `/mybots` → BienenBot → API Token).
-2. Ein Cron-Secret erzeugen (PowerShell, kryptographisch sicher):
+2. **Chat-ID holen** (Voraussetzung: dem Bot vorher `/start` geschrieben — Telegram erlaubt einem Bot nur zu senden, wenn der Nutzer den Kontakt eröffnet hat). Im Einzelchat ist die Chat-ID **identisch mit der eigenen Nutzer-ID**, eine positive 9–10-stellige Zahl. Direkt von Telegram, ohne fremden Bot, ohne Token im Verlauf:
    ```powershell
-   [Convert]::ToHexString([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
+   $s = Read-Host "BienenBot-Token" -AsSecureString
    ```
-3. Beide Werte setzen — Supabase-Dashboard → **Edge Functions → Secrets**: `TELEGRAM_BOT_TOKEN` = neuer Bot-Token · `CRON_SHARED_SECRET` = der Wert aus Schritt 2. **Denselben** Wert zusätzlich in den Vault (Dashboard → SQL Editor), sonst schickt der Cron einen leeren Header:
+   ```powershell
+   $t = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($s)); (Invoke-RestMethod "https://api.telegram.org/bot$t/getUpdates").result.message.chat | Select-Object id, type, first_name -Unique; Remove-Variable t, s
+   ```
+   Die `id` bei `type = private` ist der Wert. `-AsSecureString` zeigt beim Einfügen **nichts** an (Absicht). Leere Ausgabe = noch nicht geschrieben oder Nachricht älter als 24 h (Telegram verwirft Updates dann) → erneut schreiben. Alternative: @userinfobot anschreiben (schneller, aber ein fremder Bot ist beteiligt, und es gibt Nachahmer).
+3. Ein Cron-Secret erzeugen. ⚠️ **In Windows PowerShell 5.1 (.NET Framework) funktionieren `[Convert]::ToHexString()` und das statische `RandomNumberGenerator::GetBytes()` NICHT** — die kamen erst mit .NET 5/6. Diese Fassung ist auf 5.1.26100 getestet und legt den Wert direkt in die Zwischenablage, ohne ihn anzuzeigen:
+   ```powershell
+   $b = New-Object byte[] 32; (New-Object System.Security.Cryptography.RNGCryptoServiceProvider).GetBytes($b); [BitConverter]::ToString($b).Replace('-','').ToLower() | Set-Clipboard; Remove-Variable b
+   ```
+   Kontrolle: `(Get-Clipboard).Length` muss **64** sein. Zwischen Schritt 4 und 5 nichts anderes kopieren. Das Secret ist **selbst erfunden** — es wird nirgends ausgestellt, sondern muss nur an den zwei Stellen unten identisch sein.
+4. **Beide Function-Secrets setzen** — Supabase-Dashboard (Projekt *bienen-arosa*) → **Edge Functions → Secrets**: `TELEGRAM_BOT_TOKEN` = Token von `BienenBot` · `CRON_SHARED_SECRET` = der Wert aus Schritt 3 (einfügen).
+5. **Denselben** Cron-Wert zusätzlich in den Vault (Dashboard → **SQL Editor**) — der Cron-Job liest ihn dort, die Function vergleicht mit ihrem eigenen; fehlt der Eintrag, sendet der Job einen leeren Header und der Massenversand greift **nie**:
    ```sql
-   select vault.create_secret('<WERT_AUS_SCHRITT_2>', 'cron_shared_secret');
+   select vault.create_secret('<WERT_AUS_SCHRITT_3>', 'cron_shared_secret');
    ```
-   *(Vault-Eintrag `cron_shared_secret` ist derzeit **nicht** vorhanden — geprüft.)*
-4. Dem Bot einmal schreiben → Chat-ID holen (z. B. @userinfobot) → in der App **Konto → Benachrichtigungen** eintragen, speichern, **Testnachricht** senden.
+   *(Eintrag `cron_shared_secret` war am 2026-07-27 **nicht** vorhanden — geprüft.)*
+6. **In der App verknüpfen** — **Konto → Benachrichtigungen**: Chat-ID aus Schritt 2 eintragen · Sendestunde (Vorgabe `06:00`) und Zeitzone (`Europe/Zurich`) passen · Schalter „Täglichen Überblick senden" an · **Speichern** · dann **Testnachricht senden**. Der Test-Button ist bis zum Speichern absichtlich gesperrt (sonst ginge der Test an eine alte ID).
 
 **Danach mit Claude:** ersten Morgenlauf verifizieren (`cron.job_run_details` + `zuletzt_gesendet_am`). Keine Werte in den Chat schreiben.
 
