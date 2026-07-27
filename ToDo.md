@@ -43,7 +43,9 @@
 > **Ebenfalls schon erledigt:** Die App-Seite `/benachrichtigungen` ist **seit v1.39.0 live** — der geplante v1.40.0-Deploy ist damit **nicht mehr nötig** (v1.40.0 ist wieder frei).
 > **Offen ist nur, was Zugangsdaten berührt** — das mache ich nicht:
 
-1. **@BotFather** → `/revoke` (der früher im Chat geteilte Token gilt als verbrannt) → **neuen** Token holen.
+**Bot:** `BienenBot` (am 2026-07-27 neu erstellt — Name bewusst mandantenneutral, es gibt genau einen Bot für alle Betriebe). Der alte Bot `8909276696` ist verbrannt (Token im Chat geteilt) und wird nicht mehr verwendet; ein `/revoke` ist beim neuen Bot **nicht** nötig.
+
+1. Token des neuen `BienenBot` bereithalten (BotFather zeigt ihn direkt nach dem Anlegen; sonst `/mybots` → BienenBot → API Token).
 2. Ein Cron-Secret erzeugen (PowerShell, kryptographisch sicher):
    ```powershell
    [Convert]::ToHexString([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
