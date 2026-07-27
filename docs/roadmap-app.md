@@ -48,6 +48,7 @@
 | 4.23 | **Recht & Rückverfolgbarkeit** — Compliance-Checkliste, Bestandeskontrolle, Journal-Export (Pflicht) | ⬜ |
 | 4.24 | Kontakt-/Notfall-Hub | ⬜ |
 | 4.25 | Medien-Basis (Kompression + EXIF) | ⬜ |
+| 4.27 | **Gemüllkontrolle mit Foto** — Windel dokumentieren, assistierte Varroa-Zählung, Gemüll-Befund | 🔬 **Recherche fertig** (`../imkerei/02_Recherche/30_Varroa_Bildzaehlung_Automatisierung.md`, 2026-07-27) — wartet auf **eigene Windel-Fotos + Handzählung als Referenzwahrheit**, dann Brainstorming → Spec → Plan. Kernbefunde: Automatik ist **unter ~10 Milben schlechter als der Mensch**, ab ~50 besser → App muss dort ehrlich zurückfragen; **px/mm entscheidet** (`FotoSpeicher` rechnet auf 2000 px herunter → Ganzbild-Zählung unmöglich, eigener Pfad oder ~6-cm-Ausschnitte nötig); **Ultralytics/YOLO ist AGPL** und damit ausgeschlossen (auch selbst trainierte Gewichte) → lizenzsauberer Start über **Zenodo CC BY 4.0** (Daten **+** Faster-R-CNN-Modelle); **Herkunft der Zahl** (manuell/Vorschlag/korrigiert) muss mitgespeichert werden, sonst ist Drift nicht messbar und Pflichtdaten nicht von Modellschätzungen trennbar. Sofort wertvoll **ohne** Automatik: Foto + strukturierter Gemüll-Befund (Wachsdeckel-Streifen zeigen Brutnest-Position und Brutfreiheit → Fenster Winter-OS). Zählwert dockt an die bestehende `milbenProTag`-Ampel an (4.5) — **kein Datenmodell-Umbau** für die Zahl selbst |
 
 ## Phase 2 — Frühling/Sommer 2027 (Volk 2, 2. Waage, 1. Ernte, Bio möglich)
 
