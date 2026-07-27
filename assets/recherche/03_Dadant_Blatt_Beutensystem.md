@@ -37,6 +37,10 @@ Das Dadant-Beutensystem wurde um 1874 von **Charles Dadant** in den USA entwicke
 
 ### 1.3 Exakte Masse -- Dadant Blatt
 
+![Drei Rähmchen verschiedener Systeme im direkten Vergleich](bilder/fund/drei_raehmchen_nebeneinander_auf_betonbode.jpg)
+
+*Rähmchen dreier Systeme nebeneinander — der Grössenunterschied, um den es unten in der Masstabelle geht. Das Dadant-Brutrahmen-Format ist deutlich grossflächiger, was den einzargigen Brutraum überhaupt erst möglich macht; dieselbe Fläche bräuchte bei kleineren Formaten zwei Zargen. Foto: CC BY 3.0, via Wikimedia Commons.*
+
 #### Raehmchenmasse Brutraum
 
 | Dimension | Mass |
@@ -427,6 +431,10 @@ Fuer einen Standort auf **1570 m ue.M.** mit langen, kalten Wintern (November bi
 ## 6. Zubehoer und Grundausstattung
 
 ### 6.1 Beutenzubehoer (pro Volk)
+
+![Metall-Absperrgitter flach aufliegend](bilder/fund/metall_absperrgitter_stabgitter_mit_metall.jpg)
+
+*Das Absperrgitter als Stabgitter mit Metallrahmen. Der Gitterabstand von 4,2 mm ist die ganze Technik dahinter: Arbeiterinnen kommen hindurch, die breitere Königin nicht — dadurch bleibt der Honigraum brutfrei. Metallausführungen bleiben über Jahre plan; Kunststoffgitter verziehen sich mit der Zeit und klemmen dann. Foto: CC BY 3.0, via Wikimedia Commons.*
 
 | Zubehoer | Beschreibung | Preis (CHF) |
 |----------|-------------|-------------|

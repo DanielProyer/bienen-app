@@ -48,6 +48,36 @@ void main() {
           reason: 'Bildverweise ohne Datei:\n  ${fehlend.join("\n  ")}');
     });
 
+    test('jeder Bildordner ist in pubspec.yaml eingetragen', () {
+      // Der Fehler vom 2026-07-27: Die Dateien lagen in
+      // assets/recherche/bilder/fund/, im pubspec stand aber nur
+      // assets/recherche/bilder/ — und Asset-Ordner sind in Flutter NICHT
+      // rekursiv. Ergebnis: 18 Abbildungen fehlten stumm in der App, obwohl
+      // der Dateitest grün war. Dateiexistenz ist eben nicht Auslieferung.
+      final pubspec = File('pubspec.yaml').readAsStringSync();
+      final eingetragen = RegExp(r'^\s*-\s*(assets/[^\s#]*/)\s*$', multiLine: true)
+          .allMatches(pubspec)
+          .map((m) => m.group(1)!)
+          .toSet();
+
+      final gebraucht = <String>{};
+      for (final datei in dateien) {
+        for (final m in RegExp(r'!\[[^\]]*\]\(([^)]+)\)')
+            .allMatches(datei.readAsStringSync())) {
+          final v = m.group(1)!;
+          if (v.startsWith('http')) continue;
+          final pfad = v.startsWith('assets/') ? v : 'assets/recherche/$v';
+          gebraucht.add(pfad.substring(0, pfad.lastIndexOf('/') + 1));
+        }
+      }
+
+      final fehlend = gebraucht.difference(eingetragen).toList()..sort();
+      expect(fehlend, isEmpty,
+          reason: 'Diese Ordner enthalten verlinkte Bilder, stehen aber NICHT '
+              'in pubspec.yaml — die Bilder erscheinen dann nicht in der App:\n'
+              '  ${fehlend.join("\n  ")}');
+    });
+
     test('gebündelte Abbildungen sind klein genug für die Web-App', () {
       final ordner = Directory('assets/recherche/bilder');
       if (!ordner.existsSync()) return;
