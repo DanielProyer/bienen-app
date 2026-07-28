@@ -8,16 +8,17 @@ import 'package:bienen_app/features/recherche/data/recherche_foto_providers.dart
 import 'package:bienen_app/features/recherche/domain/recherche_foto.dart';
 import 'package:bienen_app/shared/widgets/confirm_sheet.dart';
 
-/// Zeigt die eigenen Fotos EINES Kapitels unter dessen Abschnitt.
+/// Zeigt die eigenen Fotos EINES Kapitels unter dessen Abschnitt —
+/// in derselben Breite wie die Abbildungen der Recherche.
 ///
 /// Bewusst ohne eigenen Hinzufügen-Knopf: Bei bis zu 18 Kapiteln je Dokument
 /// wären 18 Knöpfe mehr Rauschen als Nutzen. Das Hinzufügen läuft über die
 /// Kopfzeile (siehe [fotoErgaenzenSheet]), wo das Kapitel gewählt wird.
 /// Ist nichts vorhanden, rendert das Widget gar nichts.
-class RechercheFotoStrip extends ConsumerWidget {
+class RechercheEigeneFotos extends ConsumerWidget {
   final String rechercheKey;
   final String? anker;
-  const RechercheFotoStrip({
+  const RechercheEigeneFotos({
     super.key,
     required this.rechercheKey,
     required this.anker,
@@ -42,16 +43,10 @@ class RechercheFotoStrip extends ConsumerWidget {
             const SizedBox(width: BeeTokens.sm),
             Text('Eigene Fotos', style: BeeTokens.label),
           ]),
-          const SizedBox(height: BeeTokens.sm),
-          SizedBox(
-            height: 96,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: meine.length,
-              itemBuilder: (_, i) =>
-                  _Bild(foto: meine[i], rechercheKey: rechercheKey),
-            ),
-          ),
+          // Untereinander in voller Breite — genau wie die Abbildungen der
+          // Recherche selbst. Ein eigenes Foto vom Bienenstand ist so viel
+          // wert wie ein Lehrbuchbild und soll auch so gross erscheinen.
+          for (final f in meine) _Bild(foto: f, rechercheKey: rechercheKey),
         ],
       ),
     );
@@ -67,7 +62,9 @@ class _Bild extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final repo = ref.read(rechercheFotoRepositoryProvider);
     return Padding(
-      padding: const EdgeInsets.only(right: BeeTokens.sm),
+      // Derselbe vertikale Abstand wie bei den Abbildungen im Markdown
+      // (siehe markdown_viewer_page._bild), damit sich beides gleich liest.
+      padding: const EdgeInsets.symmetric(vertical: BeeTokens.md),
       child: GestureDetector(
         // Antippen öffnet das Foto gross — dort liegt auch das Löschen.
         // Der Langdruck bleibt als Abkürzung, war aber als EINZIGER Weg
@@ -84,29 +81,41 @@ class _Bild extends ConsumerWidget {
               builder: (context, snap) => ClipRRect(
                 borderRadius: BorderRadius.circular(BeeTokens.sm),
                 child: snap.hasData
-                    ? Image.network(snap.data!,
-                        width: 96, height: 72, fit: BoxFit.cover)
-                    : Container(
-                        width: 96,
-                        height: 72,
-                        color: BeeTokens.rand,
-                        child: const Icon(Icons.image, color: BeeTokens.chevron),
-                      ),
+                    ? Image.network(
+                        snap.data!,
+                        width: double.infinity,
+                        fit: BoxFit.contain,
+                        // Platzhalter mit fester Höhe, damit der Text beim
+                        // Nachladen nicht springt.
+                        loadingBuilder: (_, kind, fortschritt) =>
+                            fortschritt == null ? kind : _platzhalter(),
+                        errorBuilder: (_, _, _) => _platzhalter(
+                            symbol: Icons.image_not_supported_outlined),
+                      )
+                    : _platzhalter(),
               ),
             ),
             if (foto.beschriftung != null)
-              SizedBox(
-                width: 96,
-                child: Text(foto.beschriftung!,
-                    style: BeeTokens.gedaempft,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis),
+              Padding(
+                padding: const EdgeInsets.only(top: BeeTokens.sm),
+                child: Text(
+                  foto.beschriftung!,
+                  style: BeeTokens.gedaempft
+                      .copyWith(fontStyle: FontStyle.italic),
+                ),
               ),
           ],
         ),
       ),
     );
   }
+
+  Widget _platzhalter({IconData symbol = Icons.image}) => Container(
+        width: double.infinity,
+        height: 180,
+        color: BeeTokens.rand,
+        child: Icon(symbol, color: BeeTokens.chevron),
+      );
 
   Future<void> _loeschenFragen(BuildContext context, WidgetRef ref) async {
     final ok = await confirmSheet(context,

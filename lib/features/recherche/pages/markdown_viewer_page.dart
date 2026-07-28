@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/recherche/domain/markdown_anker.dart';
 import 'package:bienen_app/features/recherche/domain/recherche_foto.dart';
-import 'package:bienen_app/features/recherche/presentation/widgets/recherche_foto_strip.dart';
+import 'package:bienen_app/features/recherche/presentation/widgets/recherche_eigene_fotos.dart';
 
 /// Zeigt ein Recherche-Dokument aus `assets/recherche/`.
 ///
@@ -305,7 +305,7 @@ class _MarkdownViewerPageState extends ConsumerState<MarkdownViewerPage> {
                         ),
                         // Eigene Fotos direkt beim zugehörigen Kapitel; zeigt
                         // sich nur, wenn zu diesem Anker welche vorliegen.
-                        RechercheFotoStrip(
+                        RechercheEigeneFotos(
                           rechercheKey: rechercheKey,
                           anker: a.anker,
                         ),
