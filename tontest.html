@@ -1,0 +1,249 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tonmitschnitt — Dauertest</title>
+<style>
+  :root { --rand: #e2ddd4; --gut: #2e7d32; --warn: #b8860b; --schlecht: #c62828; }
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; background: #faf8f4; color: #2b2b2b;
+         max-width: 640px; margin-inline: auto; }
+  h1 { font-size: 20px; margin: 0 0 2px; }
+  .unter { color: #6b665e; font-size: 14px; margin: 0 0 12px; line-height: 1.45; }
+  .haupt { width: 100%; padding: 18px; font-size: 18px; font-weight: 700; border: 0; border-radius: 12px;
+           background: var(--gut); color: #fff; margin-bottom: 12px; }
+  .haupt.laeuft { background: var(--schlecht); }
+  .raster { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .zelle { background: #fff; border: 1px solid var(--rand); border-radius: 10px; padding: 10px; text-align: center; }
+  .zelle.alarm { border-color: var(--schlecht); background: #fdf0f0; }
+  .zelle.gut { border-color: var(--gut); background: #f1f8f1; }
+  .wert { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .bez { font-size: 11px; color: #6b665e; line-height: 1.3; }
+  .schalter { display: flex; gap: 10px; align-items: flex-start; background: #fff; border: 1px solid var(--rand);
+              border-radius: 10px; padding: 10px; margin-bottom: 8px; font-size: 14px; line-height: 1.4; }
+  .schalter input { margin-top: 3px; flex: none; width: 20px; height: 20px; }
+  #verlauf { background: #fff; border: 1px solid var(--rand); border-radius: 10px; padding: 8px;
+             font-family: ui-monospace, monospace; font-size: 12px; max-height: 300px; overflow-y: auto; }
+  .z { padding: 1px 0; border-bottom: 1px solid #f2efe9; }
+  .z.w { color: var(--warn); } .z.f { color: var(--schlecht); font-weight: 600; }
+  .z.g { color: var(--gut); }
+  #urteil { padding: 12px; border-radius: 10px; font-weight: 600; margin-bottom: 12px; display: none; }
+  audio { width: 100%; margin-bottom: 12px; }
+  textarea { width: 100%; height: 130px; font-family: ui-monospace, monospace; font-size: 11px; }
+</style>
+
+<h1>Tonmitschnitt — Dauertest</h1>
+<p class="unter" id="fassungZeile"></p>
+<p class="unter">
+<b>Die letzte offene Frage vor dem Bau:</b> Läuft die Aufnahme weiter, wenn der Bildschirm sperrt?
+Bei der Spracherkennung tat sie es nicht. Ein reiner Tonstrom hat bessere Chancen, weil er kein
+gedrosselter Zeitgeber ist — aber geraten wird hier nicht mehr.<br>
+<b>So geht der Test:</b> Starten, Handy in die Hosentasche, <b>15 Minuten liegen lassen</b> und den Bildschirm
+von selbst sperren lassen. Zwischendurch ruhig reden. Danach herausholen, beenden — die Seite sagt dann,
+ob die Aufnahme lückenlos ist.</p>
+
+<label class="schalter">
+  <input type="checkbox" id="wach">
+  <span><b>Bildschirm wachhalten</b> — <em>für den ersten Lauf AUS lassen. Genau die Sperre wollen wir prüfen.
+  Erst wenn der Lauf ohne scheitert, mit Häkchen wiederholen.</em></span>
+</label>
+
+<button class="haupt" id="knopf">Aufnahme starten</button>
+
+<div id="urteil"></div>
+
+<div class="raster">
+  <div class="zelle"><div class="wert" id="zUhr">0:00</div><div class="bez">Laufzeit</div></div>
+  <div class="zelle"><div class="wert" id="zTon">0:00</div><div class="bez">Ton im Kasten</div></div>
+  <div class="zelle" id="zelleLuecke"><div class="wert" id="zLuecke">0 s</div><div class="bez">längste Pause ohne Ton — <b>das entscheidet</b></div></div>
+  <div class="zelle"><div class="wert" id="zGroesse">0 MB</div><div class="bez">Datenmenge</div></div>
+</div>
+
+<audio id="abspielen" controls style="display:none"></audio>
+<button class="haupt" id="berichtKnopf" style="background:#555">Bericht anzeigen</button>
+<textarea id="bericht" style="display:none" readonly></textarea>
+
+<div id="verlauf"></div>
+
+<script>
+// Fassung dieser Datei — steht sichtbar oben und im Bericht, damit ein
+// Feldergebnis immer einer Fassung zuzuordnen ist.
+const FASSUNG = 'T1';
+
+// Alle fuenf Sekunden ein Haeppchen. Bleiben sie waehrend der Bildschirmsperre
+// aus, ist die Aufnahme dort tot — genau das ist die Frage.
+const HAEPPCHEN_MS = 5000;
+
+const el = (id) => document.getElementById(id);
+const jetzt = () => Date.now();
+
+let strom = null, rec = null, laeuft = false;
+let start = 0, letztesHaeppchen = 0, luecke = 0;
+let bytes = 0, haeppchen = 0, tonMs = 0;
+let wachSperre = null, wegGewesen = 0, teile = [];
+let uhrTimer = null;
+const zeilen = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+  el('fassungZeile').textContent = 'Fassung ' + FASSUNG
+    + ' — steht hier eine ältere, lädt der Browser aus dem Zwischenspeicher.';
+});
+
+function log(art, text) {
+  const t = new Date().toLocaleTimeString('de-CH');
+  zeilen.push(t + '  ' + text);
+  const d = document.createElement('div');
+  d.className = 'z ' + (art === 'warn' ? 'w' : art === 'fehler' ? 'f' : art === 'gut' ? 'g' : '');
+  d.textContent = t + '  ' + text;
+  el('verlauf').appendChild(d);
+  el('verlauf').scrollTop = el('verlauf').scrollHeight;
+}
+
+const mmss = (ms) => {
+  const s = Math.max(0, Math.round(ms / 1000));
+  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+};
+
+function zahlen() {
+  const gelaufen = laeuft ? jetzt() - start : tonMs;
+  el('zUhr').textContent = mmss(gelaufen);
+  el('zTon').textContent = mmss(haeppchen * HAEPPCHEN_MS);
+  el('zGroesse').textContent = (bytes / 1048576).toFixed(1) + ' MB';
+  // Laufende Pause mitzaehlen, sonst sieht ein toter Lauf gesund aus.
+  const offen = laeuft && letztesHaeppchen ? jetzt() - letztesHaeppchen : 0;
+  const groesste = Math.max(luecke, offen);
+  el('zLuecke').textContent = Math.round(groesste / 1000) + ' s';
+  el('zelleLuecke').className = 'zelle' + (groesste > 20000 ? ' alarm' : groesste > 0 ? '' : ' gut');
+}
+
+// Ohne wachen Bildschirm ist die Spracherkennung gestorben. Ob das fuer den
+// reinen Tonstrom auch gilt, soll dieser Test zeigen — deshalb per Vorgabe aus.
+async function wachhalten() {
+  if (!('wakeLock' in navigator)) { log('warn', 'Gerät kann den Bildschirm nicht wachhalten'); return; }
+  try {
+    wachSperre = await navigator.wakeLock.request('screen');
+    log('takt', 'Bildschirm wird wachgehalten');
+  } catch (e) { log('fehler', 'Wachhalten misslungen: ' + e); }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (!laeuft) return;
+  if (document.hidden) {
+    wegGewesen++;
+    log('warn', 'Bildschirm aus / Seite im Hintergrund — ab hier zählt es');
+  } else {
+    log('takt', 'Seite wieder im Vordergrund');
+    if (el('wach').checked) wachhalten();
+  }
+});
+
+async function starten() {
+  try {
+    strom = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (e) {
+    log('fehler', 'Kein Mikrofon: ' + e);
+    return;
+  }
+  teile = []; bytes = 0; haeppchen = 0; luecke = 0; wegGewesen = 0; tonMs = 0;
+  zeilen.length = 0; el('verlauf').innerHTML = '';
+  el('urteil').style.display = 'none';
+  el('abspielen').style.display = 'none';
+  el('bericht').style.display = 'none';
+
+  rec = new MediaRecorder(strom);
+  rec.ondataavailable = (ev) => {
+    if (!ev.data || !ev.data.size) return;
+    teile.push(ev.data);
+    bytes += ev.data.size;
+    haeppchen++;
+    const nun = jetzt();
+    if (letztesHaeppchen) {
+      const pause = nun - letztesHaeppchen;
+      // Deutlich mehr als der Takt heisst: dazwischen lief nichts.
+      if (pause > HAEPPCHEN_MS * 2) {
+        luecke = Math.max(luecke, pause);
+        log('fehler', 'LÜCKE: ' + Math.round(pause / 1000) + ' s ohne Ton');
+      }
+    }
+    letztesHaeppchen = nun;
+    zahlen();
+  };
+  rec.onerror = (ev) => log('fehler', 'Aufnahmefehler: ' + (ev.error || ev));
+
+  start = jetzt(); letztesHaeppchen = start; laeuft = true;
+  rec.start(HAEPPCHEN_MS);
+  if (el('wach').checked) wachhalten();
+  uhrTimer = setInterval(zahlen, 1000);
+  el('knopf').textContent = 'Aufnahme beenden';
+  el('knopf').classList.add('laeuft');
+  log('gut', 'Aufnahme gestartet — Häppchen alle ' + (HAEPPCHEN_MS / 1000) + ' s');
+}
+
+async function beenden() {
+  laeuft = false;
+  clearInterval(uhrTimer);
+  tonMs = jetzt() - start;
+  if (letztesHaeppchen) luecke = Math.max(luecke, jetzt() - letztesHaeppchen);
+  try { rec && rec.state !== 'inactive' && rec.stop(); } catch (e) {}
+  if (strom) strom.getTracks().forEach((t) => t.stop());
+  if (wachSperre) { try { wachSperre.release(); } catch (e) {} wachSperre = null; }
+  el('knopf').textContent = 'Aufnahme starten';
+  el('knopf').classList.remove('laeuft');
+
+  // Kurz warten, damit das letzte Haeppchen noch eintrifft.
+  await new Promise((f) => setTimeout(f, 400));
+  const blob = new Blob(teile, { type: rec && rec.mimeType ? rec.mimeType : 'audio/webm' });
+  el('abspielen').src = URL.createObjectURL(blob);
+  el('abspielen').style.display = 'block';
+  zahlen();
+  urteilen();
+  log('gut', 'Beendet — Aufnahme kann oben abgehört werden');
+}
+
+function urteilen() {
+  const min = tonMs / 60000;
+  const box = el('urteil');
+  box.style.display = 'block';
+  let text, farbe;
+  if (min < 10) {
+    text = 'ZU KURZ für ein Urteil — es braucht mindestens zehn Minuten mit gesperrtem Bildschirm.';
+    farbe = '#fff4d6';
+  } else if (luecke > 20000) {
+    text = 'AUSGEFALLEN — grösste Lücke ' + Math.round(luecke / 1000)
+         + ' s. Die Aufnahme übersteht die Bildschirmsperre nicht.';
+    farbe = '#fdf0f0';
+  } else if (wegGewesen === 0) {
+    text = 'UNGEPRÜFT — der Bildschirm war nie aus. Bitte nochmal, Handy weglegen und sperren lassen.';
+    farbe = '#fff4d6';
+  } else {
+    text = 'DURCHGEHALTEN — ' + Math.round(min) + ' min am Stück, ' + wegGewesen
+         + 'x im Hintergrund, grösste Lücke ' + Math.round(luecke / 1000) + ' s.';
+    farbe = '#f1f8f1';
+  }
+  box.style.background = farbe;
+  box.textContent = 'URTEIL: ' + text;
+}
+
+el('knopf').onclick = () => (laeuft ? beenden() : starten());
+
+el('berichtKnopf').onclick = () => {
+  const b = el('bericht');
+  b.value = [
+    '=== Tonmitschnitt-Dauertest ===',
+    'Fassung:    ' + FASSUNG,
+    'Gerät:      ' + navigator.userAgent,
+    'Format:     ' + (rec && rec.mimeType ? rec.mimeType : '—'),
+    'Laufzeit:   ' + mmss(tonMs),
+    'Häppchen:   ' + haeppchen + ' à ' + (HAEPPCHEN_MS / 1000) + ' s',
+    'Datenmenge: ' + (bytes / 1048576).toFixed(2) + ' MB'
+      + (tonMs > 0 ? '  (' + (bytes / 1048576 / (tonMs / 60000)).toFixed(2) + ' MB pro Minute)' : ''),
+    'Grösste Lücke: ' + Math.round(luecke / 1000) + ' s',
+    'Bildschirm: ' + (el('wach').checked ? 'wachgehalten' : 'nicht wachgehalten')
+      + ', ' + wegGewesen + 'x im Hintergrund',
+    '',
+    el('urteil').textContent,
+    '',
+    '--- Verlauf ---',
+    zeilen.join('\n'),
+  ].join('\n');
+  b.style.display = 'block';
+  b.select();
+};
+</script>
