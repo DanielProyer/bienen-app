@@ -35,6 +35,10 @@ Das Dadant-Beutensystem wurde um 1874 von **Charles Dadant** in den USA entwicke
 - Trennung Brut-/Honigraum durch **Absperrgitter**
 - Brutraumsteuerung durch **Schied** (Trennbrett)
 
+![Explosionsdarstellung der Dadant-Blatt-Beute mit allen Teilen von unten nach oben](bilder/03_beute_explosion.png)
+
+*Die ganze Beute in ihrer Stapelfolge. Von unten nach oben: Beutenbock, Gitterboden mit Schieber, Brutraum, Absperrgitter, Honigraum, Innendeckel, Blechdeckel. Ein Volk braucht dauerhaft nur die Teile 1–6 — der Honigraum kommt erst zur Tracht dazu und wird nach der Ernte wieder abgenommen. Die Höhenverhältnisse sind massstäblich nach den Werten aus Kap. 1.3/1.4 gezeichnet; besonders gut zu sehen ist, wie flach die Halbzarge gegenüber dem Brutraum ausfällt — das ist der Grund, warum man sie auch voll noch heben kann. Eigene Zeichnung.*
+
 ### 1.3 Exakte Masse -- Dadant Blatt
 
 ![Drei Rähmchen verschiedener Systeme im direkten Vergleich](bilder/fund/drei_raehmchen_nebeneinander_auf_betonbode.jpg)
@@ -50,6 +54,10 @@ Das Dadant-Beutensystem wurde um 1874 von **Charles Dadant** in den USA entwicke
 | Innen (Wabenmass) | 410 x 265 mm |
 | Wabenflaeche (eine Seite) | 1'087 cm2 |
 | Wabenflaeche (beidseitig) | 2'174 cm2 |
+
+![Technische Bemassungsskizze eines Rähmchens](bilder/fund/raehmchen_bemassung_schemazeichnung_ergaen.jpg)
+
+*Die Bemassung eines Rähmchens als Schemazeichnung: **A** Aussenbreite mit Ohren, **B** Aussenhöhe, **C** und **D** das lichte Wabenmass, **E** und **F** die Stärke von Ober- und Seitenteil. Wer Rähmchen selbst baut oder Fremdmaterial zukauft, prüft genau diese sechs Werte — schon zwei Millimeter Abweichung an den Ohren lassen das Rähmchen in der Zarge klemmen. Grafik: CC BY, via Wikimedia Commons.*
 
 #### Raehmchenmasse Honigraum (Flachzarge 2/3)
 
@@ -118,6 +126,18 @@ Das Dadant-System arbeitet mit einem **einzigen grossen Brutraum** und aufgesetz
 ![Zwei versetzt aufeinanderstehende Halbzargen im Gras](bilder/fund/dadant_honigraeume_10er_im_gras_zwei_verse.jpg)
 
 *Halbzargen als Honigraum. Ihre geringe Höhe ist der Grund, warum sich Dadant auch mit vollen Waben noch heben lässt — eine volle Vollzarge wiegt deutlich mehr. Foto: Maja Dumat, CC BY 2.0, via Wikimedia Commons.*
+
+![Offener Gitterboden mit Bienen darauf](bilder/fund/offener_beutenboden_detailaufnahme_gitter_.jpg)
+
+*Der offene Gitterboden: ein feinmaschiges Drahtgitter, durch das Milben und Gemüll nach unten durchfallen, während die Bienen oben bleiben. Er ist die Grundlage der ganzen Varroa-Diagnose — ohne ihn keine Gemüllkontrolle (siehe `15`, Kap. 3.1). Foto: Maja Dumat, CC BY 2.0, via Wikimedia Commons.*
+
+![Zwei herausgezogene Bodeneinlagen mit Gemüll](bilder/fund/herausziehbarer_schieber_bodeneinlage_gemu.jpg)
+
+*Die zugehörigen Schieber (Windeln), herausgezogen und voller Gemüll. Sie fahren unter dem Gitterboden ein; im Winter dienen sie zugleich als Zugluftsperre. Foto: Einebillion, CC BY 4.0, via Wikimedia Commons.*
+
+![Trennschied im Brutraum eingebaut](bilder/fund/trennschied_schied_eingebaut_im_brutraum_a.jpg)
+
+*Das Schied im eingebauten Zustand: ein Brett in Rähmchenform, das den Brutraum seitlich begrenzt. Damit passt man den Raum an die Volksstärke an, statt dem Volk 52 Liter zuzumuten, die es noch nicht wärmen kann — für 1570 m ist das der entscheidende Griff. Foto: CC BY, via Wikimedia Commons.*
 
 **Aufbau von unten nach oben:**
 1. Boden (Varroaboden mit Gitterboden und Schieber)
@@ -435,6 +455,26 @@ Fuer einen Standort auf **1570 m ue.M.** mit langen, kalten Wintern (November bi
 ![Metall-Absperrgitter flach aufliegend](bilder/fund/metall_absperrgitter_stabgitter_mit_metall.jpg)
 
 *Das Absperrgitter als Stabgitter mit Metallrahmen. Der Gitterabstand von 4,2 mm ist die ganze Technik dahinter: Arbeiterinnen kommen hindurch, die breitere Königin nicht — dadurch bleibt der Honigraum brutfrei. Metallausführungen bleiben über Jahre plan; Kunststoffgitter verziehen sich mit der Zeit und klemmen dann. Foto: CC BY 3.0, via Wikimedia Commons.*
+
+![Bienenflucht als Einzelteil, zwei Kunststoffeinsätze](bilder/fund/bienenflucht_einzelteile_kunststoff_quelle.jpg)
+
+*Die Bienenflucht als Einsatz für das Loch im Innendeckel. Sie wirkt als Einwegventil: Die Bienen finden aus dem Honigraum nach unten heraus, aber nicht zurück hinein. Einen Tag vor der Ernte eingelegt, ist der Honigraum am Erntetag weitgehend bienenfrei — das ersetzt das Abkehren jeder einzelnen Wabe. Foto: CC BY, via Wikimedia Commons.*
+
+![Futterzarge aus Holz, aufgesetzt](bilder/fund/futterzarge_futtertrog_adam_fuetterer_12er.jpg)
+
+*Eine Futterzarge (Adam-Fütterer): ein flacher Trog in Zargenform, der oben aufgesetzt wird. Vorteil gegenüber der eingehängten Futtertasche — sie nimmt mehrere Liter auf, sodass die 22–25 kg Winterfutter in wenigen Gängen statt in vielen Portionen eingefüttert werden können. Foto: CC BY, via Wikimedia Commons.*
+
+![Abkehrbesen mit weichen Naturborsten](bilder/fund/abkehrbesen_bienenbesen_achtung_doppelte_e.jpg)
+
+*Der Abkehrbesen mit weichen, langen Borsten. Wichtig ist genau das: Harte oder kurze Borsten quetschen Bienen und reizen das Volk. Gebraucht wird er vor allem bei der Ernte, wenn die Bienenflucht nicht alle Waben geräumt hat. Foto: CC BY, via Wikimedia Commons.*
+
+![Imkerhut mit Rundschleier](bilder/fund/imkerhut_mit_rundschleier_achtung_die_date.jpg)
+
+*Hut mit Rundschleier. Der starre Hutrand hält das Netz **vom Gesicht weg** — das ist der ganze Punkt: Liegt der Schleier an, sticht die Biene hindurch. Für Allergiker und am abgelegenen Maiensäss (lange Rettungswege, siehe `11`) ist das keine Bequemlichkeitsfrage. Foto: CC BY, via Wikimedia Commons.*
+
+![Fangröhrchen und Stempel zum Zeichnen der Königin](bilder/fund/koeniginnen_fangroehrchen_pluffer_im_einsa.jpg)
+
+*Fangröhrchen und Zeichenstempel im Einsatz. Die Königin wird kurz eingesperrt, um den Farbpunkt sauber auf das Brustschild zu setzen — die Jahresfarbe erspart später jedes Rätselraten über das Alter und ist die Grundlage für den Königinnen-Datensatz in der App. Foto: CC BY, via Wikimedia Commons.*
 
 | Zubehoer | Beschreibung | Preis (CHF) |
 |----------|-------------|-------------|
