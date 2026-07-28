@@ -72,6 +72,12 @@
 
 <h1>Sprachband — Belastungstest</h1>
 <p class="unter">Prüft, ob die Erkennung eine ganze Durchsicht durchhält. Einschalten, das Handy so tragen wie beim Imkern, gelegentlich sprechen. Der Test misst selbst, ob und wann er taub wird.</p>
+<p class="unter" style="background:#fff4d6;border-radius:8px;padding:8px 10px">
+<b>Zum Klingeln:</b> Das Geräusch im Sekundentakt kommt nicht von dieser Seite, sondern von Chrome —
+es spielt bei jedem Start und Stopp der Erkennung einen Signalton. Weil Chrome bei Stille nach wenigen
+Sekunden abbricht, entsteht daraus eine Kette. Der <b>Ruhig-Modus</b> unten stoppt das; dafür hört das
+Band zwischen den Takten nicht zu. Der eigene Prüfton dieser Seite ist ein <b>tiefer Doppelton</b> und
+kommt nur alle drei Minuten.</p>
 
 <div class="band">
   <div class="zustand"><span class="punkt" id="punkt"></span><span id="zustand">bereit</span></div>
@@ -80,12 +86,18 @@
 </div>
 
 <div class="zahlen">
-  <div class="zelle"><div class="wert" id="zTakte">0</div><div class="bez">Takt-Erneuerungen</div></div>
+  <div class="zelle"><div class="wert" id="zTakte">0</div><div class="bez">Takt-Erneuerungen (geplant)</div></div>
+  <div class="zelle" id="zelleErzwungen"><div class="wert" id="zErzwungen">0</div><div class="bez">von Chrome abgebrochen — jeder macht ein Geräusch</div></div>
   <div class="zelle"><div class="wert" id="zTexte">0</div><div class="bez">erkannte Sätze</div></div>
   <div class="zelle" id="zelleLuecke"><div class="wert" id="zLuecke">0s</div><div class="bez">längste Stille ohne Erkennung</div></div>
   <div class="zelle" id="zelleFehler"><div class="wert" id="zFehler">0</div><div class="bez">Störungen</div></div>
   <div class="zelle" id="zellePruef" style="grid-column:1/-1"><div class="wert"><span id="zPruefOk">0</span> / <span id="zPruefWeg">0</span></div><div class="bez">Prüfungen bestanden / verpasst — das ist das eigentliche Ergebnis</div></div>
 </div>
+
+<label class="schalter">
+  <input type="checkbox" id="sanft">
+  <span><b>Ruhig-Modus:</b> bei Sprechpause nicht sofort neu starten, sondern auf den nächsten Takt warten <em>(sollte das Klingeln beenden)</em></span>
+</label>
 
 <label class="schalter">
   <input type="checkbox" id="mitschnitt" checked>
@@ -146,6 +158,7 @@ let takte = 0, texte = 0, fehler = 0, luecke = 0;
 let taubGemeldet = false;
 let pruefungLaeuft = false, pruefungSeit = 0;
 let pruefBestanden = 0, pruefVerpasst = 0;
+let erzwungen = 0;   // von Chrome beendet, nicht vom Takt
 const zeilen = [];
 
 function jetzt() { return Date.now(); }
@@ -175,6 +188,8 @@ function zahlen() {
   el('zFehler').textContent = fehler;
   el('zelleLuecke').classList.toggle('alarm', luecke > TAUB_MS);
   el('zelleFehler').classList.toggle('alarm', fehler > 0);
+  el('zErzwungen').textContent = erzwungen;
+  el('zelleErzwungen').classList.toggle('alarm', erzwungen > 20);
   el('zPruefOk').textContent = pruefBestanden;
   el('zPruefWeg').textContent = pruefVerpasst;
   el('zellePruef').classList.toggle('alarm', pruefVerpasst > 0);
@@ -224,8 +239,17 @@ function starteErkennung(grund) {
 
     r.onend = () => {
       if (meine !== generation || !laeuft) return;
-      // Ausserhalb des Takts beendet = Chrome hat gekappt.
-      log('warn', 'Erkennung endete von selbst — sofort erneuert');
+      // Ausserhalb des Takts beendet = Chrome hat gekappt. Jeder Neustart
+      // erzeugt auf Android einen hoerbaren Signalton — deshalb zaehlen wir
+      // sie, statt sie nur hinzunehmen.
+      erzwungen++;
+      zahlen();
+      if (el('sanft').checked) {
+        log('warn', 'Chrome hat abgebrochen — warte auf den nächsten Takt (Ruhig-Modus)');
+        rec = null;   // der Takt startet neu
+        return;
+      }
+      log('warn', 'Chrome hat abgebrochen — sofort erneuert');
       starteErkennung('nach Abbruch');
     };
 
@@ -251,6 +275,8 @@ function beendeErkennung() {
 function takt() {
   if (!laeuft) return;
   takte++;
+  // Im Ruhig-Modus kann rec null sein (Chrome hat abgebrochen, wir haben
+  // bewusst gewartet) — dann ist der Takt der Wiederanlauf.
   const alt = rec;
   starteErkennung('Takt ' + takte);
   if (alt) {
@@ -266,10 +292,14 @@ function piep() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const o = ctx.createOscillator(), g = ctx.createGain();
-    o.frequency.value = 880; g.gain.value = 0.15;
+    // Doppelter, tiefer Ton — muss sich vom Signalton der Erkennung
+    // unterscheiden lassen, sonst weiss man nicht, was gerade piept.
+    o.frequency.setValueAtTime(523, ctx.currentTime);
+    o.frequency.setValueAtTime(392, ctx.currentTime + 0.18);
+    g.gain.value = 0.22;
     o.connect(g); g.connect(ctx.destination);
-    o.start(); o.stop(ctx.currentTime + 0.25);
-    setTimeout(() => ctx.close(), 600);
+    o.start(); o.stop(ctx.currentTime + 0.36);
+    setTimeout(() => ctx.close(), 800);
   } catch (e) { /* Ton ist Beiwerk */ }
 }
 
@@ -355,6 +385,7 @@ async function starten() {
   laeuft = true;
   start = letzterText = jetzt();
   takte = texte = fehler = luecke = 0; taubGemeldet = false;
+  erzwungen = 0;
   pruefBestanden = pruefVerpasst = 0; pruefungLaeuft = false;
   zeilen.length = 0; el('protokoll').innerHTML = ''; el('ausgabe').value = '';
   zahlen();
@@ -401,7 +432,9 @@ function bericht() {
     '=== Sprachband-Belastungstest ===',
     'Gerät:      ' + navigator.userAgent,
     'Gemessen:   ' + Math.floor(dauer / 60000) + ' min ' + Math.floor((dauer % 60000) / 1000) + ' s',
-    'Takt:       alle ' + sek(TAKT_MS) + ' s, ' + takte + ' Erneuerungen',
+    'Takt:       alle ' + sek(TAKT_MS) + ' s, ' + takte + ' geplante Erneuerungen',
+    'Abbrüche:   ' + erzwungen + ' von Chrome erzwungen (je ein Signalton)',
+    'Modus:      ' + (el('sanft').checked ? 'Ruhig (Takt-Wiederanlauf)' : 'Sofort-Neustart'),
     'Erkannt:    ' + texte + ' Sätze',
     'Längste Stille ohne Erkennung: ' + sek(luecke) + ' s',
     'Störungen:  ' + fehler,
