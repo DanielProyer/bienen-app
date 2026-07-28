@@ -14,6 +14,24 @@
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Rahmen: Was „gute imkerliche Praxis" rechtlich heisst](#0-rahmen-was-gute-imkerliche-praxis-rechtlich-heisst)
+2. [Fütterung (Merkblatt 4.2) — kernrelevant für App-Modul 4.6](#1-fütterung-merkblatt-42--kernrelevant-für-app-modul-46)
+3. [Überwinterung (Merkblatt 4.3)](#2-überwinterung-merkblatt-43)
+4. [Wabenbauerneuerung + Wachskreislauf (4.4, 4.4.1, 4.4.2, 4.4.3) — relevant für Wachs-Modul](#3-wabenbauerneuerung--wachskreislauf-44-441-442-443--relevant-für-wachs-modul)
+5. [Diagnose ohne Öffnen: Fluglochbeobachtung + Gemüllkontrolle (4.8.1, 4.8.2)](#4-diagnose-ohne-öffnen-fluglochbeobachtung--gemüllkontrolle-481-482)
+6. [Räuberei (4.8.3)](#5-räuberei-483)
+7. [Standortwahl + Wandern (4.9, 4.9.1)](#6-standortwahl--wandern-49-491)
+8. [Bienen beruhigen (4.10)](#7-bienen-beruhigen-410)
+9. [Kauf/Verkauf von Bienen (4.11)](#8-kaufverkauf-von-bienen-411)
+10. [Dynamische Völkerführung (4.12) — Konzept](#9-dynamische-völkerführung-412--konzept)
+11. [Hygiene + Propolis (4.1, 4.1.1)](#10-hygiene--propolis-41-411)
+12. [Übersicht 4 — weitere Betriebskennzahlen](#11-übersicht-4--weitere-betriebskennzahlen)
+13. [Quell-Dateien (txt)](#quell-dateien-txt)
+
+---
+
 ## 0. Rahmen: Was „gute imkerliche Praxis" rechtlich heisst
 
 Als **Lebensmittelproduzent/-in** ist man verpflichtet, Bienenprodukte nach guter imkerlicher Praxis herzustellen (Technische Weisung Kontrollhandbuch PrP, Anhang 2). Die Einhaltung ist zu **dokumentieren**. Pflicht-Formulare (Aufzeichnungspflicht):

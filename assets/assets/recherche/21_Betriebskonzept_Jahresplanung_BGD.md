@@ -16,6 +16,17 @@
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Das Betriebskonzept — die Dachstruktur](#1-das-betriebskonzept--die-dachstruktur)
+2. [Der Jahresplan (maßgebliche Referenz für den Aufgaben-Generator 4.4)](#2-der-jahresplan-maßgebliche-referenz-für-den-aufgaben-generator-44)
+3. [Merkblatt-Register (vollständige Systematik, Stand 30.03.2026)](#3-merkblatt-register-vollständige-systematik-stand-30032026)
+4. [Umwelt-Merkblätter 3.x — Kerninhalte](#4-umwelt-merkblätter-3x--kerninhalte)
+5. [[GRAFIK]-Liste (Bildmaterial in den Quellen — für spätere Poster/Onboarding-Assets)](#5-grafik-liste-bildmaterial-in-den-quellen--für-spätere-posteronboarding-assets)
+6. [App-Bezug 4.4 (Kurzverweis — Details im Antworttext)](#6-app-bezug-44-kurzverweis--details-im-antworttext)
+
+---
+
 ## 1. Das Betriebskonzept — die Dachstruktur
 
 Das **Betriebskonzept** von BienenSchweiz ist der gedankliche Rahmen, in den alle Merkblätter eingebettet sind. Es ist kein Einzeldokument, sondern eine **Informationsarchitektur**:

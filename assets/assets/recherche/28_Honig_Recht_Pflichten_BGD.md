@@ -17,6 +17,21 @@
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Honigreglement apisuisse 2024 (Qualitätssiegel / „Goldsiegel")](#1-honigreglement-apisuisse-2024-qualitätssiegel--goldsiegel)
+2. [Gesetzliche Honig-Anforderungen (VLtH Art. 96–98 + Anhang 7)](#2-gesetzliche-honig-anforderungen-vlth-art-9698--anhang-7)
+3. [Etikettierung — Pflichtangaben (LIV + MeAV + MessG)](#3-etikettierung--pflichtangaben-liv--meav--messg)
+4. [Lebensmittelrechtliche Betriebspflichten (LMG/LGV/NKPV/HyV)](#4-lebensmittelrechtliche-betriebspflichten-lmglgvnkpvhyv)
+5. [Tierseuchenrecht: die Pflichten des CH-Imkers (TSG/TSV)](#5-tierseuchenrecht-die-pflichten-des-ch-imkers-tsgtsv)
+6. [Tabelle Melde-, Aufzeichnungs- und Bewilligungspflichten (Quelle 5, Stand Januar 2026 — rekonstruiert)](#6-tabelle-melde--aufzeichnungs--und-bewilligungspflichten-quelle-5-stand-januar-2026--rekonstruiert)
+7. [Alle Zahlen auf einen Blick](#7-alle-zahlen-auf-einen-blick)
+8. [APP-RELEVANZ (Module bienen_app)](#8-app-relevanz-module-bienen_app)
+9. [[GRAFIK]-Vorschläge](#9-grafik-vorschläge)
+10. [Diskrepanzen / offene Punkte](#10-diskrepanzen--offene-punkte)
+
+---
+
 ## 1. Honigreglement apisuisse 2024 (Qualitätssiegel / „Goldsiegel")
 
 Individualmarke von apisuisse (Inhaber: apisuisse, c/o Bienen Schweiz, Appenzell). Teilnahme nur für Mitglieder von apisuisse-Sektionen. Anspruch: in wichtigen Kriterien **strenger als das Gesetz**.

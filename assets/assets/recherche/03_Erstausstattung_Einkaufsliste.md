@@ -5,6 +5,23 @@
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Beuten und Zubehoer](#1-beuten-und-zubehoer)
+2. [Schutzausruestung](#2-schutzausruestung)
+3. [Werkzeug](#3-werkzeug)
+4. [Honigverarbeitung](#4-honigverarbeitung)
+5. [Varroa-Behandlung](#5-varroa-behandlung)
+6. [Fuetterung](#6-fuetterung)
+7. [Sonstiges](#7-sonstiges)
+8. [Die Bienen](#8-die-bienen)
+9. [Gesamtkostenuebersicht](#gesamtkostenuebersicht)
+10. [Empfohlene Einkaufsstrategie](#empfohlene-einkaufsstrategie)
+11. [Schweizer Anbieter (Uebersicht)](#schweizer-anbieter-uebersicht)
+12. [Quellen](#quellen)
+
+---
+
 ## 1. Beuten und Zubehoer
 
 ![Fertig aufgebaute Dadant-Beute mit Blechdeckel](bilder/fund/neue_12er_dadantbeute_serienbild_4_blechde.jpg)

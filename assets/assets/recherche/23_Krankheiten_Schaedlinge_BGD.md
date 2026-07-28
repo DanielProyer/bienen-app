@@ -20,6 +20,24 @@
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Übersichtstabelle](#übersichtstabelle)
+2. [Amerikanische Faulbrut (AFB) — MB V2208](#21-amerikanische-faulbrut-afb--mb-v2208)
+3. [Sauerbrut / Europäische Faulbrut (EFB) — MB V2402](#22-sauerbrut--europäische-faulbrut-efb--mb-v2402)
+4. [Kleiner Beutenkäfer — *Aethina tumida* — MB V2208 (+ Bestimmungshilfe)](#23-kleiner-beutenkäfer--aethina-tumida--mb-v2208--bestimmungshilfe)
+5. [Kalkbrut — MB V1708](#24-kalkbrut--mb-v1708)
+6. [Durchfallerkrankungen — Nosema / Ruhr — MB V1906](#25-durchfallerkrankungen--nosema--ruhr--mb-v1906)
+7. [Wachsmotte (gross/klein) — MB V2310](#26-wachsmotte-grossklein--mb-v2310)
+8. [Maikrankheit — MB V1804](#29-maikrankheit--mb-v1804)
+9. [Chronisches Bienen-Paralyse-Virus (CBPV) — MB V2403](#210-chronisches-bienen-paralyse-virus-cbpv--mb-v2403)
+10. [Sackbrut-Virus (SBV) — MB V2204](#211-sackbrut-virus-sbv--mb-v2204)
+11. [Tropilaelaps — MB V2603](#212-tropilaelaps--mb-v2603)
+12. [Zusatz aus Übersichts-Merkblatt (2) — Virosen ohne eigenes MB](#zusatz-aus-übersichts-merkblatt-2--virosen-ohne-eigenes-mb)
+13. [[GRAFIK]-Verzeichnis (Bestimmungshilfen / Symptombilder / Ablaufdiagramme)](#grafik-verzeichnis-bestimmungshilfen--symptombilder--ablaufdiagramme)
+
+---
+
 ## Übersichtstabelle
 
 | Krankheit / Schädling | Erreger / Typ | Leitsymptom | Rechtsstatus | Meldeweg |

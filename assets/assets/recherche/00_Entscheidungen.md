@@ -2,6 +2,18 @@
 
 > Dieses Dokument hält alle getroffenen Entscheidungen fest.
 
+## Inhaltsverzeichnis
+
+1. [Grundsätze](#grundsätze)
+2. [Beutesystem](#1-beutesystem)
+3. [Standort](#2-standort)
+4. [Völkerplanung](#3-völkerplanung)
+5. [Bienenrasse](#4-bienenrasse)
+6. [Raumkonzept](#5-raumkonzept)
+7. [Noch zu entscheiden](#noch-zu-entscheiden)
+
+---
+
 ## Grundsätze
 
 - **Qualität vor Preis** -- Geld ist vorhanden, lieber mehr für Qualität ausgeben

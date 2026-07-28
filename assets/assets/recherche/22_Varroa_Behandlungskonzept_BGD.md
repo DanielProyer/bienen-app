@@ -15,6 +15,20 @@
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Varroa-Behandlungskonzept (Herzstück) — Merkblatt 1.1 (`Varroakonzept_D`)](#1-varroa-behandlungskonzept-herzstück--merkblatt-11-varroakonzept_d)
+2. [Diagnose / Befallsmessung (Merkblätter 1.5.1–1.5.3)](#2-diagnose--befallsmessung-merkblätter-151153)
+3. [Behandlung mit Ameisensäure (Sommerbehandlung) — 1.2 / 1.2.1–1.2.5](#3-behandlung-mit-ameisensäure-sommerbehandlung--12--121125)
+4. [Behandlung mit Oxalsäure — 1.3 / 1.3.1–1.3.3](#4-behandlung-mit-oxalsäure--13--131133)
+5. [Biotechnische / physikalische Verfahren — 1.6.1–1.6.6](#5-biotechnische--physikalische-verfahren--161166)
+6. [Notbehandlung — 1.7.1 (Magazin) / 1.7.2 (CH-Kasten)](#6-notbehandlung--171-magazin--172-ch-kasten)
+7. [Krankheitsbild Varroatose — 2.8](#7-krankheitsbild-varroatose--28)
+8. [Alpine Relevanz (Arosa 1570 m, ~40 Tage später)](#8-alpine-relevanz-arosa-1570-m-40-tage-später)
+9. [Quellenverzeichnis (Merkblatt-Nummern)](#9-quellenverzeichnis-merkblatt-nummern)
+
+---
+
 ## 1. Varroa-Behandlungskonzept (Herzstück) — Merkblatt 1.1 (`Varroakonzept_D`)
 
 Der Jahresablauf mit Entscheidungslogik. Die kalendarischen Angaben sind Mittelland-Standard. Drei Handlungsstränge: **Varroaentwicklung bremsen** · **Milbenbefall schätzen (Diagnose)** · **Behandeln**.
