@@ -161,7 +161,7 @@ const ANTWORT_MS = 40000;   // so lange darf die Antwort brauchen
 
 // Fassung dieser Datei. Steht sichtbar oben und im Bericht, damit ein
 // Feldergebnis immer einer Fassung zuzuordnen ist.
-const FASSUNG = 'F8';
+const FASSUNG = 'F9';
 
 const Ctor = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -279,10 +279,15 @@ function starteErkennung(grund) {
     r.interimResults = true;
 
     r.onresult = (ev) => {
+      // NICHT alle Teilergebnisse verketten: Android-Chrome haengt bei jedem
+      // Update ein neues an, das den ganzen bisherigen Satz enthaelt. Verketten
+      // vervielfacht den Text. Nur das letzte nicht-leere zaehlt.
       let end = '', vor = '';
-      for (let i = 0; i < ev.results.length; i++) {
-        const t = ev.results[i][0].transcript;
-        if (ev.results[i].isFinal) end += t + ' '; else vor += t + ' ';
+      for (let i = ev.results.length - 1; i >= 0; i--) {
+        const t = (ev.results[i][0].transcript || '').trim();
+        if (!t) continue;
+        if (ev.results[i].isFinal) end = t; else vor = t;
+        break;
       }
       // NICHT end + vor: das ist die ganze Sitzung und waechst endlos.
       zeigeGehoert(vor);
