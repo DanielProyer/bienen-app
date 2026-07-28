@@ -159,6 +159,10 @@ In der Schweiz beziehbar u.a. bei **Hostettler Spezialzucker AG** (Futterteig/Fu
 
 ## 8. Wachs & Wachskreislauf
 
+![Naturbauwabe an einem Oberträger, von Bienen besetzt](bilder/fund/futterwabe_top_bar_hive_bauteil_nur_ueber_.jpg)
+
+*Naturbau am Oberträger: Das Volk hat die Wabe ohne jede Vorgabe gebaut. Für den Bio-Wachskreislauf ist das der Idealfall — Wachs, das nie durch einen fremden Kreislauf gelaufen ist. In der Praxis bleibt es die Ergänzung zum eigenen, lückenlos dokumentierten Mittelwand-Wachs. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
+
 Das Wachs ist der **sensibelste Punkt** der Bio-/Knospe-Zertifizierung, weil Rückstände sich im fettlöslichen Wachs anreichern und über die Waben in den Honig gelangen. Die **Wachsanalyse** ist deshalb Teil der zweiten Kontrolle (siehe Kap. 11).
 
 **Regeln (org.-biologisch / Knospe):**

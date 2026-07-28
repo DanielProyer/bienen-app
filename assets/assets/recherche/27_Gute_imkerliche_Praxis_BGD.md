@@ -39,6 +39,10 @@ Es sind **ausschliesslich zugelassene, von BGD und ZBF empfohlene Imkereipräpar
 2. **Kohlenhydrate** = Nektar/Honigtau bzw. Fütterung mit Honig/Zuckerwasser/Futterteig → Energie der adulten Bienen.
 
 ### Zuckerwasser-Verhältnisse & Zeitpunkte (die zentralen Zahlen)
+
+![Oberfütterer mit Zuckerwasser gefüllt](bilder/fund/kopffuetterer_oberfuetterer_mit_zuckerwass.jpg)
+
+*Ein Oberfütterer mit angesetztem Zuckerwasser. Die Zahlen im Kapitel entscheiden sich hier: Das Verhältnis bestimmt, ob das Volk das Futter sofort verbraucht oder einlagert — dünn wirkt wie Tracht und reizt, dick wird eingetragen und eingedickt. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
 | Zweck | Futter / Verhältnis | Zeitpunkt |
 |---|---|---|
 | **Anfüttern Jungvölker** | **Zuckerwasser 1:1** (flüssig) | ab Löwenzahn/Raps/Apfel-Blüte |
@@ -48,6 +52,10 @@ Es sind **ausschliesslich zugelassene, von BGD und ZBF empfohlene Imkereipräpar
 | Frühjahr-Notfütterung bei Futtermangel | volle Reserve-Futterwabe ans Brutnest **oder** Futterteig direkt auf Wabenschenkel | ab Schneeglöckchen-Blüte |
 
 ### Mengen (die zentralen kg-/Liter-Zahlen)
+
+![Futter wird aus einem Kanister in ein Futtergefäss gefüllt](bilder/fund/futtergefaess_eigenbau_fuer_warr_beute_ers.jpg)
+
+*Eingefüttert wird in Portionen, nicht auf einmal. Der Kanister zeigt, worauf die Mengenangaben hinauslaufen: Die Gesamtmenge kommt über mehrere Gaben zusammen, weil das Volk jede Portion erst eindicken und verdeckeln muss. Foto: Kevin Pauba, CC BY 4.0, via Wikimedia Commons.*
 - **Futtervorrat ganzjährig: mind. 5 kg/Volk** (Übersicht 4).
 - **Winterfutter Wirtschaftsvolk: ca. 20 kg** (Auffütterung im Spätsommer auf **mind. 20 kg/Volk eingelagertes Winterfutter**).
 - Gewicht **beidseitig komplett voller Brutraumwabe:**

@@ -37,6 +37,10 @@ Die imkerliche Kunst besteht darin, den **natürlichen Jahresrhythmus des Volkes
 
 ### 1.2 Kurze Geschichte — von der Honigjagd zur Magazinimkerei
 
+![Strohkorb mit aufgelegtem Holzdeckel](bilder/fund/futtergefaess_auf_der_beute_modell_laut_qu.jpg)
+
+*Der Vorgänger der Magazinbeute: ein Strohkorb, der von oben mit einem Holzdeckel verschlossen wird. Was ihn ablöste, war nicht das Material, sondern das bewegliche Rähmchen — im Korb sitzt der Naturbau fest, jede Kontrolle zerstört Wabenwerk. Foto: Simon Speed, CC0, via Wikimedia Commons.*
+
 | Epoche | Form | Kern |
 |---|---|---|
 | Steinzeit–Antike | **Honigjagd** | Wilde Nester geplündert (Felszeichnungen ~8'000 v.Chr., Cuevas de la Araña, Spanien). Das Volk wird dabei zerstört. |
@@ -73,6 +77,10 @@ Ein flacher Stahlhebel, an einer Seite ~90° abgewinkelt und geschärft, an der 
 *Praxis:* Immer in der Hand behalten (nicht ablegen und suchen). Ein **Edelstahl-Modell** hält Jahrzehnte (→ Material-Präferenz «Qualität vor Preis»). Der «Amerikanische» Typ mit Rähmchenheber-Haken erleichtert das Ziehen dicht sitzender Waben.
 
 ### 2.2 Smoker (Rauchapparat)
+
+![Älterer Smoker aus Blech mit Blasebalg](bilder/fund/smoker_einzelaufnahme_alternative_quellen_.jpg)
+
+*Ein Smoker älterer Bauart. Am Prinzip hat sich seit über hundert Jahren nichts geändert: schwelendes Material in der Kammer, Luft über den Blasebalg, kühler Rauch aus der Tülle. Heiss darf er nie werden — heisser Rauch treibt die Bienen auf, statt sie zu beruhigen. Foto: Tamorlan, CC BY 3.0, via Wikimedia Commons.*
 
 ![Imker beräuchert eine geöffnete Beute](bilder/fund/imker_beraeuchert_eine_geoeffnete_beute_sm.jpg)
 
@@ -125,6 +133,10 @@ Das **wichtigste «Werkzeug», das keiner ist**: die schriftliche Dokumentation 
 ---
 
 ## 3. Die imkerliche Durchsicht — Ablauf Schritt für Schritt
+
+![Imkerin zieht eine Wabe aus der geöffneten Beute](bilder/fund/imker_bei_der_durchsicht_an_der_geoeffnete.jpg)
+
+*Die Wabe wird senkrecht gezogen und senkrecht gehalten — nie flach, sonst laufen frischer Nektar und offene Brut aus den Zellen. Der Griff an den Ohren mit beiden Händen ist der Standardgriff der ganzen Durchsicht. Foto: Alabama Extension, CC0, via Wikimedia Commons.*
 
 Die **Durchsicht (Revision, Volkskontrolle)** ist der zentrale Handgriff der Saison. Ziel: den Zustand des Volkes erfassen und nur das Nötige tun. Eine Durchsicht sollte **zügig, ruhig und zielgerichtet** sein (Richtwert 5–15 min/Volk je nach Anlass), damit das Brutnest nicht auskühlt und das Volk nicht unnötig gestört wird.
 

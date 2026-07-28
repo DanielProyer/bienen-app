@@ -76,6 +76,10 @@ Ein häufiges Missverständnis: „Rhododendron-Honig ist giftig." Die dokumenti
 
 ## 3. Reife & Wassergehalt — der Kern der Qualität
 
+![Makroaufnahme verdeckelter und offener Honigzellen](bilder/fund/verdeckelte_honigwabe_makro_rechts_geschlo.jpg)
+
+*Der Reifegrad wird an der Wabe sichtbar: oben die weiss verdeckelten Zellen, unten offene, in denen der Honig noch blank steht. Verdeckelt heisst, dass die Biene den Wassergehalt für lagerfähig hält — deshalb ist der Verdeckelungsgrad das erste Erntekriterium und das Refraktometer das zweite. Foto: Einebillion, CC BY 4.0, via Wikimedia Commons.*
+
 ![Tragbares Handrefraktometer](bilder/fund/tragbares_handrefraktometer_wym_5_der_deut.jpg)
 
 *Das Handrefraktometer entscheidet über Erntereife — Augenmass genügt hier nicht. Wenige Tropfen auf das Prisma, Wert ablesen: Über 18 % Wasser droht Gärung, die Goldsiegel-Grenze liegt bei 18,5 %. Foto: CC BY, via Wikimedia Commons.*
@@ -171,6 +175,10 @@ Die Ernte beginnt Wochen vorher — mit dem richtigen **Aufsetzen** und **Absper
 
 ## 6. Ernteverfahren — vom Stock in den Eimer
 
+![Historische Strichzeichnung einer Bienenflucht](bilder/fund/bienenflucht_historische_strichzeichnung_p.jpg)
+
+*Eine Bienenflucht in einer alten Strichzeichnung: Die Biene findet durch die Öffnung nach unten hinaus, aber nicht wieder hinein. Zwei Tage unter dem Honigraum eingelegt, entleert sie ihn fast von selbst — die schonendste Alternative zum Abkehren. Foto: Frank Benton, Public Domain, via Wikimedia Commons.*
+
 Der komplette Prozess (Reihenfolge, Hygiene, Ausrüstung): **Bienen entfernen → Honigräume abernten → Entdeckeln → Schleudern → Sieben → Klären/Abschäumen → Abfüllen.** Details zur Schleudertechnik und Gerätewahl in **Cross-Ref 08**, zum Raum/Hygiene in **Cross-Ref 04**.
 
 ### 6.1 Bienen aus dem Honigraum entfernen
@@ -183,6 +191,10 @@ Der komplette Prozess (Reihenfolge, Hygiene, Ausrüstung): **Bienen entfernen �
 | Chemische Bienenflucht (Repellent) | riecht Bienen aus | Für Bio/Qualität **nicht** verwenden |
 
 ### 6.2 Entdeckeln
+
+![Entdeckeln einer Wabe, Wachsdeckel lösen sich als Band](bilder/fund/entdeckeln_an_der_wabe_nahaufnahme_wie_ein.jpg)
+
+*Beim Entdeckeln löst sich die Wachsschicht im Idealfall als zusammenhängendes Band, wie hier zu sehen. Wer zu tief ansetzt, schneidet in die Zellen und holt Wachs statt Honig heraus; wer zu flach ansetzt, lässt Zellen verschlossen und verliert Ertrag. Foto: Don Hankins, CC BY 2.0, via Wikimedia Commons.*
 
 Die Wachsdeckel öffnen, damit der Honig ausschleuderbar wird:
 - **Entdeckelungsgabel** (günstig, für wenige Waben ideal), **Entdeckelungsmesser** (glatt/gezackt, ggf. beheizt), oder **Entdeckelungsgeschirr** mit Abtropfgitter.

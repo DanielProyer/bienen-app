@@ -255,6 +255,10 @@ Das „Nervensystem" des Superorganismus ist chemisch (Pheromone) und mechanisch
 
 ### 9.1 Die Tanzsprache (nach Karl von Frisch)
 
+![Schema des Schwänzeltanzes: Achterschleife mit Schwänzellauf in der Mitte](bilder/fund/schwaenzeltanz_schema_weiss.jpg)
+
+*Der Schwänzeltanz als Schema: Die Biene läuft eine Acht, und in der Mitte — dem Schwänzellauf — vibriert sie. Dieser Mittelteil trägt die ganze Information: Seine Richtung gegenüber der Senkrechten nennt den Winkel zur Sonne, seine Dauer die Entfernung. Die beiden Rückwege sind nur der Weg zurück zum Ausgangspunkt. Foto: DataBase Center for Life Science (DBCLS), CC BY 4.0, via Wikimedia Commons.*
+
 - **Rundtanz:** Signalisiert eine Trachtquelle **in der Nähe** (Richtwert **< ~50–100 m**) — „geht raus und sucht in der Umgebung", ohne genaue Richtung.
 - **Schwänzeltanz:** Für **weiter entfernte** Quellen (> ~100 m, bis mehrere km — Flugradius realistisch bis **~3 km**, im Extrem weiter). Er kodiert **Richtung und Entfernung**:
   - **Richtung:** Der Winkel der „Schwänzelstrecke" zur **Senkrechten** auf der (senkrecht hängenden) Wabe entspricht dem **Winkel zur Sonne**. Gerade nach oben = „in Richtung Sonne fliegen". Die Bienen rechnen den Sonnenstand sogar über die Tageszeit um.

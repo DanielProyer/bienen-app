@@ -42,6 +42,10 @@
 
 ## 2.1 Amerikanische Faulbrut (AFB) — MB V2208
 
+![Historische Aufnahme einer faulbrutkranken Brutwabe in Originalgrösse](bilder/fund/afb_brutwabe_in_nahaufnahme_originalgroess.jpg)
+
+*Eine faulbrutkranke Brutwabe in Originalgrösse. Das Merkmal ist nicht die einzelne Zelle, sondern das Muster: eingesunkene, durchlöcherte Deckel zwischen gesunden — ein lückenhaftes Brutnest, das aus der Distanz auffällt, bevor man einzelne Zellen prüft. Foto: Isaac Hopkins (Q106121459), Public Domain, via Wikimedia Commons.*
+
 - **Erreger:** Bakterium (Bakterienkrankheit, sporenbildend). Sporen **bis 60 Jahre keimfähig**; eine zu Schorf eingetrocknete Made kann **> 2 Milliarden Sporen** enthalten. Ansteckung der Larven über den **Futtersaft in den ersten 48 Stunden**. Erwachsene Bienen erkranken nicht, sind aber Träger.
 - **Symptome/Diagnose:** Lückenhaftes Brutnest; Maden sterben **in den verdeckelten Zellen**, zerfallen zu brauner Masse; eingefallene, dunkle Zelldeckel mit Löchern; **Zündholztest: mind. 1 cm lange Fäden** (hell- bis kaffeebraune, fadenziehende Masse); frische Infektion riecht **nach frischem Quark**, fortgeschritten **faulig nach Knochenleim**; im Endstadium zungenförmiger, dunkelbrauner-schwarzer Schorf am Zellboden; schwache Völker.
 - **Verwechslung:** Sauerbrut (Hauptunterschied: AFB **≥1 cm** Fäden & Tod **nach** Verdeckelung; EFB **<1 cm** & Tod **vor** Verdeckelung).
@@ -91,6 +95,10 @@
 
 ## 2.6 Wachsmotte (gross/klein) — MB V2310
 
+![Dichtes Wachsmottengespinst auf einer Wabe](bilder/fund/wachsmottengespinst_an_der_wabe_dichtes_ge.jpg)
+
+*Wachsmottengespinst auf einer Wabe: dichte Fäden, die Zellen und Larvengänge überziehen. So endet gelagertes Wabenwerk, das zu warm und zu dicht steht — der Schaden entsteht im Lager, nicht im starken Volk. Foto: Goldmull, CC BY 3.0, via Wikimedia Commons.*
+
 - **Erreger/Typ:** **Falter** (Zünsler/Pyralidae), Grosse & Kleine Wachsmotte. Larve frisst Bienenlarvenkot, Nymphenhäutchen, Pollen, Gemüll — **zerstört Wabenmaterial**. In der Natur nützlich (räumt Altwaben/Erregerquellen ab).
 - **Symptome/Diagnose:** **Gespinste**; **schwarzer Kot** auf Boden/Varroa-Unterlage; im Volk **Röhrchenbrut** (erhöhte, nicht geschlossene Brut → Frassgang darunter); beim Klopfen an den Wabenschenkel verlassen die Larven die Waben.
 - **Schwelle:** **Keine Schäden bei Temperaturen < 12 °C.**
@@ -115,6 +123,10 @@
 - **Bekämpfung leicht:** Jungvölker bilden; Varroa überwachen/behandeln; Verlauf beobachten. **Stark:** Honigraum abräumen; **auf Neubau setzen** (nicht zu spät) + füttern (Sirup 1:1 / eigener Honig); Brutfreiheit für Varroabehandlung nutzen; **Königin wechseln**; gesunde/kranke Völker separieren; notfalls abschwefeln. **Aus Waldtracht abwandern.** (Detail-Verfahren: Volk ~20 m verstellen, kranke Bienen + Königin abwischen & töten, gesunde fliegen zurück.)
 
 ## 2.11 Sackbrut-Virus (SBV) — MB V2204
+
+![Historische Vergleichstafel: gesunde Larve neben sackbrutkranken Larven](bilder/fund/vergleichstafel_sackbrut_gesunde_larve_geg.jpg)
+
+*Eine Vergleichstafel: oben die gesunde Larve, danach die Stadien der sackbrutkranken. Der Name kommt vom Befund in der letzten Reihe — die Larve wird zu einem flüssigkeitsgefüllten Sack, der sich mit der Pinzette unzerrissen herausheben lässt. Genau das unterscheidet Sackbrut von Faulbrut. Foto: White, G. F., Public Domain, via Wikimedia Commons.*
 
 - **Erreger:** **Virus**; vermehrt sich in erwachsenen Bienen und Brut. **Übertragung über Futtersaft** (Ammenbienen → Larven) und **durch Varroa**. Larven scheitern an der Metamorphose (Virus blockiert die Häutung) und sterben in der verdeckelten Zelle. Meist nur kleiner Brutteil betroffen; bricht bei ungünstigen Bedingungen (Pollenmangel, zu grosse Brutfläche) aus.
 - **Symptome/Diagnose:** Lückenhafte Brut; **Streckmade nimmt beim Herausnehmen Sackform an**; charakteristische **Flüssigkeitsansammlung** unter der Aussenhaut; tote Brut wird braun→schwarz, **schiffchenförmig** (klebt nicht am Zellboden); eingesunkene/zerrissene/löchrige Zelldeckel.

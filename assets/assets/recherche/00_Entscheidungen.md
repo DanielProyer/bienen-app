@@ -13,6 +13,10 @@
 
 ## 1. Beutesystem
 
+![Brutzarge einer Dadant-Beute von oben mit eingehängten Rähmchen](bilder/fund/neue_12er_dadantbeute_serienbild_2_brutzar.jpg)
+
+*Der Entscheid in einem Bild: eine Dadant-Brutzarge von oben, die Rähmchen dicht an dicht im Falz. Der grosse, einzargige Brutraum ist der ganze Grund für die Systemwahl — die Königin bekommt eine ungeteilte Fläche und muss nicht über zwei Etagen gesucht werden. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
+
 **Entscheidung: Dadant Blatt 10er in Holz**
 
 | Parameter | Entscheid |

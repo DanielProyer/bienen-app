@@ -83,6 +83,10 @@ Jede Brutgeneration hinterlässt in der Zelle die **Kokonhäutchen** der Puppe p
 
 ## 4. Naturbau vs. Mittelwände
 
+![Mittelwände auf einer Prägemaschine](bilder/fund/mittelwaende_aus_bienenwachs_herstellung_a.jpg)
+
+*Mittelwände entstehen an der Prägemaschine: flüssiges Wachs wird zu Platten mit vorgeprägten Zellböden. Diese Vorgabe spart dem Volk Bauarbeit und legt die Zellgrösse fest — beides Gründe, die für Mittelwände sprechen, und gleichzeitig der Grund, warum der Wachskreislauf sauber sein muss. Foto: Casamiel, Public Domain, via Wikimedia Commons.*
+
 ### Mittelwände (Standard)
 
 Eine **Mittelwand** ist eine dünne, vorgeprägte Wachsplatte mit Zellböden-Prägung, in den gedrahteten Rahmen eingelötet. Die Bienen ziehen die Zellwände aus, der Bau ist gerade, planbar, schleuderstabil und beweglich (Waben austauschbar zwischen Völkern).
@@ -91,6 +95,10 @@ Eine **Mittelwand** ist eine dünne, vorgeprägte Wachsplatte mit Zellböden-Pr�
 **Nachteil (Bio-Kern):** Die Mittelwand bringt **Fremdwachs** ins Volk. Ihre Herkunft/Reinheit entscheidet über die ganze Rückstandslage (Kapitel 9).
 
 ### Naturbau
+
+![Ausgebaute helle Naturbauwabe im Makro](bilder/fund/ausgebaute_helle_wabe_naturbau_wabenflaech.jpg)
+
+*Naturbau in einer Dadant-Beute: Ohne Mittelwand baut das Volk die Zellen selbst — heller Wachs, gleichmässige Zellen, keine eingeprägte Vorgabe. Der Preis ist Zeit und Futter, der Gewinn ist Wachs ohne jede Vorgeschichte. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
 
 Beim **Naturbau** gibt man leere Rahmen (nur mit schmalem Anfangsstreifen oder Draht als Leitlinie) und lässt die Bienen frei bauen. Sie bauen naturgemäß gemischt Arbeiterinnen- und Drohnenzellen.
 
@@ -341,6 +349,10 @@ Erste Anlaufstelle für Arosa ist der **bevorzugte Händler Imkerhof Maienfeld**
 - Straffe Drähte sind Voraussetzung fürs **schleuderstabile** Ausbauen; lockere Drähte = wellige, brechende Waben.
 
 ### Mittelwand einlöten (Schritt für Schritt)
+
+![Werkzeugauslage zum Drahten und Einlöten von Rähmchen](bilder/fund/mittelwand_einloeten_raehmchen_drahten_kom.jpg)
+
+*Die komplette Auslage für den Arbeitsschritt: Rähmchen, Draht, Mittelwände, Zange und Einlötgerät. Wer das einmal so aufgebaut hat, drahtet und lötet im Fluss — bei Dutzenden Rähmchen pro Winter ist die Vorbereitung des Platzes der eigentliche Zeitgewinn. Foto: Dirk Liesch, CC BY 4.0, via Wikimedia Commons.*
 
 1. **Mittelwand anwärmen:** unmittelbar vor dem Einlöten auf **~35 °C (Stocktemperatur)** temperieren (Wärmeschrank/warmer Raum) — kalt bricht sie, zu warm verzieht sie.
 2. **Positionieren:** Mittelwand mit **~2 mm Abstand zum Unterträger** ansetzen (Platz für Ausbau, verhindert Wellenbildung).
