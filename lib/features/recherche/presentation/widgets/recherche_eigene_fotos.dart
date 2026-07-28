@@ -7,6 +7,7 @@ import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/recherche/data/recherche_foto_providers.dart';
 import 'package:bienen_app/features/recherche/domain/recherche_foto.dart';
 import 'package:bienen_app/shared/widgets/confirm_sheet.dart';
+import 'package:bienen_app/shared/widgets/bild_vollbild.dart';
 
 /// Zeigt die eigenen Fotos EINES Kapitels unter dessen Abschnitt —
 /// in derselben Breite wie die Abbildungen der Recherche.
@@ -128,8 +129,10 @@ class _Bild extends ConsumerWidget {
 /// Zeigt ein eigenes Foto formatfüllend — mit Zoom, Beschriftung und der
 /// Möglichkeit, es zu löschen.
 ///
-/// Die Vorschau im Streifen ist nur 96 x 72 gross; ohne diese Ansicht gäbe es
-/// keinen Weg, das eigene Foto überhaupt anzusehen.
+/// Nutzt dieselbe Vollbild-Ansicht wie die Abbildungen der Recherche
+/// ([zeigeBildGross]); nur das Löschen kommt als zusätzliche Schaltfläche
+/// dazu. Die signierte URL muss vorher aufgelöst werden — der Speicher gibt
+/// sie nur auf Anfrage und zeitlich begrenzt heraus.
 Future<void> zeigeFotoGross(
   BuildContext context,
   WidgetRef ref, {
@@ -137,76 +140,43 @@ Future<void> zeigeFotoGross(
   required String rechercheKey,
 }) async {
   final repo = ref.read(rechercheFotoRepositoryProvider);
-  await showDialog<void>(
-    context: context,
-    barrierColor: Colors.black87,
-    builder: (dialogContext) => Dialog(
-      insetPadding: const EdgeInsets.all(BeeTokens.md),
-      backgroundColor: Colors.transparent,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: FutureBuilder<String>(
-              future: repo.signierteUrl(foto.storagePath),
-              builder: (context, snap) {
-                if (snap.hasError) {
-                  return const Padding(
-                    padding: EdgeInsets.all(BeeTokens.xl),
-                    child: Text('Foto konnte nicht geladen werden.',
-                        style: TextStyle(color: Colors.white)),
-                  );
-                }
-                if (!snap.hasData) {
-                  return const Padding(
-                    padding: EdgeInsets.all(BeeTokens.xl),
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return InteractiveViewer(
-                  maxScale: 5,
-                  child: Image.network(snap.data!, fit: BoxFit.contain),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: BeeTokens.md),
-          if (foto.beschriftung != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: BeeTokens.sm),
-              child: Text(foto.beschriftung!,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white)),
-            ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton.icon(
-                onPressed: () async {
-                  final ok = await confirmSheet(dialogContext,
-                      titel: 'Foto löschen?',
-                      bestaetigenLabel: 'Löschen',
-                      gefahr: true);
-                  if (!ok) return;
-                  await ref
-                      .read(rechercheFotosProvider(rechercheKey).notifier)
-                      .loeschen(foto);
-                  if (dialogContext.mounted) Navigator.pop(dialogContext);
-                },
-                icon: const Icon(Icons.delete_outline, color: Colors.white),
-                label: const Text('Löschen',
-                    style: TextStyle(color: Colors.white)),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(dialogContext),
-                child: const Text('Schliessen',
-                    style: TextStyle(color: Colors.white)),
-              ),
-            ],
-          ),
-        ],
+  final String url;
+  try {
+    url = await repo.signierteUrl(foto.storagePath);
+  } catch (_) {
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+          const SnackBar(content: Text('Foto konnte nicht geladen werden.')));
+    return;
+  }
+  if (!context.mounted) return;
+
+  await zeigeBildGross(
+    context,
+    bild: NetworkImage(url),
+    beschriftung: foto.beschriftung,
+    aktionen: [
+      Builder(
+        builder: (dialogContext) => TextButton.icon(
+          onPressed: () async {
+            final ok = await confirmSheet(dialogContext,
+                titel: 'Foto löschen?',
+                bestaetigenLabel: 'Löschen',
+                gefahr: true);
+            if (!ok) return;
+            await ref
+                .read(rechercheFotosProvider(rechercheKey).notifier)
+                .loeschen(foto);
+            if (dialogContext.mounted) Navigator.pop(dialogContext);
+          },
+          icon: const Icon(Icons.delete_outline, color: Colors.white),
+          label:
+              const Text('Löschen', style: TextStyle(color: Colors.white)),
+        ),
       ),
-    ),
+    ],
   );
 }
 

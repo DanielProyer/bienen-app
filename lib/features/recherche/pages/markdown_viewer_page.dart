@@ -7,6 +7,7 @@ import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/recherche/domain/markdown_anker.dart';
 import 'package:bienen_app/features/recherche/domain/recherche_foto.dart';
 import 'package:bienen_app/features/recherche/presentation/widgets/recherche_eigene_fotos.dart';
+import 'package:bienen_app/shared/widgets/bild_vollbild.dart';
 
 /// Zeigt ein Recherche-Dokument aus `assets/recherche/`.
 ///
@@ -140,17 +141,28 @@ class _MarkdownViewerPageState extends ConsumerState<MarkdownViewerPage> {
     if (config.uri.scheme == 'http' || config.uri.scheme == 'https') {
       return _bildHinweis(config.alt ?? 'Externes Bild wird nicht geladen');
     }
+    final pfad = _bildPfad(config.uri.toString());
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: BeeTokens.md),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(BeeTokens.sm),
-        child: Image.asset(
-          _bildPfad(config.uri.toString()),
-          width: config.width ?? double.infinity,
-          height: config.height,
-          fit: BoxFit.contain,
-          errorBuilder: (_, _, _) =>
-              _bildHinweis(config.alt ?? 'Abbildung nicht gefunden'),
+      child: GestureDetector(
+        // Antippen zeigt die Abbildung gross und zoombar. Nötig vor allem bei
+        // den Zeichnungen: Ihre Beschriftungen und Zahlen sind in
+        // Dokumentbreite auf dem Handy nicht lesbar.
+        onTap: () => zeigeBildGross(
+          context,
+          bild: AssetImage(pfad),
+          beschriftung: config.alt,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(BeeTokens.sm),
+          child: Image.asset(
+            pfad,
+            width: config.width ?? double.infinity,
+            height: config.height,
+            fit: BoxFit.contain,
+            errorBuilder: (_, _, _) =>
+                _bildHinweis(config.alt ?? 'Abbildung nicht gefunden'),
+          ),
         ),
       ),
     );
