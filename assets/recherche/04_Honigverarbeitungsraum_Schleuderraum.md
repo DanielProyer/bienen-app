@@ -6,6 +6,18 @@
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Gesetzliche Anforderungen Schweiz](#1-gesetzliche-anforderungen-schweiz)
+2. [Raumgroesse und Ausstattung](#2-raumgroesse-und-ausstattung)
+3. [Profi-Ausruestung fuer 8 Dadant-Blatt-Voelker](#3-profi-ausruestung-fuer-8-dadant-blatt-voelker)
+4. [Lagerraum](#4-lagerraum)
+5. [Workflow / Arbeitsablauf im Schleuderraum](#5-workflow--arbeitsablauf-im-schleuderraum)
+6. [Zusammenfassung Investitionskosten (Qualitaets-Ausruestung)](#6-zusammenfassung-investitionskosten-qualitaets-ausruestung)
+7. [Quellen](#7-quellen)
+
+---
+
 ## 1. Gesetzliche Anforderungen Schweiz
 
 ### 1.1 Rechtsgrundlagen

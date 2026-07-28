@@ -5,6 +5,19 @@
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Gegebenheiten vor Ort](#gegebenheiten-vor-ort)
+2. [Übersicht: Drei Bereiche](#übersicht-drei-bereiche)
+3. [Bereich 1: Bienenstand (bestehender Unterstand)](#bereich-1-bienenstand-bestehender-unterstand)
+4. [Bereich 2: Schleuderraum / Honigverarbeitung (Stall OG)](#bereich-2-schleuderraum--honigverarbeitung-stall-og)
+5. [Bereich 3: Lager (Stall EG)](#bereich-3-lager-stall-eg)
+6. [Aktualisierter Phasenplan](#aktualisierter-phasenplan)
+7. [To-Do: Nächste Schritte](#to-do-nächste-schritte)
+8. [Quellenverzeichnis](#quellenverzeichnis)
+
+---
+
 ## Gegebenheiten vor Ort
 
 ![Blühende Bergwiese mit Nadelbaum und Bergpanorama im Hintergrund](bilder/fund/bergwiese_sommer.jpg)

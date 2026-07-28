@@ -1,5 +1,16 @@
 # Stockwaagen & Bienenmonitoring
 
+## Inhaltsverzeichnis
+
+1. [Warum eine Stockwaage?](#warum-eine-stockwaage)
+2. [Anforderungen Standort Arosa (1570m)](#anforderungen-standort-arosa-1570m)
+3. [Systemvergleich](#systemvergleich)
+4. [Entscheidung: HiveWatch StarterSet](#entscheidung-hivewatch-starterset)
+5. [Liveübertragung & Datennutzung](#liveübertragung--datennutzung)
+6. [Links & Ressourcen](#links--ressourcen)
+
+---
+
 ## Warum eine Stockwaage?
 
 ![Aufbau eines Waagensystems in vier Teilbildern](bilder/fund/quellenbeleg_bildunterschrift_figure_3_woe.jpg)

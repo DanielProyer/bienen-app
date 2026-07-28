@@ -69,15 +69,13 @@ class _Bild extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(right: BeeTokens.sm),
       child: GestureDetector(
-        onLongPress: () async {
-          final ok = await confirmSheet(context,
-              titel: 'Foto löschen?', bestaetigenLabel: 'Löschen', gefahr: true);
-          if (ok) {
-            await ref
-                .read(rechercheFotosProvider(rechercheKey).notifier)
-                .loeschen(foto);
-          }
-        },
+        // Antippen öffnet das Foto gross — dort liegt auch das Löschen.
+        // Der Langdruck bleibt als Abkürzung, war aber als EINZIGER Weg
+        // unauffindbar: Auf dem Handy sieht man einer Vorschau nicht an,
+        // dass sie lange gedrückt werden will.
+        onTap: () => zeigeFotoGross(context, ref,
+            foto: foto, rechercheKey: rechercheKey),
+        onLongPress: () => _loeschenFragen(context, ref),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -109,6 +107,98 @@ class _Bild extends ConsumerWidget {
       ),
     );
   }
+
+  Future<void> _loeschenFragen(BuildContext context, WidgetRef ref) async {
+    final ok = await confirmSheet(context,
+        titel: 'Foto löschen?', bestaetigenLabel: 'Löschen', gefahr: true);
+    if (!ok) return;
+    await ref.read(rechercheFotosProvider(rechercheKey).notifier).loeschen(foto);
+  }
+}
+
+/// Zeigt ein eigenes Foto formatfüllend — mit Zoom, Beschriftung und der
+/// Möglichkeit, es zu löschen.
+///
+/// Die Vorschau im Streifen ist nur 96 x 72 gross; ohne diese Ansicht gäbe es
+/// keinen Weg, das eigene Foto überhaupt anzusehen.
+Future<void> zeigeFotoGross(
+  BuildContext context,
+  WidgetRef ref, {
+  required RechercheFoto foto,
+  required String rechercheKey,
+}) async {
+  final repo = ref.read(rechercheFotoRepositoryProvider);
+  await showDialog<void>(
+    context: context,
+    barrierColor: Colors.black87,
+    builder: (dialogContext) => Dialog(
+      insetPadding: const EdgeInsets.all(BeeTokens.md),
+      backgroundColor: Colors.transparent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: FutureBuilder<String>(
+              future: repo.signierteUrl(foto.storagePath),
+              builder: (context, snap) {
+                if (snap.hasError) {
+                  return const Padding(
+                    padding: EdgeInsets.all(BeeTokens.xl),
+                    child: Text('Foto konnte nicht geladen werden.',
+                        style: TextStyle(color: Colors.white)),
+                  );
+                }
+                if (!snap.hasData) {
+                  return const Padding(
+                    padding: EdgeInsets.all(BeeTokens.xl),
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return InteractiveViewer(
+                  maxScale: 5,
+                  child: Image.network(snap.data!, fit: BoxFit.contain),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: BeeTokens.md),
+          if (foto.beschriftung != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: BeeTokens.sm),
+              child: Text(foto.beschriftung!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white)),
+            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton.icon(
+                onPressed: () async {
+                  final ok = await confirmSheet(dialogContext,
+                      titel: 'Foto löschen?',
+                      bestaetigenLabel: 'Löschen',
+                      gefahr: true);
+                  if (!ok) return;
+                  await ref
+                      .read(rechercheFotosProvider(rechercheKey).notifier)
+                      .loeschen(foto);
+                  if (dialogContext.mounted) Navigator.pop(dialogContext);
+                },
+                icon: const Icon(Icons.delete_outline, color: Colors.white),
+                label: const Text('Löschen',
+                    style: TextStyle(color: Colors.white)),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('Schliessen',
+                    style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 /// Fragt Kapitel, Beschriftung und Bildquelle ab und lädt das Foto hoch.

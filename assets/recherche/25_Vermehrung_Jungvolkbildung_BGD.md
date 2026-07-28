@@ -15,6 +15,24 @@
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Grundprinzip: Jungvolkbildung = biotechnische Varroa-Reduktion](#0-grundprinzip-jungvolkbildung--biotechnische-varroa-reduktion)
+2. [Drohnenschnitt (Merkblatt 1.4.1) — *Vermehrungs-Begleiter, kein Ableger*](#1-drohnenschnitt-merkblatt-141--vermehrungs-begleiter-kein-ableger)
+3. [Kunstschwarm (Merkblatt 1.4.2) — *= unser Volk 1*](#2-kunstschwarm-merkblatt-142---unser-volk-1)
+4. [Königinnen-Kunstschwarm (Merkblatt 1.4.3) — *stärkste Doppel-Bremse*](#3-königinnen-kunstschwarm-merkblatt-143--stärkste-doppel-bremse)
+5. [Brutableger (Merkblatt 1.4.4) — *Standard-Vermehrung ohne Königinsuche fürs Jungvolk*](#4-brutableger-merkblatt-144--standard-vermehrung-ohne-königinsuche-fürs-jungvolk)
+6. [Sammelbrutableger (Merkblatt 1.4.4.1) — *Schwarmtrieb-Bremse + Brutentmilbung mehrerer Völker*](#5-sammelbrutableger-merkblatt-1441--schwarmtrieb-bremse--brutentmilbung-mehrerer-völker)
+7. [Flugling (Merkblatt 1.4.5) — *Königin muss NICHT gefunden werden; Sofort-Schwarmbremse*](#6-flugling-merkblatt-145--königin-muss-nicht-gefunden-werden-sofort-schwarmbremse)
+8. [Natürlicher Schwarm (Merkblatt 1.4.6) — *einfangen & einlogieren gehört zur guten Praxis*](#7-natürlicher-schwarm-merkblatt-146--einfangen--einlogieren-gehört-zur-guten-praxis)
+9. [Vermehrung aus dem Schwarmtrieb (Merkblatt 1.4.7) — *gezieltes Splitten statt Schwarmverlust*](#8-vermehrung-aus-dem-schwarmtrieb-merkblatt-147--gezieltes-splitten-statt-schwarmverlust)
+10. [Umgang mit dem Schwarmtrieb (Merkblatt 4.7.5) — *Erkennen, hemmen, verhindern*](#9-umgang-mit-dem-schwarmtrieb-merkblatt-475--erkennen-hemmen-verhindern)
+11. [Übersichtstabelle — alle Methoden](#10-übersichtstabelle--alle-methoden)
+12. [Bezug Bienen Arosa & alpine Zeitfenster [ALPIN]](#11-bezug-bienen-arosa--alpine-zeitfenster-alpin)
+13. [Grafik-Hinweis-Liste (kompakt)](#12-grafik-hinweis-liste-kompakt)
+
+---
+
 ## 0. Grundprinzip: Jungvolkbildung = biotechnische Varroa-Reduktion
 
 Der rote Faden aller BGD-Vermehrungsmethoden: **Vermehrung nah am Schwarm**. Wird bei der Teilung die Königin (und/oder die Brut) getrennt, entsteht in einem oder beiden Volksteilen eine **brutfreie Phase** — und genau die bremst die Varroa.

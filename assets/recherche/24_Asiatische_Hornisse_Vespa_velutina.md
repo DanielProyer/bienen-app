@@ -17,6 +17,18 @@ Offizielle Meldeplattform: **www.asiatischehornisse.ch** · BGD-Hotline 0800 274
 
 ---
 
+## Inhaltsverzeichnis
+
+1. [Identifikation — Unterscheidung Vespa velutina vs. Vespa crabro](#1-identifikation--unterscheidung-vespa-velutina-vs-vespa-crabro)
+2. [Meldeweg / Melderegeln in der Schweiz](#2-meldeweg--melderegeln-in-der-schweiz)
+3. [Schutzmassnahmen am Stand](#3-schutzmassnahmen-am-stand)
+4. [Jahresplanung „Imkern trotz Velutina"](#4-jahresplanung-imkern-trotz-velutina)
+5. [Nestsuche durch Triangulation (Dochtgläser-Methode) — Merkblatt 2.7.2 + ausführliche Anleitung](#5-nestsuche-durch-triangulation-dochtgläser-methode--merkblatt-272--ausführliche-anleitung)
+6. [Ausbreitung / Funde-Status](#6-ausbreitung--funde-status)
+7. [Grafik-Liste (für App/Merkblatt-Aufbereitung)](#7-grafik-liste-für-appmerkblatt-aufbereitung)
+
+---
+
 ## 1. Identifikation — Unterscheidung Vespa velutina vs. Vespa crabro
 
 ![Europäische Hornisse: rotbrauner Brustbereich, überwiegend gelber Hinterleib](bilder/fund/crabro_vergleich.jpg)

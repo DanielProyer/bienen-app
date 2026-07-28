@@ -1,5 +1,16 @@
 # Honigschleudern für Dadant Blatt
 
+## Inhaltsverzeichnis
+
+1. [Anforderungen](#anforderungen)
+2. [Schleudertypen](#schleudertypen)
+3. [Empfehlung: Logar 20/8-Waben Radialschleuder](#empfehlung-logar-208-waben-radialschleuder)
+4. [Top-Modelle Vergleich](#top-modelle-vergleich)
+5. [Bezugsquellen Schweiz](#bezugsquellen-schweiz)
+6. [Entscheidung](#entscheidung)
+
+---
+
 ## Anforderungen
 
 - **Beutensystem:** Dadant Blatt mit Halbrahmen (435 x 159mm) für Honig
