@@ -50,6 +50,10 @@ Schneeglöckchen → Sal-Weide → Vogelkirsche → Traubenhyazinthe/Schlüsselb
 
 ## 2. Der Jahresplan (maßgebliche Referenz für den Aufgaben-Generator 4.4)
 
+![Tabelle der Zeigerpflanzen von Februar bis Juli mit Volksentwicklung und Arbeiten](bilder/21_zeigerpflanzen.png)
+
+*Der Jahresplan von Februar bis zum Wendepunkt im Juli, geordnet nach der Pflanze statt nach dem Datum. Blüht die Salweide, beginnt die Brut; blüht der Löwenzahn, beginnt die Schwarmzeit. Für 1570 m ist der rote Kasten unten der wichtigste Teil: Die Verschiebung um 40 bis 45 Tage gilt **nur** im Frühjahr. Im Herbst fällt die Arbeit hier eher früher an — wer den Frühjahrs-Aufschlag auf das ganze Jahr anwendet, füttert und behandelt zu spät. Gezeichnet für dieses Dokument nach Kapitel 2.*
+
 ![Blühender Efeu mit Blütendolden](bilder/fund/quelle_belegt_information_description_feld.jpg)
 
 *Efeu blüht als eine der letzten Trachtquellen im Jahr, oft bis in den Oktober — ein Beispiel dafür, warum der offizielle Jahresplan an **Pflanzen** und nicht an Kalenderdaten hängt. Für die Einwinterung ist die Spättracht zweischneidig: Sie füllt Waben, kann aber Spätbrut anregen; auf 1570 m ist das eher theoretisch, im Mittelland ein reales Thema. Foto: CC BY, via Wikimedia Commons.*

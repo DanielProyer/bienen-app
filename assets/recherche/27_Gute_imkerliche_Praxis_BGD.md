@@ -45,6 +45,10 @@ Es sind **ausschliesslich zugelassene, von BGD und ZBF empfohlene Imkereipräpar
 
 ## 1. Fütterung (Merkblatt 4.2) — kernrelevant für App-Modul 4.6
 
+![Fütterungs-Fahrplan über das Jahr mit Verhältnissen, Mengen und der Umrechnung von Kilogramm in Liter](bilder/27_fuetterungs_fahrplan.png)
+
+*Das ganze Kapitel in einem Bild. Entscheidend ist die Farbe: Dünnes Zuckerwasser wirkt wie eine Tracht und regt an — dickes wird eingetragen und eingelagert. Deshalb bekommen Jungvölker im Frühsommer 1:1, Wirtschaftsvölker nach der letzten Ernte 3:2. Unten steht die Umrechnung, die in der Praxis am häufigsten fehlt: Zehn fehlende Kilogramm Wintervorrat sind je nach Futterart 17, 14 oder 12 Liter. Gezeichnet für dieses Dokument nach Kapitel 1; der alpine Winterfutter-Wert stammt aus Recherche 20.*
+
 ### Grundprinzip (Bio-/Honigreinheit)
 > **Verabreichtes Futter darf den Honig nicht verfälschen.**
 - **Vor oder während der Tracht: KEIN Zuckerwasser.** Flüssigfütterung dient nur dem Aufbau der Wintervorräte **nach der Honigernte** und dem Aufbau von **Jungvölkern**.
