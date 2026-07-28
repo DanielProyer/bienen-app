@@ -223,6 +223,10 @@ Referenzplan für **Jenter/Nicot oder Umlarven** mit Starter-Finisher. „Tag 0"
 
 ## 7. Begattung — Standbegattung, Belegstelle, instrumentelle Besamung
 
+![Gruppe von Imkern an einer geöffneten Beute während einer Zuchtdemonstration](bilder/fund/koenigin_zeichnen_zeichnen_fluegelschneide.jpg)
+
+*Zeichnen und Flügelschneiden am offenen Volk, hier in der Gruppe vorgeführt. Beides gehört zur Begattungsfrage: Die Farbmarkierung hält das Alter der Königin fest, das Clippen verhindert, dass ein Schwarm mit ihr davonfliegt — und beides setzt voraus, dass man sie auf der Wabe überhaupt findet. Foto: Conall from Downpatrick, Northern Ireland, CC BY 2.0, via Wikimedia Commons.*
+
 ![Einsetzen einer Weiselzelle in ein Begattungskästchen](bilder/fund/einsetzen_einer_weiselzelle_in_ein_begattu.jpg)
 
 *Eine schlupfreife Weiselzelle wird in ein Begattungskästchen gesetzt. Der Handgriff ist heikel: Die Zelle darf nicht erschüttert und nicht gekippt werden, sonst stirbt die Puppe. Foto: CC BY, via Wikimedia Commons.*
@@ -230,6 +234,10 @@ Referenzplan für **Jenter/Nicot oder Umlarven** mit Starter-Finisher. „Tag 0"
 Die Königin paart sich **nur in den ersten ~1–3 Lebenswochen**, auf 1–3 Hochzeitsflügen mit **10–20 Drohnen**, in **Drohnensammelplätzen** in der Luft (typ. 10–40 m Höhe, oft mehrere km vom Stand entfernt). Die Spermien werden lebenslang in der Spermatheca gespeichert. **Wo sie sich paart, bestimmt die väterliche Genetik** — hier entscheidet sich, ob die Nachzucht „rein" oder „durchmischt" ist.
 
 ### 7.1 Standbegattung (Freibegattung am eigenen Stand)
+
+![Gezeichnete Königin am Flugloch eines Begattungskästchens, Pfeil zeigt auf das Begattungszeichen](bilder/fund/koenigin_gezeichnet_begattungskasten.jpg)
+
+*Eine gezeichnete Königin kehrt zum Begattungskästchen zurück. Der Pfeil zeigt auf das Begattungszeichen — den Rest des Drohnen-Begattungsorgans, der nach dem Hochzeitsflug sichtbar bleibt. Wer das sieht, weiss ohne Wabenkontrolle, dass die Begattung stattgefunden hat; die Eilage folgt in den nächsten Tagen. Foto: Geoffrey R. Williams, Aline Troxler, Gina Retschnig, Kaspar Roth, Orla, CC BY 4.0, via Wikimedia Commons.*
 
 Die Königin paart sich mit **Drohnen aus der Umgebung** (Radius mehrere km). Man kontrolliert nur die Mutterseite, nicht die Väter → **Genetik durchmischt** mit allem, was in der Region fliegt.
 

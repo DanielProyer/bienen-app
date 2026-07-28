@@ -84,6 +84,10 @@ Das **apisuisse Goldsiegel** ist das einzige Qualitaetslabel ausschliesslich fue
 
 ### 2.1 Raumgroesse
 
+![Arbeitstisch mit Entdeckelungsgerät, Spitzsieb im Ständer und Eimern](bilder/fund/bestaetigt_imagedescription_commons_desc_p.jpg)
+
+*Ein eingerichteter Arbeitsplatz: Entdeckelungsgerät, Spitzsieb im Ständer, Eimer darunter. Genau diese Kette bestimmt die nötige Fläche — jedes Gerät braucht Stellplatz plus einen Arbeitsradius davor, und der Weg vom einen zum nächsten sollte tropffrei sein. Foto: Dirk Liesch, CC BY 4.0, via Wikimedia Commons.*
+
 | Raum | Empfohlene Groesse | Bemerkung |
 |---|---|---|
 | **Schleuderraum** | **12-15 m2** | Gem. LWG Bayern: bis 12 m2 fuer Schleudern. Fuer 8 Voelker mit Qualitaetsanspruch 15 m2 ideal. |

@@ -67,6 +67,14 @@
 
 ## 2.3 Kleiner Beutenkäfer — *Aethina tumida* — MB V2208 (+ Bestimmungshilfe)
 
+![Mehrere dunkle Beutenkäfer zwischen Bienen auf einer Wabe](bilder/fund/beutenkaefer_im_volk.jpg)
+
+*So sieht der Befall im Volk aus: dunkle, flinke Käfer zwischen den Bienen auf der Wabe. Sie flüchten vor Licht in Ritzen, weshalb sie beim Öffnen leicht übersehen werden — gefunden werden sie meist am Beutenboden und in den Ecken, nicht mitten auf der Wabe. Der Kleine Beutenkäfer ist in der Schweiz meldepflichtig. Foto: Denis Anderson, CSIRO, CC BY 3.0, via Wikimedia Commons.*
+
+![Tafel mit allen Entwicklungsstadien des Kleinen Beutenkäfers, mit Massstab](bilder/fund/beutenkaefer_lebensstadien.jpg)
+
+*Alle Stadien nebeneinander, jeweils mit Massstab: der Käfer von oben und unten, die Puppe, die Larven. Auf die Larve kommt es an — sie wird mit Wachsmottenlarven verwechselt, hat aber drei Beinpaare am Vorderkörper und Dornenreihen auf dem Rücken, was die Wachsmotte nicht hat. Abbildung: Huang, Sim, Geib u. a., CC BY 4.0.*
+
 - **Erreger/Typ:** Käfer, Ordnung Coleoptera, Familie Glanzkäfer (Nitidulidae). **Adult 5–7 mm lang, 2,5–3,5 mm breit**, Deckflügel kürzer als Hinterleib, **Fühler keulenförmig**. **Larve bis 10 mm**, **6 Beine**, **2 Dornen-/Stachelborstenreihen** auf dem Rücken. **Eigelege 1,5 × 0,25 mm** (massige Gelege in Ritzen unter Zelldeckeln).
 - **Vermehrung:** pflanzt sich **3–4×/Jahr** fort; Weibchen legt **bis 1'000 Eier/Saison**. Frisst Brut (bevorzugt), Waben, Honig, Pollen, tote Bienen.
 - **Symptome/Diagnose:** Eigelege in Ritzen; Käferlarven im Kasten; **Schleimspuren** von Wanderlarven; adulte Käfer im/um Kasten; **zerfressenes Wabenmaterial ohne Gespinst** (Abgrenzung zur Wachsmotte); **übelriechender, gärender Honig**.
@@ -145,6 +153,10 @@
 - **Vorbeugung:** **Verzicht auf Importe ist entscheidend**; konsequente Völkerbeurteilung/-auslese (4.7); nur starke, gesunde Völker; Verflug/Räuberei minimieren; regelm. Kontrolle (z. B. bei Varroadiagnose auf ungewöhnliche Milben achten). Gewisse Varroazide wirken auch gegen Tropilaelaps — in CH aber nicht zugelassen.
 
 ## Zusatz aus Übersichts-Merkblatt (2) — Virosen ohne eigenes MB
+
+![Biene mit verkrüppelten, verkümmerten Flügeln](bilder/fund/biene_verkrueppelte_fluegel_dwv.jpg)
+
+*Eine Biene mit verkrüppelten Flügeln — das sichtbare Ergebnis des Flügeldeformationsvirus, das die Varroamilbe beim Saugen überträgt. Solche Bienen sind flugunfähig und werden aus dem Volk getragen. Wer sie vor dem Flugloch findet, hat kein Virusproblem, sondern ein Milbenproblem: Die Zahl solcher Bienen ist ein Alarmzeichen für zu späte oder zu schwache Behandlung. Foto: Stefan de Konink, CC0, via Wikimedia Commons.*
 
 - **Flügeldeformationsvirus (DWV):** Stummelflügel, verkürzter Hinterleib; **von Varroa übertragen**; Massnahme = **Varroa unter Kontrolle**; bei starkem Befall unverzüglich behandeln; nur starke Völker. Nicht meldepflichtig.
 - **Schwarzes Königinnenzellen-Virus (BQCV):** Königin schlüpft nicht / schwarze eingetrocknete Königin; Brut kann befallen werden & wird schwarz; gelegentlich Drohnenbrut; **von Varroa übertragen**; kann mit **Nosema** zusammen auftreten; v.a. Frühling. Nicht meldepflichtig.

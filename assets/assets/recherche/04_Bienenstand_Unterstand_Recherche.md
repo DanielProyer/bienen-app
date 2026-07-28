@@ -425,6 +425,10 @@ Auf 1570 m in Arosa muss die Aufstellhoehe der Beuten an die Schneeverhaeltnisse
 
 ### 4.3 Bienenhaus vs. offener Unterstand fuer Dadant
 
+![Fluglöcher an der Aussenwand eines Bienenhauses](bilder/fund/nahaufnahme_der_ecke_eines_aelteren_schwei.jpg)
+
+*Die Gegenvariante zum offenen Unterstand: ein geschlossenes Bienenhaus, bei dem nur die Fluglöcher nach aussen führen und die Völker von innen bedient werden. Für Magazinbeuten ist das der Haken — man arbeitet von hinten und muss die Zargen im Raum bewegen, statt sie einfach abzuheben. Foto: Arkelin, CC BY 4.0, via Wikimedia Commons.*
+
 ![Offener Bienenstand aus Holz am Waldrand](bilder/fund/offener_freistehender_bienenstand_aus_dunk.jpg)
 
 *Ein offener Unterstand am Waldrand: Dach und Rückwand, sonst offen. Diese Bauform ist der Kompromiss, um den es in diesem Kapitel geht — Wetterschutz und Arbeitshöhe wie im Bienenhaus, aber ohne den geschlossenen Raum, der bei Magazinbeuten das Arbeiten von hinten erzwingt. Foto: Richard Mayer, CC BY 3.0, via Wikimedia Commons.*

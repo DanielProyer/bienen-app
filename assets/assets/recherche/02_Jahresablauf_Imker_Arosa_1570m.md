@@ -67,6 +67,10 @@ Jan  Feb  Mär  Apr  Mai  Jun  Jul  Aug  Sep  Okt  Nov  Dez
 
 ## JANUAR -- Tiefster Winter
 
+![Bienenbeuten unter dicken Schneehauben](bilder/fund/beuten_im_schnee.jpg)
+
+*So sieht ein Bienenstand im Januar aus. Der Schnee auf den Deckeln ist kein Problem, sondern eine Dämmschicht — gefährlich wird es erst, wenn er das Flugloch verschliesst oder als Nassschnee auf die Beuten drückt. Auf 1570 m ist genau das der Grund für die Winterkontrollen: nicht öffnen, sondern Flugloch freihalten und Standsicherheit prüfen. Foto: MarkBuckawicki, CC0, via Wikimedia Commons.*
+
 **KW 1--5 | Max 0°C / Min -6°C | Schneefall: 140 cm**
 
 ![Bienenbeuten mit dicker Schneeauflage](bilder/fund/eingeschneite_bienenbeuten_am_bienenstand_.jpg)
@@ -112,6 +116,10 @@ Jan  Feb  Mär  Apr  Mai  Jun  Jul  Aug  Sep  Okt  Nov  Dez
 ---
 
 ## MÄRZ -- Vorfrühling / Reinigungsflug
+
+![Blühendes Weidenkätzchen der Salweide mit gelben Staubbeuteln](bilder/fund/salweide_kaetzchen_bluehend.jpg)
+
+*Die Salweide ist die erste ernsthafte Pollenquelle des Jahres — hier ein männliches Kätzchen im Vollflor, die gelben Staubbeutel offen. Wenn sie blüht, kann das Volk mit dem Brutaufbau beginnen; auf 1570 m ist das eher April als März, weshalb der Blühbeginn der bessere Taktgeber ist als der Kalender. Foto: Волков В.П., CC0, via Wikimedia Commons.*
 
 **KW 10--13 | Max 3°C / Min -3°C | Schneefall: 151 cm (!)**
 
