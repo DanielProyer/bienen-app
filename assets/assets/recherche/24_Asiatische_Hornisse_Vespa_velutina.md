@@ -19,6 +19,14 @@ Offizielle Meldeplattform: **www.asiatischehornisse.ch** · BGD-Hotline 0800 274
 
 ## 1. Identifikation — Unterscheidung Vespa velutina vs. Vespa crabro
 
+![Europäische Hornisse: rotbrauner Brustbereich, überwiegend gelber Hinterleib](bilder/fund/crabro_vergleich.jpg)
+
+*Zum Vergleich die einheimische Europäische Hornisse: rotbraun am Brustbereich, der Hinterleib überwiegend gelb mit dunkler Zeichnung, die Beine durchgehend braun. Sie ist die geschützte Art — wer sie mit der Asiatischen verwechselt und bekämpft, macht sich strafbar. Die Faustregel: viel Gelb und braune Beine bedeutet einheimisch. Foto: Romzig, CC0, via Wikimedia Commons.*
+
+![Asiatische Hornisse von oben: dunkler Körper, ein gelbes Hinterleibsband, gelbe Beinenden](bilder/fund/velutina_von_oben.jpg)
+
+*Die Asiatische Hornisse von oben — und damit die drei Merkmale, auf die es ankommt: ein überwiegend dunkler, fast schwarzer Körper, nur **ein** deutliches gelb-orangenes Band am Hinterleib und **gelbe Beinenden**. Letztere sind das verlässlichste Merkmal im Feld, weil man sie auch an einem sitzenden Tier von weiter weg erkennt. Foto: Oriol Sastre, CC BY 4.0, via Wikimedia Commons.*
+
 | Merkmal | **Vespa velutina** (Asiatische H.) | **Vespa crabro** (Europäische H.) |
 |---|---|---|
 | **Grösse** | 1,7–3,2 cm; Arbeiterinnen und Königin **kleiner** als bei der heimischen Hornisse | grösser (heimische Hornisse) |
@@ -98,6 +106,10 @@ Reihenfolge chronologisch (Merkblatt + GAH-Kapitel 8.2, Vier-Pfeiler-Strategie):
 ---
 
 ## 5. Nestsuche durch Triangulation (Dochtgläser-Methode) — Merkblatt 2.7.2 + ausführliche Anleitung
+
+![Kugeliges Primärnest der Asiatischen Hornisse an einer Holzwand](bilder/fund/velutina_primaernest.jpg)
+
+*Ein Primärnest an einer Holzkonstruktion: klein, kugelig, mit einem Flugloch an der Seite und in Kopfhöhe gebaut. In diesem Stadium ist ein Nest noch gut erreichbar — später zieht die Kolonie in ein deutlich grösseres Sekundärnest um, das meist hoch in einer Baumkrone hängt und kaum mehr zugänglich ist. Genau deshalb lohnt die Nestsuche früh im Jahr. Foto: Marie-Lan Taÿ Pamart, CC BY 4.0, via Wikimedia Commons.*
 
 **Prinzip:** Flugrichtungen gefütterter Hornissen von mehreren Futterstellen aus beobachten; im **Schnittpunkt** liegt das Nest. Zeitintensiv, oft grosse Fussdistanzen → Helfer motivieren. **Vorgängig mit der kantonalen Stelle absprechen.**
 

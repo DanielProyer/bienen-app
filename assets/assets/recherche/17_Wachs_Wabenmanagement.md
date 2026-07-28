@@ -89,6 +89,10 @@ Jede Brutgeneration hinterlässt in der Zelle die **Kokonhäutchen** der Puppe p
 
 ### Mittelwände (Standard)
 
+![Wanne mit hellem Deckelwachs aus der Honigernte](bilder/fund/deckelwachs_wanne.jpg)
+
+*Deckelwachs aus der Ernte, in der Wanne gesammelt. Das ist das hellste und jüngste Wachs, das im Betrieb anfällt — es hat nie Brut gesehen und keine Rückstände aus Behandlungen. Wer eigene Mittelwände will, beginnt genau hier: Deckelwachs getrennt sammeln, nicht mit altem Brutwabenwachs vermischen. Foto: Maja Dumat, CC BY 2.0, via Wikimedia Commons.*
+
 Eine **Mittelwand** ist eine dünne, vorgeprägte Wachsplatte mit Zellböden-Prägung, in den gedrahteten Rahmen eingelötet. Die Bienen ziehen die Zellwände aus, der Bau ist gerade, planbar, schleuderstabil und beweglich (Waben austauschbar zwischen Völkern).
 
 **Vorteile:** gerade Waben, weniger Drohnenanteil steuerbar, energiesparender (Zellböden vorgegeben), Standardmaß für Absperrgitter/Schleuder.
@@ -114,6 +118,10 @@ Die EU-Bio-Verordnung verlangt, dass Bienen auf **mindestens 10 % des Brutraums 
 ---
 
 ## 5. Drohnenrahmen / Baurahmen — Varroa + Wachsgewinnung
+
+![Sonnenwachsschmelzer im Gras, davor ein ausgeschmolzener Wachsblock](bilder/fund/sonnenwachsschmelzer_mit_block.jpg)
+
+*Ein Sonnenwachsschmelzer: ein Kasten mit Glasdeckel, der die Sonnenwärme staut, bis das Wachs ausläuft und sich unten sammelt. Davor liegt das Ergebnis. Für den Baurahmen ist das der passende Abschluss — das ausgeschnittene Naturbauwachs ist jung und hell, und mit dem Schmelzer verwertet man es ohne Strom und ohne Überhitzung. Foto: Maja Dumat, CC BY 2.0, via Wikimedia Commons.*
 
 Der **Drohnenrahmen** (Baurahmen) ist das wichtigste **biotechnische Varroa-Werkzeug** und liefert nebenbei sauberstes Jungfernwachs.
 

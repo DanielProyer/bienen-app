@@ -56,6 +56,10 @@ Der Jahresablauf mit Entscheidungslogik. Die kalendarischen Angaben sind Mittell
 
 ### 2.1 Natürlicher Milbenfall / Gemüll — 1.5.1
 
+![Gemüllbestandteile neben einem Streichholz: Wachsdeckel, Pollen, Bienenteile und eine Varroamilbe](bilder/fund/gemuell_groessenvergleich.jpg)
+
+*Was auf der Windel liegt, im Grössenvergleich mit einem Streichholzkopf: Wachsdeckelchen, Pollenklümpchen, Bruchstücke von Bienen — und rechts die dunkelbraune Varroamilbe. Dieses Bild erklärt, warum das Auszählen Übung braucht: Die Milbe ist kleiner als ein Streichholzkopf und liegt zwischen Dutzenden ähnlich gefärbten Teilchen. Sie ist quer-oval und glänzend; das unterscheidet sie von allem anderen im Gemüll. Foto: Waugsberg, CC BY 2.5, via Wikimedia Commons.*
+
 - **Methode:** Gittergeschützte, ameisenfreie Varroa-Unterlage (deckt ganzen Kastenboden), abgedeckt mit **in Speiseöl getränktem Küchenpapier** (verhindert Milbenfrass durch Ameisen).
 - **Zählung:** nur ausgewachsene, dunkle Milben. Auszählzeitraum **mindestens 7 Tage**.
 - **Formel:** `Milben pro Tag = gezählte Milben ÷ Anzahl Tage`.
@@ -145,6 +149,10 @@ Nur **zugelassene Tierarzneimittel** gemäss Packungsbeilage. Schutz: Schutzbril
 ---
 
 ## 5. Biotechnische / physikalische Verfahren — 1.6.1–1.6.6
+
+![Geöffnete Brutzelle mit Bienenpuppe, darauf eine Varroamilbe](bilder/fund/milbe_auf_puppe_in_zelle.jpg)
+
+*Eine geöffnete Brutzelle mit Puppe — und darauf die Milbe. Hier liegt der Grund, warum alle biotechnischen Verfahren am selben Punkt ansetzen: Die Varroa vermehrt sich ausschliesslich in der verdeckelten Brut. Wer die Brut entnimmt, unterbricht oder in eine Bannwabe lenkt, nimmt der Milbe den einzigen Ort, an dem sie Nachkommen aufziehen kann — ohne einen Tropfen Säure. Foto: Pavel Klimov, Bee Mite ID, Public Domain, via Wikimedia Commons.*
 
 ### 5.1 Brutstopp — 1.6.1
 - **Zeitpunkt:** Juli. Königin **ab Anfang August wieder voll in Eilage** → Volk baut in **6–8 Wochen** Winterpopulation auf.
