@@ -159,6 +159,10 @@ In der Schweiz beziehbar u.a. bei **Hostettler Spezialzucker AG** (Futterteig/Fu
 
 ## 8. Wachs & Wachskreislauf
 
+![Schräg aufgestellter Sonnenwachsschmelzer mit Glasdeckel und Holzrahmen](bilder/fund/sonnenwachsschmelzer_rahmen.jpg)
+
+*Ein Sonnenwachsschmelzer, zur Sonne geneigt aufgestellt. Für die Knospe ist der geschlossene Wachskreislauf ein Kernpunkt: Wachs muss aus dem eigenen Betrieb stammen oder biozertifiziert zugekauft sein. Ein solcher Schmelzer ist das einfachste Werkzeug, um diesen Kreislauf tatsächlich geschlossen zu halten — kein Strom, keine Zusätze, keine fremde Herkunft. Foto: ubahnverleih, CC0, via Wikimedia Commons.*
+
 ![Naturbauwabe an einem Oberträger, von Bienen besetzt](bilder/fund/futterwabe_top_bar_hive_bauteil_nur_ueber_.jpg)
 
 *Naturbau am Oberträger: Das Volk hat die Wabe ohne jede Vorgabe gebaut. Für den Bio-Wachskreislauf ist das der Idealfall — Wachs, das nie durch einen fremden Kreislauf gelaufen ist. In der Praxis bleibt es die Ergänzung zum eigenen, lückenlos dokumentierten Mittelwand-Wachs. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
