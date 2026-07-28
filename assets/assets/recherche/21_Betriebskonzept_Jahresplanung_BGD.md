@@ -39,6 +39,10 @@ Schneeglöckchen → Sal-Weide → Vogelkirsche → Traubenhyazinthe/Schlüsselb
 
 ## 2. Der Jahresplan (maßgebliche Referenz für den Aufgaben-Generator 4.4)
 
+![Blühender Efeu mit Blütendolden](bilder/fund/quelle_belegt_information_description_feld.jpg)
+
+*Efeu blüht als eine der letzten Trachtquellen im Jahr, oft bis in den Oktober — ein Beispiel dafür, warum der offizielle Jahresplan an **Pflanzen** und nicht an Kalenderdaten hängt. Für die Einwinterung ist die Spättracht zweischneidig: Sie füllt Waben, kann aber Spätbrut anregen; auf 1570 m ist das eher theoretisch, im Mittelland ein reales Thema. Foto: CC BY, via Wikimedia Commons.*
+
 Konsolidiert aus dem Betriebskonzept-Poster + Varroakonzept 1.1. **Zeitangaben = Mittelland/Tallage.** In Höhenlagen (z. B. Arosa 1570 m) verschieben sich die **Frühjahr-/Trachtarbeiten um ca. +40–45 Tage**; **Herbst-/Winterarbeiten kommen eher früher** (positiver Offset dort falsch).
 
 | Monat / Auslöser | Volksentwicklung / Zeigerpflanze | Arbeiten (Gruppe) | Varroa |

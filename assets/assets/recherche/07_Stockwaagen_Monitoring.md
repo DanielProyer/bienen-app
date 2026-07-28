@@ -2,6 +2,10 @@
 
 ## Warum eine Stockwaage?
 
+![Aufbau eines Waagensystems in vier Teilbildern](bilder/fund/quellenbeleg_bildunterschrift_figure_3_woe.jpg)
+
+*Ein Waagensystem im Aufbau, vierteilig: **(a)** die vier Wägezellen in einem Holzrahmen samt Verkabelung, **(b)** derselbe Rahmen in Aluminium, **(c)** die Waagen im Einsatz unter den Beuten, **(d)** die Gewichtskurve eines ganzen Jahres. Der steile Absturz Anfang Juli ist mit „Honey collection" beschriftet — genau dieser Sprung zeigt, was eine Waage leistet: Trachtverlauf und Ernte ohne einen einzigen Eingriff ins Volk. Abbildung: Cecchi, Spinsante, Terenzi, Orcioni, Sensors 2020, 20(9), 2726, CC BY 4.0.*
+
 Eine digitale Stockwaage ermöglicht die Fernüberwachung der Bienenvölker ohne direkte Kontrolle. Besonders wertvoll für:
 - **Trachtbeobachtung**: Gewichtszunahme zeigt Nektareintrag in Echtzeit
 - **Schwarmkontrolle**: Plötzlicher Gewichtsverlust = Schwarm abgegangen
@@ -18,6 +22,10 @@ Eine digitale Stockwaage ermöglicht die Fernüberwachung der Bienenvölker ohne
 - **LoRa**: Nur möglich wenn Helium-Gateway in Reichweite (nicht garantiert!)
 
 ## Systemvergleich
+
+![Bienenstockwaage von unten geöffnet, mit Wägezellen und Elektronik](bilder/fund/quellenbeleg_bildunterschrift_figure_5_woe.jpg)
+
+*Dieselbe Technik von unten: vier Balken-Wägezellen in den Ecken, ein Kabelbaum, Batteriepack und ein Funkmodul mit Antenne. Das Bauprinzip ist bei allen Systemen gleich — die Unterschiede liegen in Auflösung, Stromversorgung und Übertragungsweg, nicht im Messverfahren. Abbildung aus einem Open-Access-Artikel, Sensors 2021, 21(18), 6032, CC BY 4.0.*
 
 ### 1. HiveWatch (Schweiz) - EMPFEHLUNG
 

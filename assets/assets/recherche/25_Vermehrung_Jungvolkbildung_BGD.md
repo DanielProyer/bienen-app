@@ -59,6 +59,10 @@ Der rote Faden aller BGD-Vermehrungsmethoden: **Vermehrung nah am Schwarm**. Wir
 
 ## 2. Kunstschwarm (Merkblatt 1.4.2) — *= unser Volk 1*
 
+![Zwei Zusetzkäfige aus Kunststoff](bilder/fund/bestaetigt_via_commons_api_pageid_61954738.jpg)
+
+*Zusetzkäfige: Die Königin sitzt zunächst hinter Gittern, sodass das Volk sie riechen, aber nicht angreifen kann. Nach einigen Tagen ist ihr Duft angenommen und sie darf heraus — ohne diesen Zwischenschritt wird eine fremde Königin oft abgestochen. Genau dieser Handgriff steht hinter dem Wort „zugesetzt" in der Volksbeschreibung. Foto: CC BY, via Wikimedia Commons.*
+
 **Zweck:** Brutfreies Jungvolk aus jungen Bienen mehrerer Völker; **Königin wird zugesetzt** (Zucht-/Kaufkönigin). Startet praktisch milbenfrei. **Genau die Methode, mit der Volk 1 entstanden ist.**
 
 **Material/Menge:** **1–3 kg Bienen** je nach Saison. Schwarmkasten, fest verschließbarer Zusetzer + Futterteig-Zusetzer, neue Beute, Mittelwände, Futter.
