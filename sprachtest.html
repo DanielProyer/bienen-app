@@ -72,12 +72,13 @@
 
 <h1>Sprachband — Belastungstest</h1>
 <p class="unter">Prüft, ob die Erkennung eine ganze Durchsicht durchhält. Einschalten, das Handy so tragen wie beim Imkern, gelegentlich sprechen. Der Test misst selbst, ob und wann er taub wird.</p>
-<p class="unter" style="background:#fff4d6;border-radius:8px;padding:8px 10px">
-<b>Zum Klingeln:</b> Das Geräusch im Sekundentakt kommt nicht von dieser Seite, sondern von Chrome —
-es spielt bei jedem Start und Stopp der Erkennung einen Signalton. Weil Chrome bei Stille nach wenigen
-Sekunden abbricht, entsteht daraus eine Kette. Der <b>Ruhig-Modus</b> unten stoppt das; dafür hört das
-Band zwischen den Takten nicht zu. Der eigene Prüfton dieser Seite ist ein <b>tiefer Doppelton</b> und
-kommt nur alle drei Minuten.</p>
+<p class="unter" style="background:#fff4d6;border-radius:8px;padding:10px 12px">
+<b>Vor dem Start: Handy auf lautlos stellen</b> — Klingeln <em>und</em> Systemtöne.
+Der Ton im Sekundentakt kommt nicht von dieser Seite, sondern von Android: Es meldet
+jeden Start und Stopp der Spracherkennung. Weil Chrome bei jeder Sprechpause abbricht,
+entsteht daraus eine Kette. <b>Genau das prüft dieser Durchgang:</b> Ist der Ton bei
+stummem Handy weg, während die Erkennung weiterläuft, dann trägt das Sprachband.<br>
+Die Aufforderung zum Sprechen kommt deshalb jetzt als <b>Vibration</b> — du musst nichts hören.</p>
 
 <div class="band">
   <div class="zustand"><span class="punkt" id="punkt"></span><span id="zustand">bereit</span></div>
@@ -95,8 +96,13 @@ kommt nur alle drei Minuten.</p>
 </div>
 
 <label class="schalter">
+  <input type="checkbox" id="stumm" checked>
+  <span><b>Handy ist auf lautlos:</b> Prüfsignal nur als Vibration, kein Ton <em>(so ist dieser Test gedacht)</em></span>
+</label>
+
+<label class="schalter">
   <input type="checkbox" id="sanft">
-  <span><b>Ruhig-Modus:</b> bei Sprechpause nicht sofort neu starten, sondern auf den nächsten Takt warten <em>(sollte das Klingeln beenden)</em></span>
+  <span><b>Ruhig-Modus</b> <em>(im Feld gescheitert — lässt das Band bis zu 45 s taub. Nur zum Vergleich hier gelassen.)</em></span>
 </label>
 
 <label class="schalter">
@@ -307,8 +313,10 @@ function fordereSprechen() {
   if (!laeuft || pruefungLaeuft) return;
   pruefungLaeuft = true;
   pruefungSeit = jetzt();
-  piep();
-  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {}
+  // Bei stummem Handy ist die Vibration das eigentliche Signal — der Ton
+  // darf fehlen, das Ruetteln nicht.
+  try { navigator.vibrate && navigator.vibrate([400, 150, 400, 150, 400]); } catch (e) {}
+  if (!el('stumm').checked) piep();
   el('pruefBanner').style.display = 'block';
   log('warn', 'PRÜFUNG: bitte jetzt etwas sagen (z.B. „Temperatur zwanzig")');
 }
@@ -405,6 +413,7 @@ function stoppen(stillschweigend) {
   laeuft = false;
   clearInterval(taktTimer); clearInterval(uhrTimer); clearInterval(pruefTimer);
   el('pruefBanner').style.display = 'none'; pruefungLaeuft = false;
+  try { navigator.vibrate && navigator.vibrate([600, 200, 600]); } catch (e) {}
   beendeErkennung();
   stoppeMitschnitt();
   knopf.textContent = 'Test starten'; knopf.classList.remove('laeuft');
@@ -435,6 +444,7 @@ function bericht() {
     'Takt:       alle ' + sek(TAKT_MS) + ' s, ' + takte + ' geplante Erneuerungen',
     'Abbrüche:   ' + erzwungen + ' von Chrome erzwungen (je ein Signalton)',
     'Modus:      ' + (el('sanft').checked ? 'Ruhig (Takt-Wiederanlauf)' : 'Sofort-Neustart'),
+    'Handy:      ' + (el('stumm').checked ? 'lautlos angenommen (Prüfsignal per Vibration)' : 'mit Ton'),
     'Erkannt:    ' + texte + ' Sätze',
     'Längste Stille ohne Erkennung: ' + sek(luecke) + ' s',
     'Störungen:  ' + fehler,
