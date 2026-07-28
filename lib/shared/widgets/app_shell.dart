@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bienen_app/core/app_version.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 
 class AppShell extends StatelessWidget {
@@ -114,14 +115,16 @@ class AppShell extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(child: child),
+            Expanded(
+              child: Stack(children: [child, const VersionsEtikett()]),
+            ),
           ],
         ),
       );
     }
 
     return Scaffold(
-      body: child,
+      body: Stack(children: [child, const VersionsEtikett()]),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: (i) => _onDestinationSelected(context, i),

@@ -8,6 +8,7 @@ import 'package:bienen_app/features/einstellungen/domain/winterfutter_warnung.da
 import 'package:bienen_app/features/phaenologie/presentation/widgets/phaenologie_sektion.dart';
 import 'package:bienen_app/features/voelker/domain/betriebs_einstellungen.dart';
 import 'package:bienen_app/features/voelker/presentation/providers/voelker_provider.dart';
+import 'package:bienen_app/core/app_version.dart';
 import 'package:bienen_app/shared/widgets/app_button.dart';
 import 'package:bienen_app/shared/widgets/empty_state.dart';
 import 'package:bienen_app/shared/widgets/form_scaffold.dart';
@@ -176,6 +177,19 @@ class _EinstellungenPageState extends ConsumerState<EinstellungenPage> {
             ),
             const Divider(height: BeeTokens.xxl),
             const PhaenologieSektion(),
+            const Divider(height: BeeTokens.xxl),
+            // Die laufende Fassung, damit eine Rückmeldung aus dem Feld immer
+            // einer Version zugeordnet werden kann.
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.info_outline),
+              title: const Text('Version'),
+              subtitle: const Text('Fassung, die gerade auf diesem Gerät läuft'),
+              trailing: SelectableText(
+                appVersion,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
             const SizedBox(height: BeeTokens.lg),
           ],
         ),

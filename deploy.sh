@@ -17,7 +17,7 @@ cd "$(dirname "$0")"
 
 VER=$(grep -m1 '^version:' pubspec.yaml | sed 's/^version:[[:space:]]*//; s/+.*//')
 echo ">> Building v${VER} (flutter build web) ..."
-flutter build web
+flutter build web --dart-define=APP_VERSION="${VER}"
 
 BOOT=build/web/flutter_bootstrap.js
 echo ">> Cache-busting entrypoint (main.dart.js?v=${VER}) ..."
