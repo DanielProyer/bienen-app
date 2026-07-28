@@ -76,6 +76,7 @@ class WebSpracheErkenner implements SpracheErkenner {
   int _generation = 0;
   Timer? _neustartTimer;
   DateTime? _laufBegonnen;
+  bool _dauermodus = true;
   late final bool _verfuegbar = (_ctorStd ?? _ctorWebkit) != null;
 
   @override
@@ -120,6 +121,7 @@ class WebSpracheErkenner implements SpracheErkenner {
     final meine = ++_generation;
     final ctor = _ctorStd ?? _ctorWebkit;
     final rec = ctor!.callAsConstructor<_Recognition>();
+    _dauermodus = kontinuierlich;
     rec.continuous = kontinuierlich;
     rec.interimResults = true;
     rec.lang = sprache;
@@ -167,6 +169,14 @@ class WebSpracheErkenner implements SpracheErkenner {
     rec.onend = ((JSObject _) {
       if (meine != _generation) return; // alter Erkenner — nicht wiederbeleben
       if (!_aktiv) {
+        _st.add(ErkennerStatus.idle);
+        return;
+      }
+      // Einzelsatz-Modus (Kommando): Nach dem Satz ist Schluss — kein
+      // Neustart. Genau daraus entstand der Eindruck, das Kommando-Mikro
+      // laufe in einer Schleife.
+      if (!_dauermodus) {
+        _aktiv = false;
         _st.add(ErkennerStatus.idle);
         return;
       }

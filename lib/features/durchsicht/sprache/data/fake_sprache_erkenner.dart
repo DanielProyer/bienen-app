@@ -16,9 +16,17 @@ class FakeSpracheErkenner implements SpracheErkenner {
   /// dann gestartet wird — sonst liefen zwei Erkenner parallel (Mikro-Loop).
   final List<String> aufrufe = [];
 
+  /// Womit zuletzt gestartet wurde.
+  ///
+  /// Kommandos brauchen den Einzelsatz-Modus (`false`), Diktate den Dauer-Modus
+  /// — ohne diese Unterscheidung lief das Kommando-Mikro nach jeder Sprechpause
+  /// wieder an.
+  bool? zuletztKontinuierlich;
+
   @override
   Future<void> starten({String sprache = 'de-CH', bool kontinuierlich = true}) async {
     aufrufe.add('starten');
+    zuletztKontinuierlich = kontinuierlich;
     _st.add(ErkennerStatus.hoert);
   }
 
@@ -29,6 +37,9 @@ class FakeSpracheErkenner implements SpracheErkenner {
   }
   @override
   void dispose() { _erg.close(); _st.close(); }
+  /// Test-Helfer: simuliert, dass die Erkennung von selbst endet.
+  void meldeIdle() => _st.add(ErkennerStatus.idle);
+
   /// Test-Helfer: simuliert ein Erkennungs-Ergebnis.
   void sende(String text, {bool endgueltig = true}) => _erg.add(SprachErgebnis(text, endgueltig: endgueltig));
 }

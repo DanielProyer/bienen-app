@@ -9,6 +9,7 @@ import 'package:bienen_app/features/durchsicht/domain/durchsicht_gateway.dart';
 import 'package:bienen_app/features/durchsicht/domain/wabe.dart';
 import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht_provider.dart';
 import 'package:bienen_app/features/durchsicht/presentation/widgets/waben_schritt.dart';
+import 'package:bienen_app/features/durchsicht/sprache/data/sprach_controller.dart';
 import 'package:bienen_app/features/durchsicht/sprache/domain/kommando_puffer.dart';
 import 'package:bienen_app/features/durchsicht/sprache/domain/sprach_kommando.dart';
 import 'package:bienen_app/features/durchsicht/sprache/presentation/sprach_mikro.dart';
@@ -85,6 +86,12 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
 
   @override
   void dispose() {
+    // Das Mikrofon läuft sonst weiter, wenn die Seite über den Zurück-Knopf
+    // verlassen wird — der Browser nimmt still weiter auf, und beim nächsten
+    // Öffnen kollidiert der alte Erkenner mit dem neuen.
+    // `ref.read` ist in dispose noch erlaubt; der Aufruf läuft ins Leere,
+    // falls ohnehin nichts aktiv war.
+    ref.read(sprachControllerProvider.notifier).stoppen();
     _pageController.dispose();
     _wetter.dispose();
     _massnahmen.dispose();
@@ -281,7 +288,7 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
       );
 
   Widget _seiteKontext() => ListView(padding: const EdgeInsets.all(16), children: [
-        SprachMikro(mikroId: 'kmd-kontext', label: 'Kommando sprechen',
+        SprachMikro(mikroId: 'kmd-kontext', label: 'Kommando sprechen', einzelsatz: true,
             onEndText: (t) => _pufferKontext.fuettere(t).forEach(_wendeKommandoAn)),
         const Divider(),
         _datumTile('Datum', _datum, onTap: () async {
@@ -321,7 +328,7 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
     final schaetzung = bienenSchaetzung(_staerke);
     final futterHinweis = _wabenModus && _waben.isNotEmpty ? '≈ ${futterKgHinweisAus(_waben)} kg aus Waben' : null;
     return ListView(padding: const EdgeInsets.all(16), children: [
-      SprachMikro(mikroId: 'kmd-kennzahlen', label: 'Kommando sprechen',
+      SprachMikro(mikroId: 'kmd-kennzahlen', label: 'Kommando sprechen', einzelsatz: true,
           onEndText: (t) => _pufferKennzahlen.fuettere(t).forEach(_wendeKommandoAn)),
       const Divider(),
       SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Königin gesehen'), value: _koeniginGesehen, onChanged: (v) => setState(() => _koeniginGesehen = v)),

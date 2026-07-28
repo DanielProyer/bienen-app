@@ -9,7 +9,14 @@ class SprachMikro extends ConsumerWidget {
   final void Function(String endText) onEndText;
   final String label;
   final bool kompakt; // Diktat = kompakt (nur Icon), Kommando = mit Label/Status
-  const SprachMikro({super.key, required this.mikroId, required this.onEndText, this.label = 'Sprechen', this.kompakt = false});
+
+  /// Einzelsatz statt Dauer-Modus.
+  ///
+  /// Kommandos sind mit einem Satz fertig — danach soll das Mikro von selbst
+  /// ausgehen. Der Dauer-Modus ist fürs Diktat gedacht und liess das
+  /// Kommando-Mikro nach jeder Sprechpause neu anspringen.
+  final bool einzelsatz;
+  const SprachMikro({super.key, required this.mikroId, required this.onEndText, this.label = 'Sprechen', this.kompakt = false, this.einzelsatz = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +26,9 @@ class SprachMikro extends ConsumerWidget {
     final aktiv = z.aktivesMikro == mikroId;
     final fehler = aktiv && z.status == ErkennerStatus.fehler;
 
-    void toggle() => aktiv ? ctrl.stoppen() : ctrl.starten(mikroId, onEndText);
+    void toggle() => aktiv
+        ? ctrl.stoppen()
+        : ctrl.starten(mikroId, onEndText, einzelsatz: einzelsatz);
 
     if (kompakt) {
       return IconButton(
@@ -32,7 +41,9 @@ class SprachMikro extends ConsumerWidget {
       FilledButton.tonalIcon(
         onPressed: toggle,
         icon: Icon(aktiv ? Icons.stop_circle : Icons.mic),
-        label: Text(aktiv ? 'hört zu … (tippen zum Stoppen)' : label),
+        label: Text(aktiv
+            ? (einzelsatz ? 'hört zu … (ein Satz)' : 'hört zu … (tippen zum Stoppen)')
+            : label),
         style: aktiv ? FilledButton.styleFrom(backgroundColor: Colors.red.shade100) : null,
       ),
       if (aktiv && z.interim.isNotEmpty)
