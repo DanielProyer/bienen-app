@@ -73,12 +73,14 @@
 <h1>Sprachband — Belastungstest</h1>
 <p class="unter">Prüft, ob die Erkennung eine ganze Durchsicht durchhält. Einschalten, das Handy so tragen wie beim Imkern, gelegentlich sprechen. Der Test misst selbst, ob und wann er taub wird.</p>
 <p class="unter" style="background:#fff4d6;border-radius:8px;padding:10px 12px">
-<b>Vor dem Start: Handy auf lautlos stellen</b> — Klingeln <em>und</em> Systemtöne.
-Der Ton im Sekundentakt kommt nicht von dieser Seite, sondern von Android: Es meldet
-jeden Start und Stopp der Spracherkennung. Weil Chrome bei jeder Sprechpause abbricht,
-entsteht daraus eine Kette. <b>Genau das prüft dieser Durchgang:</b> Ist der Ton bei
-stummem Handy weg, während die Erkennung weiterläuft, dann trägt das Sprachband.<br>
-Die Aufforderung zum Sprechen kommt deshalb jetzt als <b>Vibration</b> — du musst nichts hören.</p>
+<b>So läuft dieser Durchgang:</b> Handy auf lautlos, <b>Mitschnitt aus</b> (ist jetzt die Vorgabe),
+Ruhig-Modus aus. Dann starten und sprechen.<br>
+Der bisherige Fehlschlag hatte eine einzige Ursache: Der Mitschnitt hielt das Mikrofon, und auf
+Android ist es exklusiv — die Erkennung bekam Stille, meldete „keine Sprache", brach ab und startete
+neu. Daher <em>beides</em>: der Ton im Sekundentakt und dass nie etwas erkannt wurde.<br>
+<b>Im Verlauf zu beobachten:</b> „Mikro offen" → „Ton kommt an" → „Sprache erkannt". Bleibt es bei
+„Mikro offen", liefert das Mikrofon nichts. Kommt „Ton kommt an", aber nie eine »-Zeile, versteht die
+Erkennung nichts.</p>
 
 <div class="band">
   <div class="zustand"><span class="punkt" id="punkt"></span><span id="zustand">bereit</span></div>
@@ -106,8 +108,9 @@ Die Aufforderung zum Sprechen kommt deshalb jetzt als <b>Vibration</b> — du mu
 </label>
 
 <label class="schalter">
-  <input type="checkbox" id="mitschnitt" checked>
-  <span>Tonmitschnitt parallel laufen lassen <em>(prüft, ob beides zugleich geht)</em></span>
+  <input type="checkbox" id="mitschnitt">
+  <span><b>Tonmitschnitt parallel</b> — <em>blockiert auf Android die Erkennung (das Mikrofon ist
+  exklusiv). Nur einschalten, um genau das zu zeigen; für den Erkennungstest aus lassen.</em></span>
 </label>
 
 <div id="pruefBanner" style="display:none;background:#fff4d6;border:2px solid var(--warn);border-radius:12px;padding:14px;margin-bottom:10px;font-weight:600;text-align:center">
@@ -419,6 +422,9 @@ async function starten() {
 
   await starteMitschnitt();
   starteErkennung('Start');
+  if (el('mitschnitt').checked) {
+    log('warn', 'ACHTUNG: Mitschnitt läuft — auf Android hört die Erkennung dann nichts.');
+  }
   taktTimer = setInterval(takt, TAKT_MS);
   uhrTimer = setInterval(tick, 1000);
   pruefTimer = setInterval(fordereSprechen, PRUEF_MS);
