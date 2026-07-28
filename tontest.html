@@ -35,14 +35,15 @@
 <b>Die letzte offene Frage vor dem Bau:</b> Läuft die Aufnahme weiter, wenn der Bildschirm sperrt?
 Bei der Spracherkennung tat sie es nicht. Ein reiner Tonstrom hat bessere Chancen, weil er kein
 gedrosselter Zeitgeber ist — aber geraten wird hier nicht mehr.<br>
-<b>So geht der Test:</b> Starten, Handy in die Hosentasche, <b>15 Minuten liegen lassen</b> und den Bildschirm
-von selbst sperren lassen. Zwischendurch ruhig reden. Danach herausholen, beenden — die Seite sagt dann,
-ob die Aufnahme lückenlos ist.</p>
+<b>Zweiter Lauf, mit Häkchen:</b> Der erste ohne Wachhalten ist gescheitert — mit dem Ausschalten des
+Bildschirms steht die Aufnahme. Jetzt hält die Seite den Bildschirm selbst wach. <b>Fünf Minuten genügen.</b>
+Handy hinlegen, nicht anfassen, <b>die Seitentaste nicht drücken</b> — wachhalten verhindert nur das
+selbsttätige Sperren, nicht das von Hand ausgelöste.</p>
 
 <label class="schalter">
   <input type="checkbox" id="wach">
-  <span><b>Bildschirm wachhalten</b> — <em>für den ersten Lauf AUS lassen. Genau die Sperre wollen wir prüfen.
-  Erst wenn der Lauf ohne scheitert, mit Häkchen wiederholen.</em></span>
+  <span><b>Bildschirm wachhalten</b> — <em>für diesen Lauf bitte AN. Der erste Lauf ohne ist gescheitert;
+  jetzt geht es darum, ob das Wachhalten die Aufnahme rettet.</em></span>
 </label>
 
 <button class="haupt" id="knopf">Aufnahme starten</button>
@@ -54,6 +55,7 @@ ob die Aufnahme lückenlos ist.</p>
   <div class="zelle"><div class="wert" id="zTon">0:00</div><div class="bez">Ton im Kasten</div></div>
   <div class="zelle" id="zelleLuecke"><div class="wert" id="zLuecke">0 s</div><div class="bez">längste Pause ohne Ton — <b>das entscheidet</b></div></div>
   <div class="zelle"><div class="wert" id="zGroesse">0 MB</div><div class="bez">Datenmenge</div></div>
+  <div class="zelle" style="grid-column:1/-1"><div class="wert" id="zRate">—</div><div class="bez">MB pro Minute — daraus folgen die Aufbewahrungsfristen</div></div>
 </div>
 
 <audio id="abspielen" controls style="display:none"></audio>
@@ -65,7 +67,7 @@ ob die Aufnahme lückenlos ist.</p>
 <script>
 // Fassung dieser Datei — steht sichtbar oben und im Bericht, damit ein
 // Feldergebnis immer einer Fassung zuzuordnen ist.
-const FASSUNG = 'T1';
+const FASSUNG = 'T2';
 
 // Alle fuenf Sekunden ein Haeppchen. Bleiben sie waehrend der Bildschirmsperre
 // aus, ist die Aufnahme dort tot — genau das ist die Frage.
@@ -77,7 +79,7 @@ const jetzt = () => Date.now();
 let strom = null, rec = null, laeuft = false;
 let start = 0, letztesHaeppchen = 0, luecke = 0;
 let bytes = 0, haeppchen = 0, tonMs = 0;
-let wachSperre = null, wegGewesen = 0, teile = [];
+let wachSperre = null, wachSperreKam = false, wegGewesen = 0, teile = [];
 let uhrTimer = null;
 const zeilen = [];
 
@@ -106,6 +108,8 @@ function zahlen() {
   el('zUhr').textContent = mmss(gelaufen);
   el('zTon').textContent = mmss(haeppchen * HAEPPCHEN_MS);
   el('zGroesse').textContent = (bytes / 1048576).toFixed(1) + ' MB';
+  const tonMin = haeppchen * HAEPPCHEN_MS / 60000;
+  el('zRate').textContent = tonMin > 0.2 ? (bytes / 1048576 / tonMin).toFixed(2) : '—';
   // Laufende Pause mitzaehlen, sonst sieht ein toter Lauf gesund aus.
   const offen = laeuft && letztesHaeppchen ? jetzt() - letztesHaeppchen : 0;
   const groesste = Math.max(luecke, offen);
@@ -119,7 +123,8 @@ async function wachhalten() {
   if (!('wakeLock' in navigator)) { log('warn', 'Gerät kann den Bildschirm nicht wachhalten'); return; }
   try {
     wachSperre = await navigator.wakeLock.request('screen');
-    log('takt', 'Bildschirm wird wachgehalten');
+    wachSperreKam = true;
+    log('gut', 'Bildschirm wird wachgehalten');
   } catch (e) { log('fehler', 'Wachhalten misslungen: ' + e); }
 }
 
@@ -142,12 +147,30 @@ async function starten() {
     return;
   }
   teile = []; bytes = 0; haeppchen = 0; luecke = 0; wegGewesen = 0; tonMs = 0;
+  wachSperreKam = false;
   zeilen.length = 0; el('verlauf').innerHTML = '';
   el('urteil').style.display = 'none';
   el('abspielen').style.display = 'none';
   el('bericht').style.display = 'none';
 
-  rec = new MediaRecorder(strom);
+  // Sprache braucht keine Musikqualitaet. Ohne Drosselung liefert Chrome
+  // rund 0,87 MB/min — das waere ein Gigabyte pro Saison.
+  let opt = {};
+  try {
+    if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+      opt = { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 24000 };
+    } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+      opt = { mimeType: 'audio/mp4', audioBitsPerSecond: 32000 };
+    }
+  } catch (e) { /* Vorgabe des Geraets nehmen */ }
+  try {
+    rec = new MediaRecorder(strom, opt);
+  } catch (e) {
+    log('warn', 'Sparformat abgelehnt, nehme Geräte-Vorgabe: ' + e);
+    rec = new MediaRecorder(strom);
+  }
+  log('takt', 'Format: ' + (rec.mimeType || '?')
+    + (rec.audioBitsPerSecond ? '  ' + Math.round(rec.audioBitsPerSecond / 1000) + ' kbit/s' : ''));
   rec.ondataavailable = (ev) => {
     if (!ev.data || !ev.data.size) return;
     teile.push(ev.data);
@@ -199,19 +222,38 @@ async function beenden() {
 
 function urteilen() {
   const min = tonMs / 60000;
+  const wach = el('wach').checked;
   const box = el('urteil');
   box.style.display = 'block';
   let text, farbe;
-  if (min < 10) {
+
+  // Mit wachgehaltenem Bildschirm geht die Seite gar nicht in den Hintergrund.
+  // "Nie im Hintergrund" ist dann der Erfolg, nicht ein ungeprueftes Ergebnis.
+  if (wach) {
+    if (min < 5) {
+      text = 'ZU KURZ — mit wachem Bildschirm genügen fünf Minuten, aber es müssen fünf sein.';
+      farbe = '#fff4d6';
+    } else if (!wachSperreKam) {
+      text = 'NICHT WACHGEHALTEN — das Gerät hat die Sperre verweigert. Dieser Weg trägt hier nicht.';
+      farbe = '#fdf0f0';
+    } else if (luecke > 20000) {
+      text = 'AUSGEFALLEN — trotz wachem Bildschirm ' + Math.round(luecke / 1000) + ' s Lücke.';
+      farbe = '#fdf0f0';
+    } else {
+      text = 'TRÄGT — ' + Math.round(min) + ' min lückenlos mit wachgehaltenem Bildschirm'
+           + (wegGewesen ? ', trotz ' + wegGewesen + 'x im Hintergrund' : '') + '.';
+      farbe = '#f1f8f1';
+    }
+  } else if (min < 10) {
     text = 'ZU KURZ für ein Urteil — es braucht mindestens zehn Minuten mit gesperrtem Bildschirm.';
+    farbe = '#fff4d6';
+  } else if (wegGewesen === 0) {
+    text = 'UNGEPRÜFT — der Bildschirm war nie aus. Bitte nochmal, Handy weglegen und sperren lassen.';
     farbe = '#fff4d6';
   } else if (luecke > 20000) {
     text = 'AUSGEFALLEN — grösste Lücke ' + Math.round(luecke / 1000)
          + ' s. Die Aufnahme übersteht die Bildschirmsperre nicht.';
     farbe = '#fdf0f0';
-  } else if (wegGewesen === 0) {
-    text = 'UNGEPRÜFT — der Bildschirm war nie aus. Bitte nochmal, Handy weglegen und sperren lassen.';
-    farbe = '#fff4d6';
   } else {
     text = 'DURCHGEHALTEN — ' + Math.round(min) + ' min am Stück, ' + wegGewesen
          + 'x im Hintergrund, grösste Lücke ' + Math.round(luecke / 1000) + ' s.';
@@ -235,6 +277,8 @@ el('berichtKnopf').onclick = () => {
     'Datenmenge: ' + (bytes / 1048576).toFixed(2) + ' MB'
       + (tonMs > 0 ? '  (' + (bytes / 1048576 / (tonMs / 60000)).toFixed(2) + ' MB pro Minute)' : ''),
     'Grösste Lücke: ' + Math.round(luecke / 1000) + ' s',
+    'Wachhalten:    ' + (el('wach').checked
+      ? (wachSperreKam ? 'angefordert und gewährt' : 'angefordert, aber VERWEIGERT') : 'nicht angefordert'),
     'Bildschirm: ' + (el('wach').checked ? 'wachgehalten' : 'nicht wachgehalten')
       + ', ' + wegGewesen + 'x im Hintergrund',
     '',
