@@ -7,6 +7,10 @@
 
 ## Gegebenheiten vor Ort
 
+![Blühende Bergwiese mit Nadelbaum und Bergpanorama im Hintergrund](bilder/fund/bergwiese_sommer.jpg)
+
+*Die Ausgangslage eines Bergstandorts: artenreiche Wiese, kurze intensive Blühzeit, freie Sicht und Wetter aus erster Hand. Das prägt jede Entscheidung in diesem Raumkonzept — vom Windschutz über die Ausrichtung der Fluglöcher bis zur Frage, wie weit Material getragen werden muss. Foto: Olympic National Park, Public Domain, via Wikimedia Commons.*
+
 Das Maiensäss verfügt über:
 
 | Gebäude/Bereich | Beschreibung | Nutzung Imkerei |
@@ -97,6 +101,10 @@ Flugseite →
 - **Hintere Reihe 10--15 cm höher** (unterschiedliche Anflughöhe)
 
 ### Beutenständer
+
+![Einzelne Beute auf Hohlblocksteinen im Gras, ein Stein auf dem Deckel](bilder/fund/bee_hive_box_einzelne_beutenkiste_funktion.jpg)
+
+*Die einfachste Form des Ständers: zwei Hohlblocksteine, darauf die Beute, oben ein Stein gegen den Wind. Für den Anfang genügt das — wichtig sind nur der Abstand zum Boden gegen Feuchtigkeit und ein sicherer Stand, damit die Beute bei Sturm nicht kippt. Foto: Alabama Extension, CC0, via Wikimedia Commons.*
 
 | Option | Beschreibung | Empfehlung |
 |--------|-------------|------------|

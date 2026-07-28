@@ -450,6 +450,10 @@ Fuer einen Standort auf **1570 m ue.M.** mit langen, kalten Wintern (November bi
 
 ## 6. Zubehoer und Grundausstattung
 
+![Metall-Absperrgitter mit parallelen Stäben](bilder/fund/absperrgitter_metall.jpg)
+
+*Das Absperrgitter in ganzer Fläche: parallele Stäbe im Abstand von gut vier Millimetern. Die Arbeiterin passt hindurch, die breitere Königin nicht — deshalb bleibt der Honigraum darüber frei von Brut. Metallgitter halten länger als Kunststoff und verziehen sich nicht, was bei jährlichem Ein- und Ausbau zählt. Foto: AxelHH, CC BY 3.0, via Wikimedia Commons.*
+
 ### 6.1 Beutenzubehoer (pro Volk)
 
 ![Metall-Absperrgitter flach aufliegend](bilder/fund/metall_absperrgitter_stabgitter_mit_metall.jpg)

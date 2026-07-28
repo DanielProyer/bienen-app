@@ -107,6 +107,10 @@ Das **wichtigste «Werkzeug», das keiner ist**: die schriftliche Dokumentation 
 
 ### 2.5 Weitere Grundwerkzeuge
 
+![Imker hebt den Deckel von einer Beute](bilder/fund/imker_nimmt_einen_deckel_von_der_beute_ab_.jpg)
+
+*Das Abnehmen des Deckels ist der erste Handgriff jeder Durchsicht — und der, bei dem die meisten Erschütterungen entstehen. Der Deckel wird angehoben, nicht gerissen; wo er festgekittet ist, löst ihn der Stockmeissel Ecke für Ecke. Foto: Ivan Radic, CC BY 2.0, via Wikimedia Commons.*
+
 | Werkzeug | Funktion |
 |---|---|
 | **Schutzkleidung** | Schleier/Hut oder Vollschutz-Anzug (heller Stoff), Handschuhe (Leder/Nitril) — für Einsteiger dringend empfohlen; Ruhe kommt mit Sicherheit. |
@@ -141,6 +145,10 @@ Das **wichtigste «Werkzeug», das keiner ist**: die schriftliche Dokumentation 
 Die **Durchsicht (Revision, Volkskontrolle)** ist der zentrale Handgriff der Saison. Ziel: den Zustand des Volkes erfassen und nur das Nötige tun. Eine Durchsicht sollte **zügig, ruhig und zielgerichtet** sein (Richtwert 5–15 min/Volk je nach Anlass), damit das Brutnest nicht auskühlt und das Volk nicht unnötig gestört wird.
 
 ### 3.1 Rahmenbedingungen
+
+![Blick von oben in eine geöffnete Beute auf die besetzten Rähmchen](bilder/fund/geoeffnete_beute_von_oben_deckel_abgenomme.jpg)
+
+*Der erste Blick nach dem Öffnen: Wie weit sitzen die Bienen zwischen den Rähmchen hoch, wie ruhig sind sie, wie viele Gassen sind besetzt? Diese Einschätzung entscheidet, ob die Durchsicht überhaupt sinnvoll ist — bei kühlem Wetter oder unruhigem Volk schliesst man besser wieder. Foto: Ivan Radic, CC BY 2.0, via Wikimedia Commons.*
 
 - **Wetter/Tageszeit:** warm (Richtwert ≥ 12–15 °C), windstill, möglichst sonnig, **mitten am Tag**, wenn viele Flugbienen unterwegs sind (Volk «leerer», ruhiger). Nicht bei Regen, Kälte, aufziehendem Gewitter oder abends.
 - **Anlass definieren:** *Warum* öffne ich? (Schwarmkontrolle, Futter-/Weiselkontrolle, Erweiterung, Behandlung) — das bestimmt die Tiefe. Nicht «einfach mal schauen».

@@ -145,6 +145,10 @@
 
 ## 7. Sonstiges
 
+![Selbstbau-Vorrichtung zum Zusammenbauen von Rähmchen](bilder/fund/bestaetigt_imagedescription_woertlich_inkl.jpg)
+
+*Eine Vorrichtung für den Rähmchenbau: Sie hält die Teile im rechten Winkel, während genagelt wird. Wer im Winter Dutzende Rähmchen baut, spart damit mehr Zeit als mit jedem gekauften Werkzeug — und die Rähmchen werden masshaltig, was in der Zarge zählt. Foto: Dirk Liesch, CC BY 4.0, via Wikimedia Commons.*
+
 | Artikel | Beschreibung | Stueck | Einzelpreis | Total |
 |---|---|---|---|---|
 | Stockwaage digital (beenli/bienen-stockwaage.ch) | LoRa-Uebertragung, besonders wertvoll auf Hoehenlagen | 1 | 150.00 | 150.00 |

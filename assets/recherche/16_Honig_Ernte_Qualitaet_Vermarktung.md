@@ -47,6 +47,10 @@ Honig ist der von Honigbienen aus **Nektar** (Blütensekret) oder **Honigtau** (
 
 ### 2.1 Grundtypen
 
+![Vier Gläser mit cremig gerührtem Honig](bilder/fund/cremehonig_im_glas_vier_europaeische_creme.jpg)
+
+*Cremehonig: derselbe Honig, nur kontrolliert kristallisiert und gerührt, bis die Kristalle fein bleiben. Das ist keine andere Sorte, sondern eine andere Behandlung — und für Sorten, die ohnehin schnell fest werden, der Weg zu einem streichfähigen Produkt statt zu einem harten Glas. Foto: Hayden Soloviev, CC BY 4.0, via Wikimedia Commons.*
+
 | Typ | Herkunft | Farbe/Aroma | Kristallisation |
 |---|---|---|---|
 | **Blüten-/Nektarhonig** | Nektar von Blüten | hell bis mittel, mild-blumig | meist schnell (fein bis grob) |
@@ -67,6 +71,10 @@ Bei **nur einer Ernte pro Jahr** (Spätsommer) fliesst in Arosa typischerweise e
 - **Wald-/Honigtau:** Nadelwald (Fichte/Tanne/Lärche) rund um Arosa kann in „Honigtaujahren" (unregelmässig, läuseabhängig) einen dunklen Waldhonig-Anteil liefern. Nicht jedes Jahr, aber wenn, dann als geschätzter, dunkler Bestandteil des Alpenhonigs.
 
 ### 2.4 Alpenrosen-Honig & Grayanotoxin — die Entwarnung (aber Faktenlage kennen)
+
+![Blühende Rostblättrige Alpenrose](bilder/fund/alpenrose_bestand.jpg)
+
+*Die Rostblättrige Alpenrose (*Rhododendron ferrugineum*) — in dieser Höhenlage eine der prägenden Trachtpflanzen. Sie ist der Grund, warum die Grayanotoxin-Frage in diesem Kapitel überhaupt auftaucht: Die giftigen Rhododendron-Arten am Schwarzen Meer sind andere Arten, und für die europäischen Alpenrosen ist der Toxingehalt nach heutiger Datenlage kein praktisches Problem. Foto: Tournasol7, CC BY 4.0, via Wikimedia Commons.*
 
 Ein häufiges Missverständnis: „Rhododendron-Honig ist giftig." Die dokumentierten Honigvergiftungen („mad honey"/**„deli bal"**) stammen aus dem **türkisch-kaukasischen Raum** und gehen auf **Rhododendron ponticum** und **R. luteum** zurück — diese Arten enthalten hohe Mengen **Grayanotoxin** (Andromedotoxin), das beim Menschen Übelkeit, Speichelfluss, Blutdruckabfall und Herzrhythmusstörungen auslösen kann. Die **alpine Rostblättrige Alpenrose (R. ferrugineum)** ist davon abzugrenzen: Zwar wird die Pflanze botanisch als grayanotoxinhaltiges Ziergehölz geführt (Diterpene in Blättern), doch eine **gezielte analytische Erhebung über die Gattung Rhododendron** wies in Chargen von *R. ferrugineum* **kein Grayanotoxin I** nach, und aus dem gesamten Alpenraum sind **keine** Honigvergiftungen dokumentiert. Alpenrosenhonig aus den Schweizer Alpen gilt daher als **unbedenklich**. *(Fachlicher Hinweis, kein Freibrief: Wer aktiv mit „Alpenrose" wirbt, sollte diese Faktenlage kennen und im Zweifel Sensorik/Pollenanalyse belegen; als Volksheilpflanze wird R. ferrugineum wegen fehlender Wirknachweise trotzdem nicht empfohlen.)*
 
@@ -98,6 +106,10 @@ Der **Wassergehalt** ist der wichtigste einzelne Qualitäts- und Haltbarkeitspar
 *(Werte als Richtwert — mit Daniel / Fachstelle apiservice.ch bzw. kantonalem Recht prüfen.)*
 
 ### 3.2 Refraktometer — das Pflichtwerkzeug
+
+![Handrefraktometer für Honig](bilder/fund/honig_refraktometer.jpg)
+
+*Ein Handrefraktometer: Ein Tropfen Honig auf das Prisma, gegen das Licht halten, Wert an der Skala ablesen. Das Gerät kostet wenig und ist trotzdem das einzige, mit dem sich der Wassergehalt belegen lässt — Verdeckelungsgrad und Spritzprobe sind Feldmethoden, dieser Wert ist die Zahl, die im Ernteprotokoll steht. Foto: R. Henrik Nilsson, CC BY 4.0, via Wikimedia Commons.*
 
 - **Handrefraktometer für Honig** (Skala meist 12–30 % Wasser bzw. °Brix, mit **ATC** = automatischer Temperaturkompensation) ist Standard. Kosten ca. CHF 40–120. Anschaffung **vor** der ersten Ernte (steht sinnvoll auf der Erstausstattungsliste, siehe Cross-Ref 03).
 - **Kalibrieren:** Mit mitgeliefertem Kalibrieröl oder Standard vor jeder Saison auf den Referenzwert einstellen (Justierschraube).

@@ -166,6 +166,10 @@ Der **schweizerische Bauernverband (SBV, Direktvermarktungs-Richtpreise, Stand 0
 
 ### 5.3 Nebenprodukte
 
+![Gerollte Kerze aus Bienenwachs auf einem Halter](bilder/fund/bienenwachskerze.jpg)
+
+*Eine gerollte Kerze aus einer Mittelwandplatte — das einfachste Wachsprodukt überhaupt, ohne Giessform und ohne Ausrüstung. Für die Nebenprodukt-Rechnung ist das der interessante Punkt: Der Rohstoff fällt bei der Ernte ohnehin an, und der Verkaufswert liegt deutlich über dem, was Altwachs im Tausch bringt. Foto: Paolo Neo, Public Domain, via Wikimedia Commons.*
+
 | Produkt | Menge (Kleinimkerei) | Erloes/Wert | Realistische Rolle |
 |---|---|---|---|
 | **Bienenwachs** | ~0.5–1 kg/Volk/Jahr (Entdeckelung, Altwaben) | ~15–25 CHF/kg roh; verarbeitet (Kerzen/Kosmetik) mehr | Meist **Eigenkreislauf** (Bio-Pflicht!) statt Verkauf; senkt Mittelwand-Zukauf |
