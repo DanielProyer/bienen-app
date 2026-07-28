@@ -32,6 +32,14 @@ Jan  Feb  Mär  Apr  Mai  Jun  Jul  Aug  Sep  Okt  Nov  Dez
 
 ## Trachtkalender Arosa (1570 m)
 
+![Heimkehrende Bienen am Flugloch mit gefüllten Pollenhöschen](bilder/fund/heimkehrende_sammlerinnen_am_flugloch_mit_.jpg)
+
+*Heimkehrende Sammlerinnen mit prall gefüllten Pollenhöschen an den Hinterbeinen. Pollenverkehr am Flugloch ist die einfachste Fernkontrolle, die es gibt: Wird Pollen eingetragen, ist mit hoher Wahrscheinlichkeit Brut da — ohne dass die Beute geöffnet werden muss. Foto: Zonki at German Wikipedia (Original text: Zonki), Public Domain, via Wikimedia Commons.*
+
+![Honigbiene auf einer Löwenzahnblüte](bilder/fund/honigbiene_apis_mellifera_auf_loewenzahnbl.jpg)
+
+*Löwenzahn ist der Startschuss: Wo er blüht, ist die Entwicklung im Volk in Fahrt. Im Mittelland fällt das in den April, auf 1570 m eher in den Mai — der Trachtkalender unten verschiebt sich mit der Blüte, nicht mit dem Datum. Foto: Conall, CC BY 2.0, via Wikimedia Commons.*
+
 ![Blühende Salweide mit anfliegender Biene](bilder/fund/salweide_salix_caprea_weidenkaetzchen_in_v.jpg)
 
 *Die **Salweide** ist der Startschuss des Bienenjahres: Ihre Kätzchen liefern die erste kräftige Pollenquelle, wenn sonst noch nichts blüht — und Pollen ist es, der die Brutentwicklung anschiebt. Auf 1570 m verschiebt sich dieser Termin gegenüber dem Flachland um Wochen; die Weidenblüte zu beobachten ist deshalb verlässlicher als jedes Kalenderdatum (siehe den phänologischen Ansatz in `21`). Foto: gemeinfrei/CC0, via Wikimedia Commons.*

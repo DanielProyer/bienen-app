@@ -7,6 +7,10 @@
 
 ## 1. Beuten und Zubehoer
 
+![Fertig aufgebaute Dadant-Beute mit Blechdeckel](bilder/fund/neue_12er_dadantbeute_serienbild_4_blechde.jpg)
+
+*So sieht das Ziel der Einkaufsliste aus: Bock, Boden, Brutzarge, Halbzarge und darüber der Blechdeckel, der über die Zargen hinausragt und das Regenwasser wegführt. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
+
 ### Option A: Komplettbeute (empfohlen fuer Einsteiger)
 
 | Artikel | Beschreibung | Stueck | Einzelpreis | Total |
@@ -41,6 +45,10 @@
 
 ## 2. Schutzausruestung
 
+![Person im vollständigen Imkeranzug hält eine besetzte Wabe](bilder/fund/imkeranzug_vollstaendig_getragen.jpg)
+
+*Der vollständige Anzug mit angesetztem Schleier und Handschuhen. Wichtig ist der geschlossene Übergang zwischen Hut und Jacke — dort kommen Bienen sonst hinein, und ein Stich im Schleier ist der Grund für die meisten hektischen Bewegungen am Volk. Foto: Alabama Extension, CC0, via Wikimedia Commons.*
+
 | Artikel | Beschreibung | Stueck | Einzelpreis | Total |
 |---|---|---|---|---|
 | Imkerjacke mit Schleier (Wespi) | Baumwolle/Mesh, div. Groessen | 2 | 107.00 | 214.00 |
@@ -53,6 +61,14 @@
 ---
 
 ## 3. Werkzeug
+
+![Stockmeissel schabt Wachs von den Rähmchen-Oberkanten](bilder/fund/belegt_description_feld_woertlich_using_a_.jpg)
+
+*Der Stockmeissel im tatsächlichen Einsatz: Er schabt Wachs und Kittharz von den Oberkanten, bevor die Rähmchen gezogen werden. Das ist der meistgebrauchte Griff der ganzen Imkerei — deshalb lohnt hier gutes Material mehr als bei jedem anderen Werkzeug. Foto: Joe DeLuca, CC BY 2.0, via Wikimedia Commons.*
+
+![Nahaufnahme eines Smokers mit Blasebalg](bilder/fund/smoker_nahaufnahme_des_geraets_achtung_que.jpg)
+
+*Der Smoker in Nahaufnahme: Brennkammer, Deckel mit Tülle und der Blasebalg an der Seite. Beim Kauf zählen zwei Dinge, die man auf dem Bild sieht — ein ausreichend grosses Brennvolumen und ein Schutzgitter um den heissen Körper. Foto: Ivan Radic, CC BY 2.0, via Wikimedia Commons.*
 
 | Artikel | Beschreibung | Stueck | Einzelpreis | Total |
 |---|---|---|---|---|
@@ -70,6 +86,10 @@
 ---
 
 ## 4. Honigverarbeitung
+
+![Abfülleimer mit Quetschhahn auf einem Edelstahltisch](bilder/fund/quellenbelegt_imagedescription_woertlich_4.jpg)
+
+*Ein Abfüllbehälter mit Quetschhahn. Der Hahn sitzt bewusst wenige Zentimeter über dem Boden: Darunter setzt sich ab, was nicht ins Glas soll, und der Honig läuft ohne Umschöpfen und ohne Lufteinschlag ab. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
 
 | Artikel | Beschreibung | Stueck | Einzelpreis | Total |
 |---|---|---|---|---|
@@ -106,6 +126,10 @@
 ---
 
 ## 6. Fuetterung
+
+![Oberfütterer aus Holz auf einer Beute](bilder/fund/kopffuetterer_oberfuetterer_abnahme_handha.jpg)
+
+*Ein Oberfütterer, wie er anstelle des Innendeckels aufgelegt wird. Er wird von oben gefüllt, ohne das Volk zu öffnen — und weil die Bienen nur über einen Steg herankommen, ertrinken sie nicht im Futter. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
 
 | Artikel | Beschreibung | Stueck | Einzelpreis | Total |
 |---|---|---|---|---|

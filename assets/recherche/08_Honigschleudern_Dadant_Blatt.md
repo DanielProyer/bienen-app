@@ -14,7 +14,15 @@
 
 ## Schleudertypen
 
+![Blick von oben in einen beladenen Radialkorb](bilder/fund/honigschleuder_offen_von_oben_vier_eingeha.jpg)
+
+*Ein beladener Radialkorb von oben: Die Waben stehen wie Speichen, die Zellöffnungen nach aussen. Genau diese Anordnung erlaubt es, beide Wabenseiten gleichzeitig zu schleudern — der Grund, warum die Radialschleuder für Halbrahmen empfohlen wird. Foto: Nancy McClure, CC BY 2.0, via Wikimedia Commons.*
+
 ### Radialschleuder (EMPFOHLEN für Halbrahmen)
+
+![Zwei Aufnahmen einer Schleuder mit auslaufendem Honig](bilder/fund/zweiteilige_montage_derselben_schleuder_tu.jpg)
+
+*Dieselbe Schleuder zweimal: links der Korb im Kessel, rechts der Honig, der sich am Boden sammelt und zum Auslauf fliesst. Der Kesselboden ist deshalb konisch — was nicht abläuft, muss später von Hand herausgeholt werden. Foto: Axel Hindemith, Public Domain, via Wikimedia Commons.*
 
 Waben stehen wie Speichen eines Rades. Beide Seiten werden gleichzeitig geschleudert.
 

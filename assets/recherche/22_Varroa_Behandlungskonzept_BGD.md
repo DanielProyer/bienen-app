@@ -46,6 +46,10 @@ Der Jahresablauf mit Entscheidungslogik. Die kalendarischen Angaben sind Mittell
 
 ## 2. Diagnose / Befallsmessung (Merkblätter 1.5.1–1.5.3)
 
+![Mikroskopaufnahme einer Varroa-Milbe von oben mit Beschriftung](bilder/fund/varroa_destructor_weibchen_dorsalansicht_m.jpg)
+
+*Ein Varroa-Weibchen von oben unter dem Mikroskop, mit den Bestimmungsmerkmalen beschriftet: quer-ovaler Körper, dicht behaart. Diese Form ist der Grund, warum die Milbe im Gemüll auch als brauner Punkt erkennbar bleibt — sie ist deutlich breiter als lang, anders als jedes andere braune Teilchen auf der Windel. Foto: Photo or drawing by Pavel Klimov, Bee Mite ID (idtools.org/id/mites/be, Public Domain, via Wikimedia Commons.*
+
 ### 2.1 Natürlicher Milbenfall / Gemüll — 1.5.1
 
 - **Methode:** Gittergeschützte, ameisenfreie Varroa-Unterlage (deckt ganzen Kastenboden), abgedeckt mit **in Speiseöl getränktem Küchenpapier** (verhindert Milbenfrass durch Ameisen).

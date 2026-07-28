@@ -16,6 +16,10 @@
 
 ## 1. Völkerbeurteilung & Selektion (4.7)
 
+![Imker hält eine dicht besetzte Brutwabe hoch](bilder/fund/imker_mit_bienen_wabe_aus_der_beute_quelle.jpg)
+
+*Beurteilt wird an der Wabe: Wie geschlossen ist das Brutnest, wie ruhig sitzen die Bienen, wie voll ist die Fläche. Alle drei Kriterien der Völkerbeurteilung lassen sich nur so bewerten — in der Hand, im Licht, im Vergleich zur Nachbarwabe. Foto: Alabama Extension, CC0, via Wikimedia Commons.*
+
 **Ziel:** Nur gesunde, starke Völker am Stand halten (vorbeugende Gesundheitsmassnahme, nicht nur für Züchter). Betrifft Wirtschafts- UND Jungvölker. Die imkerliche Betreuung (v. a. Füttern) umgeht die natürliche Auslese → deshalb muss der Imker aktiv selektionieren.
 
 **Auslese-Grundregel:**
@@ -119,6 +123,14 @@
 ---
 
 ## 5. Königinnenvermehrung — Umlarv-/Zeitplan
+
+![Schlupfkäfige werden auf Weiselzellen aufgesetzt](bilder/fund/aufsetzen_von_schlupfkaefigen_roller_cages.jpg)
+
+*Schlupfkäfige werden über die Weiselzellen gesetzt, bevor die Königinnen schlüpfen. Ohne diesen Schritt tötet die erste geschlüpfte Königin alle übrigen Zellen — der Käfig ist der Grund, warum aus einer Serie mehrere Königinnen statt einer werden. Foto: Conall from Downpatrick, Northern Ireland, CC BY 2.0, via Wikimedia Commons.*
+
+![Weiselzellen am Rand einer Wabe](bilder/fund/weiselzelle_auf_einem_wabenrahmen_im_volk_.jpg)
+
+*Weiselzellen, deutlich grösser und länger als jede Arbeiterinnenzelle und aus der Wabenfläche herausgebaut. Ihr Zustand bestimmt den Zeitplan: Sobald sie verdeckelt sind, läuft die Uhr bis zum Schlupf, und ab diesem Punkt darf am Volk nichts mehr gerüttelt werden. Foto: Thomas Bresson, CC BY 2.0, via Wikimedia Commons.*
 
 **WICHTIG (Methoden-Klarstellung):** Beide CH-Merkblätter (4.6.1 MiniPlus, 4.6.2 Laurenz) nutzen **NICHT das klassische Umlarven** (Larventransfer in Weiselnäpfchen), sondern das **Nachschaffungs-/Brutableger-Prinzip**: Ein weiselloses Kleinvolk mit **jüngster offener Brut** zieht sich selbst Weiselzellen. Der Anwender larvt also nicht um — die Zeitrechnung startet mit der **Ablegerbildung** (= künstlich erzeugte Weisellosigkeit).
 

@@ -62,6 +62,10 @@ Landwirtschaftliches Bildungs- und Beratungszentrum des Kantons GR:
 
 ### Imkerausbildung Schweiz
 
+![Gruppe in Imkeranzügen an geöffneten Beuten während einer Schulung](bilder/fund/koenigin_zeichnen_schulungsstation_zeichne.jpg)
+
+*Ausbildung findet am offenen Volk statt, nicht am Schreibtisch: eine Gruppe im Schleier um zwei Beuten, jeder Handgriff wird einmal vorgemacht und dann selbst geübt. Genau dieser Praxisteil ist der Grund, den Grundkurs vor dem ersten eigenen Volk zu absolvieren. Foto: Conall from Downpatrick, Northern Ireland, CC BY 2.0, via Wikimedia Commons.*
+
 **Grundkurs (Einsteiger):**
 - 18 Halbtage über 2 Jahre
 - Theorie + Praxis am Bienenstand

@@ -107,6 +107,10 @@
 
 ### 1.4 Empfehlung Aufstellung
 
+![Reihe farbig gestrichener Magazinbeuten auf Ständern](bilder/fund/bee_boxes_us_magazinbeuten_beutenboecke_st.jpg)
+
+*Beuten in einer Reihe auf durchgehenden Ständern. Die unterschiedlichen Farben sind kein Zierrat, sondern Orientierung für die Rückkehrerinnen — nebst versetzten Fluglöchern ist das die einfachste Verflug-Bremse, die es gibt. Foto: Alabama Extension, CC0, via Wikimedia Commons.*
+
 **Fuer den Unterstand auf 1570 m wird die versetzte Reihenanordnung (Variante B) empfohlen**, weil:
 
 1. Sie unter einem Pultdach-Unterstand am besten Platz findet
@@ -119,6 +123,10 @@
 ---
 
 ## 2. Aufstellungsmuster und Verflug-Praevention
+
+![Flugbetrieb am Anflugbrett einer Magazinbeute](bilder/fund/detailaufnahme_flugloch_einer_magazinbeute.jpg)
+
+*Flugbetrieb aus der Nähe: Der Anflug erfolgt auf das vorgezogene Brett, von dort läuft die Biene in den Flugspalt. Ein solcher Anflugbereich pro Volk erklärt, warum Beuten Abstand brauchen — überlappende Anflugwege sind die Ursache von Verflug. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
 
 ![Lehrbienenstand mit farbig markierten Fluglöchern](bilder/fund/lehrbienenstand_des_bienenzuechtervereins_.jpg)
 
@@ -416,6 +424,10 @@ Auf 1570 m in Arosa muss die Aufstellhoehe der Beuten an die Schneeverhaeltnisse
 **Empfehlung:** Bei dem Grundsatz "Qualitaet vor Preis" gleich den vollen Unterstand fuer 8 Beuten bauen. Die Leerplaetze koennen als Lagerflaeche genutzt werden.
 
 ### 4.3 Bienenhaus vs. offener Unterstand fuer Dadant
+
+![Offener Bienenstand aus Holz am Waldrand](bilder/fund/offener_freistehender_bienenstand_aus_dunk.jpg)
+
+*Ein offener Unterstand am Waldrand: Dach und Rückwand, sonst offen. Diese Bauform ist der Kompromiss, um den es in diesem Kapitel geht — Wetterschutz und Arbeitshöhe wie im Bienenhaus, aber ohne den geschlossenen Raum, der bei Magazinbeuten das Arbeiten von hinten erzwingt. Foto: Richard Mayer, CC BY 3.0, via Wikimedia Commons.*
 
 | Kriterium | Geschlossenes Bienenhaus | Offener Unterstand |
 |-----------|-------------------------|-------------------|

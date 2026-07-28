@@ -59,6 +59,10 @@ Der rote Faden aller BGD-Vermehrungsmethoden: **Vermehrung nah am Schwarm**. Wir
 
 ## 2. Kunstschwarm (Merkblatt 1.4.2) — *= unser Volk 1*
 
+![Kasten mit Trichteraufsatz neben einer leeren Beute im Garten](bilder/fund/vorweggenommener_schwarm_schwarmvorwegnahm.jpg)
+
+*Der Aufbau für einen Kunstschwarm: ein Kasten mit Trichteraufsatz, daneben die vorbereitete Beute. Die Bienen werden von den Waben in den Trichter abgeschlagen — der Kunstschwarm entsteht ohne Brut und ist damit von der ersten Stunde an eine Varroa-Bremse. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
+
 ![Zwei Zusetzkäfige aus Kunststoff](bilder/fund/bestaetigt_via_commons_api_pageid_61954738.jpg)
 
 *Zusetzkäfige: Die Königin sitzt zunächst hinter Gittern, sodass das Volk sie riechen, aber nicht angreifen kann. Nach einigen Tagen ist ihr Duft angenommen und sie darf heraus — ohne diesen Zwischenschritt wird eine fremde Königin oft abgestochen. Genau dieser Handgriff steht hinter dem Wort „zugesetzt" in der Volksbeschreibung. Foto: CC BY, via Wikimedia Commons.*
@@ -108,6 +112,10 @@ Der rote Faden aller BGD-Vermehrungsmethoden: **Vermehrung nah am Schwarm**. Wir
 ---
 
 ## 4. Brutableger (Merkblatt 1.4.4) — *Standard-Vermehrung ohne Königinsuche fürs Jungvolk*
+
+![Zwei Ablegerkästen im Dadant-Format am Bienenstand](bilder/fund/ablegerkaesten_im_dadant_system_aufgestell.jpg)
+
+*Ablegerkästen am Stand: kleiner als eine Vollbeute, aber im gleichen Rähmchenmass. Das ist der praktische Grund, weshalb Ableger im Betriebssystem bleiben sollen — die Waben passen später ohne Umbau in die Vollbeute. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
 
 **Zweck:** Teil der **Brutwaben mit Bienen, ohne Königin** in einen Ablegerkasten; das Jungvolk **zieht selbst eine Königin nach**.
 

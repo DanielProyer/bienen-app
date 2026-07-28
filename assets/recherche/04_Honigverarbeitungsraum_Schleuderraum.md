@@ -74,6 +74,14 @@ Das **apisuisse Goldsiegel** ist das einzige Qualitaetslabel ausschliesslich fue
 
 ## 2. Raumgroesse und Ausstattung
 
+![Sieb im Gestell über einem Abfülleimer](bilder/fund/honig_sieben_feiner_sieb_seihtrichter_im_h.jpg)
+
+*Gesiebt wird im Durchlauf: Sieb im Gestell, darunter der Eimer. Der Honig braucht dafür Zeit und Wärme — deshalb steht in diesem Kapitel die Raumtemperatur gleichberechtigt neben der Fläche. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
+
+![Entdeckeln einer Honigwabe über einem Behälter](bilder/fund/entdeckeln_einer_honigwabe_quellenbeleg_co.jpg)
+
+*Entdeckeln über einem Auffangbehälter. Der Arbeitsplatz braucht genau das, was hier zu sehen ist: eine Abstellfläche für die Wabe, ein Gefäss für das Deckelwachs und einen Weg, auf dem nichts tropft — daran hängt die Raumgrösse mehr als an der Schleuder selbst. Foto: User:Ben pcc, Public Domain, via Wikimedia Commons.*
+
 ### 2.1 Raumgroesse
 
 | Raum | Empfohlene Groesse | Bemerkung |

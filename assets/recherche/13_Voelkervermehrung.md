@@ -110,6 +110,10 @@ Ein verbreitetes Missverständnis ist, dass Höhenlage per se „schlechte" Bega
 
 ## 3. Der natürliche Schwarm — Ablauf, Einfangen, Einschlagen
 
+![Dichte Bienenmasse eines abgeschlagenen Schwarms](bilder/fund/abgeschlagener_schwarm_bienenschwarm_der_i.jpg)
+
+*Ein abgeschlagener Schwarm: Die Masse hat keine Waben und keine Brut, nur Bienen und eine Königin. Dieser Zustand ist die grosse Chance des Schwarms — er baut alles neu, und mit der brutfreien Phase geht auch der Milbenbestand auf einen Bruchteil zurück. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
+
 ![Schwarm läuft in die vorbereitete Beute ein](bilder/fund/schwarm_beim_einlaufen_in_die_beute_quelle.jpg)
 
 *Ein Schwarm läuft in die vorbereitete Beute ein. Dass er von selbst hineinläuft statt wieder aufzufliegen, ist die verlässlichste Erfolgskontrolle beim Einschlagen — dann ist die Königin drin. Foto: CC BY, via Wikimedia Commons.*
@@ -131,6 +135,10 @@ Auch wenn Schwärmen **verhindert** werden soll (Kap. 4), muss man den Ablauf ke
 5. **Vor dem Einschlagen** kühl/dunkel stellen; **2–3 Tage „Kellerhaft"** (dunkel, kühl, mit Wasser) senkt Rückkehr-/Wieder-Ausflug-Neigung und lässt den Schwarm den alten Stand vergessen (verhindert Rückflug bei Aufstellung in der Nähe).
 
 ### Schwarm einschlagen und die grosse Chance: Bauerneuerung + Varroa-Reset
+
+![Eimer voller Bienen vor dem Flugloch einer Beute](bilder/fund/umfuellen_einschlagen_eines_gefangenen_sch.jpg)
+
+*Einschlagen in der Praxis: Der Eimer mit dem Schwarm steht vor dem Flugloch, die Bienen laufen von selbst ein. Sie tun das nur, wenn die Königin mitgegangen ist — der Einlauf ist damit gleichzeitig die Kontrolle, ob der Fang gelungen ist. Foto: Diabrotico at Italian Wikipedia, Public Domain, via Wikimedia Commons.*
 
 Ein Naturschwarm/Kunstschwarm ist **brutfrei** — das ist wertvoll:
 

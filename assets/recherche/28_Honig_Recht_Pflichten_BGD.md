@@ -44,6 +44,14 @@ Individualmarke von apisuisse (Inhaber: apisuisse, c/o Bienen Schweiz, Appenzell
 | **MHD** | **max. 3 Jahre nach Ende des Produktionsjahres** |
 
 ### 1.3 Vermarktung (Abschnitt 7)
+
+![Regal mit vielen Honiggläsern verschiedener Anbieter](bilder/fund/quellenbelegt_imagedescription_woertlich_s.jpg)
+
+*Im Regal steht der eigene Honig neben allen anderen. Hier zeigt sich, warum Sortenangabe und Herkunft mehr sind als Pflichtangaben: Sie sind das Einzige, was ein Glas im Regal von den zwanzig daneben unterscheidet. Foto: Photo: Andreas Praefcke, CC BY 3.0, via Wikimedia Commons.*
+
+![Marktstand mit Honiggläsern, Preisschildern und Probierteller](bilder/fund/quellenbelegt_imagedescription_woertlich_t.jpg)
+
+*Direktverkauf am Marktstand: Gläser, Preisschilder, Probierteller. Sobald Honig so angeboten wird, greifen die Vermarktungsregeln des Reglements vollständig — die Preisangabe gehört genauso dazu wie die Etikette am Glas. Foto: PantheraLeo1359531, CC BY 4.0, via Wikimedia Commons.*
 - Etikette nach gesetzlichen Bestimmungen (Merkblatt „Honig korrekt etikettieren", bienen.ch); MHD-Angabe vorgeschrieben.
 - Siegel vor Verkauf sichtbar anbringen; **Erstöffnungsschutz zwingend**.
 - Verkauf fremden Honigs: der andere Produzent muss **deutlich auf der Etikette** stehen.
@@ -90,6 +98,10 @@ Individualmarke von apisuisse (Inhaber: apisuisse, c/o Bienen Schweiz, Appenzell
 ---
 
 ## 3. Etikettierung — Pflichtangaben (LIV + MeAV + MessG)
+
+![Mehrere Honiggläser mit unterschiedlichen Etiketten](bilder/fund/quellenbelegt_extmetadata_imagedescription.jpg)
+
+*Drei Gläser, drei Etiketten. Was hier gestalterisch aussieht, ist zu einem guten Teil Pflicht: Sachbezeichnung, Produktionsland, Füllmenge und die Angaben zum Betrieb. Die Freiheit liegt beim Rest — und der Rest entscheidet über den Wiedererkennungswert. Foto: Hayden Soloviev, CC BY 4.0, via Wikimedia Commons.*
 
 **Pflichtangaben auf vorverpacktem Honig (LIV Art. 3/4, LGV Art. 36):**
 1. **Sachbezeichnung** („Honig", „Blütenhonig" …)

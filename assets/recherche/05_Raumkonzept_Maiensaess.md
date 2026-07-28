@@ -59,6 +59,10 @@ Das Maiensäss verfügt über:
 
 ## Bereich 1: Bienenstand (bestehender Unterstand)
 
+![Dadant-Beuten auf einem Unterbau aus Balken und Hohlblocksteinen](bilder/fund/dadantbeuten_mit_ablegerkasten_unterbau_au.jpg)
+
+*Ein selbstgebauter Unterbau: Balken auf Hohlblocksteinen. Das ist die günstigste brauchbare Lösung für den bestehenden Unterstand — sie hält die Beute von der Bodenfeuchte weg und bringt das Flugloch auf eine Höhe, bei der man ohne krummen Rücken arbeitet. Foto: Maja Dumat from Deutschland (Germany), CC BY 2.0, via Wikimedia Commons.*
+
 ### Nutzung des vorhandenen Unterstands
 
 Der bestehende Unterstand mit optimaler Ausrichtung wird als Bienenstand genutzt. Dies spart den **Neubau eines Unterstands** (Ersparnis ca. CHF 25'000--37'000!) und nutzt eine bereits erprobte Struktur, die die Schneelast vor Ort bewältigt.
@@ -121,6 +125,10 @@ Flugseite →
 ---
 
 ## Bereich 2: Schleuderraum / Honigverarbeitung (Stall OG)
+
+![Schleuder mit Entdeckelungswanne und Eimern im Verarbeitungsraum](bilder/fund/aufstellung_im_schleuderraum_quellgeprueft.jpg)
+
+*Ein eingerichteter Schleuderraum im Kleinformat: Schleuder, daneben die Entdeckelungswanne, darunter die Eimer. Mehr braucht es nicht — aber alle drei müssen so stehen, dass die Wabe nur einen kurzen, tropffreien Weg hat. Foto: Ben pcc at English Wikipedia, Public Domain, via Wikimedia Commons.*
 
 ### Standort: Obergeschoss Stall
 
@@ -232,6 +240,10 @@ Das leere Obergeschoss des Stalls wird zum **Honigverarbeitungsraum** ausgebaut.
 ---
 
 ## Bereich 3: Lager (Stall EG)
+
+![Wabenlager unter der Decke eines Imkereiraums](bilder/fund/bestaetigt_mit_fachlichem_warnhinweis_imag.jpg)
+
+*Wabenlagerung unter der Decke: Zargen mit ausgebauten Waben hängen luftig und einzeln zugänglich. Für das Lager im Stall-EG ist das die Vorlage — Waben brauchen kühl, trocken und mäusesicher, aber vor allem Luft zwischen den Zargen. Foto: Dirk Liesch, CC BY 4.0, via Wikimedia Commons.*
 
 ### Nutzung des bestehenden Lagerraums / Werkstatt
 
