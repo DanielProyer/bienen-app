@@ -68,34 +68,59 @@ Schlägt der Upload fehl (kein Netz am Bienenstand), bleibt die Aufnahme lokal
 liegen und wird beim nächsten Netz nachgereicht. Die Durchsicht lässt sich auch
 ohne Transkription speichern — die Erkennung ist Zugabe, nie Voraussetzung.
 
-## Erkennung: Azure Speech, Region Schweiz
+## Erkennung: Kaskade statt Einzelanbieter
 
-Gewählt, weil es als einziger grosser Dienst **akustische Anpassung** anbietet
-und eine Region **Switzerland North** hat — die Daten bleiben im Land, was für
-die geplante Vermarktung stärker wiegt als jede EU-Lösung. Kosten in derselben
-Grössenordnung wie alle Alternativen: deutlich unter zwanzig Franken im Jahr.
+> **Revidiert am 28.07.2026 nach der Marktrecherche** (`assets/recherche/31_Spracherkennung_Marktvergleich.md`,
+> 16 Anbieter, 8 Achsen, 6 Gegenprüfungen). Die vorherige Festlegung auf Azure
+> Speech in Switzerland North ist **hinfällig** — beide tragenden Gründe haben
+> der Prüfung nicht standgehalten. Begründung: D-99.
 
-Der Schlüssel wird als Supabase-Secret gesetzt (**vom Betreiber selbst**, nie im
-Repo, nie im Client). Die Anfrage läuft über eine Edge Function.
+Die Erkennung läuft **zweistufig**, und beide Stufen sind einzeln austauschbar:
 
-## Lernfähigkeit in zwei Stufen
+1. **Erkenner** — Audio plus Wortliste (global + pro Mandant) → wörtliches Transkript
+2. **Sprachmodell** — Transkript plus Fachglossar plus JSON-Schema → Formularfelder
 
-**Stufe 1 — Korrekturschicht in der App.** Eine Verhörer-Tabelle, geführt **pro
-Person** innerhalb des Betriebs: Daniel und Lorenz sprechen unterschiedlich, und
-später jeder Kunde anders. Korrigiert jemand „weissenzellen" zu „Weiselzellen",
-merkt die App sich das Paar und wendet es künftig selbst an. Wirkt ab der ersten
-Korrektur, kostet nichts, ist anbieterunabhängig, von Haus aus mandantenfähig.
-Die gelernten Paare sind in den Einstellungen einsehbar und löschbar — sonst
-schleppt man eine falsche Regel jahrelang mit.
+Der zweite Schritt ist der wichtigere. **Kein untersuchter Wettbewerber versucht,
+das Transkript perfekt zu machen**; alle setzen ein Sprachmodell mit Fachkontext
+dahinter. Für diesen Weg gibt es Messungen (28 % relative Fehlerreduktion bei
+Fachterminologie; +6 BLEU bei Schweizer Parlamentsdeutsch), für den Erkenner-Weg
+nicht.
 
-Zusätzlich geht eine **statische Fachwortliste** (rund 40 Begriffe) als Custom
-Vocabulary an Azure mit.
+**Gewählter Erkenner: ElevenLabs Scribe v2** (bester unabhängig gemessener Wert,
+`webm` und `opus` ausdrücklich unterstützt, `source_url` plus Webhook — damit läuft
+kein Audio-Byte durch die Edge Function). **Zweitkandidat AssemblyAI**, der bei
+Datenschutz-Gewichtung nach vorn rückt, weil sein EU-Endpunkt nichts extra kostet.
 
-**Stufe 2 — akustisches Training auf die Stimme.** Braucht Paare aus Ton und
-korrektem Text. Genau die entstehen in Stufe 1 von selbst: Die Aufnahme liegt
-vor, der korrigierte Text auch. Nach einer Saison ist das Material beisammen; ob
-es sich lohnt, entscheidet sich dann mit Daten statt mit Vermutungen. Ein
-Trainingslauf kostet rund fünfzig Dollar.
+**Beide gehören in denselben Feldtest, bevor gebaut wird.** Die Wahl steht unter
+Vorbehalt der eigenen Messung — für Deutsch existiert bei keinem Anbieter eine
+unabhängige Fehlerrate.
+
+Schlüssel werden als Supabase-Secret gesetzt (**vom Betreiber selbst**, nie im Repo,
+nie im Client). Die Anfrage läuft über eine Edge Function.
+
+## Lernfähigkeit — eine Stufe, nicht zwei
+
+**Verhörer-Tabelle pro Person und Mandant.** Korrigiert jemand „weissenzellen" zu
+„Weiselzellen", merkt die App sich das Paar und wendet es künftig an — in der
+Wortliste des Erkenners *und* im Glossar der Sprachmodell-Stufe. Wirkt ab der ersten
+Korrektur, kostet nichts, ist anbieterunabhängig und mandantenfähig. Die gelernten
+Paare sind in den Einstellungen einsehbar und löschbar — sonst schleppt man eine
+falsche Regel jahrelang mit.
+
+Dazu eine **statische Fachwortliste** (rund 40 Begriffe). Zwei Regeln dafür:
+
+- **Seuchenbegriffe gehören nicht hinein.** Wortlisten können Begriffe *einfügen*,
+  die nie gesagt wurden. Ein halluzinierter Faulbrut-Befund wäre gravierender als
+  ein fehlender. Diese Begriffe löst die Sprachmodell-Stufe aus dem Kontext.
+- **Alltagswörter mit Sonderbedeutung ebenfalls nicht** — Beute, Windel, Stifte,
+  Schied. Übererkennungsrisiko.
+
+> **Akustisches Training auf die Stimme ist gestrichen.** Die Annahme des ersten
+> Entwurfs, die Trainingsdaten fielen als Nebenprodukt an, ist **falsch**: Azure
+> verlangt Audioschnipsel von maximal 40 Sekunden mit wörtlichem Transkript, nicht
+> korrigierte Formularfelder. Dazu Modellverfall nach zwei Jahren und rund 471 USD
+> im Jahr allein fürs Vorhalten. Die Tür bleibt offen, weil die Kaskade den Erkenner
+> austauschbar hält — aber sie wird nicht als Ausbaustufe eingeplant.
 
 ## Datenmodell
 
