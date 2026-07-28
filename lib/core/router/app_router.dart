@@ -227,6 +227,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               ],
             ),
             GoRoute(
+              path: 'spracherkennung',
+              builder: (context, state) => const MarkdownViewerPage(
+                title: 'Spracherkennung — Marktvergleich',
+                assetPath: 'assets/recherche/31_Spracherkennung_Marktvergleich.md',
+              ),
+            ),
+            GoRoute(
               path: 'bienenstand',
               builder: (context, state) => const MarkdownViewerPage(
                 title: 'Bienenstand & Unterstand',

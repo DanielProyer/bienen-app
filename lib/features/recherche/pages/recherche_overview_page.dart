@@ -97,6 +97,13 @@ class RechercheOverviewPage extends StatelessWidget {
             ),
             _buildTopicCard(
               context,
+              title: 'Spracherkennung — Marktvergleich',
+              subtitle: '16 Anbieter geprüft: Fachwörter, Schweizer Akzent, Preise, Empfehlung',
+              icon: Icons.record_voice_over,
+              route: '/recherche/spracherkennung',
+            ),
+            _buildTopicCard(
+              context,
               title: 'Erstausstattung Einkaufsliste',
               subtitle: 'Komplette Einkaufsliste mit Preisen und Lieferanten',
               icon: Icons.receipt_long,
