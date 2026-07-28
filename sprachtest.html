@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sprachband — Belastungstest</title>
+<style>
+  :root {
+    --grund: #faf9f7; --karte: #fff; --rand: #e4e1dc;
+    --text: #23221f; --gedaempft: #6e6a63;
+    --gut: #3f7d4e; --warn: #b8860b; --schlecht: #b23430; --honig: #c48e2a;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; padding: 12px 12px 32px;
+    font: 15px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--grund); color: var(--text);
+  }
+  h1 { font-size: 19px; margin: 4px 0 2px; }
+  .unter { color: var(--gedaempft); font-size: 13px; margin: 0 0 14px; }
+
+  .band {
+    background: var(--karte); border: 1px solid var(--rand); border-radius: 12px;
+    padding: 14px; margin-bottom: 12px;
+  }
+  .zustand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; }
+  .punkt { width: 14px; height: 14px; border-radius: 50%; background: #bbb; flex: none; }
+  .punkt.hoert { background: var(--gut); animation: puls 1.4s infinite; }
+  .punkt.gestoert { background: var(--schlecht); }
+  .punkt.pause { background: var(--warn); }
+  @keyframes puls { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+
+  .uhr { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; margin: 8px 0 2px; }
+  .hoert-text {
+    min-height: 42px; margin-top: 8px; padding: 8px 10px;
+    background: #f4f2ee; border-radius: 8px; font-style: italic; color: var(--gedaempft);
+  }
+
+  .zahlen { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
+  .zelle { background: var(--karte); border: 1px solid var(--rand); border-radius: 10px; padding: 10px 12px; }
+  .zelle .wert { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .zelle .bez { font-size: 12px; color: var(--gedaempft); }
+  .zelle.alarm .wert { color: var(--schlecht); }
+
+  button {
+    font: inherit; font-weight: 600; border-radius: 10px; border: 1px solid var(--rand);
+    padding: 14px 18px; background: var(--karte); color: var(--text); min-height: 52px;
+  }
+  button.haupt { background: var(--honig); border-color: var(--honig); color: #fff; width: 100%; font-size: 17px; }
+  button.haupt.laeuft { background: var(--schlecht); border-color: var(--schlecht); }
+  .reihe { display: flex; gap: 8px; margin: 10px 0; }
+  .reihe button { flex: 1; }
+  label.schalter { display: flex; align-items: center; gap: 10px; padding: 10px 2px; font-size: 14px; }
+  input[type=checkbox] { width: 22px; height: 22px; }
+
+  #protokoll {
+    background: var(--karte); border: 1px solid var(--rand); border-radius: 10px;
+    max-height: 45vh; overflow-y: auto; font-size: 13px; font-family: ui-monospace, monospace;
+  }
+  #protokoll div { padding: 5px 10px; border-bottom: 1px solid #f0eeea; }
+  #protokoll div:last-child { border-bottom: 0; }
+  .z-takt { color: var(--gedaempft); }
+  .z-text { color: var(--text); }
+  .z-fehler { color: var(--schlecht); }
+  .z-warn { color: var(--warn); }
+  .z-gut { color: var(--gut); }
+  textarea { width: 100%; height: 130px; font-family: ui-monospace, monospace; font-size: 12px;
+             border: 1px solid var(--rand); border-radius: 8px; padding: 8px; }
+</style>
+</head>
+<body>
+
+<h1>Sprachband — Belastungstest</h1>
+<p class="unter">Prüft, ob die Erkennung eine ganze Durchsicht durchhält. Einschalten, das Handy so tragen wie beim Imkern, gelegentlich sprechen. Der Test misst selbst, ob und wann er taub wird.</p>
+
+<div class="band">
+  <div class="zustand"><span class="punkt" id="punkt"></span><span id="zustand">bereit</span></div>
+  <div class="uhr" id="uhr">00:00</div>
+  <div class="hoert-text" id="gehoert">—</div>
+</div>
+
+<div class="zahlen">
+  <div class="zelle"><div class="wert" id="zTakte">0</div><div class="bez">Takt-Erneuerungen</div></div>
+  <div class="zelle"><div class="wert" id="zTexte">0</div><div class="bez">erkannte Sätze</div></div>
+  <div class="zelle" id="zelleLuecke"><div class="wert" id="zLuecke">0s</div><div class="bez">längste Stille ohne Erkennung</div></div>
+  <div class="zelle" id="zelleFehler"><div class="wert" id="zFehler">0</div><div class="bez">Störungen</div></div>
+  <div class="zelle" id="zellePruef" style="grid-column:1/-1"><div class="wert"><span id="zPruefOk">0</span> / <span id="zPruefWeg">0</span></div><div class="bez">Prüfungen bestanden / verpasst — das ist das eigentliche Ergebnis</div></div>
+</div>
+
+<label class="schalter">
+  <input type="checkbox" id="mitschnitt" checked>
+  <span>Tonmitschnitt parallel laufen lassen <em>(prüft, ob beides zugleich geht)</em></span>
+</label>
+
+<div id="pruefBanner" style="display:none;background:#fff4d6;border:2px solid var(--warn);border-radius:12px;padding:14px;margin-bottom:10px;font-weight:600;text-align:center">
+  Bitte jetzt etwas sagen — z.B. „Temperatur zwanzig"
+</div>
+
+<button class="haupt" id="knopf">Test starten</button>
+
+<div class="reihe">
+  <button id="pruefen">Höre ich noch?</button>
+  <button id="bericht">Bericht erstellen</button>
+</div>
+
+<textarea id="ausgabe" placeholder="Der Bericht erscheint hier — Text markieren und kopieren." readonly></textarea>
+
+<h3 style="font-size:15px;margin:16px 0 6px">Verlauf</h3>
+<div id="protokoll"></div>
+
+<script>
+'use strict';
+// ---------------------------------------------------------------------------
+// Belastungstest fuer das geplante Sprachband.
+//
+// Die Frage, die er beantworten soll: Traegt die Web Speech API eine ganze
+// Durchsicht (~30 min)? Die Recherche sagt nein — Chrome kappt im Dauermodus
+// nach etwa einer Minute, und schnelle Neustarts laufen in eine
+// Ratenbegrenzung. Der Entwurf setzt deshalb auf GEPLANTE Erneuerung im
+// festen Takt statt auf Reaktion nach dem Abbruch. Genau das wird hier
+// gemessen — samt der Frage, ob ein paralleler Mitschnitt stoert.
+// ---------------------------------------------------------------------------
+
+const TAKT_MS = 45000;      // planmaessige Erneuerung, bevor Chrome kappt
+const TAUB_MS = 150000;     // so lange ohne Erkennung gilt als "taub"
+
+// Der eigentliche Messpunkt.
+//
+// „Lange nichts erkannt" allein beweist nichts — vielleicht hat schlicht
+// niemand gesprochen. Deshalb fordert der Test regelmaessig aktiv zum Sprechen
+// auf und prueft, ob innerhalb eines Zeitfensters etwas ankommt. Nur ein
+// verpasster Prueftimpuls ist ein belegter Ausfall.
+const PRUEF_MS = 180000;    // alle drei Minuten zum Sprechen auffordern
+const ANTWORT_MS = 40000;   // so lange darf die Antwort brauchen
+
+const Ctor = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const el = (id) => document.getElementById(id);
+const knopf = el('knopf');
+
+let rec = null, recorder = null, strom = null;
+let laeuft = false, generation = 0;
+let taktTimer = null, uhrTimer = null, pruefTimer = null;
+let start = 0, letzterText = 0;
+let takte = 0, texte = 0, fehler = 0, luecke = 0;
+let taubGemeldet = false;
+let pruefungLaeuft = false, pruefungSeit = 0;
+let pruefBestanden = 0, pruefVerpasst = 0;
+const zeilen = [];
+
+function jetzt() { return Date.now(); }
+function sek(ms) { return Math.round(ms / 1000); }
+function uhrzeit() { return new Date().toLocaleTimeString('de-CH'); }
+
+function log(art, text) {
+  const zeit = uhrzeit();
+  zeilen.push(`${zeit}  ${text}`);
+  const d = document.createElement('div');
+  d.className = 'z-' + art;
+  d.textContent = `${zeit}  ${text}`;
+  const p = el('protokoll');
+  p.insertBefore(d, p.firstChild);
+  while (p.childElementCount > 300) p.removeChild(p.lastChild);
+}
+
+function zustand(wort, klasse) {
+  el('zustand').textContent = wort;
+  el('punkt').className = 'punkt ' + (klasse || '');
+}
+
+function zahlen() {
+  el('zTakte').textContent = takte;
+  el('zTexte').textContent = texte;
+  el('zLuecke').textContent = sek(luecke) + 's';
+  el('zFehler').textContent = fehler;
+  el('zelleLuecke').classList.toggle('alarm', luecke > TAUB_MS);
+  el('zelleFehler').classList.toggle('alarm', fehler > 0);
+  el('zPruefOk').textContent = pruefBestanden;
+  el('zPruefWeg').textContent = pruefVerpasst;
+  el('zellePruef').classList.toggle('alarm', pruefVerpasst > 0);
+}
+
+// --- Erkennung -------------------------------------------------------------
+
+function starteErkennung(grund) {
+  if (!laeuft) return;
+  const meine = ++generation;
+  try {
+    const r = new Ctor();
+    r.lang = 'de-CH';
+    r.continuous = true;
+    r.interimResults = true;
+
+    r.onresult = (ev) => {
+      if (meine !== generation) return;
+      let end = '', vor = '';
+      for (let i = 0; i < ev.results.length; i++) {
+        const t = ev.results[i][0].transcript;
+        if (ev.results[i].isFinal) end += t + ' '; else vor += t + ' ';
+      }
+      el('gehoert').textContent = (end + vor).trim() || '—';
+      if (end.trim()) {
+        texte++;
+        letzterText = jetzt();
+        taubGemeldet = false;
+        log('text', '» ' + end.trim());
+        pruefungBeantwortet();
+        zahlen();
+      }
+    };
+
+    r.onerror = (ev) => {
+      if (meine !== generation) return;
+      const code = ev.error || '?';
+      // no-speech und aborted sind im Dauerbetrieb der Normalfall.
+      if (code === 'no-speech' || code === 'aborted') { log('takt', 'Hinweis: ' + code); return; }
+      fehler++; zahlen();
+      log('fehler', 'FEHLER: ' + code);
+      if (code === 'not-allowed' || code === 'service-not-allowed' || code === 'audio-capture') {
+        log('fehler', 'Nicht behebbar — Test beendet.');
+        stoppen(true);
+      }
+    };
+
+    r.onend = () => {
+      if (meine !== generation || !laeuft) return;
+      // Ausserhalb des Takts beendet = Chrome hat gekappt.
+      log('warn', 'Erkennung endete von selbst — sofort erneuert');
+      starteErkennung('nach Abbruch');
+    };
+
+    r.start();
+    rec = r;
+    log('takt', 'Erkennung gestartet (' + grund + ')');
+  } catch (e) {
+    fehler++; zahlen();
+    log('fehler', 'Start misslungen: ' + e);
+  }
+}
+
+function beendeErkennung() {
+  generation++;
+  if (!rec) return;
+  rec.onend = null; rec.onresult = null; rec.onerror = null;
+  try { rec.abort(); } catch (e) { /* schon beendet */ }
+  rec = null;
+}
+
+// Planmaessige Erneuerung: erst den neuen starten, dann den alten kappen —
+// so bleibt keine Luecke im Zuhoeren.
+function takt() {
+  if (!laeuft) return;
+  takte++;
+  const alt = rec;
+  starteErkennung('Takt ' + takte);
+  if (alt) {
+    alt.onend = null; alt.onresult = null; alt.onerror = null;
+    setTimeout(() => { try { alt.abort(); } catch (e) {} }, 400);
+  }
+  zahlen();
+}
+
+// --- Prüfimpuls ------------------------------------------------------------
+
+function piep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.value = 880; g.gain.value = 0.15;
+    o.connect(g); g.connect(ctx.destination);
+    o.start(); o.stop(ctx.currentTime + 0.25);
+    setTimeout(() => ctx.close(), 600);
+  } catch (e) { /* Ton ist Beiwerk */ }
+}
+
+function fordereSprechen() {
+  if (!laeuft || pruefungLaeuft) return;
+  pruefungLaeuft = true;
+  pruefungSeit = jetzt();
+  piep();
+  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {}
+  el('pruefBanner').style.display = 'block';
+  log('warn', 'PRÜFUNG: bitte jetzt etwas sagen (z.B. „Temperatur zwanzig")');
+}
+
+// Wird bei jeder Erkennung aufgerufen — eine laufende Prüfung gilt als bestanden.
+function pruefungBeantwortet() {
+  if (!pruefungLaeuft) return;
+  pruefungLaeuft = false;
+  pruefBestanden++;
+  el('pruefBanner').style.display = 'none';
+  log('gut', 'Prüfung bestanden nach ' + sek(jetzt() - pruefungSeit) + 's — Erkennung lebt');
+  zahlen();
+}
+
+function pruefungAuswerten() {
+  if (!pruefungLaeuft) return;
+  if (jetzt() - pruefungSeit < ANTWORT_MS) return;
+  pruefungLaeuft = false;
+  pruefVerpasst++;
+  el('pruefBanner').style.display = 'none';
+  log('fehler', 'PRÜFUNG VERPASST — ' + sek(ANTWORT_MS) + 's lang nichts erkannt. '
+      + 'Falls du gesprochen hast: Die Erkennung ist hier ausgefallen.');
+  zahlen();
+}
+
+// --- Mitschnitt ------------------------------------------------------------
+
+async function starteMitschnitt() {
+  if (!el('mitschnitt').checked) { log('takt', 'Mitschnitt aus'); return; }
+  if (!window.MediaRecorder) { log('warn', 'MediaRecorder fehlt — Mitschnitt nicht möglich'); return; }
+  try {
+    strom = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recorder = new MediaRecorder(strom, { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 24000 });
+    let bytes = 0;
+    recorder.ondataavailable = (e) => { bytes += e.data.size; window.__mitschnittBytes = bytes; };
+    recorder.start(10000);
+    log('gut', 'Mitschnitt läuft parallel');
+  } catch (e) {
+    log('warn', 'Mitschnitt nicht gestartet: ' + e.name);
+  }
+}
+
+function stoppeMitschnitt() {
+  try { if (recorder && recorder.state !== 'inactive') recorder.stop(); } catch (e) {}
+  try { if (strom) strom.getTracks().forEach((t) => t.stop()); } catch (e) {}
+  recorder = null; strom = null;
+}
+
+// --- Lauf ------------------------------------------------------------------
+
+function tick() {
+  if (!laeuft) return;
+  const dauer = jetzt() - start;
+  const m = Math.floor(dauer / 60000), s = Math.floor((dauer % 60000) / 1000);
+  el('uhr').textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+
+  pruefungAuswerten();
+
+  const still = jetzt() - letzterText;
+  if (still > luecke) { luecke = still; zahlen(); }
+
+  // Der wichtigste Befund des Tests: Läuft das Band weiter, ohne noch zu hören?
+  if (still > TAUB_MS && !taubGemeldet) {
+    taubGemeldet = true;
+    zustand('taub? seit ' + sek(still) + 's nichts erkannt', 'gestoert');
+    log('fehler', 'STILL seit ' + sek(still) + 's — bitte laut sprechen und prüfen');
+  } else if (!taubGemeldet) {
+    zustand('hört zu', 'hoert');
+  }
+}
+
+async function starten() {
+  if (!Ctor) { alert('Dieser Browser kann keine Spracherkennung. Bitte Chrome verwenden.'); return; }
+  laeuft = true;
+  start = letzterText = jetzt();
+  takte = texte = fehler = luecke = 0; taubGemeldet = false;
+  pruefBestanden = pruefVerpasst = 0; pruefungLaeuft = false;
+  zeilen.length = 0; el('protokoll').innerHTML = ''; el('ausgabe').value = '';
+  zahlen();
+  knopf.textContent = 'Test beenden'; knopf.classList.add('laeuft');
+  zustand('startet …', 'hoert');
+  log('gut', 'Test gestartet — Takt alle ' + sek(TAKT_MS) + 's');
+
+  await starteMitschnitt();
+  starteErkennung('Start');
+  taktTimer = setInterval(takt, TAKT_MS);
+  uhrTimer = setInterval(tick, 1000);
+  pruefTimer = setInterval(fordereSprechen, PRUEF_MS);
+}
+
+function stoppen(stillschweigend) {
+  if (!laeuft) return;
+  laeuft = false;
+  clearInterval(taktTimer); clearInterval(uhrTimer); clearInterval(pruefTimer);
+  el('pruefBanner').style.display = 'none'; pruefungLaeuft = false;
+  beendeErkennung();
+  stoppeMitschnitt();
+  knopf.textContent = 'Test starten'; knopf.classList.remove('laeuft');
+  zustand('beendet', '');
+  if (!stillschweigend) log('gut', 'Test beendet');
+  bericht();
+}
+
+// --- Bericht ---------------------------------------------------------------
+
+function bericht() {
+  const dauer = start ? jetzt() - start : 0;
+  const mb = window.__mitschnittBytes ? (window.__mitschnittBytes / 1048576).toFixed(1) : '—';
+  let urteil;
+  if (pruefBestanden + pruefVerpasst < 5) {
+    urteil = 'ZU KURZ für ein Urteil — es braucht mindestens fünf Prüfungen (rund 15 min).';
+  } else if (pruefVerpasst === 0) {
+    urteil = 'DURCHGEHALTEN — alle ' + pruefBestanden + ' Prüfungen beantwortet.';
+  } else {
+    urteil = 'AUSGEFALLEN — ' + pruefVerpasst + ' von ' + (pruefBestanden + pruefVerpasst)
+           + ' Prüfungen blieben unbeantwortet.';
+  }
+
+  const text = [
+    '=== Sprachband-Belastungstest ===',
+    'Gerät:      ' + navigator.userAgent,
+    'Gemessen:   ' + Math.floor(dauer / 60000) + ' min ' + Math.floor((dauer % 60000) / 1000) + ' s',
+    'Takt:       alle ' + sek(TAKT_MS) + ' s, ' + takte + ' Erneuerungen',
+    'Erkannt:    ' + texte + ' Sätze',
+    'Längste Stille ohne Erkennung: ' + sek(luecke) + ' s',
+    'Störungen:  ' + fehler,
+    'Prüfungen:  ' + pruefBestanden + ' bestanden, ' + pruefVerpasst + ' verpasst',
+    'Mitschnitt: ' + mb + ' MB',
+    '',
+    'URTEIL: ' + urteil,
+    '',
+    '--- Verlauf (neueste zuletzt) ---',
+    ...zeilen.slice(-120),
+  ].join('\n');
+  el('ausgabe').value = text;
+  return text;
+}
+
+// --- Bedienung -------------------------------------------------------------
+
+knopf.onclick = () => (laeuft ? stoppen() : starten());
+el('bericht').onclick = () => { bericht(); el('ausgabe').select(); };
+
+// Sagt sofort, ob noch gehört wird — ohne auf den Zeitablauf zu warten.
+el('pruefen').onclick = () => {
+  if (!laeuft) { alert('Test läuft nicht.'); return; }
+  const still = sek(jetzt() - letzterText);
+  alert(still < 20
+    ? 'Ja — vor ' + still + ' s zuletzt etwas erkannt.'
+    : 'Seit ' + still + ' s nichts erkannt. Jetzt laut etwas sagen und erneut prüfen.');
+};
+
+// Wechsel in den Hintergrund beeinflusst die Erkennung — das muss im
+// Protokoll stehen, sonst hält man es später für einen Fehler der Technik.
+document.addEventListener('visibilitychange', () => {
+  if (laeuft) log('warn', document.hidden ? 'Seite in den Hintergrund' : 'Seite wieder im Vordergrund');
+});
+
+window.addEventListener('beforeunload', () => { if (laeuft) stoppen(true); });
+</script>
+</body>
+</html>
