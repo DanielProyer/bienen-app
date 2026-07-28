@@ -82,6 +82,10 @@ Detaillierte Einkaufsliste und Einzelpreise stehen bereits in **Doku 03_Erstauss
 
 ### 3.2 Skalierungslogik der Investition
 
+![Balkendiagramm: Einmal-Overhead je Volk sinkt von 1151 CHF bei einem Volk auf 144 CHF bei acht](bilder/20_fixkostendegression.png)
+
+*Derselbe Betrag, auf mehr Völker verteilt: Schleuder, Abfüllbehälter und Werkzeug kosten für acht Völker fast dasselbe wie für eines — je Volk aber nur noch ein Achtel. Das blaue Band zeigt, was daneben nicht schrumpft: Beute und Ableger fallen pro Volk erneut an. Ab dem zweiten Volk liegt der Overhead unter diesen volkgebundenen Kosten. Gezeichnet für dieses Dokument aus den Beträgen in Kapitel 3.1.*
+
 Nicht jede Investition skaliert mit der Voelkerzahl. Man kann sie in drei Klassen teilen:
 
 - **Einmal-Overhead (skaliert kaum):** Schleuder, Abfuellbehaelter, Refraktometer, Einloettrafo, Smoker, Schleuderraum. Diese Kosten fallen fuer 2 Voelker fast gleich hoch an wie fuer 8 → **die Fixkosten pro Volk sinken mit jedem zusaetzlichen Volk deutlich** (Fixkostendegression). Das ist der eigentliche oekonomische Hebel der Skalierung 2→8.
