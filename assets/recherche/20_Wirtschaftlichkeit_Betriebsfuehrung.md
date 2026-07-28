@@ -125,6 +125,10 @@ Das ist die betriebswirtschaftlich entscheidende Groesse. Grundlage: Doku 03 (ja
 
 ## 5. Ertrag & Erloes
 
+![Regal mit vielen Honiggläsern verschiedener Sorten](bilder/fund/quellenbelegt_imagedescription_woertlich_h.jpg)
+
+*Direktvermarktung im Regal. Der Preisunterschied zwischen Abgabe an den Handel und Verkauf ab Hof ist der grösste Hebel der ganzen Wirtschaftlichkeitsrechnung — und er hängt an Etikette, Sortenangabe und Wiedererkennbarkeit, nicht an der Honigmenge. Foto: CC BY, via Wikimedia Commons.*
+
 ### 5.1 Honigertrag — Schweizer Statistik vs. alpine Realitaet
 
 Belastbare Zahlen von apisuisse/BienenSchweiz (jaehrliche Umfrage, 2025: 817 Imker, 9'810 Voelker):
