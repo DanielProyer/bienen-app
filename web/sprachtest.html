@@ -169,26 +169,49 @@ let taubGemeldet = false;
 let pruefungLaeuft = false, pruefungSeit = 0;
 let pruefBestanden = 0, pruefVerpasst = 0;
 let erzwungen = 0;   // von Chrome beendet, nicht vom Takt
+let stromWorte = [];         // Text des LAUFENDEN Erkenners, normalisiert
 let letzteWorte = [];        // zuletzt gemeldete Woerter, ueber Erkenner hinweg
+let anzeigeWorte = [];       // dasselbe in Rohform, nur fuer die Anzeige
 let zuMs = 0, zuSeit = 0;    // wie lange war das Mikro insgesamt geschlossen
 
-// Meldet nur, was gegenueber dem zuletzt Gehoerten wirklich neu ist.
-//
-// Praefix-Vergleich reicht nicht: Android liefert denselben Satz spaeter mit
-// Grossschreibung und Komma nach. Deshalb wortweise und ohne Ruecksicht auf
-// Schreibweise — gesucht wird die laengste Ueberlappung zwischen dem Ende des
-// zuletzt Gemeldeten und dem Anfang des Neuen.
+// Schreibweise und Satzzeichen taugen nicht zum Vergleichen: Android reicht
+// denselben Satz spaeter mit Grossbuchstaben und Komma nach.
+const norm = (wort) => wort.toLowerCase().replace(/[.,;:!?"'»«]/g, '');
+
+// Meldet nur, was gegenueber dem bisher Gehoerten wirklich neu ist.
+function zeigeGehoert(vor) {
+  const laufend = (vor || '').trim();
+  const txt = (anzeigeWorte.join(' ') + (laufend ? ' … ' + laufend : '')).trim();
+  el('gehoert').textContent = txt || '—';
+}
+
 function nurNeues(text) {
-  const w = text.split(/\s+/).filter(Boolean);
-  if (!w.length) return '';
-  const klein = (a) => a.join(' ').toLowerCase().replace(/[.,;:!?]/g, '');
-  let gleich = 0;
+  const roh = text.split(/\s+/).filter(Boolean);
+  if (!roh.length) return '';
+  const w = roh.map(norm);
+
+  // Fall 1: derselbe Erkenner, nur laenger. Das Bekannte ist ein Praefix des
+  // Neuen — das bleibt auch bei tausend Woertern in einem Durchlauf pruefbar.
+  let i = 0;
+  while (i < stromWorte.length && i < w.length && stromWorte[i] === w[i]) i++;
+  if (i > 0 && i === stromWorte.length) return uebernimm(roh, w, i);
+
+  // Fall 2: frischer Erkenner, faengt bei null an. Er wiederholt meist die
+  // letzten Woerter — die laengste Ueberlappung davon wird abgezogen.
   for (let k = Math.min(letzteWorte.length, w.length); k > 0; k--) {
-    if (klein(letzteWorte.slice(-k)) === klein(w.slice(0, k))) { gleich = k; break; }
+    if (letzteWorte.slice(-k).join(' ') === w.slice(0, k).join(' ')) {
+      return uebernimm(roh, w, k);
+    }
   }
-  const neu = w.slice(gleich);
+  return uebernimm(roh, w, 0);
+}
+
+function uebernimm(roh, w, ab) {
+  stromWorte = w;
+  const neu = roh.slice(ab);
   if (!neu.length) return '';
-  letzteWorte = letzteWorte.concat(neu).slice(-25);
+  letzteWorte = letzteWorte.concat(w.slice(ab)).slice(-40);
+  anzeigeWorte = anzeigeWorte.concat(neu).slice(-18);
   return neu.join(' ');
 }
 const zeilen = [];
@@ -249,13 +272,15 @@ function starteErkennung(grund) {
         const t = ev.results[i][0].transcript;
         if (ev.results[i].isFinal) end += t + ' '; else vor += t + ' ';
       }
-      el('gehoert').textContent = (end + vor).trim() || '—';
+      // NICHT end + vor: das ist die ganze Sitzung und waechst endlos.
+      zeigeGehoert(vor);
 
       // Kein Generationsfilter: ein abgeloester Erkenner darf den Ablauf nicht
       // mehr steuern, sein Gehoertes zaehlt aber trotzdem.
       end = end.trim();
       if (!end) return;
       const zuwachs = nurNeues(end);
+      zeigeGehoert(vor);
       if (!zuwachs) return;
 
       texte++;
@@ -305,6 +330,7 @@ function starteErkennung(grund) {
     r.onsoundstart = () => log('takt', 'Ton kommt an');
     r.onspeechstart = () => log('takt', 'Sprache erkannt — Erkennung läuft');
 
+    stromWorte = [];   // dieser Erkenner faengt bei null an
     r.start();
     rec = r;
     log('takt', 'Erkennung gestartet (' + grund + ')');
@@ -440,7 +466,7 @@ async function starten() {
   start = letzterText = jetzt();
   takte = texte = fehler = luecke = 0; taubGemeldet = false;
   erzwungen = 0;
-  letzteWorte = []; zuMs = 0; zuSeit = 0;
+  stromWorte = []; letzteWorte = []; anzeigeWorte = []; zuMs = 0; zuSeit = 0;
   pruefBestanden = pruefVerpasst = 0; pruefungLaeuft = false;
   zeilen.length = 0; el('protokoll').innerHTML = ''; el('ausgabe').value = '';
   zahlen();
