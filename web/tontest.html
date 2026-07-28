@@ -35,15 +35,24 @@
 <b>Die letzte offene Frage vor dem Bau:</b> Läuft die Aufnahme weiter, wenn der Bildschirm sperrt?
 Bei der Spracherkennung tat sie es nicht. Ein reiner Tonstrom hat bessere Chancen, weil er kein
 gedrosselter Zeitgeber ist — aber geraten wird hier nicht mehr.<br>
-<b>Zweiter Lauf, mit Häkchen:</b> Der erste ohne Wachhalten ist gescheitert — mit dem Ausschalten des
-Bildschirms steht die Aufnahme. Jetzt hält die Seite den Bildschirm selbst wach. <b>Fünf Minuten genügen.</b>
-Handy hinlegen, nicht anfassen, <b>die Seitentaste nicht drücken</b> — wachhalten verhindert nur das
-selbsttätige Sperren, nicht das von Hand ausgelöste.</p>
+<b>Was der erste Lauf gezeigt hat:</b> Android lässt die Aufnahme nach dem Wegstecken noch rund eine Minute
+weiterlaufen und friert den Tab dann ein. Kurzes Wegschalten von ein paar Sekunden schadet also nichts.
+Es ist kein Verbot, sondern das Einfrieren untätiger Tabs — und <b>einen Tab, der Ton abspielt, friert Chrome
+nicht ein</b>.<br>
+<b>Dieser Lauf:</b> oberes Häkchen an (ist es schon), Wachhalten <b>aus</b>. Starten, Handy in die Tasche,
+Bildschirm sperren lassen, <b>fünf Minuten</b> warten. Trägt der stille Ton, darf das Handy dunkel bleiben —
+das wäre die saubere Lösung.</p>
+
+<label class="schalter">
+  <input type="checkbox" id="ton" checked>
+  <span><b>Mit stillem Dauerton wachhalten</b> — <em>der bessere Weg: Chrome friert keinen Tab ein, der Ton
+  abspielt. Der Bildschirm darf dabei ausgehen, das Handy bleibt dunkel in der Tasche.</em></span>
+</label>
 
 <label class="schalter">
   <input type="checkbox" id="wach">
-  <span><b>Bildschirm wachhalten</b> — <em>für diesen Lauf bitte AN. Der erste Lauf ohne ist gescheitert;
-  jetzt geht es darum, ob das Wachhalten die Aufnahme rettet.</em></span>
+  <span><b>Bildschirm wachhalten</b> — <em>die Rückfall-Lösung. Nur einschalten, wenn der Lauf mit dem
+  stillen Ton allein scheitert; der Bildschirm bleibt dann an und frisst Akku.</em></span>
 </label>
 
 <button class="haupt" id="knopf">Aufnahme starten</button>
@@ -67,7 +76,7 @@ selbsttätige Sperren, nicht das von Hand ausgelöste.</p>
 <script>
 // Fassung dieser Datei — steht sichtbar oben und im Bericht, damit ein
 // Feldergebnis immer einer Fassung zuzuordnen ist.
-const FASSUNG = 'T2';
+const FASSUNG = 'T3';
 
 // Alle fuenf Sekunden ein Haeppchen. Bleiben sie waehrend der Bildschirmsperre
 // aus, ist die Aufnahme dort tot — genau das ist die Frage.
@@ -80,6 +89,7 @@ let strom = null, rec = null, laeuft = false;
 let start = 0, letztesHaeppchen = 0, luecke = 0;
 let bytes = 0, haeppchen = 0, tonMs = 0;
 let wachSperre = null, wachSperreKam = false, wegGewesen = 0, teile = [];
+let tonCtx = null;   // haelt den Tab am Leben, ohne dass jemand etwas hoert
 let uhrTimer = null;
 const zeilen = [];
 
@@ -139,6 +149,31 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
+// Chrome friert Tabs ein, die nichts tun — aber keinen, der Ton abspielt.
+// Ein sehr leiser, sehr tiefer Dauerton genuegt dafuer. Echte Stille (Pegel
+// null) waere wirkungslos: Sie gilt dem Browser nicht als Wiedergabe.
+function stillenTonStarten() {
+  try {
+    const C = window.AudioContext || window.webkitAudioContext;
+    tonCtx = new C();
+    const o = tonCtx.createOscillator(), g = tonCtx.createGain();
+    o.frequency.value = 30;      // am unteren Rand des Hörbaren
+    g.gain.value = 0.003;        // hörbar für den Browser, nicht für Menschen
+    o.connect(g); g.connect(tonCtx.destination);
+    o.start();
+    log('gut', 'Stiller Dauerton läuft — hält den Tab wach');
+  } catch (e) {
+    log('fehler', 'Stiller Ton misslungen: ' + e);
+    tonCtx = null;
+  }
+}
+
+function stillenTonBeenden() {
+  if (!tonCtx) return;
+  try { tonCtx.close(); } catch (e) {}
+  tonCtx = null;
+}
+
 async function starten() {
   try {
     strom = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -192,6 +227,7 @@ async function starten() {
 
   start = jetzt(); letztesHaeppchen = start; laeuft = true;
   rec.start(HAEPPCHEN_MS);
+  if (el('ton').checked) stillenTonStarten();
   if (el('wach').checked) wachhalten();
   uhrTimer = setInterval(zahlen, 1000);
   el('knopf').textContent = 'Aufnahme beenden';
@@ -207,6 +243,7 @@ async function beenden() {
   try { rec && rec.state !== 'inactive' && rec.stop(); } catch (e) {}
   if (strom) strom.getTracks().forEach((t) => t.stop());
   if (wachSperre) { try { wachSperre.release(); } catch (e) {} wachSperre = null; }
+  stillenTonBeenden();
   el('knopf').textContent = 'Aufnahme starten';
   el('knopf').classList.remove('laeuft');
 
@@ -223,41 +260,40 @@ async function beenden() {
 function urteilen() {
   const min = tonMs / 60000;
   const wach = el('wach').checked;
+  const mitTon = el('ton').checked;
   const box = el('urteil');
   box.style.display = 'block';
-  let text, farbe;
+  let text, farbe = '#f1f8f1';
 
-  // Mit wachgehaltenem Bildschirm geht die Seite gar nicht in den Hintergrund.
-  // "Nie im Hintergrund" ist dann der Erfolg, nicht ein ungeprueftes Ergebnis.
-  if (wach) {
-    if (min < 5) {
-      text = 'ZU KURZ — mit wachem Bildschirm genügen fünf Minuten, aber es müssen fünf sein.';
-      farbe = '#fff4d6';
-    } else if (!wachSperreKam) {
-      text = 'NICHT WACHGEHALTEN — das Gerät hat die Sperre verweigert. Dieser Weg trägt hier nicht.';
-      farbe = '#fdf0f0';
-    } else if (luecke > 20000) {
-      text = 'AUSGEFALLEN — trotz wachem Bildschirm ' + Math.round(luecke / 1000) + ' s Lücke.';
+  const wie = mitTon && wach ? 'stillem Ton und wachem Bildschirm'
+            : mitTon ? 'stillem Dauerton' : 'wachgehaltenem Bildschirm';
+
+  if (!mitTon && !wach) {
+    // Der Lauf ohne jede Hilfe — so ist T1 gescheitert.
+    if (min < 10) { text = 'ZU KURZ für ein Urteil — es braucht mindestens zehn Minuten.'; farbe = '#fff4d6'; }
+    else if (wegGewesen === 0) { text = 'UNGEPRÜFT — der Bildschirm war nie aus.'; farbe = '#fff4d6'; }
+    else if (luecke > 20000) {
+      text = 'AUSGEFALLEN — grösste Lücke ' + Math.round(luecke / 1000)
+           + ' s. Die Aufnahme übersteht die Bildschirmsperre nicht.';
       farbe = '#fdf0f0';
     } else {
-      text = 'TRÄGT — ' + Math.round(min) + ' min lückenlos mit wachgehaltenem Bildschirm'
-           + (wegGewesen ? ', trotz ' + wegGewesen + 'x im Hintergrund' : '') + '.';
-      farbe = '#f1f8f1';
+      text = 'DURCHGEHALTEN ohne Hilfsmittel — ' + Math.round(min) + ' min, '
+           + wegGewesen + 'x im Hintergrund.';
     }
-  } else if (min < 10) {
-    text = 'ZU KURZ für ein Urteil — es braucht mindestens zehn Minuten mit gesperrtem Bildschirm.';
-    farbe = '#fff4d6';
-  } else if (wegGewesen === 0) {
-    text = 'UNGEPRÜFT — der Bildschirm war nie aus. Bitte nochmal, Handy weglegen und sperren lassen.';
-    farbe = '#fff4d6';
+  } else if (min < 5) {
+    text = 'ZU KURZ — fünf Minuten müssen es sein.'; farbe = '#fff4d6';
+  } else if (wach && !wachSperreKam) {
+    text = 'NICHT WACHGEHALTEN — das Gerät hat die Bildschirmsperre verweigert.'; farbe = '#fdf0f0';
+  } else if (mitTon && !wach && wegGewesen === 0) {
+    // Der Tonweg soll gerade beweisen, dass er das Wegstecken übersteht.
+    text = 'UNGEPRÜFT — der Bildschirm war nie aus. Handy weglegen und sperren lassen.'; farbe = '#fff4d6';
   } else if (luecke > 20000) {
-    text = 'AUSGEFALLEN — grösste Lücke ' + Math.round(luecke / 1000)
-         + ' s. Die Aufnahme übersteht die Bildschirmsperre nicht.';
+    text = 'AUSGEFALLEN — trotz ' + wie + ' ' + Math.round(luecke / 1000) + ' s Lücke.';
     farbe = '#fdf0f0';
   } else {
-    text = 'DURCHGEHALTEN — ' + Math.round(min) + ' min am Stück, ' + wegGewesen
-         + 'x im Hintergrund, grösste Lücke ' + Math.round(luecke / 1000) + ' s.';
-    farbe = '#f1f8f1';
+    text = 'TRÄGT — ' + Math.round(min) + ' min lückenlos mit ' + wie
+         + (wegGewesen ? ', ' + wegGewesen + 'x im Hintergrund' : '')
+         + '. Grösste Lücke ' + Math.round(luecke / 1000) + ' s.';
   }
   box.style.background = farbe;
   box.textContent = 'URTEIL: ' + text;
@@ -274,9 +310,14 @@ el('berichtKnopf').onclick = () => {
     'Format:     ' + (rec && rec.mimeType ? rec.mimeType : '—'),
     'Laufzeit:   ' + mmss(tonMs),
     'Häppchen:   ' + haeppchen + ' à ' + (HAEPPCHEN_MS / 1000) + ' s',
+    // Durch die AUFGENOMMENE Zeit teilen, nicht durch die Laufzeit — in einem
+    // Lauf mit Lücken sind das zwei sehr verschiedene Zahlen.
     'Datenmenge: ' + (bytes / 1048576).toFixed(2) + ' MB'
-      + (tonMs > 0 ? '  (' + (bytes / 1048576 / (tonMs / 60000)).toFixed(2) + ' MB pro Minute)' : ''),
+      + (haeppchen > 2
+          ? '  (' + (bytes / 1048576 / (haeppchen * HAEPPCHEN_MS / 60000)).toFixed(2) + ' MB je Tonminute)'
+          : ''),
     'Grösste Lücke: ' + Math.round(luecke / 1000) + ' s',
+    'Stiller Ton:   ' + (el('ton').checked ? (tonCtx || haeppchen ? 'lief' : 'misslungen') : 'aus'),
     'Wachhalten:    ' + (el('wach').checked
       ? (wachSperreKam ? 'angefordert und gewährt' : 'angefordert, aber VERWEIGERT') : 'nicht angefordert'),
     'Bildschirm: ' + (el('wach').checked ? 'wachgehalten' : 'nicht wachgehalten')
