@@ -72,6 +72,7 @@
 
 <h1>Sprachband — Belastungstest</h1>
 <p class="unter">Prüft, ob die Erkennung eine ganze Durchsicht durchhält. Einschalten, das Handy so tragen wie beim Imkern, gelegentlich sprechen. Der Test misst selbst, ob und wann er taub wird.</p>
+<p class="unter" id="fassungZeile" style="font-weight:600"></p>
 <p class="unter" style="background:#fff4d6;border-radius:8px;padding:10px 12px">
 <b>So läuft dieser Durchgang:</b> Handy auf lautlos, <b>Mitschnitt aus</b> (ist jetzt die Vorgabe),
 Ruhig-Modus aus. Dann starten und sprechen.<br>
@@ -155,9 +156,17 @@ const TAUB_MS = 150000;     // so lange ohne Erkennung gilt als "taub"
 const PRUEF_MS = 180000;    // alle drei Minuten zum Sprechen auffordern
 const ANTWORT_MS = 40000;   // so lange darf die Antwort brauchen
 
+// Fassung dieser Datei. Steht sichtbar oben und im Bericht, damit ein
+// Feldergebnis immer einer Fassung zuzuordnen ist.
+const FASSUNG = 'F7';
+
 const Ctor = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const el = (id) => document.getElementById(id);
+document.addEventListener('DOMContentLoaded', () => {
+  el('fassungZeile').textContent = 'Fassung ' + FASSUNG
+    + ' — steht hier eine ältere, lädt der Browser aus dem Zwischenspeicher.';
+});
 const knopf = el('knopf');
 
 let rec = null, recorder = null, strom = null;
@@ -515,6 +524,7 @@ function bericht() {
 
   const text = [
     '=== Sprachband-Belastungstest ===',
+    'Fassung:    ' + FASSUNG,
     'Gerät:      ' + navigator.userAgent,
     'Gemessen:   ' + Math.floor(dauer / 60000) + ' min ' + Math.floor((dauer % 60000) / 1000) + ' s',
     'Takt:       alle ' + sek(TAKT_MS) + ' s, ' + takte + ' geplante Erneuerungen',
@@ -524,7 +534,6 @@ function bericht() {
       + Math.round((jetzt() - start) / 1000) + ' s (' + el('zZu').textContent + ')',
     'Modus:      ' + (el('sanft').checked ? 'Ruhig (Takt-Wiederanlauf)' : 'Sofort-Neustart'),
     'Handy:      ' + (el('stumm').checked ? 'lautlos angenommen (Prüfsignal per Vibration)' : 'mit Ton'),
-    'Erkannt:    ' + texte + ' Sätze',
     'Längste Stille ohne Erkennung: ' + sek(luecke) + ' s',
     'Störungen:  ' + fehler,
     'Prüfungen:  ' + pruefBestanden + ' bestanden, ' + pruefVerpasst + ' verpasst',
