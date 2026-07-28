@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
+import 'package:bienen_app/features/durchsicht/sprache/domain/ergebnis_auswahl.dart';
 import 'package:bienen_app/features/durchsicht/sprache/domain/sprach_neustart.dart';
 import 'package:bienen_app/features/durchsicht/sprache/domain/sprache_erkenner.dart';
 
@@ -42,10 +43,20 @@ extension type _Recognition._(JSObject o) implements JSObject {
 ///    Fehlerstatus statt Endlosschleife.
 /// 4. **Handler blieben hängen.** Beim Stoppen wurden `onend`/`onresult` nicht
 ///    abgeklemmt, ein spätes Ereignis konnte alles wieder anwerfen.
+///
+/// Dazu kam am 2026-07-28 ein fünfter, davon unabhängiger Fehler:
+///
+/// 5. **Fertige Satzstücke wurden mehrfach ausgeliefert.** `onresult` lief über
+///    das ganze `results`-Array, das aber die **gesamte Sitzung** enthält, nicht
+///    nur das Neue. Jedes weitere Ereignis schickte damit alle früheren
+///    Endergebnisse noch einmal — und weil die Formularfelder anhängen, wurde
+///    aus „schönes Wetter" ein „schönes schönes schönes wetter".
+///    → [ErgebnisAuswahl] gibt nur heraus, was noch nicht geliefert wurde.
 class WebSpracheErkenner implements SpracheErkenner {
   final _erg = StreamController<SprachErgebnis>.broadcast();
   final _st = StreamController<ErkennerStatus>.broadcast();
   final _bremse = NeustartBremse();
+  final _auswahl = ErgebnisAuswahl();
 
   _Recognition? _rec;
   bool _aktiv = false;
@@ -91,6 +102,7 @@ class WebSpracheErkenner implements SpracheErkenner {
     _beende(_rec);
     _rec = null;
     _bremse.zuruecksetzen(); // bewusster Start durch den Nutzer
+    _auswahl.zuruecksetzen();
 
     final meine = ++_generation;
     final ctor = _ctorStd ?? _ctorWebkit;
@@ -100,14 +112,26 @@ class WebSpracheErkenner implements SpracheErkenner {
     rec.lang = sprache;
 
     rec.onresult = ((JSObject ev) {
+      if (meine != _generation) return; // Nachzügler eines alten Erkenners
       final results = ev.getProperty('results'.toJS) as JSObject;
       final len = (results.getProperty('length'.toJS) as JSNumber).toDartInt;
+
+      // `results` enthält die GANZE Sitzung, nicht nur das Neue. Was davon
+      // noch nicht ausgeliefert wurde, entscheidet [ErgebnisAuswahl] —
+      // sonst wird jedes fertige Satzstück bei jedem weiteren Ereignis
+      // erneut angehängt („schönes schönes schönes wetter").
+      final liste = <({String text, bool endgueltig})>[];
       for (var i = 0; i < len; i++) {
         final res = results.getProperty(i.toString().toJS) as JSObject;
         final isFinal = (res.getProperty('isFinal'.toJS) as JSBoolean).toDart;
         final alt = res.getProperty('0'.toJS) as JSObject;
         final text = (alt.getProperty('transcript'.toJS) as JSString).toDart;
-        _erg.add(SprachErgebnis(text, endgueltig: isFinal));
+        liste.add((text: text, endgueltig: isFinal));
+      }
+      final ab =
+          (ev.getProperty('resultIndex'.toJS) as JSNumber?)?.toDartInt ?? 0;
+      for (final r in _auswahl.auswaehlen(resultIndex: ab, ergebnisse: liste)) {
+        _erg.add(r);
       }
     }).toJS;
 
@@ -149,6 +173,8 @@ class WebSpracheErkenner implements SpracheErkenner {
         if (!_aktiv || meine != _generation) return;
         try {
           _laufBegonnen = DateTime.now();
+          // Nach dem Neustart zaehlt der Browser die Ergebnisse neu ab 0.
+          _auswahl.zuruecksetzen();
           rec.start();
         } catch (_) {
           _aktiv = false;
