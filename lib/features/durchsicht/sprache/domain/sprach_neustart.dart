@@ -26,6 +26,13 @@ bool istFatalerFehler(String code) => const {
 
 /// Begrenzt Neustarts auf [maxVersuche] innerhalb von [fenster].
 ///
+/// Die Vorgabe ist bewusst grosszügig (6 in 20 s): Beim Kommando-Mikro spricht
+/// man einen kurzen Satz und schweigt dann. Chrome beendet die Erkennung nach
+/// wenigen Sekunden Stille mit 'no-speech', der Dauer-Modus startet neu — das
+/// ist der Normalfall und darf nicht nach vier Runden als Störung gelten.
+/// Ein echter Absturz erzeugt seine Neustarts binnen Millisekunden und läuft
+/// auch in dieses Fenster.
+///
 /// Kein Zeitgeber und keine Uhr im Inneren: Die Zeit kommt als Parameter,
 /// damit sich Sturzfolgen im Test ohne Warten nachstellen lassen.
 class NeustartBremse {
@@ -33,7 +40,7 @@ class NeustartBremse {
   final Duration fenster;
   final List<DateTime> _versuche = [];
 
-  NeustartBremse({this.maxVersuche = 4, this.fenster = const Duration(seconds: 10)});
+  NeustartBremse({this.maxVersuche = 6, this.fenster = const Duration(seconds: 20)});
 
   /// Meldet einen Neustartwunsch an und sagt, ob er erlaubt ist.
   bool darfNeuStarten(DateTime jetzt) {

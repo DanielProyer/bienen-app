@@ -76,5 +76,32 @@ void main() {
       b.erfolgreichGelaufen(); // Erkennung lief lange genug -> kein Sturz
       expect(b.darfNeuStarten(t), isTrue);
     });
+
+    test("kurze Kommandos mit Sprechpausen loesen die Bremse nicht aus", () {
+      // Der gemeldete Loop beim Kommando-Mikro: Man spricht zwei Sekunden und
+      // schweigt dann. Chrome beendet mit no-speech, der Dauer-Modus startet
+      // neu. Mit den Vorgabewerten muss das beliebig oft gut gehen, solange
+      // jeder Lauf ein paar Sekunden dauert.
+      final b = NeustartBremse(); // Vorgabewerte, wie im Erkenner
+      var t = DateTime(2026, 7, 28, 10);
+      for (var runde = 0; runde < 12; runde++) {
+        t = t.add(const Duration(seconds: 6)); // Sprechen + Stille
+        b.erfolgreichGelaufen();               // Lauf war laenger als 3 s
+        expect(b.darfNeuStarten(t), isTrue,
+            reason: "Runde $runde: normales Sprechen darf nie blockiert werden");
+      }
+    });
+
+    test("ein echter Absturz laeuft weiterhin in die Bremse", () {
+      // Sturzfolge ohne erfolgreichen Lauf: Millisekunden statt Sekunden.
+      final b = NeustartBremse();
+      final t = DateTime(2026, 7, 28, 10);
+      var erlaubt = 0;
+      for (var i = 0; i < 20; i++) {
+        if (b.darfNeuStarten(t.add(Duration(milliseconds: i * 40)))) erlaubt++;
+      }
+      expect(erlaubt, lessThan(20),
+          reason: "eine Endlosschleife muss weiterhin gestoppt werden");
+    });
   });
 }

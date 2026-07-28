@@ -7,85 +7,92 @@ import 'package:bienen_app/features/durchsicht/sprache/domain/ergebnis_auswahl.d
 
 void main() {
   group('ErgebnisAuswahl', () {
-    test('der gemeldete Fehler: „schönes Wetter" wird nicht vervielfacht', () {
-      final auswahl = ErgebnisAuswahl();
+    test('der gemeldete Fehler: „schönes Wetter" kommt genau einmal', () {
+      final a = ErgebnisAuswahl();
 
-      // 1) „schönes" ist noch vorläufig
-      var raus = auswahl.auswaehlen(resultIndex: 0, ergebnisse: [e('schönes')]);
-      expect(raus.map((r) => r.text), ['schönes']);
-      expect(raus.single.endgueltig, isFalse);
+      // „schönes" noch vorläufig
+      var r = a.verarbeite([e('schönes')]);
+      expect(r.neuerEndtext, isNull);
+      expect(r.interim, 'schönes');
 
-      // 2) „schönes" wird endgültig — jetzt darf es genau einmal heraus
-      raus = auswahl
-          .auswaehlen(resultIndex: 0, ergebnisse: [e('schönes', fin: true)]);
-      expect(raus.map((r) => r.text), ['schönes']);
-      expect(raus.single.endgueltig, isTrue);
+      // „schönes" wird endgültig
+      r = a.verarbeite([e('schönes', fin: true)]);
+      expect(r.neuerEndtext, 'schönes');
 
-      // 3) Es folgt „Wetter". Der Browser schickt die GANZE Liste mit —
-      //    inklusive des bereits gelieferten „schönes". Genau hier entstand
-      //    das „schönes schönes schönes wetter".
-      raus = auswahl.auswaehlen(
-          resultIndex: 1,
-          ergebnisse: [e('schönes', fin: true), e('Wetter')]);
-      expect(raus.map((r) => r.text), ['Wetter'],
-          reason: 'ein bereits geliefertes Endergebnis darf nicht erneut kommen');
+      // Der Browser schickt die ganze Liste erneut mit — darf nichts auslösen
+      r = a.verarbeite([e('schönes', fin: true)]);
+      expect(r.neuerEndtext, isNull,
+          reason: 'unverändertes Endergebnis darf nicht erneut gemeldet werden');
 
-      // 4) „Wetter" wird endgültig
-      raus = auswahl.auswaehlen(
-          resultIndex: 1,
-          ergebnisse: [e('schönes', fin: true), e('Wetter', fin: true)]);
-      expect(raus.map((r) => r.text), ['Wetter']);
-      expect(raus.single.endgueltig, isTrue);
+      // „Wetter" kommt dazu, die Liste enthält weiterhin „schönes"
+      r = a.verarbeite([e('schönes', fin: true), e('Wetter', fin: true)]);
+      expect(r.neuerEndtext, 'Wetter');
+
+      // Und nochmal dieselbe Liste
+      r = a.verarbeite([e('schönes', fin: true), e('Wetter', fin: true)]);
+      expect(r.neuerEndtext, isNull);
     });
 
-    test('auch wenn der Browser resultIndex stur auf 0 lässt', () {
-      // Manche Browser melden im Dauer-Modus immer 0. Der Schutz darf sich
-      // deshalb nicht allein auf resultIndex verlassen.
-      final auswahl = ErgebnisAuswahl();
-      auswahl.auswaehlen(resultIndex: 0, ergebnisse: [e('eins', fin: true)]);
+    test('nach einem Neustart beginnt der Text von vorn — er darf nicht '
+        'für schon geliefert gehalten werden', () {
+      // Das war die Ursache dafür, dass beim zweiten Anlauf nur noch das
+      // erste Wort ankam: Der neue Lauf liefert wieder Index 0.
+      final a = ErgebnisAuswahl();
+      a.verarbeite([e('schönes', fin: true)]);
 
-      final raus = auswahl.auswaehlen(
-          resultIndex: 0,
-          ergebnisse: [e('eins', fin: true), e('zwei', fin: true)]);
-      expect(raus.map((r) => r.text), ['zwei']);
+      final r = a.verarbeite([e('Wetter', fin: true)]);
+      expect(r.neuerEndtext, 'Wetter');
     });
 
-    test('vorläufige Ergebnisse dürfen sich beliebig oft ändern', () {
-      final auswahl = ErgebnisAuswahl();
-      for (final t in ['sch', 'schön', 'schönes']) {
-        final raus = auswahl.auswaehlen(resultIndex: 0, ergebnisse: [e(t)]);
-        expect(raus.map((r) => r.text), [t]);
+    test('ein Satz, der im selben Eintrag wächst, meldet nur den Zuwachs', () {
+      // Chrome verlängert oft denselben Eintrag, statt einen neuen anzufügen.
+      final a = ErgebnisAuswahl();
+      var r = a.verarbeite([e('das Volk', fin: true)]);
+      expect(r.neuerEndtext, 'das Volk');
+
+      r = a.verarbeite([e('das Volk ist ruhig', fin: true)]);
+      expect(r.neuerEndtext, 'ist ruhig');
+    });
+
+    test('vorläufiger Text wird durchgereicht, aber nie als endgültig', () {
+      final a = ErgebnisAuswahl();
+      for (final t in ['tem', 'tempera', 'temperatur']) {
+        final r = a.verarbeite([e(t)]);
+        expect(r.interim, t);
+        expect(r.neuerEndtext, isNull);
       }
     });
 
-    test('nach einem Neustart beginnt die Zählung von vorn', () {
-      // Der Dauer-Modus startet die Erkennung nach jeder Pause neu; das
-      // results-Array fängt dann wieder bei 0 an. Ohne Rücksetzen bliebe der
-      // erste Satz nach dem Neustart stumm.
-      final auswahl = ErgebnisAuswahl();
-      auswahl.auswaehlen(
-          resultIndex: 0,
-          ergebnisse: [e('erster Satz', fin: true), e('zweiter', fin: true)]);
-
-      auswahl.zuruecksetzen();
-      final raus = auswahl
-          .auswaehlen(resultIndex: 0, ergebnisse: [e('neuer Satz', fin: true)]);
-      expect(raus.map((r) => r.text), ['neuer Satz']);
+    test('endgültig und vorläufig gemischt', () {
+      final a = ErgebnisAuswahl();
+      final r =
+          a.verarbeite([e('temperatur', fin: true), e('zwanzig')]);
+      expect(r.neuerEndtext, 'temperatur');
+      expect(r.interim, 'zwanzig');
     });
 
-    test('leere Ergebnisse werden nicht durchgereicht', () {
-      final auswahl = ErgebnisAuswahl();
-      final raus = auswahl.auswaehlen(
-          resultIndex: 0, ergebnisse: [e('   '), e('', fin: true)]);
-      expect(raus, isEmpty);
+    test('leere und reine Leerzeichen-Ergebnisse lösen nichts aus', () {
+      final a = ErgebnisAuswahl();
+      final r = a.verarbeite([e('   ', fin: true), e('')]);
+      expect(r.neuerEndtext, isNull);
+      expect(r.interim, isEmpty);
     });
 
-    test('resultIndex jenseits der Liste führt nicht zum Absturz', () {
-      final auswahl = ErgebnisAuswahl();
-      expect(
-        () => auswahl.auswaehlen(resultIndex: 5, ergebnisse: [e('x')]),
-        returnsNormally,
-      );
+    test('zuruecksetzen beginnt eine frische Sitzung', () {
+      final a = ErgebnisAuswahl();
+      a.verarbeite([e('erster Satz', fin: true)]);
+      a.zuruecksetzen();
+
+      final r = a.verarbeite([e('erster Satz', fin: true)]);
+      expect(r.neuerEndtext, 'erster Satz',
+          reason: 'nach dem Zurücksetzen ist derselbe Text wieder neu');
+    });
+
+    test('führende Leerzeichen im Zuwachs werden abgeschnitten', () {
+      final a = ErgebnisAuswahl();
+      a.verarbeite([e('eins', fin: true)]);
+      final r = a.verarbeite([e('eins  zwei', fin: true)]);
+      expect(r.neuerEndtext, 'zwei');
     });
   });
 }

@@ -39,7 +39,7 @@ extension type _Recognition._(JSObject o) implements JSObject {
 ///    Erkennung sofort und wurde blind neu gestartet — mit voller Drehzahl.
 ///    → [istFatalerFehler] beendet den Dauer-Modus.
 /// 3. **Kein Bremsklotz.** `rec.start()` stand ohne Pause direkt in `onend`.
-///    → [NeustartBremse] begrenzt auf vier Neustarts in zehn Sekunden, danach
+///    → [NeustartBremse] begrenzt die Neustarts in einem Zeitfenster, danach
 ///    Fehlerstatus statt Endlosschleife.
 /// 4. **Handler blieben hängen.** Beim Stoppen wurden `onend`/`onresult` nicht
 ///    abgeklemmt, ein spätes Ereignis konnte alles wieder anwerfen.
@@ -52,6 +52,19 @@ extension type _Recognition._(JSObject o) implements JSObject {
 ///    Endergebnisse noch einmal — und weil die Formularfelder anhängen, wurde
 ///    aus „schönes Wetter" ein „schönes schönes schönes wetter".
 ///    → [ErgebnisAuswahl] gibt nur heraus, was noch nicht geliefert wurde.
+///
+/// 6. **Der Filter verschluckte den zweiten Satz.** Der erste Anlauf gegen (5)
+///    verglich Ergebnis-Indizes und musste dafür den Neustart-Zeitpunkt genau
+///    treffen. Traf er ihn nicht, galt der erste Satz des neuen Laufs als
+///    „schon geliefert" — gemeldet als „nur schönes wird übernommen".
+///    → [ErgebnisAuswahl] vergleicht jetzt Text statt Indizes und braucht
+///    keine Annahme über die Zählweise des Browsers.
+///
+/// 7. **Kurze Kommandos lösten den Bremsklotz aus.** Wer ein Kommando spricht
+///    und dann schweigt, erzeugt regelmässig `no-speech` und einen Neustart.
+///    Bei vier erlaubten Runden in zehn Sekunden landete man so im
+///    Fehlerzustand, obwohl alles normal lief. → Fenster erweitert, und ein
+///    Lauf gilt schon nach drei Sekunden als geglückt.
 class WebSpracheErkenner implements SpracheErkenner {
   final _erg = StreamController<SprachErgebnis>.broadcast();
   final _st = StreamController<ErkennerStatus>.broadcast();
@@ -128,11 +141,15 @@ class WebSpracheErkenner implements SpracheErkenner {
         final text = (alt.getProperty('transcript'.toJS) as JSString).toDart;
         liste.add((text: text, endgueltig: isFinal));
       }
-      final ab =
-          (ev.getProperty('resultIndex'.toJS) as JSNumber?)?.toDartInt ?? 0;
-      for (final r in _auswahl.auswaehlen(resultIndex: ab, ergebnisse: liste)) {
-        _erg.add(r);
+      // Bewusst ohne `event.resultIndex`: Der Index ist nur zuverlässig, wenn
+      // man den Neustart-Zeitpunkt des Browsers genau trifft. Der Vergleich
+      // über den zusammengesetzten Text kommt ohne diese Annahme aus.
+      final zuwachs = _auswahl.verarbeite(liste);
+      if (zuwachs.interim.isNotEmpty) {
+        _erg.add(SprachErgebnis(zuwachs.interim, endgueltig: false));
       }
+      final neu = zuwachs.neuerEndtext;
+      if (neu != null) _erg.add(SprachErgebnis(neu, endgueltig: true));
     }).toJS;
 
     rec.onerror = ((JSObject ev) {
@@ -153,11 +170,12 @@ class WebSpracheErkenner implements SpracheErkenner {
         _st.add(ErkennerStatus.idle);
         return;
       }
-      // Lief die Erkennung eine Weile, war es eine normale Sprechpause und
-      // kein Absturz — dann den Zähler entlasten.
+      // Lief die Erkennung ein paar Sekunden, war es eine normale Sprechpause
+      // und kein Absturz — dann den Zähler entlasten. Drei Sekunden reichen:
+      // Ein kurzes Kommando plus Stille kommt oft nicht über fünf hinaus.
       final begonnen = _laufBegonnen;
       if (begonnen != null &&
-          DateTime.now().difference(begonnen) > const Duration(seconds: 5)) {
+          DateTime.now().difference(begonnen) > const Duration(seconds: 3)) {
         _bremse.erfolgreichGelaufen();
       }
       if (!_bremse.darfNeuStarten(DateTime.now())) {
@@ -173,8 +191,6 @@ class WebSpracheErkenner implements SpracheErkenner {
         if (!_aktiv || meine != _generation) return;
         try {
           _laufBegonnen = DateTime.now();
-          // Nach dem Neustart zaehlt der Browser die Ergebnisse neu ab 0.
-          _auswahl.zuruecksetzen();
           rec.start();
         } catch (_) {
           _aktiv = false;

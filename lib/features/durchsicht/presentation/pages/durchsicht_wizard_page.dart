@@ -9,6 +9,7 @@ import 'package:bienen_app/features/durchsicht/domain/durchsicht_gateway.dart';
 import 'package:bienen_app/features/durchsicht/domain/wabe.dart';
 import 'package:bienen_app/features/durchsicht/presentation/providers/durchsicht_provider.dart';
 import 'package:bienen_app/features/durchsicht/presentation/widgets/waben_schritt.dart';
+import 'package:bienen_app/features/durchsicht/sprache/domain/kommando_puffer.dart';
 import 'package:bienen_app/features/durchsicht/sprache/domain/sprach_kommando.dart';
 import 'package:bienen_app/features/durchsicht/sprache/presentation/sprach_mikro.dart';
 import 'package:bienen_app/shared/widgets/app_button.dart';
@@ -38,6 +39,12 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
   // Zahlen-Felder als _TapStepper (grosse +/− Ziele) — gehalten als num?.
   num? _temp, _dauer, _wzAnzahl, _brutWaben, _staerke, _futter;
   final _wetter = TextEditingController();
+
+  // Je Kommando-Mikro ein Puffer: Die Erkennung schliesst Satzstücke ab, wann
+  // sie eine Sprechpause hört — „Temperatur" und „zwanzig Grad" kommen deshalb
+  // oft getrennt an und ergeben einzeln kein Kommando.
+  final _pufferKontext = KommandoPuffer(SprachKontext.kontext);
+  final _pufferKennzahlen = KommandoPuffer(SprachKontext.kennzahlen);
   final _massnahmen = TextEditingController();
   final _notiz = TextEditingController();
   final _auffaelligkeiten = <String>{};
@@ -275,7 +282,7 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
 
   Widget _seiteKontext() => ListView(padding: const EdgeInsets.all(16), children: [
         SprachMikro(mikroId: 'kmd-kontext', label: 'Kommando sprechen',
-            onEndText: (t) => _wendeKommandoAn(parseKommando(t, SprachKontext.kontext))),
+            onEndText: (t) => _pufferKontext.fuettere(t).forEach(_wendeKommandoAn)),
         const Divider(),
         _datumTile('Datum', _datum, onTap: () async {
           final d = await showDatePicker(context: context, initialDate: _datum, firstDate: DateTime(2020), lastDate: DateTime(2100));
@@ -315,7 +322,7 @@ class _DurchsichtWizardPageState extends ConsumerState<DurchsichtWizardPage> {
     final futterHinweis = _wabenModus && _waben.isNotEmpty ? '≈ ${futterKgHinweisAus(_waben)} kg aus Waben' : null;
     return ListView(padding: const EdgeInsets.all(16), children: [
       SprachMikro(mikroId: 'kmd-kennzahlen', label: 'Kommando sprechen',
-          onEndText: (t) => _wendeKommandoAn(parseKommando(t, SprachKontext.kennzahlen))),
+          onEndText: (t) => _pufferKennzahlen.fuettere(t).forEach(_wendeKommandoAn)),
       const Divider(),
       SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Königin gesehen'), value: _koeniginGesehen, onChanged: (v) => setState(() => _koeniginGesehen = v)),
       SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Stifte gesehen'), value: _stifteGesehen, onChanged: (v) => setState(() => _stifteGesehen = v)),
