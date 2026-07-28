@@ -35,9 +35,9 @@ Das Dadant-Beutensystem wurde um 1874 von **Charles Dadant** in den USA entwicke
 - Trennung Brut-/Honigraum durch **Absperrgitter**
 - Brutraumsteuerung durch **Schied** (Trennbrett)
 
-![Explosionsdarstellung der Dadant-Blatt-Beute mit allen Teilen von unten nach oben](bilder/03_beute_explosion.png)
+![Technische Zeichnung der Dadant-Beute: Vertikalschnitt aller Teile und Draufsicht auf den Brutraum](bilder/03_beute_explosion.png)
 
-*Die ganze Beute in ihrer Stapelfolge. Von unten nach oben: Beutenbock, Gitterboden mit Schieber, Brutraum, Absperrgitter, Honigraum, Innendeckel, Blechdeckel. Ein Volk braucht dauerhaft nur die Teile 1–6 — der Honigraum kommt erst zur Tracht dazu und wird nach der Ernte wieder abgenommen. Die Höhenverhältnisse sind massstäblich nach den Werten aus Kap. 1.3/1.4 gezeichnet; besonders gut zu sehen ist, wie flach die Halbzarge gegenüber dem Brutraum ausfällt — das ist der Grund, warum man sie auch voll noch heben kann. Eigene Zeichnung.*
+*Die Beute als technische Zeichnung — links der Vertikalschnitt mit allen Teilen in Aufbaureihenfolge, rechts die Draufsicht auf den Brutraum. Weil der Schnitt quer zu den Waben liegt, erscheinen die Rähmchen als Querschnitte; man sieht dadurch auf einen Blick, dass unten zehn und oben neun davon stehen. Bemasst sind die beiden Werte, die das System ausmachen: 309 mm Brutraum gegen 168 mm Halbzarge. Dauerhaft am Volk sind Bock, Boden, Brutraum, Innen- und Blechdeckel — Honigraum und Absperrgitter kommen erst zur Tracht dazu. Eigene Zeichnung nach den Massen aus Kap. 1.3/1.4.*
 
 ### 1.3 Exakte Masse -- Dadant Blatt
 

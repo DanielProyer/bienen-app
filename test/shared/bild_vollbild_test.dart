@@ -42,7 +42,7 @@ void main() {
 
       // Ohne InteractiveViewer gäbe es kein Zoom — genau darum geht es.
       expect(find.byType(InteractiveViewer), findsOneWidget);
-      expect(find.text('Schliessen'), findsOneWidget);
+      expect(find.byTooltip('Schliessen'), findsOneWidget);
     });
 
     testWidgets('zeigt die Beschriftung, wenn eine da ist', (tester) async {
@@ -71,14 +71,27 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Löschen'), findsOneWidget);
-      expect(find.text('Schliessen'), findsOneWidget);
+      expect(find.byTooltip('Schliessen'), findsOneWidget);
+    });
+
+    testWidgets('nutzt die ganze Bildschirmfläche', (tester) async {
+      await tester.pumpWidget(_seite());
+      await tester.tap(find.text('öffnen'));
+      await tester.pumpAndSettle();
+
+      // Ein Dialog, der sich auf die Bildgrösse zusammenzieht, liesse bei
+      // einer breiten Zeichnung nur einen schmalen Streifen übrig.
+      final flaeche = tester.getSize(find.byType(InteractiveViewer));
+      final schirm = tester.view.physicalSize / tester.view.devicePixelRatio;
+      expect(flaeche.width, schirm.width);
+      expect(flaeche.height, schirm.height);
     });
 
     testWidgets('Schliessen schliesst die Ansicht', (tester) async {
       await tester.pumpWidget(_seite());
       await tester.tap(find.text('öffnen'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Schliessen'));
+      await tester.tap(find.byTooltip('Schliessen'));
       await tester.pumpAndSettle();
 
       expect(find.byType(InteractiveViewer), findsNothing);
