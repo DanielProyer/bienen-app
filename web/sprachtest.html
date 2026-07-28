@@ -90,7 +90,8 @@ Erkennung nichts.</p>
 
 <div class="zahlen">
   <div class="zelle"><div class="wert" id="zTakte">0</div><div class="bez">Takt-Erneuerungen (geplant)</div></div>
-  <div class="zelle" id="zelleErzwungen"><div class="wert" id="zErzwungen">0</div><div class="bez">von Chrome abgebrochen — jeder macht ein Geräusch</div></div>
+  <div class="zelle" id="zelleErzwungen"><div class="wert" id="zErzwungen">0</div><div class="bez">von Chrome abgebrochen</div></div>
+  <div class="zelle" id="zelleZu"><div class="wert" id="zZu">0%</div><div class="bez">der Zeit war das Mikro zu — <b>das entscheidet</b></div></div>
   <div class="zelle"><div class="wert" id="zTexte">0</div><div class="bez">erkannte Sätze</div></div>
   <div class="zelle" id="zelleLuecke"><div class="wert" id="zLuecke">0s</div><div class="bez">längste Stille ohne Erkennung</div></div>
   <div class="zelle" id="zelleFehler"><div class="wert" id="zFehler">0</div><div class="bez">Störungen</div></div>
@@ -168,6 +169,28 @@ let taubGemeldet = false;
 let pruefungLaeuft = false, pruefungSeit = 0;
 let pruefBestanden = 0, pruefVerpasst = 0;
 let erzwungen = 0;   // von Chrome beendet, nicht vom Takt
+let letzteWorte = [];        // zuletzt gemeldete Woerter, ueber Erkenner hinweg
+let zuMs = 0, zuSeit = 0;    // wie lange war das Mikro insgesamt geschlossen
+
+// Meldet nur, was gegenueber dem zuletzt Gehoerten wirklich neu ist.
+//
+// Praefix-Vergleich reicht nicht: Android liefert denselben Satz spaeter mit
+// Grossschreibung und Komma nach. Deshalb wortweise und ohne Ruecksicht auf
+// Schreibweise — gesucht wird die laengste Ueberlappung zwischen dem Ende des
+// zuletzt Gemeldeten und dem Anfang des Neuen.
+function nurNeues(text) {
+  const w = text.split(/\s+/).filter(Boolean);
+  if (!w.length) return '';
+  const klein = (a) => a.join(' ').toLowerCase().replace(/[.,;:!?]/g, '');
+  let gleich = 0;
+  for (let k = Math.min(letzteWorte.length, w.length); k > 0; k--) {
+    if (klein(letzteWorte.slice(-k)) === klein(w.slice(0, k))) { gleich = k; break; }
+  }
+  const neu = w.slice(gleich);
+  if (!neu.length) return '';
+  letzteWorte = letzteWorte.concat(neu).slice(-25);
+  return neu.join(' ');
+}
 const zeilen = [];
 
 function jetzt() { return Date.now(); }
@@ -197,6 +220,11 @@ function zahlen() {
   el('zFehler').textContent = fehler;
   el('zelleLuecke').classList.toggle('alarm', luecke > TAUB_MS);
   el('zelleFehler').classList.toggle('alarm', fehler > 0);
+  const gelaufen = laeuft ? jetzt() - start : 0;
+  const zuJetzt = zuMs + (zuSeit ? jetzt() - zuSeit : 0);
+  const anteil = gelaufen > 0 ? Math.round(zuJetzt / gelaufen * 100) : 0;
+  el('zZu').textContent = anteil + '%';
+  el('zelleZu').classList.toggle('alarm', anteil > 15);
   el('zErzwungen').textContent = erzwungen;
   el('zelleErzwungen').classList.toggle('alarm', erzwungen > 20);
   el('zPruefOk').textContent = pruefBestanden;
@@ -215,10 +243,6 @@ function starteErkennung(grund) {
     r.continuous = true;
     r.interimResults = true;
 
-    // Was dieser Erkenner schon gemeldet hat. ev.results enthaelt die ganze
-    // Sitzung — ohne diesen Merker meldet jede Zustellung alles nochmal.
-    let gemeldet = '';
-
     r.onresult = (ev) => {
       let end = '', vor = '';
       for (let i = 0; i < ev.results.length; i++) {
@@ -230,9 +254,8 @@ function starteErkennung(grund) {
       // Kein Generationsfilter: ein abgeloester Erkenner darf den Ablauf nicht
       // mehr steuern, sein Gehoertes zaehlt aber trotzdem.
       end = end.trim();
-      if (!end || end === gemeldet) return;
-      const zuwachs = end.startsWith(gemeldet) ? end.slice(gemeldet.length).trim() : end;
-      gemeldet = end;
+      if (!end) return;
+      const zuwachs = nurNeues(end);
       if (!zuwachs) return;
 
       texte++;
@@ -262,6 +285,7 @@ function starteErkennung(grund) {
       // erzeugt auf Android einen hoerbaren Signalton — deshalb zaehlen wir
       // sie, statt sie nur hinzunehmen.
       erzwungen++;
+      if (!zuSeit) zuSeit = jetzt();   // ab hier hoert niemand zu
       zahlen();
       if (el('sanft').checked) {
         log('warn', 'Chrome hat abgebrochen — warte auf den nächsten Takt (Ruhig-Modus)');
@@ -274,7 +298,10 @@ function starteErkennung(grund) {
 
     // Diagnose-Ebene: trennt "Mikro liefert nichts" von "Erkennung versteht
     // nichts". Ohne sie raet man beim Fehlersuchen.
-    r.onaudiostart = () => log('takt', 'Mikro offen');
+    r.onaudiostart = () => {
+      if (zuSeit) { zuMs += jetzt() - zuSeit; zuSeit = 0; }
+      log('takt', 'Mikro offen');
+    };
     r.onsoundstart = () => log('takt', 'Ton kommt an');
     r.onspeechstart = () => log('takt', 'Sprache erkannt — Erkennung läuft');
 
@@ -413,6 +440,7 @@ async function starten() {
   start = letzterText = jetzt();
   takte = texte = fehler = luecke = 0; taubGemeldet = false;
   erzwungen = 0;
+  letzteWorte = []; zuMs = 0; zuSeit = 0;
   pruefBestanden = pruefVerpasst = 0; pruefungLaeuft = false;
   zeilen.length = 0; el('protokoll').innerHTML = ''; el('ausgabe').value = '';
   zahlen();
@@ -466,6 +494,8 @@ function bericht() {
     'Takt:       alle ' + sek(TAKT_MS) + ' s, ' + takte + ' geplante Erneuerungen',
     'Abbrüche:   ' + erzwungen + ' von Chrome erzwungen (je ein Signalton)',
     'Erkannt:    ' + texte + ' Wortgruppen',
+    'Mikro zu:   ' + Math.round((zuMs + (zuSeit ? jetzt() - zuSeit : 0)) / 1000) + ' s von '
+      + Math.round((jetzt() - start) / 1000) + ' s (' + el('zZu').textContent + ')',
     'Modus:      ' + (el('sanft').checked ? 'Ruhig (Takt-Wiederanlauf)' : 'Sofort-Neustart'),
     'Handy:      ' + (el('stumm').checked ? 'lautlos angenommen (Prüfsignal per Vibration)' : 'mit Ton'),
     'Erkannt:    ' + texte + ' Sätze',
