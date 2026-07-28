@@ -212,22 +212,32 @@ function starteErkennung(grund) {
     r.continuous = true;
     r.interimResults = true;
 
+    // Was dieser Erkenner schon gemeldet hat. ev.results enthaelt die ganze
+    // Sitzung — ohne diesen Merker meldet jede Zustellung alles nochmal.
+    let gemeldet = '';
+
     r.onresult = (ev) => {
-      if (meine !== generation) return;
       let end = '', vor = '';
       for (let i = 0; i < ev.results.length; i++) {
         const t = ev.results[i][0].transcript;
         if (ev.results[i].isFinal) end += t + ' '; else vor += t + ' ';
       }
       el('gehoert').textContent = (end + vor).trim() || '—';
-      if (end.trim()) {
-        texte++;
-        letzterText = jetzt();
-        taubGemeldet = false;
-        log('text', '» ' + end.trim());
-        pruefungBeantwortet();
-        zahlen();
-      }
+
+      // Kein Generationsfilter: ein abgeloester Erkenner darf den Ablauf nicht
+      // mehr steuern, sein Gehoertes zaehlt aber trotzdem.
+      end = end.trim();
+      if (!end || end === gemeldet) return;
+      const zuwachs = end.startsWith(gemeldet) ? end.slice(gemeldet.length).trim() : end;
+      gemeldet = end;
+      if (!zuwachs) return;
+
+      texte++;
+      letzterText = jetzt();
+      taubGemeldet = false;
+      log('text', '» ' + zuwachs + (meine !== generation ? '  (verspätet)' : ''));
+      pruefungBeantwortet();
+      zahlen();
     };
 
     r.onerror = (ev) => {
@@ -258,6 +268,12 @@ function starteErkennung(grund) {
       log('warn', 'Chrome hat abgebrochen — sofort erneuert');
       starteErkennung('nach Abbruch');
     };
+
+    // Diagnose-Ebene: trennt "Mikro liefert nichts" von "Erkennung versteht
+    // nichts". Ohne sie raet man beim Fehlersuchen.
+    r.onaudiostart = () => log('takt', 'Mikro offen');
+    r.onsoundstart = () => log('takt', 'Ton kommt an');
+    r.onspeechstart = () => log('takt', 'Sprache erkannt — Erkennung läuft');
 
     r.start();
     rec = r;
@@ -443,6 +459,7 @@ function bericht() {
     'Gemessen:   ' + Math.floor(dauer / 60000) + ' min ' + Math.floor((dauer % 60000) / 1000) + ' s',
     'Takt:       alle ' + sek(TAKT_MS) + ' s, ' + takte + ' geplante Erneuerungen',
     'Abbrüche:   ' + erzwungen + ' von Chrome erzwungen (je ein Signalton)',
+    'Erkannt:    ' + texte + ' Wortgruppen',
     'Modus:      ' + (el('sanft').checked ? 'Ruhig (Takt-Wiederanlauf)' : 'Sofort-Neustart'),
     'Handy:      ' + (el('stumm').checked ? 'lautlos angenommen (Prüfsignal per Vibration)' : 'mit Ton'),
     'Erkannt:    ' + texte + ' Sätze',
