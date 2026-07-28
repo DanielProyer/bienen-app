@@ -21,6 +21,10 @@ Der Jahresablauf mit Entscheidungslogik. Die kalendarischen Angaben sind Mittell
 
 ### 1.1 Jahresablauf (rekonstruiert aus 1.1, präzisiert mit 1.5.1 & 1.7.1/1.7.2)
 
+![Jahresraster mit drei Handlungsströmen über zwölf Monate: bremsen, Diagnose, behandeln](bilder/22_varroa_jahresraster.png)
+
+*Das ganze Konzept in einem Bild: Die drei Handlungsstränge laufen parallel über das Jahr, und die roten Punkte sind die Stellen, an denen aus Beobachten ein Handeln wird. Wer nur eine Zeile liest, liest die untere — die zweite Sommerbehandlung mit Ameisensäure ist der Termin, an dem sich entscheidet, ob das Volk überwintert. Gezeichnet für dieses Dokument nach den Zahlen aus Kapitel 1.1 und 2.1; die Monate sind BGD-Mittelland-Angaben, die alpine Verschiebung steht in der Grafik.*
+
 | Zeitraum (Mittelland) | Massnahme | Merkblatt-Gruppe |
 |---|---|---|
 | **Feb–April** | Drohnenwabe einhängen, danach mehrmaliges Ausschneiden der verdeckelten Drohnenbrut | Bremsen der Varroaentwicklung |

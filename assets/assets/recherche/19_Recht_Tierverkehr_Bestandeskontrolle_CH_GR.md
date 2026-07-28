@@ -39,6 +39,10 @@
 
 ## 1. Überblick: Welche Pflichten treffen einen Kleinimker?
 
+![Vier Rechtsgebiete und die vier Handlungen registrieren, aufzeichnen, melden, kennzeichnen](bilder/19_pflichtenkette.png)
+
+*Vier Rechtsgebiete oben, vier Handlungen unten. Die Kette ist der Merksatz des Kapitels — und sie gilt vollständig ab dem ersten Volk, ohne Bagatellgrenze. Rot hervorgehoben sind die Fristen, an denen man tatsächlich scheitern kann: drei Arbeitstage für einen neuen Stand, drei Jahre Aufbewahrung. Gezeichnet für dieses Dokument nach Kapitel 1.*
+
 Wer in der Schweiz **auch nur ein einziges Bienenvolk** hält, ist rechtlich **Tierhalter** und **Lebensmittelproduzent** zugleich — beides löst Pflichten aus, unabhängig davon, ob man Hobby- oder Erwerbsimker ist und ob man Honig verkauft oder verschenkt. Es gibt keine Bagatellgrenze «erst ab X Völkern». Das ist für ambitionierte Neu-Imker wichtig: Die volle Pflichtenkette gilt ab **Volk 1 im Herbst 2026**.
 
 Die Pflichten stammen aus vier Rechtsgebieten:

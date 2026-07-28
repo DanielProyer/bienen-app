@@ -22,6 +22,10 @@
 
 ## 1. Übersicht der drei Rassen
 
+![Vergleich von Carnica, Buckfast und Dunkler Biene in vier Eigenschaften](bilder/06_rassenvergleich.png)
+
+*Die Bewertungen der drei Rassen nebeneinander. Keine ist überall vorn: Die Dunkle Biene gewinnt bei der Winterhärte, Buckfast beim Ertrag und beim Schwarmtrieb — wobei dort wenig besser ist als viel. Entschieden hat am Ende keine dieser Zeilen, sondern der Standortnachweis im eigenen Tal. Gezeichnet für dieses Dokument nach den Bewertungen in Kapitel 1.1–1.3 und der Empfehlung in Kapitel 8.*
+
 ### 1.1 Carnica (Apis mellifera carnica)
 
 **Herkunft:** Südlich der Alpen (Kärnten, Slowenien). Nach dem 2. Weltkrieg im gesamten deutschsprachigen Raum verbreitet.
