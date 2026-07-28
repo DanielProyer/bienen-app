@@ -74,14 +74,11 @@
 <p class="unter">Prüft, ob die Erkennung eine ganze Durchsicht durchhält. Einschalten, das Handy so tragen wie beim Imkern, gelegentlich sprechen. Der Test misst selbst, ob und wann er taub wird.</p>
 <p class="unter" id="fassungZeile" style="font-weight:600"></p>
 <p class="unter" style="background:#fff4d6;border-radius:8px;padding:10px 12px">
-<b>So läuft dieser Durchgang:</b> Handy auf lautlos, <b>Mitschnitt aus</b> (ist jetzt die Vorgabe),
-Ruhig-Modus aus. Dann starten und sprechen.<br>
-Der bisherige Fehlschlag hatte eine einzige Ursache: Der Mitschnitt hielt das Mikrofon, und auf
-Android ist es exklusiv — die Erkennung bekam Stille, meldete „keine Sprache", brach ab und startete
-neu. Daher <em>beides</em>: der Ton im Sekundentakt und dass nie etwas erkannt wurde.<br>
-<b>Im Verlauf zu beobachten:</b> „Mikro offen" → „Ton kommt an" → „Sprache erkannt". Bleibt es bei
-„Mikro offen", liefert das Mikrofon nichts. Kommt „Ton kommt an", aber nie eine »-Zeile, versteht die
-Erkennung nichts.</p>
+<b>Kurzer Diagnoselauf — 20 bis 30 Sekunden reichen.</b> Handy auf lautlos, Mitschnitt aus,
+Ruhig-Modus aus. Sag drei, vier Sätze und beende den Test.<br>
+Der Text häuft sich immer noch an, obwohl die Auswertung nachweislich stimmt. Also stimmt meine
+Annahme darüber nicht, <em>wie</em> Chrome die Ergebnisse liefert. Dieser Lauf schreibt die Rohform
+mit (<code>· FFi end="…"</code>) — daraus ist es ablesbar statt erratbar.</p>
 
 <div class="band">
   <div class="zustand"><span class="punkt" id="punkt"></span><span id="zustand">bereit</span></div>
@@ -98,6 +95,12 @@ Erkennung nichts.</p>
   <div class="zelle" id="zelleFehler"><div class="wert" id="zFehler">0</div><div class="bez">Störungen</div></div>
   <div class="zelle" id="zellePruef" style="grid-column:1/-1"><div class="wert"><span id="zPruefOk">0</span> / <span id="zPruefWeg">0</span></div><div class="bez">Prüfungen bestanden / verpasst — das ist das eigentliche Ergebnis</div></div>
 </div>
+
+<label class="schalter">
+  <input type="checkbox" id="roh" checked>
+  <span><b>Rohform mitschreiben</b> — <em>zeigt zu jedem Ergebnis, was Chrome liefert (F = endgültig,
+  i = vorläufig). Nur zur Fehlersuche; macht das Protokoll lang.</em></span>
+</label>
 
 <label class="schalter">
   <input type="checkbox" id="stumm" checked>
@@ -158,7 +161,7 @@ const ANTWORT_MS = 40000;   // so lange darf die Antwort brauchen
 
 // Fassung dieser Datei. Steht sichtbar oben und im Bericht, damit ein
 // Feldergebnis immer einer Fassung zuzuordnen ist.
-const FASSUNG = 'F7';
+const FASSUNG = 'F8';
 
 const Ctor = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -283,6 +286,15 @@ function starteErkennung(grund) {
       }
       // NICHT end + vor: das ist die ganze Sitzung und waechst endlos.
       zeigeGehoert(vor);
+
+      // Rohform mitschreiben, solange die Diagnose laeuft: F = endgueltiges
+      // Teilergebnis, i = vorlaeufiges. Nur so ist zu sehen, ob Chrome die
+      // Sitzung sammelt, ersetzt oder Segmente doppelt liefert.
+      if (el('roh').checked) {
+        let muster = '';
+        for (let i = 0; i < ev.results.length; i++) muster += ev.results[i].isFinal ? 'F' : 'i';
+        log('takt', '· ' + (muster || '–') + '  end="' + end.trim() + '"');
+      }
 
       // Kein Generationsfilter: ein abgeloester Erkenner darf den Ablauf nicht
       // mehr steuern, sein Gehoertes zaehlt aber trotzdem.
