@@ -1,0 +1,274 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Erkenner-Vergleich</title>
+<style>
+  :root { --rand:#e2ddd4; --gut:#2e7d32; --warn:#b8860b; --schlecht:#c62828; }
+  body { font-family: system-ui, sans-serif; margin:0; padding:16px; background:#faf8f4; color:#2b2b2b;
+         max-width:820px; margin-inline:auto; }
+  h1 { font-size:20px; margin:0 0 2px; }
+  .unter { color:#6b665e; font-size:14px; margin:0 0 12px; line-height:1.45; }
+  .haupt { width:100%; padding:18px; font-size:18px; font-weight:700; border:0; border-radius:12px;
+           background:var(--gut); color:#fff; margin-bottom:10px; }
+  .haupt.laeuft { background:var(--schlecht); }
+  .haupt:disabled { background:#bbb; }
+  input[type=password] { width:100%; padding:12px; font-size:16px; border:1px solid var(--rand);
+           border-radius:10px; margin-bottom:8px; box-sizing:border-box; }
+  .schalter { display:flex; gap:10px; align-items:flex-start; background:#fff; border:1px solid var(--rand);
+              border-radius:10px; padding:10px; margin-bottom:8px; font-size:14px; line-height:1.4; }
+  .schalter input { margin-top:3px; flex:none; width:20px; height:20px; }
+  .karte { background:#fff; border:1px solid var(--rand); border-radius:10px; padding:12px; margin-bottom:10px; }
+  .karte h3 { margin:0 0 4px; font-size:16px; }
+  .zahl { font-variant-numeric:tabular-nums; font-weight:700; }
+  .gut { color:var(--gut); } .schlecht { color:var(--schlecht); } .warn { color:var(--warn); }
+  .txt { font-size:14px; line-height:1.5; white-space:pre-wrap; background:#faf8f4; padding:8px;
+         border-radius:8px; max-height:220px; overflow-y:auto; margin-top:8px; }
+  textarea { width:100%; height:70px; font-size:14px; padding:8px; border:1px solid var(--rand);
+             border-radius:10px; box-sizing:border-box; }
+  audio { width:100%; margin-bottom:10px; }
+  #verlauf { font-family:ui-monospace,monospace; font-size:12px; background:#fff; border:1px solid var(--rand);
+             border-radius:10px; padding:8px; max-height:180px; overflow-y:auto; }
+  .warnkasten { background:#fff4d6; border-radius:8px; padding:10px 12px; font-size:14px; line-height:1.45;
+                margin-bottom:12px; }
+</style>
+
+<h1>Erkenner-Vergleich</h1>
+<p class="unter" id="fassungZeile"></p>
+
+<p class="warnkasten">
+<b>Zuerst zählt die Vollständigkeit.</b> Hört das Transkript beim letzten gesprochenen Satz auf? Ein
+Modell, das nach neun Minuten abbricht, braucht man auf Genauigkeit nicht zu messen — es tut das
+lautlos, ohne Fehlermeldung. Erst danach zählen die Fachbegriffe.<br>
+Für das Vollständigkeitsurteil brauchst du <b>mindestens zwölf Minuten</b> am Stück. Für einen reinen
+Fachwortvergleich genügen drei.</p>
+
+<input type="password" id="testwort" placeholder="Testwort (einmalig, wird auf diesem Gerät gemerkt)">
+
+<label class="schalter">
+  <input type="checkbox" id="wortliste" checked>
+  <span><b>Fachwortliste mitschicken</b> — <em>für den Vergleich denselben Text einmal mit und einmal
+  ohne aufnehmen. Nur so ist zu sehen, ob die Liste überhaupt etwas bringt — das ist für keine Sprache
+  gemessen.</em></span>
+</label>
+
+<button class="haupt" id="knopf">Aufnahme starten</button>
+<audio id="abspielen" controls style="display:none"></audio>
+<button class="haupt" id="sendKnopf" style="background:#555" disabled>Aufnahme auswerten lassen</button>
+
+<div id="ergebnisse"></div>
+
+<div class="karte">
+  <h3>Was du gesagt hast</h3>
+  <p class="unter" style="margin:0 0 6px">Die Fachbegriffe, die du tatsächlich gesagt hast — mit Komma
+  getrennt. Nur diese werden gezählt. Hör die Aufnahme oben nach, wenn du unsicher bist.</p>
+  <textarea id="erwartet">Weiselzellen, Milben, Schwarmtrieb, Drohnenbrut, Varroa, Ableger</textarea>
+</div>
+
+<div id="verlauf"></div>
+
+<script>
+// Fassung dieser Datei. Steht sichtbar oben, damit ein Feldergebnis immer
+// einer Fassung zuzuordnen ist (Regel aus der globalen CLAUDE.md).
+const FASSUNG = 'V1';
+
+const ZIEL = 'https://dcdcohktxbhdxnxjvcyp.supabase.co/functions/v1/transkription';
+const HAEPPCHEN_MS = 5000;
+
+const el = (id) => document.getElementById(id);
+
+let strom = null, rec = null, laeuft = false, teile = [], tonCtx = null;
+let start = 0, letztesHaeppchen = 0, luecke = 0, blob = null, dauerMs = 0;
+
+document.addEventListener('DOMContentLoaded', () => {
+  el('fassungZeile').textContent = 'Fassung ' + FASSUNG
+    + ' — steht hier eine ältere, lädt der Browser aus dem Zwischenspeicher.';
+  el('testwort').value = localStorage.getItem('testwort') || '';
+});
+
+function log(text, art) {
+  const d = document.createElement('div');
+  d.className = art || '';
+  d.textContent = new Date().toLocaleTimeString('de-CH') + '  ' + text;
+  el('verlauf').appendChild(d);
+  el('verlauf').scrollTop = el('verlauf').scrollHeight;
+}
+
+// Chrome friert untaetige Tabs nach rund einer Minute ein — aber keinen, der
+// Ton ABSPIELT. Unhoerbar leise, 30 Hz. Echte Stille waere wirkungslos, sie
+// gilt dem Browser nicht als Wiedergabe. Im Tontest T3 nachgewiesen.
+function stillenTonStarten() {
+  try {
+    const C = window.AudioContext || window.webkitAudioContext;
+    tonCtx = new C();
+    const o = tonCtx.createOscillator(), g = tonCtx.createGain();
+    o.frequency.value = 30;
+    g.gain.value = 0.003;
+    o.connect(g); g.connect(tonCtx.destination);
+    o.start();
+  } catch (e) { log('Stiller Ton misslungen: ' + e, 'schlecht'); }
+}
+
+async function starten() {
+  try {
+    strom = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (e) { log('Kein Mikrofon: ' + e, 'schlecht'); return; }
+
+  teile = []; luecke = 0; blob = null;
+  el('ergebnisse').innerHTML = '';
+  el('abspielen').style.display = 'none';
+
+  // 24 kbit/s Opus: im Tontest gemessene 0,08 MB je Tonminute. Beide Anbieter
+  // nehmen webm/opus direkt an, es wird also nichts umgewandelt.
+  let opt = {};
+  if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+    opt = { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 24000 };
+  }
+  try {
+    rec = new MediaRecorder(strom, opt);
+  } catch (e) {
+    log('Sparformat abgelehnt, nehme Geräte-Vorgabe', 'warn');
+    rec = new MediaRecorder(strom);
+  }
+
+  rec.ondataavailable = (ev) => {
+    if (!ev.data || !ev.data.size) return;
+    teile.push(ev.data);
+    const nun = Date.now();
+    if (letztesHaeppchen && nun - letztesHaeppchen > HAEPPCHEN_MS * 2) {
+      luecke = Math.max(luecke, nun - letztesHaeppchen);
+    }
+    letztesHaeppchen = nun;
+  };
+
+  start = Date.now(); letztesHaeppchen = start; laeuft = true;
+  rec.start(HAEPPCHEN_MS);
+  stillenTonStarten();
+  el('knopf').textContent = 'Aufnahme beenden';
+  el('knopf').classList.add('laeuft');
+  el('sendKnopf').disabled = true;
+  log('Aufnahme läuft — sprich deine Durchsicht', 'gut');
+}
+
+async function beenden() {
+  laeuft = false;
+  dauerMs = Date.now() - start;
+  try { if (rec && rec.state !== 'inactive') rec.stop(); } catch (e) {}
+  if (strom) strom.getTracks().forEach((t) => t.stop());
+  if (tonCtx) { try { tonCtx.close(); } catch (e) {} tonCtx = null; }
+
+  // Kurz warten, damit das letzte Haeppchen noch eintrifft.
+  await new Promise((f) => setTimeout(f, 400));
+  blob = new Blob(teile, { type: (rec && rec.mimeType) || 'audio/webm' });
+  el('abspielen').src = URL.createObjectURL(blob);
+  el('abspielen').style.display = 'block';
+
+  const min = dauerMs / 60000;
+  el('knopf').textContent = 'Aufnahme starten';
+  el('knopf').classList.remove('laeuft');
+  el('sendKnopf').disabled = false;
+  log('Beendet: ' + min.toFixed(1) + ' min, ' + (blob.size / 1048576).toFixed(2) + ' MB'
+      + (luecke ? ', LÜCKE ' + Math.round(luecke / 1000) + ' s' : ', lückenlos'),
+      luecke > 20000 ? 'schlecht' : 'gut');
+}
+
+el('knopf').onclick = () => (laeuft ? beenden() : starten());
+
+// Trefferzaehlung — muss zeichengleich zu fachwort_treffer.dart arbeiten,
+// sonst misst diese Seite etwas anderes als der spaetere App-Code.
+// Teilstring-Vergleich mit Absicht: "Varroamilben" enthaelt "Varroa".
+function zaehleTreffer(transkript, erwartet) {
+  const heu = (transkript || '').toLowerCase();
+  const gefunden = [], fehlend = [];
+  for (const b of erwartet) {
+    (heu.includes(b.toLowerCase()) ? gefunden : fehlend).push(b);
+  }
+  return { gefunden, fehlend, quote: erwartet.length ? gefunden.length / erwartet.length : 0 };
+}
+
+el('sendKnopf').onclick = async () => {
+  if (!blob) return;
+  const wort = el('testwort').value.trim();
+  if (!wort) { log('Testwort fehlt', 'schlecht'); return; }
+  localStorage.setItem('testwort', wort);
+
+  el('sendKnopf').disabled = true;
+  el('sendKnopf').textContent = 'läuft … (kann zwei Minuten dauern)';
+  log('Sende ' + (blob.size / 1048576).toFixed(2) + ' MB an alle Anbieter');
+
+  const form = new FormData();
+  form.append('audio', blob, 'durchsicht.webm');
+  form.append('wortliste', el('wortliste').checked ? 'ja' : 'nein');
+
+  try {
+    const antwort = await fetch(ZIEL, { method: 'POST', headers: { 'x-testwort': wort }, body: form });
+    const daten = await antwort.json();
+    if (daten.fehler) { log('Fehler: ' + daten.fehler, 'schlecht'); return; }
+    zeige(daten);
+    log('Auswertung da', 'gut');
+  } catch (e) {
+    log('Versand misslungen: ' + e, 'schlecht');
+  } finally {
+    el('sendKnopf').disabled = false;
+    el('sendKnopf').textContent = 'Aufnahme auswerten lassen';
+  }
+};
+
+function zeige(daten) {
+  const erwartet = el('erwartet').value.split(',').map((s) => s.trim()).filter(Boolean);
+  const dauerMin = dauerMs / 60000;
+  const ziel = el('ergebnisse');
+  ziel.innerHTML = '<p class="unter">Fachwortliste war ' +
+    (daten.mitWortliste ? '<b>an</b>' : '<b>aus</b>') + '. Aufnahme ' + dauerMin.toFixed(1) + ' min, ' +
+    (daten.groesseBytes / 1048576).toFixed(2) + ' MB.</p>';
+
+  const gute = daten.ergebnisse.filter((e) => !e.fehler);
+  // Wortzahl je Anbieter — Grundlage fuer beide Abbruchproben.
+  const woerterVon = (e) => (e.text || '').trim().split(/\s+/).filter(Boolean).length;
+  const maxWoerter = gute.length ? Math.max(...gute.map(woerterVon)) : 0;
+
+  for (const e of daten.ergebnisse) {
+    const k = document.createElement('div');
+    k.className = 'karte';
+    if (e.fehler) {
+      k.innerHTML = '<h3>' + e.anbieter + '</h3><p class="schlecht">Fehler: ' + e.fehler + '</p>';
+      ziel.appendChild(k);
+      continue;
+    }
+
+    const t = zaehleTreffer(e.text, erwartet);
+    const woerter = woerterVon(e);
+    const proMin = dauerMin > 0.5 ? woerter / dauerMin : 0;
+
+    // Zwei unabhaengige Abbruchproben, weil eine allein taeuschen kann:
+    //  (1) absolut — unter 90 Woertern je Minute ist fuer freie Rede wenig;
+    //      wer langsam spricht, loest das aber faelschlich aus.
+    //  (2) im Vergleich — liefert ein Anbieter deutlich weniger als der beste,
+    //      ist das ein starkes Zeichen fuer stilles Abschneiden, unabhaengig
+    //      vom Sprechtempo. Genau so faellt die 2000-Token-Kappe auf.
+    const verdachtAbsolut = proMin > 0 && proMin < 90;
+    const verdachtRelativ = maxWoerter > 50 && woerter < maxWoerter * 0.7;
+    const verdacht = verdachtAbsolut || verdachtRelativ;
+
+    const quotenKlasse = t.quote >= 0.8 ? 'gut' : t.quote >= 0.5 ? 'warn' : 'schlecht';
+
+    k.innerHTML =
+      '<h3>' + e.anbieter + ' <span class="unter">(' + e.modell + ', '
+        + (e.dauerMs / 1000).toFixed(1) + ' s)</span></h3>' +
+      '<div>Fachbegriffe: <span class="zahl ' + quotenKlasse + '">'
+        + t.gefunden.length + '/' + erwartet.length + '</span>' +
+        (t.fehlend.length ? ' &nbsp;— fehlt: <b class="schlecht">' + t.fehlend.join(', ') + '</b>' : '') +
+      '</div>' +
+      '<div>Länge: <span class="zahl">' + woerter + '</span> Wörter, '
+        + Math.round(proMin) + ' je Minute' +
+        (verdachtRelativ ? ' &nbsp;<b class="schlecht">— nur '
+            + Math.round(woerter / maxWoerter * 100) + '&#37; des besten Anbieters</b>' : '') +
+      '</div>' +
+      (verdacht
+        ? '<div class="warnkasten" style="margin:8px 0 0"><b>Auf Abbruch prüfen.</b> Endet der Text '
+          + 'beim letzten gesagten Satz? Hör das Ende der Aufnahme nach und vergleiche. '
+          + 'Schneidet ein Dienst ab, scheidet er aus — unabhängig von seiner Trefferquote.</div>'
+        : '') +
+      '<div class="txt">' + (e.text || '(leer)') + '</div>';
+    ziel.appendChild(k);
+  }
+}
+</script>
