@@ -1,0 +1,217 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:bienen_app/core/supabase/supabase_config.dart';
+import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
+import 'package:bienen_app/features/spracheingabe/data/sprach_aufnahme.dart';
+import 'package:bienen_app/features/spracheingabe/data/sprach_speicher.dart';
+import 'package:bienen_app/features/spracheingabe/data/spracheingabe_gateway.dart';
+import 'package:bienen_app/features/spracheingabe/domain/fachwort_treffer.dart';
+import 'package:bienen_app/features/spracheingabe/domain/kartenwahl.dart';
+import 'package:bienen_app/features/spracheingabe/domain/sprach_modelle.dart';
+import 'package:bienen_app/features/spracheingabe/domain/verhoerer_diff.dart';
+import 'package:bienen_app/features/spracheingabe/domain/wortfehlerrate.dart';
+
+final spracheingabeGatewayProvider = Provider<SpracheingabeGateway>(
+    (ref) => SupabaseSpracheingabeGateway(SupabaseConfig.client));
+
+final sprachSpeicherProvider =
+    Provider<SprachSpeicher>((ref) => SprachSpeicher(SupabaseConfig.client));
+
+/// Live-Anbieter des Drills. Vorgabe bis zum Entscheid D-100: ElevenLabs, als
+/// einziger der drei synchron und ohne Warteschlange.
+final liveAnbieterProvider = Provider<String>((ref) => 'elevenlabs');
+
+/// Was der Drill gerade anzeigt.
+class DrillZustand {
+  final List<SprachKarte> stapel;
+  final SprachKarte? karte;
+  final Map<String, Kartenbilanz> bilanz;
+  final DrillErgebnis? letztes;
+  final bool laeuft;
+
+  const DrillZustand({
+    this.stapel = const [],
+    this.karte,
+    this.bilanz = const {},
+    this.letztes,
+    this.laeuft = false,
+  });
+
+  DrillZustand copyWith({
+    List<SprachKarte>? stapel,
+    SprachKarte? karte,
+    Map<String, Kartenbilanz>? bilanz,
+    DrillErgebnis? letztes,
+    bool? laeuft,
+    bool letztesLoeschen = false,
+  }) =>
+      DrillZustand(
+        stapel: stapel ?? this.stapel,
+        karte: karte ?? this.karte,
+        bilanz: bilanz ?? this.bilanz,
+        letztes: letztesLoeschen ? null : (letztes ?? this.letztes),
+        laeuft: laeuft ?? this.laeuft,
+      );
+}
+
+/// Das Ergebnis einer gesprochenen Karte.
+class DrillErgebnis {
+  final String sollText;
+  final String transkript;
+  final bool getroffen;
+  final double? wortfehler;
+
+  const DrillErgebnis({
+    required this.sollText,
+    required this.transkript,
+    required this.getroffen,
+    this.wortfehler,
+  });
+}
+
+final drillProvider =
+    AsyncNotifierProvider<DrillNotifier, DrillZustand>(DrillNotifier.new);
+
+class DrillNotifier extends AsyncNotifier<DrillZustand> {
+  SprachAufnahme? _aufnahme;
+
+  SpracheingabeGateway get _gw => ref.read(spracheingabeGatewayProvider);
+  SprachSpeicher get _speicher => ref.read(sprachSpeicherProvider);
+
+  @override
+  Future<DrillZustand> build() async {
+    await _gw.startstapelSicherstellen();
+    final karten = await _gw.kartenLaden();
+    final zustand = DrillZustand(stapel: karten);
+    return zustand.copyWith(
+        karte: naechsteKarte(karten: karten, bilanz: const {}));
+  }
+
+  Future<void> aufnahmeStarten() async {
+    final jetzt = state.valueOrNull;
+    if (jetzt == null || jetzt.laeuft) return;
+    _aufnahme = SprachAufnahme();
+    await _aufnahme!.starten();
+    state = AsyncData(jetzt.copyWith(laeuft: true, letztesLoeschen: true));
+  }
+
+  /// Beendet die Aufnahme, legt sie ab, laesst sie erkennen und bewertet.
+  ///
+  /// Reihenfolge mit Absicht: **zuerst ablegen, dann erkennen.** Faellt die
+  /// Erkennung aus, ist die Aufnahme trotzdem im Bestand und beim naechsten
+  /// Vollvergleich auswertbar — der ganze Sinn davon, den Ton zu behalten.
+  Future<void> aufnahmeBeenden() async {
+    final jetzt = state.valueOrNull;
+    final karte = jetzt?.karte;
+    final aufnahme = _aufnahme;
+    if (jetzt == null || karte == null || aufnahme == null) return;
+
+    final ton = await aufnahme.beenden();
+    _aufnahme = null;
+    state = AsyncData(jetzt.copyWith(laeuft: false));
+
+    final betriebId = ref.read(currentBetriebIdProvider);
+    final personId = ref.read(authControllerProvider).session?.userId;
+    if (betriebId == null || personId == null) {
+      throw Exception('Nicht angemeldet oder kein Betrieb gewählt.');
+    }
+
+    final kennung = DateTime.now().microsecondsSinceEpoch.toString();
+    final pfad = await _speicher.hochladen(
+      betriebId: betriebId,
+      personId: personId,
+      bytes: ton.bytes,
+      mime: ton.mime,
+      kennung: kennung,
+    );
+
+    final probe = await _gw.probeAnlegen(SprachProbe(
+      id: '',
+      personId: personId,
+      karteId: karte.id,
+      sollText: karte.sollText,
+      modus: ProbenModus.drill,
+      storagePath: pfad,
+      dauerMs: ton.dauerMs,
+      groesseB: ton.bytes.lengthInBytes,
+      mime: ton.mime,
+    ));
+
+    final anbieter = ref.read(liveAnbieterProvider);
+    final transkript = await _gw.transkribieren(
+      bytes: ton.bytes,
+      dateiname: pfad.split('/').last,
+      anbieter: anbieter,
+      mitWortliste: true,
+    );
+
+    final treffer = zaehleTreffer(transkript: transkript, erwartet: karte.zuZaehlen);
+    final wer = karte.art == KartenArt.satz
+        ? wortfehlerrate(soll: karte.sollText, ist: transkript)
+        : null;
+
+    await _gw.ergebnisAnlegen(SprachErgebnis(
+      id: '',
+      probeId: probe.id,
+      anbieter: anbieter,
+      mitWortliste: true,
+      transkript: transkript,
+      trefferQuote: treffer.quote,
+      wortfehlerrate: wer,
+    ));
+
+    // Danebengegangene Begriffe als Verhoerer melden. Erst der zweite gleiche
+    // macht daraus eine Regel (lernschwelle.dart) — ein einzelner Fehltreffer
+    // waere Zufall.
+    if (treffer.fehlend.isNotEmpty) {
+      for (final paar in verhoererAus(erkannt: transkript, korrigiert: karte.sollText)) {
+        await _gw.verhoererMelden(
+          betriebId: betriebId,
+          personId: personId,
+          falsch: paar.falsch,
+          richtig: paar.richtig,
+          quelle: 'training',
+        );
+      }
+    }
+
+    final bilanz = Map<String, Kartenbilanz>.from(jetzt.bilanz);
+    final alt = bilanz[karte.sollText];
+    final getroffen = treffer.fehlend.isEmpty;
+    bilanz[karte.sollText] = Kartenbilanz(
+      versuche: (alt?.versuche ?? 0) + 1,
+      treffer: (alt?.treffer ?? 0) + (getroffen ? 1 : 0),
+    );
+
+    state = AsyncData(jetzt.copyWith(
+      laeuft: false,
+      bilanz: bilanz,
+      letztes: DrillErgebnis(
+        sollText: karte.sollText,
+        transkript: transkript,
+        getroffen: getroffen,
+        wortfehler: wer,
+      ),
+    ));
+  }
+
+  void naechste() {
+    final jetzt = state.valueOrNull;
+    if (jetzt == null) return;
+    state = AsyncData(jetzt.copyWith(
+      karte: naechsteKarte(
+        karten: jetzt.stapel,
+        bilanz: jetzt.bilanz,
+        zuletzt: jetzt.karte?.sollText,
+      ),
+      letztesLoeschen: true,
+    ));
+  }
+
+  void abbrechen() {
+    _aufnahme?.abbrechen();
+    _aufnahme = null;
+    final jetzt = state.valueOrNull;
+    if (jetzt != null) state = AsyncData(jetzt.copyWith(laeuft: false));
+  }
+}
