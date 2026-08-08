@@ -492,8 +492,12 @@ List<Verhoererpaar> verhoererAus({required String erkannt, required String korri
 
   // Levenshtein-Matrix, danach rueckwaerts durch die Entscheidungen laufen.
   final d = List.generate(a.length + 1, (_) => List<int>.filled(b.length + 1, 0));
-  for (var x = 0; x <= a.length; x++) d[x][0] = x;
-  for (var y = 0; y <= b.length; y++) d[0][y] = y;
+  for (var x = 0; x <= a.length; x++) {
+    d[x][0] = x;
+  }
+  for (var y = 0; y <= b.length; y++) {
+    d[0][y] = y;
+  }
   for (var x = 1; x <= a.length; x++) {
     for (var y = 1; y <= b.length; y++) {
       final kosten = a[x - 1] == b[y - 1] ? 0 : 1;
