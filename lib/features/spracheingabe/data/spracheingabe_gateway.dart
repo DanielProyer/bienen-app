@@ -18,7 +18,15 @@ abstract class SpracheingabeGateway {
 
   /// Zaehlt einen beobachteten Verhoerer hoch und schaltet die Regel scharf,
   /// sobald die Lernschwelle erreicht ist.
+  ///
+  /// `betriebId` muss mitkommen und wird NICHT dem Default ueberlassen: RLS
+  /// laesst die eigenen Zeilen ALLER Betriebe durch, in denen man Mitglied
+  /// ist. Ohne die Einschraenkung faende die Vorabfrage bei einem Mitglied
+  /// zweier Betriebe zwei Zeilen (harter Fehler) oder den Zaehler des falschen
+  /// Betriebs — die Regel im zweiten Betrieb waere dann sofort scharf und die
+  /// Lernschwelle ausgehebelt.
   Future<SprachKorrektur?> verhoererMelden({
+    required String betriebId,
     required String personId,
     required String falsch,
     required String richtig,
@@ -38,15 +46,13 @@ class SupabaseSpracheingabeGateway implements SpracheingabeGateway {
 
   @override
   Future<SprachKarte> karteAnlegen(SprachKarte karte) async {
-    final res =
-        await _c.from('sprach_karten').insert(karte.toInsertJson()).select().single();
+    final res = await _c.from('sprach_karten').insert(karte.toInsertJson()).select().single();
     return SprachKarte.fromJson(res);
   }
 
   @override
   Future<SprachProbe> probeAnlegen(SprachProbe probe) async {
-    final res =
-        await _c.from('sprach_proben').insert(probe.toInsertJson()).select().single();
+    final res = await _c.from('sprach_proben').insert(probe.toInsertJson()).select().single();
     return SprachProbe.fromJson(res);
   }
 
@@ -67,21 +73,18 @@ class SupabaseSpracheingabeGateway implements SpracheingabeGateway {
         .select()
         .eq('probe_id', probeId)
         .order('gemessen_am', ascending: false);
-    return (res as List)
-        .map((j) => SprachErgebnis.fromJson(j as Map<String, dynamic>))
-        .toList();
+    return (res as List).map((j) => SprachErgebnis.fromJson(j as Map<String, dynamic>)).toList();
   }
 
   @override
   Future<List<SprachKorrektur>> korrekturenLaden() async {
     final res = await _c.from('sprach_korrekturen').select();
-    return (res as List)
-        .map((j) => SprachKorrektur.fromJson(j as Map<String, dynamic>))
-        .toList();
+    return (res as List).map((j) => SprachKorrektur.fromJson(j as Map<String, dynamic>)).toList();
   }
 
   @override
   Future<SprachKorrektur?> verhoererMelden({
+    required String betriebId,
     required String personId,
     required String falsch,
     required String richtig,
@@ -90,21 +93,26 @@ class SupabaseSpracheingabeGateway implements SpracheingabeGateway {
     final schluessel = falsch.trim().toLowerCase();
     if (schluessel.isEmpty || richtig.trim().isEmpty) return null;
 
+    // Betrieb und Person ausdruecklich einschraenken: RLS liefert die eigenen
+    // Zeilen aller Betriebe, in denen man Mitglied ist.
     final vorhanden = await _c
         .from('sprach_korrekturen')
         .select()
+        .eq('betrieb_id', betriebId)
+        .eq('person_id', personId)
         .eq('falsch', schluessel)
         .maybeSingle();
 
     final treffer = vorhanden == null ? 1 : ((vorhanden['treffer'] as num).toInt() + 1);
-    final aktiv = darfRegelWerden(treffer: treffer, richtig: richtig);
+    final aktiv = darfRegelWerden(treffer: treffer, falsch: schluessel, richtig: richtig);
 
     final res = await _c
         .from('sprach_korrekturen')
         .upsert({
+          'betrieb_id': betriebId,
           'person_id': personId,
           'falsch': schluessel,
-          'richtig': richtig,
+          'richtig': richtig.trim(),
           'treffer': treffer,
           'quelle': quelle,
           'aktiv': aktiv,

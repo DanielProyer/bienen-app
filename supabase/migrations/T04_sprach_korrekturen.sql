@@ -49,10 +49,12 @@ create policy sprach_korrekturen_upd on public.sprach_korrekturen
   using (person_id = private.current_app_user() and private.ist_mitglied(betrieb_id))
   with check (person_id = private.current_app_user() and private.ist_mitglied(betrieb_id));
 -- Loeschen erlaubt: eine falsch gelernte Regel muss verschwinden koennen,
--- sonst schleppt man sie jahrelang mit.
+-- sonst schleppt man sie jahrelang mit. Wie in T02 bewusst OHNE ist_mitglied —
+-- auch nach einem Austritt muss man das, was die App ueber die eigene
+-- Aussprache gelernt hat, entfernen koennen.
 drop policy if exists sprach_korrekturen_del on public.sprach_korrekturen;
 create policy sprach_korrekturen_del on public.sprach_korrekturen
   for delete to authenticated
-  using (person_id = private.current_app_user() and private.ist_mitglied(betrieb_id));
+  using (person_id = private.current_app_user());
 
 -- ROLLBACK: drop table if exists public.sprach_korrekturen;

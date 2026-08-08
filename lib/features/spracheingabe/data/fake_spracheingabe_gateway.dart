@@ -13,8 +13,7 @@ class FakeSpracheingabeGateway implements SpracheingabeGateway {
   String _id(String praefix) => '$praefix${++_lauf}';
 
   @override
-  Future<List<SprachKarte>> kartenLaden() async =>
-      karten.where((k) => k.aktiv).toList();
+  Future<List<SprachKarte>> kartenLaden() async => karten.where((k) => k.aktiv).toList();
 
   @override
   Future<SprachKarte> karteAnlegen(SprachKarte karte) async {
@@ -75,6 +74,7 @@ class FakeSpracheingabeGateway implements SpracheingabeGateway {
 
   @override
   Future<SprachKorrektur?> verhoererMelden({
+    required String betriebId,
     required String personId,
     required String falsch,
     required String richtig,
@@ -89,10 +89,10 @@ class FakeSpracheingabeGateway implements SpracheingabeGateway {
       id: i < 0 ? _id('c') : korrekturen[i].id,
       personId: personId,
       falsch: schluessel,
-      richtig: richtig,
+      richtig: richtig.trim(),
       treffer: treffer,
       quelle: quelle,
-      aktiv: darfRegelWerden(treffer: treffer, richtig: richtig),
+      aktiv: darfRegelWerden(treffer: treffer, falsch: schluessel, richtig: richtig),
     );
     if (i < 0) {
       korrekturen.add(neu);

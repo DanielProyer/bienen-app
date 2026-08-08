@@ -30,9 +30,22 @@ const Set<String> gesperrteBegriffe = {
 
 /// Entscheidet, ob aus einem beobachteten Verhoerer eine Korrekturregel werden
 /// darf.
-bool darfRegelWerden({required int treffer, required String richtig}) {
+///
+/// **Beide Seiten werden gegen die Sperrliste geprueft, nicht nur das Ziel.**
+/// Eine Regel `faulbrut → irgendetwas` wuerde sonst jeden echt gesagten
+/// Seuchenbegriff still aus dem Transkript schreiben — die Umkehrung genau der
+/// Gefahr, wegen der die Liste ueberhaupt existiert. Dasselbe gilt fuer
+/// Alltagswoerter: `beute → baute` machte aus jeder Beute eine Baute.
+bool darfRegelWerden({
+  required int treffer,
+  required String falsch,
+  required String richtig,
+}) {
+  final quelle = falsch.trim().toLowerCase();
   final ziel = richtig.trim().toLowerCase();
-  if (ziel.isEmpty) return false;
-  if (gesperrteBegriffe.contains(ziel)) return false;
+  if (quelle.isEmpty || ziel.isEmpty) return false;
+  if (gesperrteBegriffe.contains(quelle) || gesperrteBegriffe.contains(ziel)) {
+    return false;
+  }
   return treffer >= lernschwelle;
 }

@@ -23,7 +23,12 @@ create table if not exists public.sprach_proben (
   mime text not null default 'audio/webm',
   created_by uuid, updated_by uuid,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  -- Zielpunkt fuer den zusammengesetzten Fremdschluessel aus T03. Ohne ihn
+  -- laesst sich die betrieb_id einer Ergebniszeile nicht an die ihrer Probe
+  -- ketten — sie koennte dann auf einen anderen Mandanten zeigen. Muster aus
+  -- R01 (recherche_fotos).
+  unique (betrieb_id, id)
 );
 alter table public.sprach_proben enable row level security;
 revoke all on public.sprach_proben from anon, public;
@@ -54,10 +59,17 @@ create policy sprach_proben_upd on public.sprach_proben
   with check (person_id = private.current_app_user() and private.ist_mitglied(betrieb_id));
 -- Loeschen ist hier ausdruecklich erlaubt: "alle meine Trainingsdaten loeschen"
 -- muss moeglich sein (Datenschutz), im Gegensatz zu O01.
+--
+-- BEWUSST OHNE ist_mitglied: Wer einen Betrieb verlaesst, verliert den Zugriff
+-- auf dessen Daten — aber NIE das Recht, seine eigene Stimme zu loeschen.
+-- Mit Mitgliedschaftspruefung waeren die Aufnahmen danach fuer niemanden mehr
+-- erreichbar (Mitglieder sehen sie ohnehin nicht) und nur noch per
+-- service_role zu entfernen. Bei einer Chat-ID (O01) waere das vertretbar, bei
+-- Sprachaufnahmen nicht. person_id bindet weiterhin auf die eigenen Zeilen.
 drop policy if exists sprach_proben_del on public.sprach_proben;
 create policy sprach_proben_del on public.sprach_proben
   for delete to authenticated
-  using (person_id = private.current_app_user() and private.ist_mitglied(betrieb_id));
+  using (person_id = private.current_app_user());
 
 insert into storage.buckets (id, name, public)
   values ('sprach-proben', 'sprach-proben', false)
@@ -78,11 +90,12 @@ create policy auth_ins_sprach_proben on storage.objects for insert to authentica
     and (storage.foldername(objects.name))[1] ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
     and private.ist_mitglied(((storage.foldername(objects.name))[1])::uuid)
     and (storage.foldername(objects.name))[2] = private.current_app_user()::text);
+-- Loeschen ohne ist_mitglied, aus demselben Grund wie bei der Tabelle: Die
+-- eigene Stimme muss auch nach einem Austritt entfernbar bleiben. Die zweite
+-- Pfadebene bindet weiterhin fest auf die eigene person_id.
 drop policy if exists auth_del_sprach_proben on storage.objects;
 create policy auth_del_sprach_proben on storage.objects for delete to authenticated
   using (bucket_id = 'sprach-proben'
-    and (storage.foldername(objects.name))[1] ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-    and private.ist_mitglied(((storage.foldername(objects.name))[1])::uuid)
     and (storage.foldername(objects.name))[2] = private.current_app_user()::text);
 
 -- ROLLBACK:
