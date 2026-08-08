@@ -34,6 +34,23 @@ abstract class SpracheingabeGateway {
   Future<List<SprachErgebnis>> ergebnisseZu(String probeId);
   Future<List<SprachKorrektur>> korrekturenLaden();
 
+  /// Alle eigenen Proben — Grundlage des Bestands.
+  Future<List<SprachProbe>> probenLaden();
+
+  /// Alle eigenen Messungen. Bewusst ungefiltert und clientseitig
+  /// zusammengefasst: Bei ein paar hundert Zeilen ist das schneller
+  /// geschrieben und leichter zu pruefen als eine Aggregat-Sicht in der
+  /// Datenbank. Wird der Bestand gross, gehoert die Summe nach unten — der
+  /// Punkt ist im Plan vermerkt, nicht vergessen.
+  Future<List<SprachErgebnis>> ergebnisseAlle();
+
+  /// Schaltet eine gelernte Regel scharf oder still.
+  Future<void> korrekturSchalten(String id, bool aktiv);
+
+  /// Entfernt eine gelernte Regel endgueltig. Ohne diesen Weg schleppt man
+  /// eine falsch gelernte Regel jahrelang mit.
+  Future<void> korrekturLoeschen(String id);
+
   /// Zaehlt einen beobachteten Verhoerer hoch und schaltet die Regel scharf,
   /// sobald die Lernschwelle erreicht ist.
   ///
@@ -108,6 +125,28 @@ class SupabaseSpracheingabeGateway implements SpracheingabeGateway {
         .eq('probe_id', probeId)
         .order('gemessen_am', ascending: false);
     return (res as List).map((j) => SprachErgebnis.fromJson(j as Map<String, dynamic>)).toList();
+  }
+
+  @override
+  Future<List<SprachProbe>> probenLaden() async {
+    final res = await _c.from('sprach_proben').select().order('created_at', ascending: false);
+    return (res as List).map((j) => SprachProbe.fromJson(j as Map<String, dynamic>)).toList();
+  }
+
+  @override
+  Future<List<SprachErgebnis>> ergebnisseAlle() async {
+    final res = await _c.from('sprach_ergebnisse').select().order('gemessen_am', ascending: false);
+    return (res as List).map((j) => SprachErgebnis.fromJson(j as Map<String, dynamic>)).toList();
+  }
+
+  @override
+  Future<void> korrekturSchalten(String id, bool aktiv) async {
+    await _c.from('sprach_korrekturen').update({'aktiv': aktiv}).eq('id', id);
+  }
+
+  @override
+  Future<void> korrekturLoeschen(String id) async {
+    await _c.from('sprach_korrekturen').delete().eq('id', id);
   }
 
   @override

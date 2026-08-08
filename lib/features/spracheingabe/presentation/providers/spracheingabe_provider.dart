@@ -5,6 +5,7 @@ import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/spracheingabe/data/sprach_aufnahme.dart';
 import 'package:bienen_app/features/spracheingabe/data/sprach_speicher.dart';
 import 'package:bienen_app/features/spracheingabe/data/spracheingabe_gateway.dart';
+import 'package:bienen_app/features/spracheingabe/domain/anbieterbilanz.dart';
 import 'package:bienen_app/features/spracheingabe/domain/fachwort_treffer.dart';
 import 'package:bienen_app/features/spracheingabe/domain/kartenwahl.dart';
 import 'package:bienen_app/features/spracheingabe/domain/sprach_modelle.dart';
@@ -22,6 +23,63 @@ final sprachSpeicherProvider = Provider<SprachSpeicher>(
 /// Live-Anbieter des Drills. Vorgabe bis zum Entscheid D-100: ElevenLabs, als
 /// einziger der drei synchron und ohne Warteschlange.
 final liveAnbieterProvider = Provider<String>((ref) => 'elevenlabs');
+
+/// Was die Auswertung zeigt.
+class AuswertungZustand {
+  final int proben;
+  final int sekunden;
+  final int gemessen;
+  final List<Anbieterbilanz> bilanzen;
+  final List<SprachKorrektur> korrekturen;
+
+  const AuswertungZustand({
+    this.proben = 0,
+    this.sekunden = 0,
+    this.gemessen = 0,
+    this.bilanzen = const [],
+    this.korrekturen = const [],
+  });
+
+  /// Wie viele Proben noch auf ihre erste Messung warten. Genau dafuer bleibt
+  /// der Ton liegen: Was heute ausfiel, ist morgen noch da.
+  int get ungemessen => proben - gemessen;
+}
+
+final auswertungProvider =
+    AsyncNotifierProvider<AuswertungNotifier, AuswertungZustand>(AuswertungNotifier.new);
+
+class AuswertungNotifier extends AsyncNotifier<AuswertungZustand> {
+  SpracheingabeGateway get _gw => ref.read(spracheingabeGatewayProvider);
+
+  @override
+  Future<AuswertungZustand> build() async {
+    final proben = await _gw.probenLaden();
+    final ergebnisse = await _gw.ergebnisseAlle();
+    final korrekturen = await _gw.korrekturenLaden();
+
+    return AuswertungZustand(
+      proben: proben.length,
+      sekunden: proben.fold(0, (s, p) => s + (p.dauerMs ~/ 1000)),
+      gemessen: ergebnisse.map((e) => e.probeId).toSet().length,
+      bilanzen: anbieterBilanzieren(ergebnisse),
+      // Scharfe Regeln zuerst: Sie wirken, die anderen sind nur Beobachtungen.
+      korrekturen: korrekturen
+        ..sort((a, b) => a.aktiv == b.aktiv
+            ? b.treffer.compareTo(a.treffer)
+            : (a.aktiv ? -1 : 1)),
+    );
+  }
+
+  Future<void> regelSchalten(String id, bool aktiv) async {
+    await _gw.korrekturSchalten(id, aktiv);
+    ref.invalidateSelf();
+  }
+
+  Future<void> regelLoeschen(String id) async {
+    await _gw.korrekturLoeschen(id);
+    ref.invalidateSelf();
+  }
+}
 
 /// Was der Drill gerade anzeigt.
 class DrillZustand {
