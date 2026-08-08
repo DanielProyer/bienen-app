@@ -49,6 +49,7 @@ Fachwortvergleich genügen drei.</p>
 
 <input type="password" id="testwort" placeholder="Testwort (einmalig, wird auf diesem Gerät gemerkt)">
 <button class="neben" id="pingKnopf">Bereitschaft prüfen — stimmt das Testwort, sind die Schlüssel gesetzt?</button>
+<div class="karte" id="bereitschaft" style="display:none"></div>
 
 <h2>1. Aufnahme wählen</h2>
 <p class="unter" style="margin-bottom:8px">Entweder eine Datei vom Gerät — die Aufnahme der
@@ -102,7 +103,7 @@ auch immer danach schiefgeht.</p>
 <script>
 // Fassung dieser Datei. Steht sichtbar oben, damit ein Feldergebnis immer
 // einer Fassung zuzuordnen ist (Regel aus der globalen CLAUDE.md).
-const FASSUNG = 'V3';
+const FASSUNG = 'V4';
 
 const ZIEL = 'https://dcdcohktxbhdxnxjvcyp.supabase.co/functions/v1/transkription';
 const HAEPPCHEN_MS = 5000;
@@ -154,22 +155,66 @@ function mb(bytes) { return (bytes / 1048576).toFixed(2); }
 // Beantwortet VOR der Durchsicht die zwei Fragen, an denen sonst der ganze Tag
 // haengt: stimmt das Testwort, und sind die Schluessel gesetzt? Kostet nichts
 // und schickt kein Audio.
+// Die Antwort erscheint DIREKT UNTER DEM KNOPF, nicht nur im Protokoll.
+//
+// Genau daran ist die erste Fassung gescheitert: Der Knopf arbeitete
+// einwandfrei — die Function antwortete zehnmal mit 200 —, aber die einzige
+// Rueckmeldung stand im Protokoll am Seitenende, 205 px unterhalb des
+// Fensterrands. Fuer den Nutzer sah das aus, als reagiere der Knopf nicht,
+// und er klickte zehnmal. Entscheid D-94, auf die Rueckmeldung angewandt:
+// Was man nicht sieht, hat nicht stattgefunden.
+function bereitschaftZeigen(html, art) {
+  const k = el('bereitschaft');
+  k.style.display = 'block';
+  k.innerHTML = '<div class="' + (art || '') + '">' + html + '</div>';
+}
+
 el('pingKnopf').onclick = async () => {
+  const knopf = el('pingKnopf');
+  const beschriftung = knopf.textContent;
   const wort = el('testwort').value.trim();
-  if (!wort) { log('Testwort fehlt', 'schlecht'); return; }
+  if (!wort) {
+    bereitschaftZeigen('<b>Testwort fehlt.</b> Trag es oben ein.', 'schlecht');
+    log('Testwort fehlt', 'schlecht');
+    return;
+  }
   localStorage.setItem('testwort', wort);
+
+  // Sofortige Reaktion auf den Klick — noch bevor das Netz antwortet.
+  knopf.disabled = true;
+  knopf.textContent = 'prüfe …';
+  bereitschaftZeigen('Prüfe …');
+
   try {
     const a = await fetch(ZIEL + '?aktion=ping', { method: 'POST', headers: { 'x-testwort': wort } });
-    if (a.status === 401) { log('Testwort stimmt NICHT', 'schlecht'); return; }
+    if (a.status === 401) {
+      bereitschaftZeigen('<b>Das Testwort stimmt nicht.</b> Es muss zeichengleich zum Secret '
+        + '<code>TRANSKRIPTION_TESTWORT</code> sein. Ist dort ueberhaupt schon eines hinterlegt?',
+        'schlecht');
+      log('Testwort stimmt NICHT', 'schlecht');
+      return;
+    }
     const d = await a.json();
     const s = d.schluessel;
-    const alle = Object.keys(s).map((n) => n + ': ' + (s[n] ? 'gesetzt' : 'FEHLT')).join(' · ');
-    log('Testwort stimmt. Schlüssel — ' + alle
-        + ' · ElevenLabs-Modell: ' + d.elevenlabsModell
-        + ' · Infomaniak-Produkt: ' + d.infomaniakProdukt,
-        Object.values(s).every(Boolean) ? 'gut' : 'warn');
+    const zeilen = Object.keys(s).map((n) =>
+      '<div>' + (s[n] ? '✓ ' : '✗ ') + '<b>' + n + '</b> — '
+      + (s[n] ? 'Schlüssel gesetzt' : '<span class="schlecht">Schlüssel FEHLT</span>') + '</div>').join('');
+    const vollstaendig = Object.values(s).every(Boolean);
+    bereitschaftZeigen(
+      '<div class="gut"><b>✓ Testwort stimmt.</b></div>' + zeilen
+      + '<p class="unter" style="margin:6px 0 0">ElevenLabs-Modell: ' + d.elevenlabsModell
+      + ' · Infomaniak-Produkt: ' + d.infomaniakProdukt + '</p>'
+      + (vollstaendig
+          ? '<div class="gut" style="margin-top:6px"><b>Alles bereit.</b></div>'
+          : '<div class="warn" style="margin-top:6px">Ohne Schlüssel meldet der betreffende '
+            + 'Anbieter beim Auswerten einen Fehler — die anderen laufen trotzdem.</div>'));
+    log('Bereitschaft geprüft', vollstaendig ? 'gut' : 'warn');
   } catch (e) {
+    bereitschaftZeigen('<b>Probe misslungen:</b> ' + e, 'schlecht');
     log('Bereitschaftsprobe misslungen: ' + e, 'schlecht');
+  } finally {
+    knopf.disabled = false;
+    knopf.textContent = beschriftung;
   }
 };
 
