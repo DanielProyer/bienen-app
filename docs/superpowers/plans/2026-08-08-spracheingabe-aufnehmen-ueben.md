@@ -68,7 +68,7 @@ und die Plattform würde sonst den Testwort-Weg abweisen, bevor die Function lä
 Ganz oben in `index.ts`, nach dem bestehenden Import:
 
 ```typescript
-import { createClient } from 'jsr:@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Der Service-Key wird nur zum PRUEFEN des Nutzer-JWT gebraucht, nie zum
 // Lesen von Daten. Moderne Schluessel zuerst (D-87: die Legacy-Keys sind

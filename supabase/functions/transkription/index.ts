@@ -5,6 +5,16 @@ import {
   infomaniakStand,
   infomaniakStarten,
 } from './anbieter.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// Der Service-Key wird nur zum PRUEFEN des Nutzer-JWT gebraucht, nie zum
+// Lesen von Daten. Moderne Schluessel zuerst (D-87: die Legacy-Keys sind
+// deaktiviert), Fallback fuer den Fall, dass nur der alte Name gesetzt ist.
+function serviceKey(): string {
+  const modern = Deno.env.get('SUPABASE_SECRET_KEYS');
+  if (modern) return modern.split(',')[0].trim();
+  return Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+}
 
 // Anbieter mit Auftragsnummer. Beide Routen sind von Haus aus asynchron; die
 // Seite startet sie und fragt danach in kurzen Aufrufen den Stand ab.
@@ -24,9 +34,36 @@ function testwortStimmt(anfrage: Request): boolean {
   return anfrage.headers.get('x-testwort') === erwartet;
 }
 
+/// Zweiter Eingang: ein eingeloggter Nutzer der App.
+///
+/// Die oeffentliche Testseite hat keinen Login und weist sich mit dem Testwort
+/// aus; die App hat einen und schickt ihr JWT. Beide Wege muessen nebeneinander
+/// bestehen, solange die Testseite existiert.
+///
+/// Geprueft wird NUR, ob das JWT gueltig ist — welchem Betrieb der Nutzer
+/// angehoert, spielt hier keine Rolle: Die Function liest nichts aus der
+/// Datenbank, sie reicht Audio an die Erkenner weiter und gibt Text zurueck.
+async function nutzerIstEingeloggt(anfrage: Request): Promise<boolean> {
+  const kopf = anfrage.headers.get('Authorization') ?? '';
+  const jwt = kopf.startsWith('Bearer ') ? kopf.slice(7) : '';
+  if (!jwt) return false;
+  const schluessel = serviceKey();
+  if (!schluessel) return false;
+  try {
+    const admin = createClient(Deno.env.get('SUPABASE_URL')!, schluessel);
+    const { data, error } = await admin.auth.getUser(jwt);
+    return !error && !!data.user;
+  } catch {
+    return false;
+  }
+}
+
+// `authorization` und `apikey` muessen freigegeben sein: supabase_flutter
+// haengt sie beim invoke() an, und der Browser weist die Anfrage sonst schon
+// im Preflight ab — BEVOR die Function ueberhaupt laeuft (Falle aus D-86).
 const KOPF = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'content-type, x-testwort',
+  'Access-Control-Allow-Headers': 'authorization, content-type, x-testwort, x-client-info, apikey',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Content-Type': 'application/json',
 };
@@ -38,8 +75,11 @@ function antwort(koerper: unknown, status = 200): Response {
 Deno.serve(async (anfrage) => {
   if (anfrage.method === 'OPTIONS') return new Response('ok', { headers: KOPF });
 
-  if (!testwortStimmt(anfrage)) {
-    return antwort({ fehler: 'Testwort fehlt oder stimmt nicht' }, 401);
+  // Reihenfolge mit Absicht: Das Testwort kostet einen Zeichenvergleich, die
+  // JWT-Pruefung einen Netzaufruf. Wer das Testwort mitschickt, zahlt den
+  // Aufruf nicht.
+  if (!testwortStimmt(anfrage) && !(await nutzerIstEingeloggt(anfrage))) {
+    return antwort({ fehler: 'Nicht berechtigt: weder gültiges Testwort noch Anmeldung' }, 401);
   }
 
   const url = new URL(anfrage.url);
