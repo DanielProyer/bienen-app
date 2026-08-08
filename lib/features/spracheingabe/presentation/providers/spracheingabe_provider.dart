@@ -198,13 +198,14 @@ class DrillNotifier extends AsyncNotifier<DrillZustand> {
       );
 
       final anbieter = ref.read(liveAnbieterProvider);
-      final transkript = await _gw.transkribieren(
+      final erkannt = await _gw.transkribieren(
         bytes: ton.bytes,
         dateiname: pfad.split('/').last,
         anbieter: anbieter,
         mitWortliste: true,
       );
 
+      final transkript = erkannt.text;
       final treffer = zaehleTreffer(transkript: transkript, erwartet: karte.zuZaehlen);
       final wer = karte.art == KartenArt.satz
           ? wortfehlerrate(soll: karte.sollText, ist: transkript)
@@ -215,10 +216,15 @@ class DrillNotifier extends AsyncNotifier<DrillZustand> {
           id: '',
           probeId: probe.id,
           anbieter: anbieter,
+          // Was der Dienst TATSAECHLICH benutzt hat — der Rueckfallweg der Edge
+          // Function haengt "(ohne Wortliste)" an den Namen. Ohne diese Angabe
+          // waeren spaetere Messungen nicht vergleichbar.
+          modell: erkannt.modell,
           mitWortliste: true,
           transkript: transkript,
           trefferQuote: treffer.quote,
           wortfehlerrate: wer,
+          dauerMs: erkannt.dauerMs,
         ),
       );
 
