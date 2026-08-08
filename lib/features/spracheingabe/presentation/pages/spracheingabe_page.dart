@@ -5,7 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/spracheingabe/presentation/providers/spracheingabe_provider.dart';
 import 'package:bienen_app/shared/widgets/app_card.dart';
+import 'package:bienen_app/shared/widgets/confirm_sheet.dart';
 import 'package:bienen_app/shared/widgets/empty_state.dart';
+import 'package:bienen_app/shared/widgets/section_header.dart';
 
 class SpracheingabePage extends ConsumerWidget {
   const SpracheingabePage({super.key});
@@ -51,28 +53,161 @@ class SpracheingabePage extends ConsumerWidget {
 /// Spracherkennung, der ausserhalb der App lebt (eigene Seite, ohne Login,
 /// mit Testwort). Ihn hier zu verlinken ist der Unterschied zwischen „alles an
 /// einem Ort" und „man muss wissen, dass es das gibt".
-class _AuswertungAnsicht extends StatelessWidget {
+class _AuswertungAnsicht extends ConsumerWidget {
   const _AuswertungAnsicht();
 
   static final _vergleich = Uri.parse(
     'https://danielproyer.github.io/bienen-app/erkennervergleich.html',
   );
 
+  String _quote(double? q) => q == null ? '—' : '${(q * 100).round()} %';
+
   @override
-  Widget build(BuildContext context) {
-    return EmptyState(
-      icon: Icons.insights_outlined,
-      titel: 'Die Auswertung kommt zuletzt',
-      text:
-          'Hier stehen später der Bestand, der Vergleich aller Anbieter und '
-          'die gelernten Regeln.\n\nBis dahin läuft der Anbietervergleich auf '
-          'einer eigenen Seite: dort lädst du eine Aufnahme hoch und lässt sie '
-          'von allen drei Erkennern gleichzeitig auswerten.',
-      aktion: OutlinedButton.icon(
-        key: const Key('spracheingabe_erkennervergleich'),
-        onPressed: () => launchUrl(_vergleich, mode: LaunchMode.externalApplication),
-        icon: const Icon(Icons.open_in_new),
-        label: const Text('Erkennervergleich öffnen'),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final zustand = ref.watch(auswertungProvider);
+
+    return zustand.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => EmptyState(
+        icon: Icons.error_outline,
+        titel: 'Die Auswertung liess sich nicht laden',
+        text: '$e',
+      ),
+      data: (a) => ListView(
+        padding: const EdgeInsets.all(BeeTokens.md),
+        children: [
+          AppCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Bestand', style: BeeTokens.abschnitt),
+                const SizedBox(height: BeeTokens.sm),
+                Text('${a.proben} Aufnahmen · ${(a.sekunden / 60).toStringAsFixed(1)} Minuten'),
+                Text('davon gemessen: ${a.gemessen}',
+                    style: const TextStyle(color: BeeTokens.textSekundaer)),
+                if (a.ungemessen > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: BeeTokens.sm),
+                    child: Text(
+                      '${a.ungemessen} warten noch auf ihre erste Messung — sie sind '
+                      'nicht verloren, genau dafür bleibt der Ton liegen.',
+                      style: const TextStyle(color: BeeTokens.textGedaempft, fontSize: 12.5),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: BeeTokens.md),
+          const SectionHeader(titel: 'Anbieter im Vergleich'),
+          if (a.bilanzen.isEmpty)
+            const AppCard(
+              child: Text(
+                'Noch keine Messung. Sprich im Segment „Üben" ein paar Karten — '
+                'jede erzeugt eine.',
+                style: TextStyle(color: BeeTokens.textGedaempft),
+              ),
+            )
+          else
+            for (final b in a.bilanzen)
+              AppCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(b.anbieter,
+                            style: const TextStyle(fontWeight: FontWeight.w700)),
+                        Text(_quote(b.trefferQuoteMittel),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: b.trefferQuoteMittel == null
+                                  ? BeeTokens.textGedaempft
+                                  : (b.trefferQuoteMittel! >= 0.8
+                                      ? BeeTokens.erfolgText
+                                      : BeeTokens.gefahrText),
+                            )),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${b.messungen} Messungen'
+                      '${b.fehlschlaege > 0 ? " · ${b.fehlschlaege} Ausfälle" : ""}'
+                      '${b.wortfehlerMittel != null ? " · Wortfehler ${(b.wortfehlerMittel! * 100).round()} %" : ""}',
+                      style: const TextStyle(color: BeeTokens.textSekundaer, fontSize: 12.5),
+                    ),
+                    if (b.modelle.isNotEmpty)
+                      Text(b.modelle.join(' · '),
+                          style: const TextStyle(
+                              color: BeeTokens.textGedaempft, fontSize: 12)),
+                  ],
+                ),
+              ),
+          const SizedBox(height: BeeTokens.md),
+          const SectionHeader(titel: 'Gelernte Regeln'),
+          if (a.korrekturen.isEmpty)
+            const AppCard(
+              child: Text(
+                'Noch keine. Eine Regel entsteht erst, wenn derselbe Verhörer '
+                'zweimal auftritt — ein einzelner wäre Zufall.',
+                style: TextStyle(color: BeeTokens.textGedaempft),
+              ),
+            )
+          else
+            for (final k in a.korrekturen)
+              AppCard(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('„${k.falsch}" → ${k.richtig}',
+                              style: const TextStyle(fontWeight: FontWeight.w600)),
+                          Text(
+                            '${k.treffer}× beobachtet · ${k.quelle}'
+                            '${k.aktiv ? "" : " · noch nicht scharf"}',
+                            style: const TextStyle(
+                                color: BeeTokens.textGedaempft, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Switch(
+                      value: k.aktiv,
+                      onChanged: (v) =>
+                          ref.read(auswertungProvider.notifier).regelSchalten(k.id, v),
+                    ),
+                    IconButton(
+                      tooltip: 'Regel löschen',
+                      icon: const Icon(Icons.delete_outline, color: BeeTokens.textGedaempft),
+                      onPressed: () async {
+                        final ok = await confirmSheet(
+                          context,
+                          titel: 'Regel löschen?',
+                          text: '„${k.falsch}" → ${k.richtig} wird endgültig entfernt.',
+                          bestaetigenLabel: 'Löschen',
+                        );
+                        if (ok == true) {
+                          await ref.read(auswertungProvider.notifier).regelLoeschen(k.id);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+          const SizedBox(height: BeeTokens.lg),
+          // Der Vollvergleich über den gespeicherten Bestand kommt als eigener
+          // Schritt. Bis dahin ist die Vergleichsseite der Weg für lange
+          // Aufnahmen — sie lädt einmal hoch und misst alle drei zugleich.
+          OutlinedButton.icon(
+            key: const Key('spracheingabe_erkennervergleich'),
+            onPressed: () => launchUrl(_vergleich, mode: LaunchMode.externalApplication),
+            icon: const Icon(Icons.open_in_new),
+            label: const Text('Erkennervergleich öffnen'),
+          ),
+          const SizedBox(height: BeeTokens.xl),
+        ],
       ),
     );
   }

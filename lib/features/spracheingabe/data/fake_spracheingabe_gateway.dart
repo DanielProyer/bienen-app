@@ -76,6 +76,33 @@ class FakeSpracheingabeGateway implements SpracheingabeGateway {
   Future<List<SprachKorrektur>> korrekturenLaden() async => List.of(korrekturen);
 
   @override
+  Future<List<SprachProbe>> probenLaden() async => List.of(proben);
+
+  @override
+  Future<List<SprachErgebnis>> ergebnisseAlle() async => List.of(ergebnisse);
+
+  @override
+  Future<void> korrekturSchalten(String id, bool aktiv) async {
+    final i = korrekturen.indexWhere((k) => k.id == id);
+    if (i < 0) return;
+    final k = korrekturen[i];
+    korrekturen[i] = SprachKorrektur(
+      id: k.id,
+      personId: k.personId,
+      falsch: k.falsch,
+      richtig: k.richtig,
+      treffer: k.treffer,
+      quelle: k.quelle,
+      aktiv: aktiv,
+    );
+  }
+
+  @override
+  Future<void> korrekturLoeschen(String id) async {
+    korrekturen.removeWhere((k) => k.id == id);
+  }
+
+  @override
   Future<SprachKorrektur?> verhoererMelden({
     required String betriebId,
     required String personId,
