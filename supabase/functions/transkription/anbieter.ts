@@ -218,3 +218,116 @@ export async function assemblyaiStand(
     return { ...grund, fertig: true, status: 'error', fehler: String(e) };
   }
 }
+
+// --- Infomaniak, Whisper in der Schweiz -------------------------------------
+//
+// Kam aus dem Schwesterprojekt (Heineken, ADR-0004 vom 31.07.2026), wo dieser
+// Weg bereits produktiv laeuft. Im Marktvergleich dieses Projekts fehlte er:
+// dort stand nur "Whisper selbst betrieben" — verworfen, weil es eigene Server
+// braucht. Whisper BETRIEBEN VON einem Schweizer Anbieter war nie geprueft.
+//
+// Warum er hier antritt: Datenschutz war laut D-98a das eigentliche Kriterium
+// (dafuer wurde damals Azure Switzerland North gewaehlt). Infomaniak liefert
+// die Schweizer Verarbeitung ohne Azures Ballast — Inhalte werden nicht
+// gespeichert, kein CLOUD Act, ISO 27001. Kosten CHF 0.006/min: bei den 20
+// Jahresstunden aus D-98a rund sieben Franken im Jahr.
+//
+// ZWEI DINGE, die dieser Test eigens beantworten muss:
+//
+//  1. Whisper HALLUZINIERT BEI STILLE — im eigenen Marktvergleich vermerkt.
+//     Eine Durchsicht ist genau der ungeeignete Fall: fuenfzehn Minuten mit
+//     langen Arbeitspausen. Beim Nachlesen deshalb gezielt auf erfundene
+//     Saetze in den Pausen achten, nicht nur auf Verhoerer.
+//  2. Whisper kennt KEINE Sprechertrennung. ElevenLabs (diarize) und
+//     AssemblyAI (speaker_labels) liefern sie; hier reden Daniel und Lorena
+//     ohne Zuordnung in einem Fluss.
+//
+// Der Glossar-Parameter ist Whispers `prompt` — dieselbe Rolle wie keyterms
+// bei den anderen beiden, aber auf 224 Token begrenzt. Die Fachwortliste
+// bleibt darunter; sie enthaelt nach D-99d bewusst keine Seuchenbegriffe.
+const GLOSSAR = 'Diktat einer Durchsicht am Bienenvolk (Imkerei). Fachbegriffe: '
+  + FACHWOERTER.join(', ') + '.';
+
+function imKopf(): { token: string; basis: string } | null {
+  const token = Deno.env.get('INFOMANIAK_API_KEY');
+  if (!token) return null;
+  // Die Produkt-ID gehoert zum Konto. Als Secret ueberschreibbar, damit ein
+  // anderes Konto keinen Deploy erzwingt.
+  const produkt = Deno.env.get('INFOMANIAK_PRODUKT_ID') ?? '110469';
+  return { token, basis: `https://api.infomaniak.com/1/ai/${produkt}` };
+}
+
+/// Laedt hoch und legt den Auftrag an. Die Route ist von Haus aus asynchron
+/// (Batch-ID), passt also ohne Umweg in das Zwei-Phasen-Muster.
+export async function infomaniakStarten(
+  audio: File,
+  mitWortliste: boolean,
+): Promise<{ id?: string; fehler?: string }> {
+  const k = imKopf();
+  if (!k) return { fehler: 'INFOMANIAK_API_KEY ist nicht gesetzt' };
+
+  const form = new FormData();
+  form.append('file', audio, audio.name || 'durchsicht.webm');
+  form.append('model', 'whisper');
+  form.append('language', 'de');
+  if (mitWortliste) form.append('prompt', GLOSSAR);
+
+  try {
+    const start = await fetch(`${k.basis}/openai/audio/transcriptions`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${k.token}` },
+      body: form,
+    });
+    const roh = await start.text();
+    if (!start.ok) {
+      return { fehler: `HTTP ${start.status}: ${roh.slice(0, 300)}` };
+    }
+    const { batch_id } = JSON.parse(roh);
+    if (!batch_id) return { fehler: 'Keine Batch-ID erhalten' };
+    return { id: String(batch_id) };
+  } catch (e) {
+    return { fehler: String(e) };
+  }
+}
+
+/// Fragt den Stand ab. Das Ergebnis kommt als JSON-Zeichenkette im Feld `data`
+/// — deshalb der zweite Auspackschritt.
+export async function infomaniakStand(
+  id: string,
+): Promise<Transkript & { fertig: boolean; status: string }> {
+  const k = imKopf();
+  const grund = { anbieter: 'infomaniak', modell: 'whisper', text: '', dauerMs: 0 };
+  if (!k) {
+    return { ...grund, fertig: true, status: 'error', fehler: 'INFOMANIAK_API_KEY ist nicht gesetzt' };
+  }
+
+  try {
+    const a = await fetch(`${k.basis}/results/${id}`, {
+      headers: { Authorization: `Bearer ${k.token}` },
+    });
+    if (!a.ok) {
+      return {
+        ...grund,
+        fertig: true,
+        status: 'error',
+        fehler: `Stand HTTP ${a.status}: ${(await a.text()).slice(0, 300)}`,
+      };
+    }
+    const stand = await a.json();
+    if (stand.status === 'success') {
+      let text = '';
+      try {
+        text = (typeof stand.data === 'string' ? JSON.parse(stand.data) : stand.data)?.text ?? '';
+      } catch {
+        return { ...grund, fertig: true, status: 'error', fehler: 'Ergebnis unlesbar' };
+      }
+      return { ...grund, text: String(text).trim(), fertig: true, status: 'completed' };
+    }
+    if (stand.status === 'error' || stand.result === 'error') {
+      return { ...grund, fertig: true, status: 'error', fehler: stand.message ?? 'Erkennung fehlgeschlagen' };
+    }
+    return { ...grund, fertig: false, status: stand.status ?? 'unbekannt' };
+  } catch (e) {
+    return { ...grund, fertig: true, status: 'error', fehler: String(e) };
+  }
+}

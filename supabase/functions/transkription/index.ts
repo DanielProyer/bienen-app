@@ -1,4 +1,19 @@
-import { assemblyaiStand, assemblyaiStarten, elevenlabsTranskribieren } from './anbieter.ts';
+import {
+  assemblyaiStand,
+  assemblyaiStarten,
+  elevenlabsTranskribieren,
+  infomaniakStand,
+  infomaniakStarten,
+} from './anbieter.ts';
+
+// Anbieter mit Auftragsnummer. Beide Routen sind von Haus aus asynchron; die
+// Seite startet sie und fragt danach in kurzen Aufrufen den Stand ab.
+const MIT_AUFTRAG = {
+  assemblyai: { starten: assemblyaiStarten, stand: assemblyaiStand },
+  infomaniak: { starten: infomaniakStarten, stand: infomaniakStand },
+} as const;
+
+type MitAuftrag = keyof typeof MIT_AUFTRAG;
 
 // Die Testseite liegt oeffentlich auf GitHub Pages und hat keinen Login.
 // Ohne diese Huerde koennte jeder Fremde auf Kosten des Betreibers
@@ -41,18 +56,24 @@ Deno.serve(async (anfrage) => {
       schluessel: {
         elevenlabs: Boolean(Deno.env.get('ELEVENLABS_API_KEY')),
         assemblyai: Boolean(Deno.env.get('ASSEMBLYAI_API_KEY')),
+        infomaniak: Boolean(Deno.env.get('INFOMANIAK_API_KEY')),
       },
       elevenlabsModell: Deno.env.get('ELEVENLABS_MODELL') ?? 'scribe_v2',
+      infomaniakProdukt: Deno.env.get('INFOMANIAK_PRODUKT_ID') ?? '110469',
     });
   }
 
-  // --- Stand eines laufenden AssemblyAI-Auftrags ----------------------------
+  // --- Stand eines laufenden Auftrags ---------------------------------------
   //
   // Steht VOR dem Auslesen des Formulars: dieser Aufruf traegt kein Audio.
-  if (aktion === 'assemblyai-stand') {
+  const standVon = aktion.endsWith('-stand') ? aktion.slice(0, -6) : null;
+  if (standVon) {
+    if (!(standVon in MIT_AUFTRAG)) {
+      return antwort({ fehler: `Unbekannter Anbieter "${standVon}"` }, 400);
+    }
     const id = url.searchParams.get('id');
     if (!id) return antwort({ fehler: 'Parameter "id" fehlt' }, 400);
-    return antwort(await assemblyaiStand(id));
+    return antwort(await MIT_AUFTRAG[standVon as MitAuftrag].stand(id));
   }
 
   let form: FormData;
@@ -68,24 +89,23 @@ Deno.serve(async (anfrage) => {
 
   const mitWortliste = form.get('wortliste') === 'ja';
 
-  switch (aktion) {
-    // Synchron, weil ElevenLabs keine Auftragsnummer kennt. Steht bewusst in
-    // einem EIGENEN Aufruf: laeuft er in den 150-s-Timeout, ist der bereits
-    // gestartete AssemblyAI-Auftrag davon unberuehrt.
-    case 'elevenlabs':
-      return antwort({
-        mitWortliste,
-        groesseBytes: audio.size,
-        dateiname: audio.name,
-        ergebnis: await elevenlabsTranskribieren(audio, mitWortliste),
-      });
-
-    case 'assemblyai-start': {
-      const gestartet = await assemblyaiStarten(audio, mitWortliste);
-      return antwort({ mitWortliste, groesseBytes: audio.size, ...gestartet });
-    }
-
-    default:
-      return antwort({ fehler: `Unbekannte Aktion "${aktion}"` }, 400);
+  // Synchron, weil ElevenLabs keine Auftragsnummer kennt. Steht bewusst in
+  // einem EIGENEN Aufruf: laeuft er in den 150-s-Timeout, sind die bereits
+  // gestarteten Auftraege der anderen davon unberuehrt.
+  if (aktion === 'elevenlabs') {
+    return antwort({
+      mitWortliste,
+      groesseBytes: audio.size,
+      dateiname: audio.name,
+      ergebnis: await elevenlabsTranskribieren(audio, mitWortliste),
+    });
   }
+
+  const startVon = aktion.endsWith('-start') ? aktion.slice(0, -6) : null;
+  if (startVon && startVon in MIT_AUFTRAG) {
+    const gestartet = await MIT_AUFTRAG[startVon as MitAuftrag].starten(audio, mitWortliste);
+    return antwort({ mitWortliste, groesseBytes: audio.size, ...gestartet });
+  }
+
+  return antwort({ fehler: `Unbekannte Aktion "${aktion}"` }, 400);
 });
