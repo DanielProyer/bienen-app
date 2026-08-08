@@ -10,23 +10,45 @@ export interface Transkript {
   fehler?: string; // gesetzt, wenn der Aufruf misslang
 }
 
-/// Ein Anbieter ist eine Funktion mit dieser Signatur — mehr nicht.
-///
-/// Der Vergleich soll beliebig erweiterbar sein, ohne dass der Eingang etwas
-/// von einzelnen Diensten weiss. Fehler werden NICHT geworfen, sondern im
-/// Transkript zurueckgegeben: Faellt ein Anbieter aus, sollen die anderen
-/// trotzdem ein Ergebnis liefern.
-export type Erkenner = (audio: Blob, mitWortliste: boolean) => Promise<Transkript>;
+// --- Warum zwei Phasen statt eines Aufrufs ----------------------------------
+//
+// Supabase bricht eine Edge Function nach 150 s mit 504 ab, wenn bis dahin
+// keine Antwort steht (Antwort-Timeout, gilt auch im Pro-Tarif; nur die Wall
+// clock ist dort groesser). Der urspruengliche Entwurf pollte AssemblyAI bis
+// zu 120 s INNERHALB des Aufrufs und wartete zugleich auf ElevenLabs — bei der
+// Zwoelf-Minuten-Aufnahme, die das Vollstaendigkeitsurteil ueberhaupt erst
+// moeglich macht, laeuft das in die Grenze.
+//
+// Deshalb: AssemblyAI wird nur GESTARTET (Upload + Auftrag, wenige Sekunden)
+// und gibt seine Auftragsnummer heraus; die Seite fragt den Stand danach in
+// eigenen, kurzen Aufrufen ab. Zustand haelt AssemblyAI selbst — es braucht
+// dafuer weder Tabelle noch Migration.
+//
+// ElevenLabs bleibt synchron, weil es keine Auftragsnummer kennt. Der Aufruf
+// steht deshalb FUER SICH: faellt er in die Zeitgrenze, laeuft AssemblyAI
+// trotzdem weiter. Genau dafuer sind die Aufrufe getrennt.
 
-// --- ElevenLabs Scribe v2 ---------------------------------------------------
+// --- ElevenLabs Scribe ------------------------------------------------------
 //
 // Nimmt audio/webm und audio/opus ausdruecklich an (Formatliste geprueft) —
-// der MediaRecorder-Ausgang geht ohne Umwandlung hinein.
+// der MediaRecorder-Ausgang geht ohne Umwandlung hinein. Die Aufnahmen der
+// Natel-Sprachmemo (m4a/aac) ebenso; deshalb wird der ECHTE Dateiname
+// weitergereicht und nicht mehr 'durchsicht.webm' behauptet. Ein falscher
+// Name kann den Dienst auf das falsche Format schliessen lassen.
 //
 // Keyterms kosten 20 % Aufschlag. Genau dieser Aufschlag steht hier zur
 // Messung: bringt die Liste mehr, als sie kostet?
-export const elevenlabs: Erkenner = async (audio, mitWortliste) => {
+//
+// Die Modellkennung ist ueberschreibbar (Secret ELEVENLABS_MODELL). Grund:
+// Kennungen aendern sich mit neuen Generationen, und ein Tippfehler darin
+// waere sonst nur mit einem neuen Deploy zu heilen — mitten im Feldtest der
+// falsche Moment.
+export async function elevenlabsTranskribieren(
+  audio: File,
+  mitWortliste: boolean,
+): Promise<Transkript> {
   const start = Date.now();
+  const modell = Deno.env.get('ELEVENLABS_MODELL') ?? 'scribe_v2';
   const schluessel = Deno.env.get('ELEVENLABS_API_KEY');
   if (!schluessel) {
     return {
@@ -39,8 +61,8 @@ export const elevenlabs: Erkenner = async (audio, mitWortliste) => {
   }
 
   const form = new FormData();
-  form.append('file', audio, 'durchsicht.webm');
-  form.append('model_id', 'scribe_v2');
+  form.append('file', audio, audio.name || 'durchsicht.webm');
+  form.append('model_id', modell);
   form.append('language_code', 'de');
   form.append('diarize', 'true');
   if (mitWortliste) form.append('keyterms', JSON.stringify(FACHWOERTER));
@@ -55,7 +77,7 @@ export const elevenlabs: Erkenner = async (audio, mitWortliste) => {
     if (!antwort.ok) {
       return {
         anbieter: 'elevenlabs',
-        modell: 'scribe_v2',
+        modell,
         text: '',
         dauerMs: Date.now() - start,
         fehler: `HTTP ${antwort.status}: ${roh.slice(0, 300)}`,
@@ -64,24 +86,22 @@ export const elevenlabs: Erkenner = async (audio, mitWortliste) => {
     const daten = JSON.parse(roh);
     return {
       anbieter: 'elevenlabs',
-      modell: 'scribe_v2',
+      modell,
       text: daten.text ?? '',
       dauerMs: Date.now() - start,
     };
   } catch (e) {
     return {
       anbieter: 'elevenlabs',
-      modell: 'scribe_v2',
+      modell,
       text: '',
       dauerMs: Date.now() - start,
       fehler: String(e),
     };
   }
-};
+}
 
 // --- AssemblyAI Universal-3.5 Pro -------------------------------------------
-//
-// Zwei Schritte: Datei hochladen, dann Auftrag anlegen und pollen.
 //
 // DREI FALLEN, die die Gegenpruefung der Marktrecherche zutage gefoerdert hat.
 // Alle drei sind still — sie werfen keinen Fehler, sie liefern ein falsches
@@ -97,107 +117,104 @@ export const elevenlabs: Erkenner = async (audio, mitWortliste) => {
 //
 // Der EU-Endpunkt kostet dasselbe wie der amerikanische und braucht keine
 // Freischaltung; deshalb steht er hier von Anfang an.
-export const assemblyai: Erkenner = async (audio, mitWortliste) => {
-  const start = Date.now();
+const AAI = 'https://api.eu.assemblyai.com/v2';
+
+function aaiKopf(): Record<string, string> | null {
   const schluessel = Deno.env.get('ASSEMBLYAI_API_KEY');
-  if (!schluessel) {
-    return {
-      anbieter: 'assemblyai',
-      modell: '—',
-      text: '',
-      dauerMs: 0,
-      fehler: 'ASSEMBLYAI_API_KEY ist nicht gesetzt',
-    };
-  }
-  const kopf = { 'Authorization': schluessel }; // Falle 3: ohne 'Bearer'
+  if (!schluessel) return null;
+  return { 'Authorization': schluessel }; // Falle 3: ohne 'Bearer'
+}
+
+/// Laedt hoch und legt den Auftrag an. Gibt die Auftragsnummer heraus, ohne
+/// auf das Ergebnis zu warten.
+export async function assemblyaiStarten(
+  audio: File,
+  mitWortliste: boolean,
+): Promise<{ id?: string; fehler?: string }> {
+  const kopf = aaiKopf();
+  if (!kopf) return { fehler: 'ASSEMBLYAI_API_KEY ist nicht gesetzt' };
 
   try {
     // Der Upload verlangt den rohen Datenstrom. Ein JSON-Koerper liefert eine
     // gueltige upload_url, scheitert aber spaeter mit 'Transcoding failed'.
-    const hoch = await fetch('https://api.eu.assemblyai.com/v2/upload', {
+    const hoch = await fetch(`${AAI}/upload`, {
       method: 'POST',
       headers: kopf,
       body: audio,
     });
     if (!hoch.ok) {
-      return {
-        anbieter: 'assemblyai',
-        modell: 'universal-3-5-pro',
-        text: '',
-        dauerMs: Date.now() - start,
-        fehler: `Upload HTTP ${hoch.status}`,
-      };
+      return { fehler: `Upload HTTP ${hoch.status}: ${(await hoch.text()).slice(0, 300)}` };
     }
     const { upload_url } = await hoch.json();
 
-    const auftragKoerper: Record<string, unknown> = {
+    const koerper: Record<string, unknown> = {
       audio_url: upload_url,
       language_code: 'de', // Falle 1
       speech_models: ['universal-3-5-pro', 'universal-2'], // Falle 2
       speaker_labels: true,
     };
-    if (mitWortliste) auftragKoerper.keyterms_prompt = FACHWOERTER;
+    if (mitWortliste) koerper.keyterms_prompt = FACHWOERTER;
 
-    const auftrag = await fetch('https://api.eu.assemblyai.com/v2/transcript', {
+    const auftrag = await fetch(`${AAI}/transcript`, {
       method: 'POST',
       headers: { ...kopf, 'Content-Type': 'application/json' },
-      body: JSON.stringify(auftragKoerper),
+      body: JSON.stringify(koerper),
     });
     const roh = await auftrag.text();
     if (!auftrag.ok) {
+      return { fehler: `Auftrag HTTP ${auftrag.status}: ${roh.slice(0, 300)}` };
+    }
+    return { id: JSON.parse(roh).id };
+  } catch (e) {
+    return { fehler: String(e) };
+  }
+}
+
+/// Fragt den Stand eines laufenden Auftrags ab. `fertig` sagt, ob weiter
+/// gefragt werden muss — bei einem Fehler steht es ebenfalls auf true, sonst
+/// fragte die Seite endlos nach.
+export async function assemblyaiStand(
+  id: string,
+): Promise<Transkript & { fertig: boolean; status: string }> {
+  const kopf = aaiKopf();
+  const grund = {
+    anbieter: 'assemblyai',
+    modell: 'universal-3-5-pro',
+    text: '',
+    dauerMs: 0,
+  };
+  if (!kopf) {
+    return { ...grund, fertig: true, status: 'error', fehler: 'ASSEMBLYAI_API_KEY ist nicht gesetzt' };
+  }
+
+  try {
+    const stand = await fetch(`${AAI}/transcript/${id}`, { headers: kopf });
+    if (!stand.ok) {
       return {
-        anbieter: 'assemblyai',
-        modell: 'universal-3-5-pro',
-        text: '',
-        dauerMs: Date.now() - start,
-        fehler: `Auftrag HTTP ${auftrag.status}: ${roh.slice(0, 300)}`,
+        ...grund,
+        fertig: true,
+        status: 'error',
+        fehler: `Stand HTTP ${stand.status}: ${(await stand.text()).slice(0, 300)}`,
       };
     }
-    const { id } = JSON.parse(roh);
-
-    // Pollen, hoechstens zwei Minuten. Fuer den Test genuegt das; im
-    // Produktivbau kommt an diese Stelle ein Webhook.
-    for (let i = 0; i < 60; i++) {
-      await new Promise((f) => setTimeout(f, 2000));
-      const stand = await fetch(`https://api.eu.assemblyai.com/v2/transcript/${id}`, {
-        headers: kopf,
-      });
-      const d = await stand.json();
-      if (d.status === 'completed') {
-        return {
-          anbieter: 'assemblyai',
-          // Was TATSAECHLICH lief — siehe Falle 2.
-          modell: d.speech_model_used ?? 'universal-3-5-pro',
-          text: d.text ?? '',
-          dauerMs: Date.now() - start,
-        };
-      }
-      if (d.status === 'error') {
-        return {
-          anbieter: 'assemblyai',
-          modell: 'universal-3-5-pro',
-          text: '',
-          dauerMs: Date.now() - start,
-          fehler: d.error ?? 'unbekannt',
-        };
-      }
+    const d = await stand.json();
+    if (d.status === 'completed') {
+      return {
+        anbieter: 'assemblyai',
+        // Was TATSAECHLICH lief — siehe Falle 2.
+        modell: d.speech_model_used ?? 'universal-3-5-pro',
+        text: d.text ?? '',
+        dauerMs: 0, // die Seite misst die Wanduhr, hier gibt es keine
+        fertig: true,
+        status: 'completed',
+      };
     }
-    return {
-      anbieter: 'assemblyai',
-      modell: 'universal-3-5-pro',
-      text: '',
-      dauerMs: Date.now() - start,
-      fehler: 'Zeitüberschreitung nach 2 Minuten',
-    };
+    if (d.status === 'error') {
+      return { ...grund, fertig: true, status: 'error', fehler: d.error ?? 'unbekannt' };
+    }
+    // queued | processing
+    return { ...grund, fertig: false, status: d.status ?? 'unbekannt' };
   } catch (e) {
-    return {
-      anbieter: 'assemblyai',
-      modell: 'universal-3-5-pro',
-      text: '',
-      dauerMs: Date.now() - start,
-      fehler: String(e),
-    };
+    return { ...grund, fertig: true, status: 'error', fehler: String(e) };
   }
-};
-
-export const ERKENNER: Record<string, Erkenner> = { elevenlabs, assemblyai };
+}

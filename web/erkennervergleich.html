@@ -6,13 +6,18 @@
   body { font-family: system-ui, sans-serif; margin:0; padding:16px; background:#faf8f4; color:#2b2b2b;
          max-width:820px; margin-inline:auto; }
   h1 { font-size:20px; margin:0 0 2px; }
+  h2 { font-size:16px; margin:18px 0 6px; }
   .unter { color:#6b665e; font-size:14px; margin:0 0 12px; line-height:1.45; }
   .haupt { width:100%; padding:18px; font-size:18px; font-weight:700; border:0; border-radius:12px;
            background:var(--gut); color:#fff; margin-bottom:10px; }
   .haupt.laeuft { background:var(--schlecht); }
   .haupt:disabled { background:#bbb; }
+  .neben { width:100%; padding:12px; font-size:15px; border:1px solid var(--rand); border-radius:10px;
+           background:#fff; color:#2b2b2b; margin-bottom:10px; }
   input[type=password] { width:100%; padding:12px; font-size:16px; border:1px solid var(--rand);
            border-radius:10px; margin-bottom:8px; box-sizing:border-box; }
+  input[type=file] { width:100%; padding:12px; font-size:15px; border:1px solid var(--rand);
+           border-radius:10px; background:#fff; margin-bottom:10px; box-sizing:border-box; }
   .schalter { display:flex; gap:10px; align-items:flex-start; background:#fff; border:1px solid var(--rand);
               border-radius:10px; padding:10px; margin-bottom:8px; font-size:14px; line-height:1.4; }
   .schalter input { margin-top:3px; flex:none; width:20px; height:20px; }
@@ -29,6 +34,7 @@
              border-radius:10px; padding:8px; max-height:180px; overflow-y:auto; }
   .warnkasten { background:#fff4d6; border-radius:8px; padding:10px 12px; font-size:14px; line-height:1.45;
                 margin-bottom:12px; }
+  .trenner { border:0; border-top:1px solid var(--rand); margin:20px 0 4px; }
 </style>
 
 <h1>Erkenner-Vergleich</h1>
@@ -42,16 +48,38 @@ Für das Vollständigkeitsurteil brauchst du <b>mindestens zwölf Minuten</b> am
 Fachwortvergleich genügen drei.</p>
 
 <input type="password" id="testwort" placeholder="Testwort (einmalig, wird auf diesem Gerät gemerkt)">
+<button class="neben" id="pingKnopf">Bereitschaft prüfen — stimmt das Testwort, sind die Schlüssel gesetzt?</button>
+
+<h2>1. Aufnahme wählen</h2>
+<p class="unter" style="margin-bottom:8px">Entweder eine Datei vom Gerät — die Aufnahme der
+Natel-Sprachmemo etwa — oder hier direkt aufnehmen. <b>Der empfohlene Weg am Stand ist die
+Sprachmemo-App:</b> kein Browser-Tab, der einfrieren kann, und die Datei bleibt auf dem Gerät, was
+auch immer danach schiefgeht.</p>
+
+<input type="file" id="datei" accept="audio/*">
+
+<button class="haupt" id="knopf">Stattdessen hier aufnehmen</button>
+<audio id="abspielen" controls style="display:none"></audio>
+<button class="neben" id="sichernKnopf" style="display:none">⤓ Aufnahme sichern (herunterladen)</button>
+
+<hr class="trenner">
+<h2>2. Auswerten lassen</h2>
 
 <label class="schalter">
   <input type="checkbox" id="wortliste" checked>
-  <span><b>Fachwortliste mitschicken</b> — <em>für den Vergleich denselben Text einmal mit und einmal
-  ohne aufnehmen. Nur so ist zu sehen, ob die Liste überhaupt etwas bringt — das ist für keine Sprache
-  gemessen.</em></span>
+  <span><b>Fachwortliste mitschicken</b> — <em>für den Vergleich dieselbe Datei einmal mit und einmal
+  ohne auswerten lassen. Nur so ist zu sehen, ob die Liste überhaupt etwas bringt — das ist für keine
+  Sprache gemessen.</em></span>
+</label>
+<label class="schalter">
+  <input type="checkbox" id="willElevenlabs" checked>
+  <span><b>ElevenLabs</b> mitmessen</span>
+</label>
+<label class="schalter">
+  <input type="checkbox" id="willAssemblyai" checked>
+  <span><b>AssemblyAI</b> mitmessen</span>
 </label>
 
-<button class="haupt" id="knopf">Aufnahme starten</button>
-<audio id="abspielen" controls style="display:none"></audio>
 <button class="haupt" id="sendKnopf" style="background:#555" disabled>Aufnahme auswerten lassen</button>
 
 <div id="ergebnisse"></div>
@@ -68,15 +96,28 @@ Fachwortvergleich genügen drei.</p>
 <script>
 // Fassung dieser Datei. Steht sichtbar oben, damit ein Feldergebnis immer
 // einer Fassung zuzuordnen ist (Regel aus der globalen CLAUDE.md).
-const FASSUNG = 'V1';
+const FASSUNG = 'V2';
 
 const ZIEL = 'https://dcdcohktxbhdxnxjvcyp.supabase.co/functions/v1/transkription';
 const HAEPPCHEN_MS = 5000;
 
+// Oberhalb dieser Groesse ist mit einer verlustfreien Aufnahme zu rechnen
+// (iPhone-Sprachmemo kann auf "Verlustfrei" stehen: rund 10 MB je Minute).
+// Der Upload waere dann unnoetig zaeh — und die Erkennung wird davon kein
+// bisschen besser.
+const GROSS_MB = 25;
+
 const el = (id) => document.getElementById(id);
 
 let strom = null, rec = null, laeuft = false, teile = [], tonCtx = null;
-let start = 0, letztesHaeppchen = 0, luecke = 0, blob = null, dauerMs = 0;
+let start = 0, letztesHaeppchen = 0, luecke = 0;
+
+// Was ausgewertet wird — egal ob aufgenommen oder hochgeladen.
+let blob = null, dateiname = 'durchsicht.webm', dauerSek = 0;
+
+// Ergebnisse je Anbieter, damit beide Karten bei jedem Eintreffen neu
+// gezeichnet werden koennen (der Vergleich braucht beide Wortzahlen).
+let ergebnisse = {};
 
 document.addEventListener('DOMContentLoaded', () => {
   el('fassungZeile').textContent = 'Fassung ' + FASSUNG
@@ -92,6 +133,69 @@ function log(text, art) {
   el('verlauf').scrollTop = el('verlauf').scrollHeight;
 }
 
+function mb(bytes) { return (bytes / 1048576).toFixed(2); }
+
+// --- Bereitschaftsprobe -----------------------------------------------------
+//
+// Beantwortet VOR der Durchsicht die zwei Fragen, an denen sonst der ganze Tag
+// haengt: stimmt das Testwort, und sind die Schluessel gesetzt? Kostet nichts
+// und schickt kein Audio.
+el('pingKnopf').onclick = async () => {
+  const wort = el('testwort').value.trim();
+  if (!wort) { log('Testwort fehlt', 'schlecht'); return; }
+  localStorage.setItem('testwort', wort);
+  try {
+    const a = await fetch(ZIEL + '?aktion=ping', { method: 'POST', headers: { 'x-testwort': wort } });
+    if (a.status === 401) { log('Testwort stimmt NICHT', 'schlecht'); return; }
+    const d = await a.json();
+    log('Testwort stimmt. ElevenLabs-Schlüssel: ' + (d.schluessel.elevenlabs ? 'gesetzt' : 'FEHLT')
+        + ' · AssemblyAI-Schlüssel: ' + (d.schluessel.assemblyai ? 'gesetzt' : 'FEHLT')
+        + ' · ElevenLabs-Modell: ' + d.elevenlabsModell,
+        (d.schluessel.elevenlabs && d.schluessel.assemblyai) ? 'gut' : 'warn');
+  } catch (e) {
+    log('Bereitschaftsprobe misslungen: ' + e, 'schlecht');
+  }
+};
+
+// --- Datei vom Gerät --------------------------------------------------------
+el('datei').onchange = async () => {
+  const f = el('datei').files[0];
+  if (!f) return;
+  blob = f;
+  dateiname = f.name;
+  el('abspielen').src = URL.createObjectURL(f);
+  el('abspielen').style.display = 'block';
+  el('sichernKnopf').style.display = 'none';   // liegt ja schon auf dem Gerät
+  el('sendKnopf').disabled = false;
+  ergebnisse = {}; el('ergebnisse').innerHTML = '';
+
+  dauerSek = await dauerLesen(f);
+  log('Datei gewählt: ' + f.name + ', ' + mb(f.size) + ' MB'
+      + (dauerSek ? ', ' + (dauerSek / 60).toFixed(1) + ' min' : ', Dauer unbekannt'), 'gut');
+  if (f.size / 1048576 > GROSS_MB) {
+    log('Über ' + GROSS_MB + ' MB — steht die Sprachmemo auf "Verlustfrei"? '
+        + '"Komprimiert" genügt vollauf und lädt viel schneller hoch.', 'warn');
+  }
+};
+
+// Dauer aus den Metadaten lesen. Bei webm aus dem MediaRecorder liefert der
+// Browser oft Infinity — dann bleibt es bei der selbst gestoppten Zeit.
+function dauerLesen(quelle) {
+  return new Promise((fertig) => {
+    const a = document.createElement('audio');
+    a.preload = 'metadata';
+    a.onloadedmetadata = () => {
+      const d = a.duration;
+      URL.revokeObjectURL(a.src);
+      fertig(Number.isFinite(d) ? d : 0);
+    };
+    a.onerror = () => fertig(0);
+    a.src = URL.createObjectURL(quelle);
+  });
+}
+
+// --- Aufnahme im Browser ----------------------------------------------------
+//
 // Chrome friert untaetige Tabs nach rund einer Minute ein — aber keinen, der
 // Ton ABSPIELT. Unhoerbar leise, 30 Hz. Echte Stille waere wirkungslos, sie
 // gilt dem Browser nicht als Wiedergabe. Im Tontest T3 nachgewiesen.
@@ -112,9 +216,10 @@ async function starten() {
     strom = await navigator.mediaDevices.getUserMedia({ audio: true });
   } catch (e) { log('Kein Mikrofon: ' + e, 'schlecht'); return; }
 
-  teile = []; luecke = 0; blob = null;
-  el('ergebnisse').innerHTML = '';
+  teile = []; luecke = 0; blob = null; dauerSek = 0;
+  ergebnisse = {}; el('ergebnisse').innerHTML = '';
   el('abspielen').style.display = 'none';
+  el('sichernKnopf').style.display = 'none';
 
   // 24 kbit/s Opus: im Tontest gemessene 0,08 MB je Tonminute. Beide Anbieter
   // nehmen webm/opus direkt an, es wird also nichts umgewandelt.
@@ -150,7 +255,7 @@ async function starten() {
 
 async function beenden() {
   laeuft = false;
-  dauerMs = Date.now() - start;
+  dauerSek = (Date.now() - start) / 1000;
   try { if (rec && rec.state !== 'inactive') rec.stop(); } catch (e) {}
   if (strom) strom.getTracks().forEach((t) => t.stop());
   if (tonCtx) { try { tonCtx.close(); } catch (e) {} tonCtx = null; }
@@ -158,19 +263,32 @@ async function beenden() {
   // Kurz warten, damit das letzte Haeppchen noch eintrifft.
   await new Promise((f) => setTimeout(f, 400));
   blob = new Blob(teile, { type: (rec && rec.mimeType) || 'audio/webm' });
+  dateiname = 'durchsicht.webm';
   el('abspielen').src = URL.createObjectURL(blob);
   el('abspielen').style.display = 'block';
+  el('sichernKnopf').style.display = 'block';
 
-  const min = dauerMs / 60000;
-  el('knopf').textContent = 'Aufnahme starten';
+  el('knopf').textContent = 'Stattdessen hier aufnehmen';
   el('knopf').classList.remove('laeuft');
   el('sendKnopf').disabled = false;
-  log('Beendet: ' + min.toFixed(1) + ' min, ' + (blob.size / 1048576).toFixed(2) + ' MB'
+  log('Beendet: ' + (dauerSek / 60).toFixed(1) + ' min, ' + mb(blob.size) + ' MB'
       + (luecke ? ', LÜCKE ' + Math.round(luecke / 1000) + ' s' : ', lückenlos'),
       luecke > 20000 ? 'schlecht' : 'gut');
+  log('Jetzt zuerst sichern — dann auswerten. Eine Durchsicht kommt nicht wieder.', 'warn');
 }
 
 el('knopf').onclick = () => (laeuft ? beenden() : starten());
+
+// Die im Browser aufgenommene Datei liegt nur im Arbeitsspeicher. Schliesst
+// der Tab, ist sie weg — deshalb steht das Sichern VOR dem Auswerten.
+el('sichernKnopf').onclick = () => {
+  if (!blob) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'durchsicht-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-') + '.webm';
+  a.click();
+  log('Aufnahme gesichert', 'gut');
+};
 
 // Trefferzaehlung — muss zeichengleich zu fachwort_treffer.dart arbeiten,
 // sonst misst diese Seite etwas anderes als der spaetere App-Code.
@@ -184,48 +302,135 @@ function zaehleTreffer(transkript, erwartet) {
   return { gefunden, fehlend, quote: erwartet.length ? gefunden.length / erwartet.length : 0 };
 }
 
+function formularBauen() {
+  const f = new FormData();
+  f.append('audio', blob, dateiname);
+  f.append('wortliste', el('wortliste').checked ? 'ja' : 'nein');
+  return f;
+}
+
+// --- Auswertung in zwei Phasen ----------------------------------------------
+//
+// Supabase bricht eine Function nach 150 s ohne Antwort mit 504 ab. Deshalb:
+// AssemblyAI wird nur GESTARTET und danach in kurzen Aufrufen abgefragt;
+// ElevenLabs laeuft synchron in einem eigenen Aufruf. Beide sind unabhaengig —
+// laeuft einer in die Grenze oder faellt aus, liefert der andere trotzdem.
 el('sendKnopf').onclick = async () => {
   if (!blob) return;
   const wort = el('testwort').value.trim();
   if (!wort) { log('Testwort fehlt', 'schlecht'); return; }
   localStorage.setItem('testwort', wort);
 
+  const willE = el('willElevenlabs').checked;
+  const willA = el('willAssemblyai').checked;
+  if (!willE && !willA) { log('Kein Anbieter angehakt', 'schlecht'); return; }
+
   el('sendKnopf').disabled = true;
-  el('sendKnopf').textContent = 'läuft … (kann zwei Minuten dauern)';
-  log('Sende ' + (blob.size / 1048576).toFixed(2) + ' MB an alle Anbieter');
+  ergebnisse = {};
+  const kopf = { 'x-testwort': wort };
+  log('Sende ' + mb(blob.size) + ' MB (' + dateiname + ')');
 
-  const form = new FormData();
-  form.append('audio', blob, 'durchsicht.webm');
-  form.append('wortliste', el('wortliste').checked ? 'ja' : 'nein');
+  let aaiId = null;
 
-  try {
-    const antwort = await fetch(ZIEL, { method: 'POST', headers: { 'x-testwort': wort }, body: form });
-    const daten = await antwort.json();
-    if (daten.fehler) { log('Fehler: ' + daten.fehler, 'schlecht'); return; }
-    zeige(daten);
-    log('Auswertung da', 'gut');
-  } catch (e) {
-    log('Versand misslungen: ' + e, 'schlecht');
-  } finally {
-    el('sendKnopf').disabled = false;
-    el('sendKnopf').textContent = 'Aufnahme auswerten lassen';
+  // Phase 1: AssemblyAI anstossen. Kurzer Aufruf, nur Upload und Auftrag.
+  if (willA) {
+    el('sendKnopf').textContent = 'AssemblyAI wird gestartet …';
+    try {
+      const a = await fetch(ZIEL + '?aktion=assemblyai-start', {
+        method: 'POST', headers: kopf, body: formularBauen(),
+      });
+      const d = await a.json();
+      if (d.id) { aaiId = d.id; log('AssemblyAI läuft (Auftrag ' + d.id + ')', 'gut'); }
+      else {
+        ergebnisse.assemblyai = { anbieter: 'assemblyai', modell: '—', text: '', dauerMs: 0,
+                                  fehler: d.fehler || 'Start misslungen' };
+        log('AssemblyAI-Start misslungen: ' + (d.fehler || '?'), 'schlecht');
+        zeige();
+      }
+    } catch (e) {
+      ergebnisse.assemblyai = { anbieter: 'assemblyai', modell: '—', text: '', dauerMs: 0, fehler: String(e) };
+      log('AssemblyAI-Start misslungen: ' + e, 'schlecht');
+      zeige();
+    }
   }
+
+  // Phase 2: ElevenLabs synchron. Kann bei langen Aufnahmen dauern.
+  if (willE) {
+    el('sendKnopf').textContent = 'ElevenLabs läuft … (bei langen Aufnahmen über eine Minute)';
+    const t0 = Date.now();
+    try {
+      const a = await fetch(ZIEL + '?aktion=elevenlabs', {
+        method: 'POST', headers: kopf, body: formularBauen(),
+      });
+      if (a.status === 504) {
+        ergebnisse.elevenlabs = { anbieter: 'elevenlabs', modell: '—', text: '', dauerMs: Date.now() - t0,
+          fehler: 'Zeitüberschreitung (504) — die Aufnahme ist für den synchronen Weg zu lang.' };
+        log('ElevenLabs: 504 nach ' + Math.round((Date.now() - t0) / 1000) + ' s', 'schlecht');
+      } else {
+        const d = await a.json();
+        if (d.fehler) {
+          ergebnisse.elevenlabs = { anbieter: 'elevenlabs', modell: '—', text: '', dauerMs: 0, fehler: d.fehler };
+        } else {
+          ergebnisse.elevenlabs = d.ergebnis;
+          log('ElevenLabs fertig nach ' + Math.round((Date.now() - t0) / 1000) + ' s',
+              d.ergebnis.fehler ? 'schlecht' : 'gut');
+        }
+      }
+    } catch (e) {
+      ergebnisse.elevenlabs = { anbieter: 'elevenlabs', modell: '—', text: '', dauerMs: Date.now() - t0,
+                                fehler: String(e) };
+      log('ElevenLabs misslungen: ' + e, 'schlecht');
+    }
+    zeige();
+  }
+
+  // Phase 3: AssemblyAI-Stand abfragen, bis er fertig ist.
+  if (aaiId) {
+    const t0 = Date.now();
+    el('sendKnopf').textContent = 'Warte auf AssemblyAI …';
+    for (let i = 0; i < 180; i++) {           // hoechstens 15 Minuten
+      await new Promise((f) => setTimeout(f, 5000));
+      try {
+        const a = await fetch(ZIEL + '?aktion=assemblyai-stand&id=' + encodeURIComponent(aaiId),
+                              { method: 'POST', headers: kopf });
+        const d = await a.json();
+        if (d.fertig) {
+          d.dauerMs = Date.now() - t0;
+          ergebnisse.assemblyai = d;
+          log('AssemblyAI ' + d.status + ' nach ' + Math.round(d.dauerMs / 1000) + ' s',
+              d.fehler ? 'schlecht' : 'gut');
+          zeige();
+          break;
+        }
+        el('sendKnopf').textContent = 'AssemblyAI: ' + d.status + ' … '
+          + Math.round((Date.now() - t0) / 1000) + ' s';
+      } catch (e) {
+        log('Standabfrage misslungen: ' + e, 'schlecht');
+        break;
+      }
+    }
+  }
+
+  el('sendKnopf').disabled = false;
+  el('sendKnopf').textContent = 'Aufnahme auswerten lassen';
 };
 
-function zeige(daten) {
+function zeige() {
   const erwartet = el('erwartet').value.split(',').map((s) => s.trim()).filter(Boolean);
-  const dauerMin = dauerMs / 60000;
+  const dauerMin = dauerSek / 60;
   const ziel = el('ergebnisse');
-  ziel.innerHTML = '<p class="unter">Fachwortliste war ' +
-    (daten.mitWortliste ? '<b>an</b>' : '<b>aus</b>') + '. Aufnahme ' + dauerMin.toFixed(1) + ' min, ' +
-    (daten.groesseBytes / 1048576).toFixed(2) + ' MB.</p>';
+  const alle = Object.values(ergebnisse);
 
-  const gute = daten.ergebnisse.filter((e) => !e.fehler);
+  ziel.innerHTML = '<p class="unter">Fachwortliste war ' +
+    (el('wortliste').checked ? '<b>an</b>' : '<b>aus</b>') + '. Aufnahme ' +
+    (dauerMin ? dauerMin.toFixed(1) + ' min, ' : 'Dauer unbekannt, ') + mb(blob.size) + ' MB.</p>';
+
+  const gute = alle.filter((e) => !e.fehler);
   // Wortzahl je Anbieter — Grundlage fuer beide Abbruchproben.
   const woerterVon = (e) => (e.text || '').trim().split(/\s+/).filter(Boolean).length;
   const maxWoerter = gute.length ? Math.max(...gute.map(woerterVon)) : 0;
 
-  for (const e of daten.ergebnisse) {
+  for (const e of alle) {
     const k = document.createElement('div');
     k.className = 'karte';
     if (e.fehler) {
@@ -243,7 +448,7 @@ function zeige(daten) {
     //      wer langsam spricht, loest das aber faelschlich aus.
     //  (2) im Vergleich — liefert ein Anbieter deutlich weniger als der beste,
     //      ist das ein starkes Zeichen fuer stilles Abschneiden, unabhaengig
-    //      vom Sprechtempo. Genau so faellt die 2000-Token-Kappe auf.
+    //      vom Sprechtempo. Genau so faellt eine Token-Kappe auf.
     const verdachtAbsolut = proMin > 0 && proMin < 90;
     const verdachtRelativ = maxWoerter > 50 && woerter < maxWoerter * 0.7;
     const verdacht = verdachtAbsolut || verdachtRelativ;
@@ -257,8 +462,8 @@ function zeige(daten) {
         + t.gefunden.length + '/' + erwartet.length + '</span>' +
         (t.fehlend.length ? ' &nbsp;— fehlt: <b class="schlecht">' + t.fehlend.join(', ') + '</b>' : '') +
       '</div>' +
-      '<div>Länge: <span class="zahl">' + woerter + '</span> Wörter, '
-        + Math.round(proMin) + ' je Minute' +
+      '<div>Länge: <span class="zahl">' + woerter + '</span> Wörter'
+        + (proMin ? ', ' + Math.round(proMin) + ' je Minute' : '') +
         (verdachtRelativ ? ' &nbsp;<b class="schlecht">— nur '
             + Math.round(woerter / maxWoerter * 100) + '&#37; des besten Anbieters</b>' : '') +
       '</div>' +
