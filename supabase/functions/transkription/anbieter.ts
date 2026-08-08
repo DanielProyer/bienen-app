@@ -60,30 +60,62 @@ export async function elevenlabsTranskribieren(
     };
   }
 
-  const form = new FormData();
-  form.append('file', audio, audio.name || 'durchsicht.webm');
-  form.append('model_id', modell);
-  form.append('language_code', 'de');
-  form.append('diarize', 'true');
-  if (mitWortliste) form.append('keyterms', JSON.stringify(FACHWOERTER));
-
-  try {
+  // Ein Versuch, mit oder ohne Fachwortliste.
+  //
+  // Die Liste geht als WIEDERHOLTES Feld hinein, ein Eintrag je Begriff. Der
+  // erste Anlauf schickte sie als einen JSON-String — ElevenLabs las das als
+  // EIN Stichwort von rund 400 Zeichen und antwortete:
+  // "All keywords must be less than 50 characters." In multipart/form-data
+  // ist das wiederholte Feld die uebliche Schreibweise fuer eine Liste.
+  const versuch = async (mitListe: boolean) => {
+    const form = new FormData();
+    form.append('file', audio, audio.name || 'durchsicht.webm');
+    form.append('model_id', modell);
+    form.append('language_code', 'de');
+    form.append('diarize', 'true');
+    if (mitListe) {
+      for (const begriff of FACHWOERTER) form.append('keyterms', begriff);
+    }
     const antwort = await fetch('https://api.elevenlabs.io/v1/speech-to-text', {
       method: 'POST',
       headers: { 'xi-api-key': schluessel },
       body: form,
     });
-    const roh = await antwort.text();
-    if (!antwort.ok) {
+    return { ok: antwort.ok, status: antwort.status, roh: await antwort.text() };
+  };
+
+  try {
+    let a = await versuch(mitWortliste);
+
+    // Rueckfallebene: Weist der Dienst die Wortliste zurueck, wird OHNE sie
+    // erneut versucht. Die Liste ist eine Verbesserung, keine Voraussetzung —
+    // ein Transkript ohne Boost ist unendlich viel besser als keines. Genau
+    // dieser Fall hat den ersten Feldversuch blockiert.
+    if (!a.ok && mitWortliste && a.status === 400 && a.roh.includes('keyword')) {
+      a = await versuch(false);
+      if (a.ok) {
+        const daten = JSON.parse(a.roh);
+        return {
+          anbieter: 'elevenlabs',
+          // Im Modellnamen sichtbar machen, dass ohne Liste gemessen wurde —
+          // sonst vergleicht man spaeter Ergebnisse, die nicht vergleichbar sind.
+          modell: `${modell} (ohne Wortliste)`,
+          text: daten.text ?? '',
+          dauerMs: Date.now() - start,
+        };
+      }
+    }
+
+    if (!a.ok) {
       return {
         anbieter: 'elevenlabs',
         modell,
         text: '',
         dauerMs: Date.now() - start,
-        fehler: `HTTP ${antwort.status}: ${roh.slice(0, 300)}`,
+        fehler: `HTTP ${a.status}: ${a.roh.slice(0, 300)}`,
       };
     }
-    const daten = JSON.parse(roh);
+    const daten = JSON.parse(a.roh);
     return {
       anbieter: 'elevenlabs',
       modell,
