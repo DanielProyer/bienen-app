@@ -40,10 +40,7 @@ class Korrigiert {
 /// v1 kennt nur Ein-Wort-Regeln. Alle Verhoerer des Feldtests sind
 /// Ein-Wort-Faelle (weissenzellen, Minuten, schwadentrieb); mehrteilige Regeln
 /// kaemen erst mit Belegen dafuer, dass es sie braucht.
-Korrigiert korrekturenAnwenden({
-  required String transkript,
-  required List<Korrekturregel> regeln,
-}) {
+Korrigiert korrekturenAnwenden({required String transkript, required List<Korrekturregel> regeln}) {
   if (regeln.isEmpty || transkript.isEmpty) {
     return Korrigiert(text: transkript, ersetzungen: const []);
   }
@@ -63,12 +60,9 @@ Korrigiert korrekturenAnwenden({
     if (ersatz == null) {
       aus.write(original);
     } else {
-      ersetzungen.add(Ersetzung(
-        start: aus.length,
-        laenge: ersatz.length,
-        vorher: original,
-        nachher: ersatz,
-      ));
+      ersetzungen.add(
+        Ersetzung(start: aus.length, laenge: ersatz.length, vorher: original, nachher: ersatz),
+      );
       aus.write(ersatz);
     }
     gelesen = m.end;

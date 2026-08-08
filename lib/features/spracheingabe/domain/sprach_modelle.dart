@@ -37,28 +37,26 @@ class SprachKarte {
   /// Bei einer Wortkarte ist der Soll-Text selbst der einzige Pruefbegriff —
   /// sonst haette sie nichts zu zaehlen. Bei einer Satzkarte gelten die
   /// hinterlegten Begriffe.
-  List<String> get zuZaehlen =>
-      art == KartenArt.wort ? [sollText.trim()] : pruefbegriffe;
+  List<String> get zuZaehlen => art == KartenArt.wort ? [sollText.trim()] : pruefbegriffe;
 
   factory SprachKarte.fromJson(Map<String, dynamic> j) => SprachKarte(
-        id: j['id'] as String,
-        personId: j['person_id'] as String?,
-        art: _ausText(KartenArt.values, j['art'], KartenArt.wort),
-        sollText: (j['soll_text'] as String?) ?? '',
-        pruefbegriffe:
-            ((j['pruefbegriffe'] as List?) ?? const []).map((e) => e as String).toList(),
-        herkunft: (j['herkunft'] as String?) ?? 'eigen',
-        aktiv: (j['aktiv'] as bool?) ?? true,
-      );
+    id: j['id'] as String,
+    personId: j['person_id'] as String?,
+    art: _ausText(KartenArt.values, j['art'], KartenArt.wort),
+    sollText: (j['soll_text'] as String?) ?? '',
+    pruefbegriffe: ((j['pruefbegriffe'] as List?) ?? const []).map((e) => e as String).toList(),
+    herkunft: (j['herkunft'] as String?) ?? 'eigen',
+    aktiv: (j['aktiv'] as bool?) ?? true,
+  );
 
   Map<String, dynamic> toInsertJson() => {
-        if (personId != null) 'person_id': personId,
-        'art': art.name,
-        'soll_text': sollText,
-        'pruefbegriffe': pruefbegriffe,
-        'herkunft': herkunft,
-        'aktiv': aktiv,
-      };
+    if (personId != null) 'person_id': personId,
+    'art': art.name,
+    'soll_text': sollText,
+    'pruefbegriffe': pruefbegriffe,
+    'herkunft': herkunft,
+    'aktiv': aktiv,
+  };
 }
 
 /// Eine Aufnahme.
@@ -86,27 +84,27 @@ class SprachProbe {
   });
 
   factory SprachProbe.fromJson(Map<String, dynamic> j) => SprachProbe(
-        id: j['id'] as String,
-        personId: j['person_id'] as String,
-        karteId: j['karte_id'] as String?,
-        sollText: (j['soll_text'] as String?) ?? '',
-        modus: _ausText(ProbenModus.values, j['modus'], ProbenModus.frei),
-        storagePath: j['storage_path'] as String,
-        dauerMs: (j['dauer_ms'] as num?)?.toInt() ?? 0,
-        groesseB: (j['groesse_b'] as num?)?.toInt() ?? 0,
-        mime: (j['mime'] as String?) ?? 'audio/webm',
-      );
+    id: j['id'] as String,
+    personId: j['person_id'] as String,
+    karteId: j['karte_id'] as String?,
+    sollText: (j['soll_text'] as String?) ?? '',
+    modus: _ausText(ProbenModus.values, j['modus'], ProbenModus.frei),
+    storagePath: j['storage_path'] as String,
+    dauerMs: (j['dauer_ms'] as num?)?.toInt() ?? 0,
+    groesseB: (j['groesse_b'] as num?)?.toInt() ?? 0,
+    mime: (j['mime'] as String?) ?? 'audio/webm',
+  );
 
   Map<String, dynamic> toInsertJson() => {
-        'person_id': personId,
-        if (karteId != null) 'karte_id': karteId,
-        'soll_text': sollText,
-        'modus': modus.name,
-        'storage_path': storagePath,
-        'dauer_ms': dauerMs,
-        'groesse_b': groesseB,
-        'mime': mime,
-      };
+    'person_id': personId,
+    if (karteId != null) 'karte_id': karteId,
+    'soll_text': sollText,
+    'modus': modus.name,
+    'storage_path': storagePath,
+    'dauer_ms': dauerMs,
+    'groesse_b': groesseB,
+    'mime': mime,
+  };
 }
 
 /// Eine Messung: was ein Anbieter aus einer Probe gemacht hat.
@@ -136,29 +134,29 @@ class SprachErgebnis {
   });
 
   factory SprachErgebnis.fromJson(Map<String, dynamic> j) => SprachErgebnis(
-        id: j['id'] as String,
-        probeId: j['probe_id'] as String,
-        anbieter: j['anbieter'] as String,
-        modell: (j['modell'] as String?) ?? '',
-        mitWortliste: (j['mit_wortliste'] as bool?) ?? false,
-        transkript: (j['transkript'] as String?) ?? '',
-        trefferQuote: (j['treffer_quote'] as num?)?.toDouble(),
-        wortfehlerrate: (j['wortfehlerrate'] as num?)?.toDouble(),
-        dauerMs: (j['dauer_ms'] as num?)?.toInt(),
-        fehler: j['fehler'] as String?,
-      );
+    id: j['id'] as String,
+    probeId: j['probe_id'] as String,
+    anbieter: j['anbieter'] as String,
+    modell: (j['modell'] as String?) ?? '',
+    mitWortliste: (j['mit_wortliste'] as bool?) ?? false,
+    transkript: (j['transkript'] as String?) ?? '',
+    trefferQuote: (j['treffer_quote'] as num?)?.toDouble(),
+    wortfehlerrate: (j['wortfehlerrate'] as num?)?.toDouble(),
+    dauerMs: (j['dauer_ms'] as num?)?.toInt(),
+    fehler: j['fehler'] as String?,
+  );
 
   Map<String, dynamic> toInsertJson() => {
-        'probe_id': probeId,
-        'anbieter': anbieter,
-        'modell': modell,
-        'mit_wortliste': mitWortliste,
-        'transkript': transkript,
-        'treffer_quote': trefferQuote,
-        'wortfehlerrate': wortfehlerrate,
-        'dauer_ms': dauerMs,
-        'fehler': fehler,
-      };
+    'probe_id': probeId,
+    'anbieter': anbieter,
+    'modell': modell,
+    'mit_wortliste': mitWortliste,
+    'transkript': transkript,
+    'treffer_quote': trefferQuote,
+    'wortfehlerrate': wortfehlerrate,
+    'dauer_ms': dauerMs,
+    'fehler': fehler,
+  };
 }
 
 /// Eine beobachtete oder gelernte Lautvariante.
@@ -182,14 +180,14 @@ class SprachKorrektur {
   });
 
   factory SprachKorrektur.fromJson(Map<String, dynamic> j) => SprachKorrektur(
-        id: j['id'] as String,
-        personId: j['person_id'] as String,
-        falsch: j['falsch'] as String,
-        richtig: j['richtig'] as String,
-        treffer: (j['treffer'] as num?)?.toInt() ?? 1,
-        quelle: (j['quelle'] as String?) ?? 'training',
-        aktiv: (j['aktiv'] as bool?) ?? false,
-      );
+    id: j['id'] as String,
+    personId: j['person_id'] as String,
+    falsch: j['falsch'] as String,
+    richtig: j['richtig'] as String,
+    treffer: (j['treffer'] as num?)?.toInt() ?? 1,
+    quelle: (j['quelle'] as String?) ?? 'training',
+    aktiv: (j['aktiv'] as bool?) ?? false,
+  );
 
   /// Uebersetzt in die Form, die `korrekturenAnwenden` erwartet.
   ///

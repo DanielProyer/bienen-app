@@ -26,10 +26,10 @@ class Verhoererpaar {
 List<Verhoererpaar> verhoererAus({required String erkannt, required String korrigiert}) {
   final a = woerterVon(erkannt);
   // Die Roh-Woerter der korrigierten Fassung, um die Schreibweise zu behalten.
-  final bRoh = RegExp(r'[\p{L}\p{N}]+', unicode: true)
-      .allMatches(korrigiert)
-      .map((m) => m[0]!)
-      .toList();
+  final bRoh = RegExp(
+    r'[\p{L}\p{N}]+',
+    unicode: true,
+  ).allMatches(korrigiert).map((m) => m[0]!).toList();
   final b = bRoh.map((w) => w.toLowerCase()).toList();
   if (a.isEmpty || b.isEmpty) return const [];
 

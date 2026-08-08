@@ -9,11 +9,7 @@ class Trefferbild {
   /// Anteil gefundener Begriffe, 0.0 bis 1.0.
   final double quote;
 
-  const Trefferbild({
-    required this.gefunden,
-    required this.fehlend,
-    required this.quote,
-  });
+  const Trefferbild({required this.gefunden, required this.fehlend, required this.quote});
 }
 
 /// Zählt, wie viele der erwarteten Fachbegriffe im Transkript stehen.
@@ -35,10 +31,7 @@ class Trefferbild {
 ///
 /// Wird später in der App wiederverwendet, um wiederholte Verhörer zu
 /// erkennen und in die Korrekturliste des Betriebs zu übernehmen.
-Trefferbild zaehleTreffer({
-  required String transkript,
-  required List<String> erwartet,
-}) {
+Trefferbild zaehleTreffer({required String transkript, required List<String> erwartet}) {
   final heuhaufen = transkript.toLowerCase();
   final gefunden = <String>[];
   final fehlend = <String>[];

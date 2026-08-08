@@ -6,8 +6,8 @@ import 'package:bienen_app/features/spracheingabe/data/sprach_aufnahme.dart';
 SprachAufnahme aufnahmeErzeugen() => _StubAufnahme();
 
 class _StubAufnahme implements SprachAufnahme {
-  Never _nein() => throw UnsupportedError(
-      'Tonaufnahme gibt es nur im Browser (dart.library.js_interop).');
+  Never _nein() =>
+      throw UnsupportedError('Tonaufnahme gibt es nur im Browser (dart.library.js_interop).');
 
   @override
   Future<void> starten() => _nein();

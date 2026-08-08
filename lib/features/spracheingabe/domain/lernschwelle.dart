@@ -36,11 +36,7 @@ const Set<String> gesperrteBegriffe = {
 /// Seuchenbegriff still aus dem Transkript schreiben — die Umkehrung genau der
 /// Gefahr, wegen der die Liste ueberhaupt existiert. Dasselbe gilt fuer
 /// Alltagswoerter: `beute → baute` machte aus jeder Beute eine Baute.
-bool darfRegelWerden({
-  required int treffer,
-  required String falsch,
-  required String richtig,
-}) {
+bool darfRegelWerden({required int treffer, required String falsch, required String richtig}) {
   final quelle = falsch.trim().toLowerCase();
   final ziel = richtig.trim().toLowerCase();
   if (quelle.isEmpty || ziel.isEmpty) return false;

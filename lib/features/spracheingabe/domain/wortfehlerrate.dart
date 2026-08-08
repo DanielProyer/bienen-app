@@ -4,10 +4,10 @@
 /// sind fuer die Frage „hat der Erkenner es verstanden" belanglos, und die
 /// Anbieter setzen beides unterschiedlich. Wer hier streng vergliche, wuerde
 /// vor allem Formatierungsunterschiede messen.
-List<String> woerterVon(String text) => RegExp(r'[\p{L}\p{N}]+', unicode: true)
-    .allMatches(text.toLowerCase())
-    .map((m) => m[0]!)
-    .toList();
+List<String> woerterVon(String text) => RegExp(
+  r'[\p{L}\p{N}]+',
+  unicode: true,
+).allMatches(text.toLowerCase()).map((m) => m[0]!).toList();
 
 /// Wortfehlerrate zwischen Soll- und Ist-Text.
 ///
