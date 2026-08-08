@@ -79,6 +79,12 @@ auch immer danach schiefgeht.</p>
   <input type="checkbox" id="willAssemblyai" checked>
   <span><b>AssemblyAI</b> mitmessen</span>
 </label>
+<label class="schalter">
+  <input type="checkbox" id="willInfomaniak" checked>
+  <span><b>Infomaniak (Whisper)</b> mitmessen — <em>Verarbeitung in der Schweiz. Achte bei diesem
+  Transkript besonders auf <b>erfundene Sätze in den Arbeitspausen</b>: Whisper neigt dazu, Stille mit
+  Text zu füllen. Sprechertrennung kann es nicht.</em></span>
+</label>
 
 <button class="haupt" id="sendKnopf" style="background:#555" disabled>Aufnahme auswerten lassen</button>
 
@@ -96,10 +102,18 @@ auch immer danach schiefgeht.</p>
 <script>
 // Fassung dieser Datei. Steht sichtbar oben, damit ein Feldergebnis immer
 // einer Fassung zuzuordnen ist (Regel aus der globalen CLAUDE.md).
-const FASSUNG = 'V2';
+const FASSUNG = 'V3';
 
 const ZIEL = 'https://dcdcohktxbhdxnxjvcyp.supabase.co/functions/v1/transkription';
 const HAEPPCHEN_MS = 5000;
+
+// Anbieter, die einen Auftrag anlegen und spaeter abgefragt werden. Wer hier
+// steht, braucht in der Function ein Gegenstueck (<name>-start / <name>-stand)
+// und auf der Seite ein Kaestchen mit der genannten Kennung.
+const ASYNCHRON = [
+  { name: 'assemblyai', schalter: 'willAssemblyai' },
+  { name: 'infomaniak', schalter: 'willInfomaniak' },
+];
 
 // Oberhalb dieser Groesse ist mit einer verlustfreien Aufnahme zu rechnen
 // (iPhone-Sprachmemo kann auf "Verlustfrei" stehen: rund 10 MB je Minute).
@@ -148,10 +162,12 @@ el('pingKnopf').onclick = async () => {
     const a = await fetch(ZIEL + '?aktion=ping', { method: 'POST', headers: { 'x-testwort': wort } });
     if (a.status === 401) { log('Testwort stimmt NICHT', 'schlecht'); return; }
     const d = await a.json();
-    log('Testwort stimmt. ElevenLabs-Schlüssel: ' + (d.schluessel.elevenlabs ? 'gesetzt' : 'FEHLT')
-        + ' · AssemblyAI-Schlüssel: ' + (d.schluessel.assemblyai ? 'gesetzt' : 'FEHLT')
-        + ' · ElevenLabs-Modell: ' + d.elevenlabsModell,
-        (d.schluessel.elevenlabs && d.schluessel.assemblyai) ? 'gut' : 'warn');
+    const s = d.schluessel;
+    const alle = Object.keys(s).map((n) => n + ': ' + (s[n] ? 'gesetzt' : 'FEHLT')).join(' · ');
+    log('Testwort stimmt. Schlüssel — ' + alle
+        + ' · ElevenLabs-Modell: ' + d.elevenlabsModell
+        + ' · Infomaniak-Produkt: ' + d.infomaniakProdukt,
+        Object.values(s).every(Boolean) ? 'gut' : 'warn');
   } catch (e) {
     log('Bereitschaftsprobe misslungen: ' + e, 'schlecht');
   }
@@ -322,34 +338,37 @@ el('sendKnopf').onclick = async () => {
   localStorage.setItem('testwort', wort);
 
   const willE = el('willElevenlabs').checked;
-  const willA = el('willAssemblyai').checked;
-  if (!willE && !willA) { log('Kein Anbieter angehakt', 'schlecht'); return; }
+  const gewaehlt = ASYNCHRON.filter((a) => el(a.schalter).checked);
+  if (!willE && !gewaehlt.length) { log('Kein Anbieter angehakt', 'schlecht'); return; }
 
   el('sendKnopf').disabled = true;
   ergebnisse = {};
   const kopf = { 'x-testwort': wort };
-  log('Sende ' + mb(blob.size) + ' MB (' + dateiname + ')');
+  log('Sende ' + mb(blob.size) + ' MB (' + dateiname + ') an ' + (gewaehlt.length + (willE ? 1 : 0))
+      + ' Anbieter — jeder bekommt die Datei einzeln, das dauert im Upload entsprechend.');
 
-  let aaiId = null;
-
-  // Phase 1: AssemblyAI anstossen. Kurzer Aufruf, nur Upload und Auftrag.
-  if (willA) {
-    el('sendKnopf').textContent = 'AssemblyAI wird gestartet …';
+  // Phase 1: alle Auftrags-Anbieter anstossen. Kurze Aufrufe, nur Upload und
+  // Auftrag — das Ergebnis wird spaeter abgefragt.
+  const laufend = [];
+  for (const a of gewaehlt) {
+    el('sendKnopf').textContent = a.name + ' wird gestartet …';
     try {
-      const a = await fetch(ZIEL + '?aktion=assemblyai-start', {
+      const r = await fetch(ZIEL + '?aktion=' + a.name + '-start', {
         method: 'POST', headers: kopf, body: formularBauen(),
       });
-      const d = await a.json();
-      if (d.id) { aaiId = d.id; log('AssemblyAI läuft (Auftrag ' + d.id + ')', 'gut'); }
-      else {
-        ergebnisse.assemblyai = { anbieter: 'assemblyai', modell: '—', text: '', dauerMs: 0,
-                                  fehler: d.fehler || 'Start misslungen' };
-        log('AssemblyAI-Start misslungen: ' + (d.fehler || '?'), 'schlecht');
+      const d = await r.json();
+      if (d.id) {
+        laufend.push({ name: a.name, id: d.id, t0: Date.now() });
+        log(a.name + ' läuft (Auftrag ' + d.id + ')', 'gut');
+      } else {
+        ergebnisse[a.name] = { anbieter: a.name, modell: '—', text: '', dauerMs: 0,
+                               fehler: d.fehler || 'Start misslungen' };
+        log(a.name + '-Start misslungen: ' + (d.fehler || '?'), 'schlecht');
         zeige();
       }
     } catch (e) {
-      ergebnisse.assemblyai = { anbieter: 'assemblyai', modell: '—', text: '', dauerMs: 0, fehler: String(e) };
-      log('AssemblyAI-Start misslungen: ' + e, 'schlecht');
+      ergebnisse[a.name] = { anbieter: a.name, modell: '—', text: '', dauerMs: 0, fehler: String(e) };
+      log(a.name + '-Start misslungen: ' + e, 'schlecht');
       zeige();
     }
   }
@@ -384,32 +403,45 @@ el('sendKnopf').onclick = async () => {
     zeige();
   }
 
-  // Phase 3: AssemblyAI-Stand abfragen, bis er fertig ist.
-  if (aaiId) {
-    const t0 = Date.now();
-    el('sendKnopf').textContent = 'Warte auf AssemblyAI …';
-    for (let i = 0; i < 180; i++) {           // hoechstens 15 Minuten
-      await new Promise((f) => setTimeout(f, 5000));
+  // Phase 3: alle laufenden Auftraege abfragen, bis jeder fertig ist. Sie
+  // laufen nebeneinander — ein langsamer Anbieter haelt die anderen nicht auf.
+  for (let runde = 0; runde < 180 && laufend.length; runde++) {  // hoechstens 15 min
+    await new Promise((f) => setTimeout(f, 5000));
+    for (const a of [...laufend]) {
       try {
-        const a = await fetch(ZIEL + '?aktion=assemblyai-stand&id=' + encodeURIComponent(aaiId),
+        const r = await fetch(ZIEL + '?aktion=' + a.name + '-stand&id=' + encodeURIComponent(a.id),
                               { method: 'POST', headers: kopf });
-        const d = await a.json();
+        const d = await r.json();
         if (d.fertig) {
-          d.dauerMs = Date.now() - t0;
-          ergebnisse.assemblyai = d;
-          log('AssemblyAI ' + d.status + ' nach ' + Math.round(d.dauerMs / 1000) + ' s',
+          d.dauerMs = Date.now() - a.t0;
+          ergebnisse[a.name] = d;
+          laufend.splice(laufend.indexOf(a), 1);
+          log(a.name + ' ' + d.status + ' nach ' + Math.round(d.dauerMs / 1000) + ' s',
               d.fehler ? 'schlecht' : 'gut');
           zeige();
-          break;
+        } else {
+          a.status = d.status;
         }
-        el('sendKnopf').textContent = 'AssemblyAI: ' + d.status + ' … '
-          + Math.round((Date.now() - t0) / 1000) + ' s';
       } catch (e) {
-        log('Standabfrage misslungen: ' + e, 'schlecht');
-        break;
+        ergebnisse[a.name] = { anbieter: a.name, modell: '—', text: '', dauerMs: Date.now() - a.t0,
+                               fehler: String(e) };
+        laufend.splice(laufend.indexOf(a), 1);
+        log(a.name + '-Standabfrage misslungen: ' + e, 'schlecht');
+        zeige();
       }
     }
+    if (laufend.length) {
+      el('sendKnopf').textContent = laufend
+        .map((a) => a.name + ': ' + (a.status || '…') + ' ' + Math.round((Date.now() - a.t0) / 1000) + ' s')
+        .join(' · ');
+    }
   }
+  for (const a of laufend) {
+    ergebnisse[a.name] = { anbieter: a.name, modell: '—', text: '', dauerMs: Date.now() - a.t0,
+                           fehler: 'Zeitüberschreitung nach 15 Minuten' };
+    log(a.name + ': Zeitüberschreitung', 'schlecht');
+  }
+  if (laufend.length) zeige();
 
   el('sendKnopf').disabled = false;
   el('sendKnopf').textContent = 'Aufnahme auswerten lassen';
