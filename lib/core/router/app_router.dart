@@ -26,6 +26,7 @@ import 'package:bienen_app/features/recherche/pages/stockwaagen_page.dart';
 import 'package:bienen_app/features/recherche/pages/honigschleudern_page.dart';
 import 'package:bienen_app/features/recherche/pages/imkerei_apps_page.dart';
 import 'package:bienen_app/features/recherche/pages/markdown_viewer_page.dart';
+import 'package:bienen_app/features/spracheingabe/presentation/pages/spracheingabe_page.dart';
 import 'package:bienen_app/features/wissen/presentation/pages/wissen_overview_page.dart';
 import 'package:bienen_app/features/entscheidungen/pages/entscheidungen_page.dart';
 import 'package:bienen_app/features/material/presentation/pages/material_page.dart'
@@ -486,6 +487,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         GoRoute(
           path: '/benachrichtigungen',
           builder: (c, s) => const BenachrichtigungenPage(),
+        ),
+        GoRoute(
+          path: '/spracheingabe',
+          builder: (c, s) => const SpracheingabePage(),
         ),
       ],
       ),

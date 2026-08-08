@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:bienen_app/features/spracheingabe/data/spracheingabe_gateway.dart';
 import 'package:bienen_app/features/spracheingabe/domain/lernschwelle.dart';
 import 'package:bienen_app/features/spracheingabe/domain/sprach_modelle.dart';
+import 'package:bienen_app/features/spracheingabe/domain/startstapel.dart';
 
 /// Speicherfassung des Gateways fuer Tests — kein Netz, keine Datenbank.
 class FakeSpracheingabeGateway implements SpracheingabeGateway {
@@ -100,5 +103,30 @@ class FakeSpracheingabeGateway implements SpracheingabeGateway {
       korrekturen[i] = neu;
     }
     return neu;
+  }
+
+  /// Was der Fake als Transkript zurueckgibt. Tests setzen es passend zur
+  /// erwarteten Karte.
+  String antwort = '';
+  int transkriptionen = 0;
+
+  @override
+  Future<String> transkribieren({
+    required Uint8List bytes,
+    required String dateiname,
+    required String anbieter,
+    required bool mitWortliste,
+  }) async {
+    transkriptionen++;
+    return antwort;
+  }
+
+  @override
+  Future<int> startstapelSicherstellen() async {
+    if (karten.any((k) => k.herkunft == 'start')) return 0;
+    for (final k in startstapel) {
+      await karteAnlegen(k);
+    }
+    return startstapel.length;
   }
 }

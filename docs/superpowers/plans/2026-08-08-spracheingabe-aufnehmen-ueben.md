@@ -68,7 +68,7 @@ und die Plattform würde sonst den Testwort-Weg abweisen, bevor die Function lä
 Ganz oben in `index.ts`, nach dem bestehenden Import:
 
 ```typescript
-import { createClient } from 'jsr:@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Der Service-Key wird nur zum PRUEFEN des Nutzer-JWT gebraucht, nie zum
 // Lesen von Daten. Moderne Schluessel zuerst (D-87: die Legacy-Keys sind
@@ -396,7 +396,6 @@ class _StubAufnahme implements SprachAufnahme {
 ```dart
 import 'dart:async';
 import 'dart:js_interop';
-import 'dart:typed_data';
 
 import 'package:bienen_app/features/spracheingabe/data/sprach_aufnahme.dart';
 
@@ -889,7 +888,7 @@ Muster aus `benachrichtigungen_provider.dart`: ein `Provider` für das Gateway, 
 ```dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:bienen_app/core/config/supabase_config.dart';
+import 'package:bienen_app/core/supabase/supabase_config.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/spracheingabe/data/sprach_aufnahme.dart';
 import 'package:bienen_app/features/spracheingabe/data/sprach_speicher.dart';

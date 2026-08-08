@@ -90,4 +90,13 @@ void main() {
     expect(e, hasLength(1));
     expect(e.single.anbieter, 'infomaniak');
   });
+
+  test('der Startstapel wird nur einmal angelegt', () async {
+    final g = FakeSpracheingabeGateway();
+    final erst = await g.startstapelSicherstellen();
+    expect(erst, 30);
+    final zweit = await g.startstapelSicherstellen();
+    expect(zweit, 0, reason: 'ein zweiter Aufruf darf keine Dubletten erzeugen');
+    expect((await g.kartenLaden()).length, 30);
+  });
 }
