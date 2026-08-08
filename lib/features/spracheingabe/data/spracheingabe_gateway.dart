@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:bienen_app/features/spracheingabe/domain/lernschwelle.dart';
 import 'package:bienen_app/features/spracheingabe/domain/sprach_modelle.dart';
+import 'package:bienen_app/features/spracheingabe/domain/startstapel.dart';
 
 /// Zugriff auf den Trainingsbestand.
 ///
@@ -32,6 +35,22 @@ abstract class SpracheingabeGateway {
     required String richtig,
     required String quelle,
   });
+
+  /// Schickt eine Aufnahme an EINEN Erkenner und gibt das Transkript zurueck.
+  ///
+  /// Nur der schnelle Live-Anbieter — der Vollvergleich ueber alle drei laeuft
+  /// spaeter ueber den gespeicherten Ton (Bauabschnitt 4). Das Warten auf alle
+  /// waere rund zwanzig Sekunden je Karte und toetete den Drill.
+  Future<String> transkribieren({
+    required Uint8List bytes,
+    required String dateiname,
+    required String anbieter,
+    required bool mitWortliste,
+  });
+
+  /// Legt den Startstapel an, falls der Betrieb noch keinen hat.
+  /// Gibt zurueck, wie viele Karten angelegt wurden (0 = war schon da).
+  Future<int> startstapelSicherstellen();
 }
 
 class SupabaseSpracheingabeGateway implements SpracheingabeGateway {
@@ -121,5 +140,60 @@ class SupabaseSpracheingabeGateway implements SpracheingabeGateway {
         .select()
         .single();
     return SprachKorrektur.fromJson(res);
+  }
+
+  @override
+  Future<String> transkribieren({
+    required Uint8List bytes,
+    required String dateiname,
+    required String anbieter,
+    required bool mitWortliste,
+  }) async {
+    // Die Function erkennt den App-Weg am mitgeschickten JWT; supabase_flutter
+    // haengt es bei invoke() automatisch an.
+    final FunctionResponse res;
+    try {
+      res = await _c.functions.invoke(
+        'transkription',
+        method: HttpMethod.post,
+        queryParameters: {'aktion': anbieter},
+        files: [MultipartFile.fromBytes('audio', bytes, filename: dateiname)],
+        body: {'wortliste': mitWortliste ? 'ja' : 'nein'},
+      );
+    } on FunctionException catch (e) {
+      throw Exception(_funktionsKlartext(e));
+    }
+
+    final daten = res.data;
+    if (daten is! Map) throw Exception('Unerwartete Antwort der Erkennung.');
+    if (daten['fehler'] != null) throw Exception('Erkennung: ${daten['fehler']}');
+    final ergebnis = daten['ergebnis'];
+    if (ergebnis is! Map) throw Exception('Die Erkennung lieferte kein Ergebnis.');
+    if (ergebnis['fehler'] != null) throw Exception('$anbieter: ${ergebnis['fehler']}');
+    return (ergebnis['text'] as String?) ?? '';
+  }
+
+  String _funktionsKlartext(FunctionException e) => switch (e.status) {
+        401 => 'Nicht berechtigt — bitte neu anmelden.',
+        404 => 'Die Erkennung ist nicht erreichbar (Function fehlt).',
+        504 => 'Die Erkennung hat zu lange gebraucht. Kürzere Aufnahme versuchen.',
+        _ => 'Erkennung fehlgeschlagen (Status ${e.status}).',
+      };
+
+  @override
+  Future<int> startstapelSicherstellen() async {
+    final vorhanden = await _c
+        .from('sprach_karten')
+        .select('id')
+        .eq('herkunft', 'start')
+        .limit(1);
+    if ((vorhanden as List).isNotEmpty) return 0;
+
+    // person_id bleibt leer: Der Startstapel gilt fuer alle im Betrieb.
+    // betrieb_id kommt aus dem Default — hier ist das richtig, weil die Karten
+    // ausdruecklich zum aktiven Betrieb gehoeren sollen.
+    final zeilen = startstapel.map((k) => k.toInsertJson()).toList();
+    await _c.from('sprach_karten').insert(zeilen);
+    return zeilen.length;
   }
 }
