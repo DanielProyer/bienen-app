@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:bienen_app/core/theme/app_tokens.dart';
 import 'package:bienen_app/features/spracheingabe/presentation/providers/spracheingabe_provider.dart';
@@ -35,13 +36,39 @@ class SpracheingabePage extends ConsumerWidget {
             text: 'Hier wirst du reden können wie am Volk und danach '
                 'korrigieren, was die Erkennung verhört hat.',
           ),
-          EmptyState(
-            icon: Icons.insights_outlined,
-            titel: 'Die Auswertung kommt zuletzt',
-            text: 'Hier stehen später der Bestand, der Vergleich aller '
-                'Anbieter und die gelernten Regeln.',
-          ),
+          _AuswertungAnsicht(),
         ]),
+      ),
+    );
+  }
+}
+
+/// Die eigentliche Auswertung kommt in Bauabschnitt 4. Bis dahin steht hier
+/// wenigstens der Weg zum Erkennervergleich — er ist der einzige Teil der
+/// Spracherkennung, der ausserhalb der App lebt (eigene Seite, ohne Login,
+/// mit Testwort). Ihn hier zu verlinken ist der Unterschied zwischen „alles an
+/// einem Ort" und „man muss wissen, dass es das gibt".
+class _AuswertungAnsicht extends StatelessWidget {
+  const _AuswertungAnsicht();
+
+  static final _vergleich =
+      Uri.parse('https://danielproyer.github.io/bienen-app/erkennervergleich.html');
+
+  @override
+  Widget build(BuildContext context) {
+    return EmptyState(
+      icon: Icons.insights_outlined,
+      titel: 'Die Auswertung kommt zuletzt',
+      text: 'Hier stehen später der Bestand, der Vergleich aller Anbieter und '
+          'die gelernten Regeln.\n\nBis dahin läuft der Anbietervergleich auf '
+          'einer eigenen Seite: dort lädst du eine Aufnahme hoch und lässt sie '
+          'von allen drei Erkennern gleichzeitig auswerten.',
+      aktion: OutlinedButton.icon(
+        key: const Key('spracheingabe_erkennervergleich'),
+        onPressed: () =>
+            launchUrl(_vergleich, mode: LaunchMode.externalApplication),
+        icon: const Icon(Icons.open_in_new),
+        label: const Text('Erkennervergleich öffnen'),
       ),
     );
   }

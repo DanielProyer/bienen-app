@@ -27,6 +27,7 @@ class AppShell extends StatelessWidget {
         location.startsWith('/backup') ||
         location.startsWith('/konto') ||
         location.startsWith('/benachrichtigungen') ||
+        location.startsWith('/spracheingabe') ||
         location.startsWith('/mehr')) {
       return 3;
     }
