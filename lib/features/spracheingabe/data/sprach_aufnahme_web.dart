@@ -81,8 +81,7 @@ class _WebAufnahme implements SprachAufnahme {
     // Rekorder seine Vorgabe — ein groesseres, aber gueltiges Format ist
     // besser als gar keine Aufnahme.
     final rekorder = _Rekorder.isTypeSupported(_wunschFormat)
-        ? _Rekorder(_strom!,
-            _RekorderWunsch(mimeType: _wunschFormat, audioBitsPerSecond: _bitrate))
+        ? _Rekorder(_strom!, _RekorderWunsch(mimeType: _wunschFormat, audioBitsPerSecond: _bitrate))
         : _Rekorder(_strom!, _RekorderWunsch());
 
     rekorder.ondataavailable = ((JSAny ereignis) {

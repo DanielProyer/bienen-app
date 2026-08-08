@@ -6,14 +6,21 @@ import {
   infomaniakStarten,
 } from './anbieter.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { waehleServiceKey } from './schluessel.ts';
 
 // Der Service-Key wird nur zum PRUEFEN des Nutzer-JWT gebraucht, nie zum
-// Lesen von Daten. Moderne Schluessel zuerst (D-87: die Legacy-Keys sind
-// deaktiviert), Fallback fuer den Fall, dass nur der alte Name gesetzt ist.
+// Lesen von Daten.
+//
+// WIEDERVERWENDET statt nachgebaut, und zwar nach einem Fehlschlag: Die erste
+// Fassung las SUPABASE_SECRET_KEYS als Komma-Liste. Die Variable ist aber ein
+// JSON-OBJEKT ({"default": "sb_secret_..."}) — der rohe JSON-Text ging als
+// Schluessel weiter, getUser scheiterte, und jeder App-Aufruf bekam 401.
+// Genau das steht seit dem 27.07. in schluessel.ts beschrieben.
 function serviceKey(): string {
-  const modern = Deno.env.get('SUPABASE_SECRET_KEYS');
-  if (modern) return modern.split(',')[0].trim();
-  return Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  return waehleServiceKey(
+    Deno.env.get('SUPABASE_SECRET_KEYS'),
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
+  );
 }
 
 // Anbieter mit Auftragsnummer. Beide Routen sind von Haus aus asynchron; die
@@ -100,6 +107,12 @@ Deno.serve(async (anfrage) => {
       },
       elevenlabsModell: Deno.env.get('ELEVENLABS_MODELL') ?? 'scribe_v2',
       infomaniakProdukt: Deno.env.get('INFOMANIAK_PRODUKT_ID') ?? '110469',
+      // Ohne diese Auskunft ist von aussen nicht erkennbar, ob der App-Weg
+      // ueberhaupt funktionieren KANN: Faellt die Service-Key-Wahl aus, weist
+      // die Function jeden angemeldeten Nutzer mit 401 ab — ununterscheidbar
+      // von einem falschen Testwort. Genau daran ist der erste Anlauf
+      // gescheitert. Nur ja/nein, nie ein Wert.
+      appWegBereit: Boolean(serviceKey()),
     });
   }
 

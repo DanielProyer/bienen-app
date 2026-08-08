@@ -28,16 +28,19 @@ class SpracheingabePage extends ConsumerWidget {
             ],
           ),
         ),
-        body: const TabBarView(children: [
-          _UebenAnsicht(),
-          EmptyState(
-            icon: Icons.mic_none,
-            titel: 'Frei sprechen kommt als Nächstes',
-            text: 'Hier wirst du reden können wie am Volk und danach '
-                'korrigieren, was die Erkennung verhört hat.',
-          ),
-          _AuswertungAnsicht(),
-        ]),
+        body: const TabBarView(
+          children: [
+            _UebenAnsicht(),
+            EmptyState(
+              icon: Icons.mic_none,
+              titel: 'Frei sprechen kommt als Nächstes',
+              text:
+                  'Hier wirst du reden können wie am Volk und danach '
+                  'korrigieren, was die Erkennung verhört hat.',
+            ),
+            _AuswertungAnsicht(),
+          ],
+        ),
       ),
     );
   }
@@ -51,22 +54,23 @@ class SpracheingabePage extends ConsumerWidget {
 class _AuswertungAnsicht extends StatelessWidget {
   const _AuswertungAnsicht();
 
-  static final _vergleich =
-      Uri.parse('https://danielproyer.github.io/bienen-app/erkennervergleich.html');
+  static final _vergleich = Uri.parse(
+    'https://danielproyer.github.io/bienen-app/erkennervergleich.html',
+  );
 
   @override
   Widget build(BuildContext context) {
     return EmptyState(
       icon: Icons.insights_outlined,
       titel: 'Die Auswertung kommt zuletzt',
-      text: 'Hier stehen später der Bestand, der Vergleich aller Anbieter und '
+      text:
+          'Hier stehen später der Bestand, der Vergleich aller Anbieter und '
           'die gelernten Regeln.\n\nBis dahin läuft der Anbietervergleich auf '
           'einer eigenen Seite: dort lädst du eine Aufnahme hoch und lässt sie '
           'von allen drei Erkennern gleichzeitig auswerten.',
       aktion: OutlinedButton.icon(
         key: const Key('spracheingabe_erkennervergleich'),
-        onPressed: () =>
-            launchUrl(_vergleich, mode: LaunchMode.externalApplication),
+        onPressed: () => launchUrl(_vergleich, mode: LaunchMode.externalApplication),
         icon: const Icon(Icons.open_in_new),
         label: const Text('Erkennervergleich öffnen'),
       ),
@@ -94,7 +98,8 @@ class _UebenAnsicht extends ConsumerWidget {
           return const EmptyState(
             icon: Icons.inbox_outlined,
             titel: 'Keine Übungskarten',
-            text: 'Der Startstapel wird beim ersten Öffnen angelegt. '
+            text:
+                'Der Startstapel wird beim ersten Öffnen angelegt. '
                 'Erscheint hier nichts, fehlt die Schreibberechtigung.',
           );
         }
@@ -124,41 +129,90 @@ class _UebenAnsicht extends ConsumerWidget {
                 height: 64,
                 child: FilledButton.icon(
                   key: const Key('drill_aufnahme'),
-                  onPressed: () async {
-                    final n = ref.read(drillProvider.notifier);
-                    if (d.laeuft) {
-                      await n.aufnahmeBeenden();
-                    } else {
-                      await n.aufnahmeStarten();
-                    }
-                  },
-                  icon: Icon(d.laeuft ? Icons.stop : Icons.mic),
-                  label: Text(d.laeuft ? 'Fertig' : 'Sprechen'),
+                  // Waehrend hochgeladen und erkannt wird, ist der Knopf
+                  // gesperrt: Ein zweiter Druck mitten im Vorgang erzeugt sonst
+                  // eine zweite Probe zur selben Karte.
+                  onPressed: d.arbeitet
+                      ? null
+                      : () async {
+                          final n = ref.read(drillProvider.notifier);
+                          if (d.laeuft) {
+                            await n.aufnahmeBeenden();
+                          } else {
+                            await n.aufnahmeStarten();
+                          }
+                        },
+                  icon: Icon(
+                    d.arbeitet ? Icons.hourglass_top : (d.laeuft ? Icons.stop : Icons.mic),
+                  ),
+                  label: Text(d.arbeitet ? 'Erkenne …' : (d.laeuft ? 'Fertig' : 'Sprechen')),
                   style: FilledButton.styleFrom(
                     backgroundColor: d.laeuft ? BeeTokens.gefahrText : BeeTokens.honig,
                   ),
                 ),
               ),
+              // Sichtbarer Fortschritt statt eines Bildschirms, der arbeitet
+              // und dabei tot aussieht.
+              if (d.arbeitet) ...[
+                const SizedBox(height: BeeTokens.sm),
+                const LinearProgressIndicator(),
+                const SizedBox(height: BeeTokens.sm),
+                const Text(
+                  'Aufnahme wird gesichert und erkannt …',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: BeeTokens.textSekundaer),
+                ),
+              ],
+              if (d.fehler != null) ...[
+                const SizedBox(height: BeeTokens.md),
+                AppCard(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.error_outline, color: BeeTokens.gefahrText),
+                      const SizedBox(width: BeeTokens.sm),
+                      Expanded(
+                        child: Text(
+                          d.fehler!,
+                          key: const Key('drill_fehler'),
+                          style: const TextStyle(color: BeeTokens.gefahrText),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: BeeTokens.sm),
+                const Text(
+                  'Die Aufnahme ist gesichert — sie geht nicht verloren und '
+                  'lässt sich später erneut auswerten.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: BeeTokens.textGedaempft, fontSize: 12.5),
+                ),
+              ],
               if (ergebnis != null) ...[
                 const SizedBox(height: BeeTokens.md),
                 AppCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(children: [
-                        Icon(
-                          ergebnis.getroffen ? Icons.check_circle : Icons.cancel,
-                          color: ergebnis.getroffen ? BeeTokens.erfolgText : BeeTokens.gefahrText,
-                        ),
-                        const SizedBox(width: BeeTokens.sm),
-                        Text(
-                          ergebnis.getroffen ? 'Verstanden' : 'Nicht verstanden',
-                          style: const TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                      ]),
+                      Row(
+                        children: [
+                          Icon(
+                            ergebnis.getroffen ? Icons.check_circle : Icons.cancel,
+                            color: ergebnis.getroffen ? BeeTokens.erfolgText : BeeTokens.gefahrText,
+                          ),
+                          const SizedBox(width: BeeTokens.sm),
+                          Text(
+                            ergebnis.getroffen ? 'Verstanden' : 'Nicht verstanden',
+                            style: const TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: BeeTokens.sm),
-                      Text('Erkannt: „${ergebnis.transkript}"',
-                          style: const TextStyle(color: BeeTokens.textSekundaer)),
+                      Text(
+                        'Erkannt: „${ergebnis.transkript}"',
+                        style: const TextStyle(color: BeeTokens.textSekundaer),
+                      ),
                       if (ergebnis.wortfehler != null)
                         Text(
                           'Wortfehlerrate: ${(ergebnis.wortfehler! * 100).round()} %',

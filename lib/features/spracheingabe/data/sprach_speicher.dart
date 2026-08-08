@@ -59,11 +59,9 @@ class SprachSpeicher {
       personId: personId,
       dateiname: probenDateiname(mime: mime, kennung: kennung),
     );
-    await _c.storage.from(sprachProbenBucket).uploadBinary(
-          pfad,
-          bytes,
-          fileOptions: FileOptions(upsert: false, contentType: mime),
-        );
+    await _c.storage
+        .from(sprachProbenBucket)
+        .uploadBinary(pfad, bytes, fileOptions: FileOptions(upsert: false, contentType: mime));
     return pfad;
   }
 

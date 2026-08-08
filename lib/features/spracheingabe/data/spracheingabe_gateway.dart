@@ -174,19 +174,15 @@ class SupabaseSpracheingabeGateway implements SpracheingabeGateway {
   }
 
   String _funktionsKlartext(FunctionException e) => switch (e.status) {
-        401 => 'Nicht berechtigt — bitte neu anmelden.',
-        404 => 'Die Erkennung ist nicht erreichbar (Function fehlt).',
-        504 => 'Die Erkennung hat zu lange gebraucht. Kürzere Aufnahme versuchen.',
-        _ => 'Erkennung fehlgeschlagen (Status ${e.status}).',
-      };
+    401 => 'Nicht berechtigt — bitte neu anmelden.',
+    404 => 'Die Erkennung ist nicht erreichbar (Function fehlt).',
+    504 => 'Die Erkennung hat zu lange gebraucht. Kürzere Aufnahme versuchen.',
+    _ => 'Erkennung fehlgeschlagen (Status ${e.status}).',
+  };
 
   @override
   Future<int> startstapelSicherstellen() async {
-    final vorhanden = await _c
-        .from('sprach_karten')
-        .select('id')
-        .eq('herkunft', 'start')
-        .limit(1);
+    final vorhanden = await _c.from('sprach_karten').select('id').eq('herkunft', 'start').limit(1);
     if ((vorhanden as List).isNotEmpty) return 0;
 
     // person_id bleibt leer: Der Startstapel gilt fuer alle im Betrieb.
