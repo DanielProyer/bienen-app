@@ -90,6 +90,7 @@ auch immer danach schiefgeht.</p>
 <button class="haupt" id="sendKnopf" style="background:#555" disabled>Aufnahme auswerten lassen</button>
 
 <div id="ergebnisse"></div>
+<button class="neben" id="sichernErgebnisse" style="display:none">⤓ Ergebnisse sichern (für die Auswertung)</button>
 
 <div class="karte">
   <h3>Was du gesagt hast</h3>
@@ -103,7 +104,7 @@ auch immer danach schiefgeht.</p>
 <script>
 // Fassung dieser Datei. Steht sichtbar oben, damit ein Feldergebnis immer
 // einer Fassung zuzuordnen ist (Regel aus der globalen CLAUDE.md).
-const FASSUNG = 'V5';
+const FASSUNG = 'V6';
 
 const ZIEL = 'https://dcdcohktxbhdxnxjvcyp.supabase.co/functions/v1/transkription';
 const HAEPPCHEN_MS = 5000;
@@ -342,6 +343,8 @@ el('knopf').onclick = () => (laeuft ? beenden() : starten());
 
 // Die im Browser aufgenommene Datei liegt nur im Arbeitsspeicher. Schliesst
 // der Tab, ist sie weg — deshalb steht das Sichern VOR dem Auswerten.
+el('sichernErgebnisse').onclick = messungSichern;
+
 el('sichernKnopf').onclick = () => {
   if (!blob) return;
   const a = document.createElement('a');
@@ -400,6 +403,29 @@ function pfadKoerper(pfad) {
 }
 
 const JSON_KOPF = { 'content-type': 'application/json' };
+
+// --- Ergebnisse sichern -----------------------------------------------------
+//
+// Diese Seite hat ihre Messungen bisher nur ANGEZEIGT. Beim Schliessen des
+// Tabs waren sie weg — und die durchgereichte Tondatei loescht sich nach der
+// Auswertung selbst. Damit war die Grundlage fuer den Anbieter-Entscheid nach
+// einer Stunde nicht mehr nachvollziehbar.
+//
+// Die Datei unten ist die Messung: Transkripte im Wortlaut, je Anbieter mit
+// Modell und Dauer, dazu die Randbedingungen (Wortliste an/aus, Laenge der
+// Aufnahme). Ohne diese Angaben sind zwei Laeufe nicht vergleichbar.
+let letzteMessung = null;
+
+function messungSichern() {
+  if (!letzteMessung) return;
+  const b = new Blob([JSON.stringify(letzteMessung, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'erkennervergleich-'
+    + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-') + '.json';
+  a.click();
+  log('Ergebnisse gesichert', 'gut');
+}
 
 // --- Auswertung in zwei Phasen ----------------------------------------------
 //
@@ -552,6 +578,29 @@ function zeige() {
   const dauerMin = dauerSek / 60;
   const ziel = el('ergebnisse');
   const alle = Object.values(ergebnisse);
+
+  // Die Messung mitschreiben, solange die Zahlen noch da sind.
+  letzteMessung = {
+    fassung: FASSUNG,
+    zeitpunkt: new Date().toISOString(),
+    aufnahme: {
+      dateiname,
+      groesseBytes: blob ? blob.size : null,
+      dauerSekunden: Math.round(dauerSek),
+    },
+    mitWortliste: el('wortliste').checked,
+    erwarteteBegriffe: erwartet,
+    anbieter: alle.map((e) => ({
+      anbieter: e.anbieter,
+      modell: e.modell,
+      dauerMs: e.dauerMs,
+      fehler: e.fehler ?? null,
+      woerter: (e.text || '').trim().split(/\s+/).filter(Boolean).length,
+      treffer: e.fehler ? null : zaehleTreffer(e.text, erwartet),
+      transkript: e.text ?? '',
+    })),
+  };
+  el('sichernErgebnisse').style.display = alle.length ? 'block' : 'none';
 
   ziel.innerHTML = '<p class="unter">Fachwortliste war ' +
     (el('wortliste').checked ? '<b>an</b>' : '<b>aus</b>') + '. Aufnahme ' +
