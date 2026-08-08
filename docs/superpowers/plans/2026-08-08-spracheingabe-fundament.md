@@ -492,8 +492,12 @@ List<Verhoererpaar> verhoererAus({required String erkannt, required String korri
 
   // Levenshtein-Matrix, danach rueckwaerts durch die Entscheidungen laufen.
   final d = List.generate(a.length + 1, (_) => List<int>.filled(b.length + 1, 0));
-  for (var x = 0; x <= a.length; x++) d[x][0] = x;
-  for (var y = 0; y <= b.length; y++) d[0][y] = y;
+  for (var x = 0; x <= a.length; x++) {
+    d[x][0] = x;
+  }
+  for (var y = 0; y <= b.length; y++) {
+    d[0][y] = y;
+  }
   for (var x = 1; x <= a.length; x++) {
     for (var y = 1; y <= b.length; y++) {
       final kosten = a[x - 1] == b[y - 1] ? 0 : 1;
@@ -1164,6 +1168,8 @@ Erwartet: FEHLER — `Target of URI doesn't exist: sprach_modelle.dart`
 - [ ] **Schritt 3: Umsetzung schreiben**
 
 ```dart
+import 'package:bienen_app/features/spracheingabe/domain/korrektur_anwendung.dart';
+
 enum KartenArt { wort, satz }
 
 enum ProbenModus { drill, frei }
@@ -1367,12 +1373,6 @@ class SprachKorrektur {
   static List<Korrekturregel> nurAktive(Iterable<SprachKorrektur> alle) =>
       alle.where((k) => k.aktiv).map((k) => k.regel).toList();
 }
-```
-
-Der Import oben in derselben Datei ergänzen:
-
-```dart
-import 'package:bienen_app/features/spracheingabe/domain/korrektur_anwendung.dart';
 ```
 
 - [ ] **Schritt 4: Test laufen lassen, Erfolg bestätigen**
@@ -1875,3 +1875,49 @@ Bauabschnitt 2** (js-interop-Aufnahme, JWT-Eingang der Edge Function, Segment �
 Nicht vergessen: `docs/decision-log.md` um die Entscheide dieses Abschnitts ergänzen — die
 Lernschwelle von zwei, die Personenbindung der Ergebnistabelle und die unbegrenzte Aufbewahrung
 der Trainingsproben als begründete Ausnahme zu S04.
+
+---
+
+## Nachtrag: Befunde des Abschlussreviews (2026-08-08)
+
+> **Die Codeblöcke der Tasks oben zeigen den Stand VOR dem Abschlussreview.** Nach der Umsetzung
+> hat ein unabhängiger Review (Fable 5, Auftrag: widerlegen statt bestätigen) fünf Mängel gefunden,
+> vier davon im hier vorgegebenen Code. Sie sind behoben; massgeblich ist der Code im Repo.
+> Die Migrationen waren zu diesem Zeitpunkt **noch nicht angewandt** — genau dafür lag der
+> Freigabepunkt dort.
+
+**BLOCKER — `sprach_ergebnisse.betrieb_id` war an nichts gebunden.** Alle vier Policies prüften nur
+`eigene_sprach_probe(probe_id)`, nie die `betrieb_id` der Zeile. Sie kommt aus dem Default
+`private.aktive_betrieb_id()`, also aus dem JWT des Augenblicks. Folge: Eine Ergebniszeile konnte
+einen anderen Mandanten tragen als ihre Probe — böswillig durch Mitschicken einer fremden
+`betrieb_id`, versehentlich durch einen Betriebswechsel zwischen Aufnahme und Nachmessung, die die
+Spec ausdrücklich vorsieht. *Behoben* mit `unique (betrieb_id, id)` in T02 und einem
+zusammengesetzten Fremdschlüssel `(betrieb_id, probe_id)` in T03: Die Bindung erzwingt jetzt die
+Datenbank, unabhängig von den Policies.
+
+**WICHTIG — Ausgetretene Mitglieder behielten Zugriff auf `sprach_ergebnisse`.**
+`eigene_sprach_probe` prüft nur die Person, nicht die Mitgliedschaft. *Behoben:* `ist_mitglied`
+zusätzlich in SELECT, INSERT und UPDATE.
+
+**WICHTIG — und die Gegenrichtung: Nach einem Austritt liessen sich die eigenen Aufnahmen nicht
+mehr löschen.** Die Delete-Policies verlangten `ist_mitglied`; die Stimmdaten wären für niemanden
+mehr erreichbar gewesen und nur per `service_role` zu entfernen — im Widerspruch zum
+Löschversprechen der Spec. *Behoben:* Löschen hängt in T02, T03 und T04 **nur** an `person_id`.
+Daraus die Regel: **Ein Austritt nimmt den Zugriff, nie das Recht, die eigene Stimme zu löschen.**
+
+**WICHTIG — Die Sperrliste wirkte nur in eine Richtung.** `darfRegelWerden` prüfte `richtig`, nicht
+`falsch`. Eine Regel `faulbrut → irgendetwas` hätte damit jeden echt gesagten Seuchenbegriff still
+aus dem Transkript geschrieben — die Umkehrung genau der Gefahr, wegen der D-99d die Liste
+verlangt. *Behoben:* beide Seiten werden geprüft, mit zwei neuen Tests.
+
+**WICHTIG — `verhoererMelden` fragte ohne Betriebsfilter ab.** RLS liefert die eigenen Zeilen
+*aller* Betriebe. Bei einem Mitglied zweier Betriebe hätte `.maybeSingle()` entweder hart versagt
+oder den Zähler des falschen Betriebs übernommen — die Lernschwelle wäre ausgehebelt gewesen.
+*Behoben:* `betriebId` ist Pflichtparameter, wird gefiltert und explizit geschrieben statt dem
+Default überlassen.
+
+Offen und bewusst zurückgestellt: das Read-Modify-Write-Fenster in `verhoererMelden` (ein
+verlorenes Inkrement bei zwei fast gleichzeitigen Meldungen), eine mögliche Doppelanlage des
+Startstapels, sowie `check (falsch = lower(falsch))` in T04. Alle drei gehören in Bauabschnitt 2,
+wo der Schreibweg aus der Oberfläche entsteht; die saubere Lösung für die ersten beiden ist
+dieselbe — eine RPC mit atomarem `on conflict do update`.
