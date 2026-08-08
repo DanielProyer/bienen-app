@@ -396,7 +396,6 @@ class _StubAufnahme implements SprachAufnahme {
 ```dart
 import 'dart:async';
 import 'dart:js_interop';
-import 'dart:typed_data';
 
 import 'package:bienen_app/features/spracheingabe/data/sprach_aufnahme.dart';
 
