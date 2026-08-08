@@ -888,7 +888,7 @@ Muster aus `benachrichtigungen_provider.dart`: ein `Provider` für das Gateway, 
 ```dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:bienen_app/core/config/supabase_config.dart';
+import 'package:bienen_app/core/supabase/supabase_config.dart';
 import 'package:bienen_app/features/auth/presentation/auth_providers.dart';
 import 'package:bienen_app/features/spracheingabe/data/sprach_aufnahme.dart';
 import 'package:bienen_app/features/spracheingabe/data/sprach_speicher.dart';
