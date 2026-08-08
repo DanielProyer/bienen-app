@@ -1168,6 +1168,8 @@ Erwartet: FEHLER — `Target of URI doesn't exist: sprach_modelle.dart`
 - [ ] **Schritt 3: Umsetzung schreiben**
 
 ```dart
+import 'package:bienen_app/features/spracheingabe/domain/korrektur_anwendung.dart';
+
 enum KartenArt { wort, satz }
 
 enum ProbenModus { drill, frei }
@@ -1371,12 +1373,6 @@ class SprachKorrektur {
   static List<Korrekturregel> nurAktive(Iterable<SprachKorrektur> alle) =>
       alle.where((k) => k.aktiv).map((k) => k.regel).toList();
 }
-```
-
-Der Import oben in derselben Datei ergänzen:
-
-```dart
-import 'package:bienen_app/features/spracheingabe/domain/korrektur_anwendung.dart';
 ```
 
 - [ ] **Schritt 4: Test laufen lassen, Erfolg bestätigen**
