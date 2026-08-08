@@ -103,7 +103,7 @@ auch immer danach schiefgeht.</p>
 <script>
 // Fassung dieser Datei. Steht sichtbar oben, damit ein Feldergebnis immer
 // einer Fassung zuzuordnen ist (Regel aus der globalen CLAUDE.md).
-const FASSUNG = 'V4';
+const FASSUNG = 'V5';
 
 const ZIEL = 'https://dcdcohktxbhdxnxjvcyp.supabase.co/functions/v1/transkription';
 const HAEPPCHEN_MS = 5000;
@@ -363,12 +363,43 @@ function zaehleTreffer(transkript, erwartet) {
   return { gefunden, fehlend, quote: erwartet.length ? gefunden.length / erwartet.length : 0 };
 }
 
-function formularBauen() {
-  const f = new FormData();
-  f.append('audio', blob, dateiname);
-  f.append('wortliste', el('wortliste').checked ? 'ja' : 'nein');
-  return f;
+// --- Einmal hochladen statt dreimal -----------------------------------------
+//
+// Frueher ging die Datei im Koerper der Anfrage an die Function, einmal je
+// Anbieter. Das scheitert bei langen Aufnahmen aus zwei Gruenden zugleich:
+// Die 150-Sekunden-Grenze von Supabase umfasst den UPLOAD (gemessen: 9,65 MB
+// ueber eine langsame Leitung -> 504 nach 165 s, dieselbe Anfrage mit 120 KB
+// -> 0,28 s), und bei drei Anbietern ging dieselbe Datei dreimal ueber die
+// Leitung.
+//
+// Jetzt: EIN Upload direkt in den Storage ueber eine signierte Adresse, die
+// die Function ausstellt und die fuer genau einen Pfad gilt. Danach bekommen
+// die Anbieter nur noch den Pfad; die Datei holt die Function im
+// Rechenzentrum ab.
+async function inDenZwischenspeicher(kopf) {
+  const z = await fetch(ZIEL + '?aktion=upload-ziel&dateiname=' + encodeURIComponent(dateiname),
+                        { method: 'POST', headers: kopf });
+  if (z.status === 401) throw new Error('Testwort stimmt nicht');
+  const d = await z.json();
+  if (!d.signedUrl) throw new Error(d.fehler || 'Kein Upload-Ziel erhalten');
+
+  const hoch = await fetch(d.signedUrl, {
+    method: 'PUT',
+    headers: { 'content-type': blob.type || 'audio/webm' },
+    body: blob,
+  });
+  if (!hoch.ok) {
+    throw new Error('Upload in den Zwischenspeicher misslungen (HTTP ' + hoch.status + ')');
+  }
+  return d.pfad;
 }
+
+/// Der Koerper, den die Anbieter jetzt bekommen: ein paar Byte statt Megabyte.
+function pfadKoerper(pfad) {
+  return JSON.stringify({ pfad, wortliste: el('wortliste').checked ? 'ja' : 'nein' });
+}
+
+const JSON_KOPF = { 'content-type': 'application/json' };
 
 // --- Auswertung in zwei Phasen ----------------------------------------------
 //
@@ -389,17 +420,29 @@ el('sendKnopf').onclick = async () => {
   el('sendKnopf').disabled = true;
   ergebnisse = {};
   const kopf = { 'x-testwort': wort };
-  log('Sende ' + mb(blob.size) + ' MB (' + dateiname + ') an ' + (gewaehlt.length + (willE ? 1 : 0))
-      + ' Anbieter — jeder bekommt die Datei einzeln, das dauert im Upload entsprechend.');
 
-  // Phase 1: alle Auftrags-Anbieter anstossen. Kurze Aufrufe, nur Upload und
-  // Auftrag — das Ergebnis wird spaeter abgefragt.
+  // Phase 0: EIN Upload in den Zwischenspeicher. Danach reisen nur noch Pfade.
+  let pfad;
+  try {
+    el('sendKnopf').textContent = 'lade ' + mb(blob.size) + ' MB hoch …';
+    log('Lade ' + mb(blob.size) + ' MB einmalig hoch (' + dateiname + ')');
+    pfad = await inDenZwischenspeicher(kopf);
+    log('Hochgeladen. Die Anbieter bekommen jetzt nur noch den Pfad.', 'gut');
+  } catch (e) {
+    log('Upload misslungen: ' + e.message, 'schlecht');
+    el('sendKnopf').disabled = false;
+    el('sendKnopf').textContent = 'Aufnahme auswerten lassen';
+    return;
+  }
+
+  // Phase 1: alle Auftrags-Anbieter anstossen. Kurze Aufrufe, nur Auftrag —
+  // das Ergebnis wird spaeter abgefragt.
   const laufend = [];
   for (const a of gewaehlt) {
     el('sendKnopf').textContent = a.name + ' wird gestartet …';
     try {
       const r = await fetch(ZIEL + '?aktion=' + a.name + '-start', {
-        method: 'POST', headers: kopf, body: formularBauen(),
+        method: 'POST', headers: { ...kopf, ...JSON_KOPF }, body: pfadKoerper(pfad),
       });
       const d = await r.json();
       if (d.id) {
@@ -424,7 +467,7 @@ el('sendKnopf').onclick = async () => {
     const t0 = Date.now();
     try {
       const a = await fetch(ZIEL + '?aktion=elevenlabs', {
-        method: 'POST', headers: kopf, body: formularBauen(),
+        method: 'POST', headers: { ...kopf, ...JSON_KOPF }, body: pfadKoerper(pfad),
       });
       if (a.status === 504) {
         ergebnisse.elevenlabs = { anbieter: 'elevenlabs', modell: '—', text: '', dauerMs: Date.now() - t0,
@@ -487,6 +530,18 @@ el('sendKnopf').onclick = async () => {
     log(a.name + ': Zeitüberschreitung', 'schlecht');
   }
   if (laufend.length) zeige();
+
+  // Der Zwischenspeicher ist eine Durchreiche, kein Archiv: Was ausgewertet
+  // ist, wird geloescht. Bewusst OHNE await im Erfolgsfall abzuwarten waere
+  // falsch — dann bliebe bei einem Fehler stillschweigend eine Tondatei liegen.
+  try {
+    await fetch(ZIEL + '?aktion=aufraeumen', {
+      method: 'POST', headers: { ...kopf, ...JSON_KOPF }, body: JSON.stringify({ pfad }),
+    });
+    log('Zwischenspeicher geleert', 'gut');
+  } catch (e) {
+    log('Zwischenspeicher konnte nicht geleert werden: ' + e, 'warn');
+  }
 
   el('sendKnopf').disabled = false;
   el('sendKnopf').textContent = 'Aufnahme auswerten lassen';
