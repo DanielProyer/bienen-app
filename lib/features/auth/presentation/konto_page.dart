@@ -58,6 +58,17 @@ class KontoPage extends ConsumerWidget {
                     onTap: () => context.go('/benachrichtigungen'),
                   ),
                 ),
+                AppCard(
+                  padding: EdgeInsets.zero,
+                  child: AppListTile(
+                    key: const Key('konto_spracheingabe'),
+                    leading: const Icon(Icons.record_voice_over_outlined,
+                        color: BeeTokens.textSekundaer),
+                    titel: 'Spracheingabe',
+                    untertitel: 'Fachwörter üben, damit die Erkennung dich versteht',
+                    onTap: () => context.go('/spracheingabe'),
+                  ),
+                ),
                 if (session.rolle.istOwner) ...[
                   const SizedBox(height: BeeTokens.lg),
                   AppCard(
