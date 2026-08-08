@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bienen_app/features/durchsicht/sprache/domain/fachwort_treffer.dart';
+import 'package:bienen_app/features/spracheingabe/domain/fachwort_treffer.dart';
 
 void main() {
   test('findet Begriffe unabhängig von Gross- und Kleinschreibung', () {
