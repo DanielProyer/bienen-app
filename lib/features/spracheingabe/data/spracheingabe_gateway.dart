@@ -6,6 +6,21 @@ import 'package:bienen_app/features/spracheingabe/domain/lernschwelle.dart';
 import 'package:bienen_app/features/spracheingabe/domain/sprach_modelle.dart';
 import 'package:bienen_app/features/spracheingabe/domain/startstapel.dart';
 
+/// Was ein Erkenner geliefert hat.
+///
+/// `modell` und `dauerMs` gehoeren mit in die Ergebniszeile, nicht nur der
+/// Text: Ohne die Modellangabe ist spaeter nicht mehr feststellbar, WOMIT
+/// gemessen wurde — etwa ob die Fachwortliste dabei war (der Rueckfallweg der
+/// Edge Function haengt genau das an den Namen). Messwerte ohne diese Angabe
+/// sind untereinander nicht vergleichbar, und Vergleichbarkeit ist der einzige
+/// Grund, warum der Bestand ueberhaupt aufbewahrt wird.
+class Erkennungsergebnis {
+  final String text;
+  final String modell;
+  final int? dauerMs;
+  const Erkennungsergebnis({required this.text, this.modell = '', this.dauerMs});
+}
+
 /// Zugriff auf den Trainingsbestand.
 ///
 /// RLS laesst nur die eigenen Zeilen durch (T01-T04) — deshalb braucht keine
@@ -36,12 +51,12 @@ abstract class SpracheingabeGateway {
     required String quelle,
   });
 
-  /// Schickt eine Aufnahme an EINEN Erkenner und gibt das Transkript zurueck.
+  /// Schickt eine Aufnahme an EINEN Erkenner und gibt zurueck, was er lieferte.
   ///
   /// Nur der schnelle Live-Anbieter — der Vollvergleich ueber alle drei laeuft
   /// spaeter ueber den gespeicherten Ton (Bauabschnitt 4). Das Warten auf alle
   /// waere rund zwanzig Sekunden je Karte und toetete den Drill.
-  Future<String> transkribieren({
+  Future<Erkennungsergebnis> transkribieren({
     required Uint8List bytes,
     required String dateiname,
     required String anbieter,
@@ -143,7 +158,7 @@ class SupabaseSpracheingabeGateway implements SpracheingabeGateway {
   }
 
   @override
-  Future<String> transkribieren({
+  Future<Erkennungsergebnis> transkribieren({
     required Uint8List bytes,
     required String dateiname,
     required String anbieter,
@@ -170,7 +185,11 @@ class SupabaseSpracheingabeGateway implements SpracheingabeGateway {
     final ergebnis = daten['ergebnis'];
     if (ergebnis is! Map) throw Exception('Die Erkennung lieferte kein Ergebnis.');
     if (ergebnis['fehler'] != null) throw Exception('$anbieter: ${ergebnis['fehler']}');
-    return (ergebnis['text'] as String?) ?? '';
+    return Erkennungsergebnis(
+      text: (ergebnis['text'] as String?) ?? '',
+      modell: (ergebnis['modell'] as String?) ?? '',
+      dauerMs: (ergebnis['dauerMs'] as num?)?.toInt(),
+    );
   }
 
   String _funktionsKlartext(FunctionException e) => switch (e.status) {

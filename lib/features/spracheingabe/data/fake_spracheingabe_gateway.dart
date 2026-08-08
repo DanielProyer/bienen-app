@@ -111,14 +111,14 @@ class FakeSpracheingabeGateway implements SpracheingabeGateway {
   int transkriptionen = 0;
 
   @override
-  Future<String> transkribieren({
+  Future<Erkennungsergebnis> transkribieren({
     required Uint8List bytes,
     required String dateiname,
     required String anbieter,
     required bool mitWortliste,
   }) async {
     transkriptionen++;
-    return antwort;
+    return Erkennungsergebnis(text: antwort, modell: 'fake', dauerMs: 0);
   }
 
   @override
