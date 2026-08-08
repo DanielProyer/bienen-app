@@ -79,6 +79,79 @@ function antwort(koerper: unknown, status = 200): Response {
   return new Response(JSON.stringify(koerper), { status, headers: KOPF });
 }
 
+// --- Durchreiche-Bucket (U01) -----------------------------------------------
+//
+// Die Tonaufnahme geht NICHT mehr im Koerper der Anfrage hierher. Gemessen:
+// 9,65 MB ueber eine langsame Leitung -> 504 nach 165 s, ohne dass ein
+// Erkenner angefangen haette; dieselbe Anfrage mit 120 KB -> Antwort nach
+// 0,28 s. Die 150-Sekunden-Grenze umfasst den UPLOAD, nicht erst die
+// Bearbeitung — und bei drei Anbietern ging die Datei dreimal ueber die
+// Leitung.
+//
+// Neuer Weg: Der Browser laedt EINMAL in den Bucket (signierte Upload-Adresse,
+// gilt fuer genau einen Pfad), danach bekommt die Function nur den Pfad und
+// holt die Datei im Rechenzentrum ab.
+const EINGANG = 'transkription-eingang';
+
+function adminClient() {
+  const k = serviceKey();
+  if (!k) return null;
+  return createClient(Deno.env.get('SUPABASE_URL')!, k);
+}
+
+/// Macht aus einem Dateinamen einen brauchbaren Storage-Schluessel.
+/// Leerzeichen und Sonderzeichen im Namen sind der haeufigste Grund fuer
+/// Pfade, die beim Signieren noch gehen und beim Abrufen nicht mehr.
+function saeubern(name: string): string {
+  const s = name.replace(/[^\p{L}\p{N}._-]+/gu, '_').replace(/^_+|_+$/g, '');
+  return (s.length > 80 ? s.slice(-80) : s) || 'aufnahme';
+}
+
+/// Besorgt das Audio — aus dem Bucket (Regelfall) oder aus dem Koerper
+/// (Altweg, weiterhin brauchbar fuer kurze Aufnahmen wie den Drill).
+async function audioBesorgen(
+  anfrage: Request,
+): Promise<{ audio: File; mitWortliste: boolean } | { fehler: string; status: number }> {
+  const typ = anfrage.headers.get('content-type') ?? '';
+
+  if (typ.includes('application/json')) {
+    let koerper: Record<string, unknown>;
+    try {
+      koerper = await anfrage.json();
+    } catch (e) {
+      return { fehler: `Koerper unlesbar: ${e}`, status: 400 };
+    }
+    const pfad = String(koerper.pfad ?? '');
+    if (!pfad) return { fehler: 'Feld "pfad" fehlt', status: 400 };
+
+    const admin = adminClient();
+    if (!admin) return { fehler: 'Kein Service-Key gesetzt', status: 500 };
+    const { data, error } = await admin.storage.from(EINGANG).download(pfad);
+    if (error || !data) {
+      return { fehler: `Aufnahme nicht abrufbar: ${error?.message ?? 'unbekannt'}`, status: 404 };
+    }
+    if (data.size === 0) return { fehler: 'Die Aufnahme ist leer (0 Bytes)', status: 400 };
+
+    return {
+      audio: new File([data], pfad.split('/').pop() ?? 'durchsicht.webm', {
+        type: data.type || 'audio/webm',
+      }),
+      mitWortliste: koerper.wortliste === 'ja',
+    };
+  }
+
+  let form: FormData;
+  try {
+    form = await anfrage.formData();
+  } catch (e) {
+    return { fehler: `Formulardaten unlesbar: ${e}`, status: 400 };
+  }
+  const audio = form.get('audio');
+  if (!(audio instanceof File)) return { fehler: 'Feld "audio" fehlt', status: 400 };
+  if (audio.size === 0) return { fehler: 'Die Aufnahme ist leer (0 Bytes)', status: 400 };
+  return { audio, mitWortliste: form.get('wortliste') === 'ja' };
+}
+
 Deno.serve(async (anfrage) => {
   if (anfrage.method === 'OPTIONS') return new Response('ok', { headers: KOPF });
 
@@ -116,9 +189,43 @@ Deno.serve(async (anfrage) => {
     });
   }
 
+  // --- Upload-Ziel ausstellen -----------------------------------------------
+  //
+  // Gibt eine signierte Adresse heraus, die fuer GENAU EINEN Pfad gilt und
+  // ablaeuft. Damit kann eine Seite ohne Login hochladen, ohne dass der Bucket
+  // fuer irgendjemanden sonst offen waere.
+  if (aktion === 'upload-ziel') {
+    const admin = adminClient();
+    if (!admin) return antwort({ fehler: 'Kein Service-Key gesetzt' }, 500);
+    const name = saeubern(url.searchParams.get('dateiname') ?? 'aufnahme');
+    const pfad = `${crypto.randomUUID()}/${name}`;
+    const { data, error } = await admin.storage.from(EINGANG).createSignedUploadUrl(pfad);
+    if (error || !data) {
+      return antwort({ fehler: `Upload-Ziel fehlgeschlagen: ${error?.message ?? 'unbekannt'}` }, 500);
+    }
+    return antwort({ pfad: data.path, signedUrl: data.signedUrl, token: data.token });
+  }
+
+  // --- Durchgereichte Datei wieder wegraeumen -------------------------------
+  //
+  // Der Bucket ist eine Durchreiche, kein Archiv: Was ausgewertet ist, gehoert
+  // geloescht. Ohne diesen Weg sammeln sich Tondateien an, die niemand mehr
+  // braucht und die niemand sieht.
+  if (aktion === 'aufraeumen') {
+    const admin = adminClient();
+    if (!admin) return antwort({ fehler: 'Kein Service-Key gesetzt' }, 500);
+    let pfad = '';
+    try {
+      pfad = String(((await anfrage.json()) as Record<string, unknown>).pfad ?? '');
+    } catch { /* leerer Koerper -> unten abgefangen */ }
+    if (!pfad) return antwort({ fehler: 'Feld "pfad" fehlt' }, 400);
+    const { error } = await admin.storage.from(EINGANG).remove([pfad]);
+    return antwort({ geloescht: !error, fehler: error?.message });
+  }
+
   // --- Stand eines laufenden Auftrags ---------------------------------------
   //
-  // Steht VOR dem Auslesen des Formulars: dieser Aufruf traegt kein Audio.
+  // Steht VOR dem Beschaffen des Audios: dieser Aufruf traegt keines.
   const standVon = aktion.endsWith('-stand') ? aktion.slice(0, -6) : null;
   if (standVon) {
     if (!(standVon in MIT_AUFTRAG)) {
@@ -129,18 +236,9 @@ Deno.serve(async (anfrage) => {
     return antwort(await MIT_AUFTRAG[standVon as MitAuftrag].stand(id));
   }
 
-  let form: FormData;
-  try {
-    form = await anfrage.formData();
-  } catch (e) {
-    return antwort({ fehler: `Formulardaten unlesbar: ${e}` }, 400);
-  }
-
-  const audio = form.get('audio');
-  if (!(audio instanceof File)) return antwort({ fehler: 'Feld "audio" fehlt' }, 400);
-  if (audio.size === 0) return antwort({ fehler: 'Die Aufnahme ist leer (0 Bytes)' }, 400);
-
-  const mitWortliste = form.get('wortliste') === 'ja';
+  const beschafft = await audioBesorgen(anfrage);
+  if ('fehler' in beschafft) return antwort({ fehler: beschafft.fehler }, beschafft.status);
+  const { audio, mitWortliste } = beschafft;
 
   // Synchron, weil ElevenLabs keine Auftragsnummer kennt. Steht bewusst in
   // einem EIGENEN Aufruf: laeuft er in den 150-s-Timeout, sind die bereits
